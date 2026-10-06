@@ -1,0 +1,2 @@
+streamlit[auth]==1.65.0
+Pillow>=10.0

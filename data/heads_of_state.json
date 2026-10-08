@@ -1,0 +1,74 @@
+{
+ "FRA": {
+  "names": [
+   "Emmanuel Macron"
+  ],
+  "title": "President",
+  "verified_on": "2026-10-05",
+  "source": "https://www.elysee.fr/emmanuel-macron.fr"
+ },
+ "NGA": {
+  "names": [
+   "Bola Ahmed Tinubu"
+  ],
+  "title": "President",
+  "verified_on": "2026-10-05",
+  "source": "https://statehouse.gov.ng/team/bola-ahmed-tinubu/"
+ },
+ "IND": {
+  "names": [
+   "Droupadi Murmu"
+  ],
+  "title": "President",
+  "verified_on": "2026-10-05",
+  "source": "https://www.presidentofindia.gov.in/"
+ },
+ "KEN": {
+  "names": [
+   "William Ruto"
+  ],
+  "title": "President",
+  "verified_on": "2026-10-05",
+  "source": "https://www.president.go.ke/administration/office-of-the-president/"
+ },
+ "ITA": {
+  "names": [
+   "Sergio Mattarella"
+  ],
+  "title": "President",
+  "verified_on": "2026-10-05",
+  "source": "https://www.quirinale.it/"
+ },
+ "DEU": {
+  "names": [
+   "Frank-Walter Steinmeier"
+  ],
+  "title": "Federal President",
+  "verified_on": "2026-10-05",
+  "source": "https://www.bundespraesident.de/EN/federal-president/frank-walter-steinmeier_node.html"
+ },
+ "CAN": {
+  "names": [
+   "Charles III"
+  ],
+  "title": "King",
+  "verified_on": "2026-10-05",
+  "source": "https://www.canada.ca/en/canadian-heritage/services/crown-canada/about.html"
+ },
+ "NZL": {
+  "names": [
+   "Charles III"
+  ],
+  "title": "King",
+  "verified_on": "2026-10-05",
+  "source": "https://gg.govt.nz/office-governor-general/roles-and-functions-governor-general/constitutional-role/constitution/constitution"
+ },
+ "BTN": {
+  "names": [
+   "Jigme Khesar Namgyel Wangchuck"
+  ],
+  "title": "King",
+  "verified_on": "2026-10-05",
+  "source": "https://www.mfa.gov.bt/rbecanberra/ambassador/"
+ }
+}

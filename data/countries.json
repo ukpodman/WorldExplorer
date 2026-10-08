@@ -1,0 +1,4281 @@
+[
+ {
+  "id": "AFG",
+  "name": "Afghanistan",
+  "continent": "Asia",
+  "region": "Southern Asia",
+  "capitals": [
+   {
+    "name": "Kabul",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "AFN",
+    "name": "Afghan afghani"
+   }
+  ],
+  "languages": [
+   "Dari",
+   "Pashto",
+   "Turkmen"
+  ],
+  "official_languages": [
+   "Dari",
+   "Pashto"
+  ],
+  "borders": [
+   "IRN",
+   "PAK",
+   "TKM",
+   "UZB",
+   "TJK",
+   "CHN"
+  ],
+  "landlocked": true,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-08",
+  "area_km2": 652230,
+  "domains": [
+   ".af"
+  ],
+  "calling_codes": [
+   "+93"
+  ],
+  "landmarks": [
+   {
+    "name": "Minaret and Archaeological Remains of Jam",
+    "source": "https://whc.unesco.org/en/list/211/"
+   },
+   {
+    "name": "Cultural Landscape and Archaeological Remains of the Bamiyan Valley",
+    "source": "https://whc.unesco.org/en/list/208/"
+   }
+  ]
+ },
+ {
+  "id": "ALB",
+  "name": "Albania",
+  "continent": "Europe",
+  "region": "Southeast Europe",
+  "capitals": [
+   {
+    "name": "Tirana",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "ALL",
+    "name": "Albanian lek"
+   }
+  ],
+  "languages": [
+   "Albanian"
+  ],
+  "official_languages": [
+   "Albanian"
+  ],
+  "borders": [
+   "MNE",
+   "GRC",
+   "MKD",
+   "UNK"
+  ],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 28748,
+  "domains": [
+   ".al"
+  ],
+  "calling_codes": [
+   "+355"
+  ],
+  "landmarks": [
+   {
+    "name": "Butrint",
+    "source": "https://whc.unesco.org/en/list/570/"
+   },
+   {
+    "name": "Historic Centres of Berat and Gjirokastra",
+    "source": "https://whc.unesco.org/en/list/569/"
+   }
+  ]
+ },
+ {
+  "id": "AND",
+  "name": "Andorra",
+  "continent": "Europe",
+  "region": "Southern Europe",
+  "capitals": [
+   {
+    "name": "Andorra la Vella",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "EUR",
+    "name": "Euro"
+   }
+  ],
+  "languages": [
+   "Catalan"
+  ],
+  "official_languages": [
+   "Catalan"
+  ],
+  "borders": [
+   "FRA",
+   "ESP"
+  ],
+  "landlocked": true,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 468,
+  "domains": [
+   ".ad"
+  ],
+  "calling_codes": [
+   "+376"
+  ],
+  "landmarks": [
+   {
+    "name": "Madriu-Perafita-Claror Valley",
+    "source": "https://whc.unesco.org/en/list/1160/"
+   }
+  ]
+ },
+ {
+  "id": "ARG",
+  "name": "Argentina",
+  "continent": "South America",
+  "region": "South America",
+  "capitals": [
+   {
+    "name": "Buenos Aires",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "ARS",
+    "name": "Argentine peso"
+   }
+  ],
+  "languages": [
+   "Guaraní",
+   "Spanish"
+  ],
+  "official_languages": [],
+  "borders": [
+   "BOL",
+   "BRA",
+   "CHL",
+   "PRY",
+   "URY"
+  ],
+  "landlocked": false,
+  "tier": 1,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 2780400,
+  "domains": [
+   ".ar"
+  ],
+  "calling_codes": [
+   "+54"
+  ],
+  "landmarks": [
+   {
+    "name": "Los Glaciares National Park",
+    "source": "https://whc.unesco.org/en/list/145/"
+   },
+   {
+    "name": "Iguazu National Park",
+    "source": "https://whc.unesco.org/en/list/303/"
+   },
+   {
+    "name": "Cueva de las Manos, Río Pinturas",
+    "source": "https://whc.unesco.org/en/list/936/"
+   }
+  ]
+ },
+ {
+  "id": "AUS",
+  "name": "Australia",
+  "continent": "Oceania",
+  "region": "Australia and New Zealand",
+  "capitals": [
+   {
+    "name": "Canberra",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "AUD",
+    "name": "Australian dollar"
+   }
+  ],
+  "languages": [
+   "English"
+  ],
+  "official_languages": [],
+  "borders": [],
+  "landlocked": false,
+  "tier": 1,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 7692024,
+  "domains": [
+   ".au"
+  ],
+  "calling_codes": [
+   "+61"
+  ],
+  "landmarks": [
+   {
+    "name": "Kakadu National Park",
+    "source": "https://whc.unesco.org/en/list/147/"
+   },
+   {
+    "name": "Great Barrier Reef",
+    "source": "https://whc.unesco.org/en/list/154/"
+   },
+   {
+    "name": "Willandra Lakes Region",
+    "source": "https://whc.unesco.org/en/list/167/"
+   }
+  ]
+ },
+ {
+  "id": "BLZ",
+  "name": "Belize",
+  "continent": "North America",
+  "region": "Central America",
+  "capitals": [
+   {
+    "name": "Belmopan",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "BZD",
+    "name": "Belize dollar"
+   }
+  ],
+  "languages": [
+   "Belizean Creole",
+   "English",
+   "Spanish"
+  ],
+  "official_languages": [
+   "Belizean Creole",
+   "English",
+   "Spanish"
+  ],
+  "borders": [
+   "GTM",
+   "MEX"
+  ],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 22966,
+  "domains": [
+   ".bz"
+  ],
+  "calling_codes": [
+   "+501"
+  ],
+  "landmarks": [
+   {
+    "name": "Belize Barrier Reef Reserve System",
+    "source": "https://whc.unesco.org/en/list/764/"
+   }
+  ]
+ },
+ {
+  "id": "BTN",
+  "name": "Bhutan",
+  "continent": "Asia",
+  "region": "Southern Asia",
+  "capitals": [
+   {
+    "name": "Thimphu",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "BTN",
+    "name": "Bhutanese ngultrum"
+   },
+   {
+    "code": "INR",
+    "name": "Indian rupee"
+   }
+  ],
+  "languages": [
+   "Dzongkha"
+  ],
+  "official_languages": [
+   "Dzongkha"
+  ],
+  "borders": [
+   "CHN",
+   "IND"
+  ],
+  "landlocked": true,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 38394,
+  "domains": [
+   ".bt"
+  ],
+  "calling_codes": [
+   "+975"
+  ],
+  "landmarks": []
+ },
+ {
+  "id": "BOL",
+  "name": "Bolivia",
+  "continent": "South America",
+  "region": "South America",
+  "capitals": [
+   {
+    "name": "Sucre",
+    "role": "constitutional capital"
+   },
+   {
+    "name": "La Paz",
+    "role": "seat of government"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "BOB",
+    "name": "Bolivian boliviano"
+   }
+  ],
+  "languages": [
+   "Aymara",
+   "Guaraní",
+   "Quechua",
+   "Spanish"
+  ],
+  "official_languages": [],
+  "borders": [
+   "ARG",
+   "BRA",
+   "CHL",
+   "PRY",
+   "PER"
+  ],
+  "landlocked": true,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "capital_source": "https://tcpbolivia.bo/2026/07/12/",
+  "data_date": "2026-10-05",
+  "area_km2": 1098581,
+  "domains": [
+   ".bo"
+  ],
+  "calling_codes": [
+   "+591"
+  ],
+  "landmarks": [
+   {
+    "name": "City of Potosí",
+    "source": "https://whc.unesco.org/en/list/420/"
+   },
+   {
+    "name": "Jesuit Missions of the Chiquitos",
+    "source": "https://whc.unesco.org/en/list/529/"
+   },
+   {
+    "name": "Historic City of Sucre",
+    "source": "https://whc.unesco.org/en/list/566/"
+   }
+  ]
+ },
+ {
+  "id": "BWA",
+  "name": "Botswana",
+  "continent": "Africa",
+  "region": "Southern Africa",
+  "capitals": [
+   {
+    "name": "Gaborone",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "BWP",
+    "name": "Botswana pula"
+   }
+  ],
+  "languages": [
+   "English",
+   "Tswana"
+  ],
+  "official_languages": [
+   "English"
+  ],
+  "borders": [
+   "NAM",
+   "ZAF",
+   "ZMB",
+   "ZWE"
+  ],
+  "landlocked": true,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 582000,
+  "domains": [
+   ".bw"
+  ],
+  "calling_codes": [
+   "+267"
+  ],
+  "landmarks": [
+   {
+    "name": "Tsodilo",
+    "source": "https://whc.unesco.org/en/list/1021/"
+   },
+   {
+    "name": "Okavango Delta",
+    "source": "https://whc.unesco.org/en/list/1432/"
+   }
+  ]
+ },
+ {
+  "id": "BRA",
+  "name": "Brazil",
+  "continent": "South America",
+  "region": "South America",
+  "capitals": [
+   {
+    "name": "Brasília",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "BRL",
+    "name": "Brazilian real"
+   }
+  ],
+  "languages": [
+   "Portuguese"
+  ],
+  "official_languages": [
+   "Portuguese"
+  ],
+  "borders": [
+   "ARG",
+   "BOL",
+   "COL",
+   "GUF",
+   "GUY",
+   "PRY",
+   "PER",
+   "SUR",
+   "URY",
+   "VEN"
+  ],
+  "landlocked": false,
+  "tier": 1,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 8515767,
+  "domains": [
+   ".br"
+  ],
+  "calling_codes": [
+   "+55"
+  ],
+  "landmarks": [
+   {
+    "name": "Historic Town of Ouro Preto",
+    "source": "https://whc.unesco.org/en/list/124/"
+   },
+   {
+    "name": "Historic Centre of the Town of Olinda",
+    "source": "https://whc.unesco.org/en/list/189/"
+   },
+   {
+    "name": "Historic Centre of Salvador de Bahia",
+    "source": "https://whc.unesco.org/en/list/309/"
+   }
+  ]
+ },
+ {
+  "id": "KHM",
+  "name": "Cambodia",
+  "continent": "Asia",
+  "region": "South-Eastern Asia",
+  "capitals": [
+   {
+    "name": "Phnom Penh",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "KHR",
+    "name": "Cambodian riel"
+   },
+   {
+    "code": "USD",
+    "name": "United States dollar"
+   }
+  ],
+  "languages": [
+   "Khmer"
+  ],
+  "official_languages": [
+   "Khmer"
+  ],
+  "borders": [
+   "LAO",
+   "THA",
+   "VNM"
+  ],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 181035,
+  "domains": [
+   ".kh"
+  ],
+  "calling_codes": [
+   "+855"
+  ],
+  "landmarks": [
+   {
+    "name": "Angkor",
+    "source": "https://whc.unesco.org/en/list/668/"
+   },
+   {
+    "name": "Temple of Preah Vihear",
+    "source": "https://whc.unesco.org/en/list/1224/"
+   },
+   {
+    "name": "Temple Zone of Sambor Prei Kuk, Archaeological Site of Ancient Ishanapura",
+    "source": "https://whc.unesco.org/en/list/1532/"
+   }
+  ]
+ },
+ {
+  "id": "CAN",
+  "name": "Canada",
+  "continent": "North America",
+  "region": "North America",
+  "capitals": [
+   {
+    "name": "Ottawa",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "CAD",
+    "name": "Canadian dollar"
+   }
+  ],
+  "languages": [
+   "English",
+   "French"
+  ],
+  "official_languages": [
+   "English",
+   "French"
+  ],
+  "borders": [
+   "USA"
+  ],
+  "landlocked": false,
+  "tier": 1,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 9984670,
+  "domains": [
+   ".ca"
+  ],
+  "calling_codes": [],
+  "landmarks": [
+   {
+    "name": "L’Anse aux Meadows National Historic Site",
+    "source": "https://whc.unesco.org/en/list/4/"
+   },
+   {
+    "name": "Nahanni National Park",
+    "source": "https://whc.unesco.org/en/list/24/"
+   },
+   {
+    "name": "Dinosaur Provincial Park",
+    "source": "https://whc.unesco.org/en/list/71/"
+   }
+  ]
+ },
+ {
+  "id": "CPV",
+  "name": "Cape Verde",
+  "continent": "Africa",
+  "region": "Western Africa",
+  "capitals": [
+   {
+    "name": "Praia",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "CVE",
+    "name": "Cape Verdean escudo"
+   }
+  ],
+  "languages": [
+   "Portuguese"
+  ],
+  "official_languages": [
+   "Portuguese"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 4033,
+  "domains": [
+   ".cv"
+  ],
+  "calling_codes": [
+   "+238"
+  ],
+  "landmarks": [
+   {
+    "name": "Cidade Velha, Historic Centre of Ribeira Grande",
+    "source": "https://whc.unesco.org/en/list/1310/"
+   }
+  ]
+ },
+ {
+  "id": "CHL",
+  "name": "Chile",
+  "continent": "South America",
+  "region": "South America",
+  "capitals": [
+   {
+    "name": "Santiago",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "CLP",
+    "name": "Chilean peso"
+   }
+  ],
+  "languages": [
+   "Spanish"
+  ],
+  "official_languages": [],
+  "borders": [
+   "ARG",
+   "BOL",
+   "PER"
+  ],
+  "landlocked": false,
+  "tier": 2,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 756102,
+  "domains": [
+   ".cl"
+  ],
+  "calling_codes": [
+   "+56"
+  ],
+  "landmarks": [
+   {
+    "name": "Rapa Nui National Park",
+    "source": "https://whc.unesco.org/en/list/715/"
+   },
+   {
+    "name": "Churches of Chiloé",
+    "source": "https://whc.unesco.org/en/list/971/"
+   },
+   {
+    "name": "Historic Quarter of the Seaport City of Valparaíso",
+    "source": "https://whc.unesco.org/en/list/959/"
+   }
+  ]
+ },
+ {
+  "id": "CHN",
+  "name": "China",
+  "continent": "Asia",
+  "region": "Eastern Asia",
+  "capitals": [
+   {
+    "name": "Beijing",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "CNY",
+    "name": "Chinese yuan"
+   }
+  ],
+  "languages": [
+   "Chinese"
+  ],
+  "official_languages": [],
+  "borders": [
+   "AFG",
+   "BTN",
+   "MMR",
+   "HKG",
+   "IND",
+   "KAZ",
+   "NPL",
+   "PRK",
+   "KGZ",
+   "LAO",
+   "MAC",
+   "MNG",
+   "PAK",
+   "RUS",
+   "TJK",
+   "VNM"
+  ],
+  "landlocked": false,
+  "tier": 1,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 9706961,
+  "domains": [
+   ".cn",
+   ".中国",
+   ".中國",
+   ".公司",
+   ".网络"
+  ],
+  "calling_codes": [
+   "+86"
+  ],
+  "landmarks": [
+   {
+    "name": "Mount Taishan",
+    "source": "https://whc.unesco.org/en/list/437/"
+   },
+   {
+    "name": "The Great Wall",
+    "source": "https://whc.unesco.org/en/list/438/"
+   },
+   {
+    "name": "Imperial Palaces of the Ming and Qing Dynasties in Beijing and Shenyang",
+    "source": "https://whc.unesco.org/en/list/439/"
+   }
+  ]
+ },
+ {
+  "id": "COL",
+  "name": "Colombia",
+  "continent": "South America",
+  "region": "South America",
+  "capitals": [
+   {
+    "name": "Bogotá",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "COP",
+    "name": "Colombian peso"
+   }
+  ],
+  "languages": [
+   "Spanish"
+  ],
+  "official_languages": [
+   "Spanish"
+  ],
+  "borders": [
+   "BRA",
+   "ECU",
+   "PAN",
+   "PER",
+   "VEN"
+  ],
+  "landlocked": false,
+  "tier": 2,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 1141748,
+  "domains": [
+   ".co"
+  ],
+  "calling_codes": [
+   "+57"
+  ],
+  "landmarks": [
+   {
+    "name": "Port, Fortresses and Group of Monuments, Cartagena",
+    "source": "https://whc.unesco.org/en/list/285/"
+   },
+   {
+    "name": "Los Katíos National Park",
+    "source": "https://whc.unesco.org/en/list/711/"
+   },
+   {
+    "name": "Historic Centre of Santa Cruz de Mompox",
+    "source": "https://whc.unesco.org/en/list/742/"
+   }
+  ]
+ },
+ {
+  "id": "COM",
+  "name": "Comoros",
+  "continent": "Africa",
+  "region": "Eastern Africa",
+  "capitals": [
+   {
+    "name": "Moroni",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "KMF",
+    "name": "Comorian franc"
+   }
+  ],
+  "languages": [
+   "Arabic",
+   "French",
+   "Comorian"
+  ],
+  "official_languages": [
+   "Arabic",
+   "French",
+   "Comorian"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 1862,
+  "domains": [
+   ".km"
+  ],
+  "calling_codes": [
+   "+269"
+  ],
+  "landmarks": [
+   {
+    "name": "The Medinas of the Historic Sultanates of the Comoros",
+    "source": "https://whc.unesco.org/en/list/1768/"
+   }
+  ]
+ },
+ {
+  "id": "CRI",
+  "name": "Costa Rica",
+  "continent": "North America",
+  "region": "Central America",
+  "capitals": [
+   {
+    "name": "San José",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "CRC",
+    "name": "Costa Rican colón"
+   }
+  ],
+  "languages": [
+   "Spanish"
+  ],
+  "official_languages": [
+   "Spanish"
+  ],
+  "borders": [
+   "NIC",
+   "PAN"
+  ],
+  "landlocked": false,
+  "tier": 2,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 51100,
+  "domains": [
+   ".cr"
+  ],
+  "calling_codes": [
+   "+506"
+  ],
+  "landmarks": [
+   {
+    "name": "Cocos Island National Park",
+    "source": "https://whc.unesco.org/en/list/820/"
+   },
+   {
+    "name": "Area de Conservación Guanacaste",
+    "source": "https://whc.unesco.org/en/list/928/"
+   },
+   {
+    "name": "Precolumbian Chiefdom Settlements with Stone Spheres of the Diquís",
+    "source": "https://whc.unesco.org/en/list/1453/"
+   }
+  ]
+ },
+ {
+  "id": "CUB",
+  "name": "Cuba",
+  "continent": "North America",
+  "region": "Caribbean",
+  "capitals": [
+   {
+    "name": "Havana",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "CUC",
+    "name": "Cuban convertible peso"
+   },
+   {
+    "code": "CUP",
+    "name": "Cuban peso"
+   }
+  ],
+  "languages": [
+   "Spanish"
+  ],
+  "official_languages": [
+   "Spanish"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 2,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 109884,
+  "domains": [
+   ".cu"
+  ],
+  "calling_codes": [
+   "+53"
+  ],
+  "landmarks": [
+   {
+    "name": "Old Havana and its Fortification System",
+    "source": "https://whc.unesco.org/en/list/204/"
+   },
+   {
+    "name": "Trinidad and the Valley de los Ingenios",
+    "source": "https://whc.unesco.org/en/list/460/"
+   },
+   {
+    "name": "San Pedro de la Roca Castle, Santiago de Cuba",
+    "source": "https://whc.unesco.org/en/list/841/"
+   }
+  ]
+ },
+ {
+  "id": "DMA",
+  "name": "Dominica",
+  "continent": "North America",
+  "region": "Caribbean",
+  "capitals": [
+   {
+    "name": "Roseau",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "XCD",
+    "name": "Eastern Caribbean dollar"
+   }
+  ],
+  "languages": [
+   "English"
+  ],
+  "official_languages": [
+   "English"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 751,
+  "domains": [
+   ".dm"
+  ],
+  "calling_codes": [
+   "+1767"
+  ],
+  "landmarks": [
+   {
+    "name": "Morne Trois Pitons National Park",
+    "source": "https://whc.unesco.org/en/list/814/"
+   }
+  ]
+ },
+ {
+  "id": "EGY",
+  "name": "Egypt",
+  "continent": "Africa",
+  "region": "Northern Africa",
+  "capitals": [
+   {
+    "name": "Cairo",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "EGP",
+    "name": "Egyptian pound"
+   }
+  ],
+  "languages": [
+   "Arabic"
+  ],
+  "official_languages": [
+   "Arabic"
+  ],
+  "borders": [
+   "ISR",
+   "LBY",
+   "PSE",
+   "SDN"
+  ],
+  "landlocked": false,
+  "tier": 1,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 1002450,
+  "domains": [
+   ".eg",
+   ".مصر"
+  ],
+  "calling_codes": [
+   "+20"
+  ],
+  "landmarks": [
+   {
+    "name": "Memphis and its Necropolis – the Pyramid Fields from Giza to Dahshur",
+    "source": "https://whc.unesco.org/en/list/86/"
+   },
+   {
+    "name": "Ancient Thebes with its Necropolis",
+    "source": "https://whc.unesco.org/en/list/87/"
+   },
+   {
+    "name": "Nubian Monuments from Abu Simbel to Philae",
+    "source": "https://whc.unesco.org/en/list/88/"
+   }
+  ]
+ },
+ {
+  "id": "EST",
+  "name": "Estonia",
+  "continent": "Europe",
+  "region": "Northern Europe",
+  "capitals": [
+   {
+    "name": "Tallinn",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "EUR",
+    "name": "Euro"
+   }
+  ],
+  "languages": [
+   "Estonian"
+  ],
+  "official_languages": [
+   "Estonian"
+  ],
+  "borders": [
+   "LVA",
+   "RUS"
+  ],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 45227,
+  "domains": [
+   ".ee"
+  ],
+  "calling_codes": [
+   "+372"
+  ],
+  "landmarks": [
+   {
+    "name": "Historic Centre (Old Town) of Tallinn",
+    "source": "https://whc.unesco.org/en/list/822/"
+   }
+  ]
+ },
+ {
+  "id": "SWZ",
+  "name": "Eswatini",
+  "continent": "Africa",
+  "region": "Southern Africa",
+  "capitals": [
+   {
+    "name": "Mbabane",
+    "role": "administrative capital"
+   },
+   {
+    "name": "Lobamba",
+    "role": "royal and legislative capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "SZL",
+    "name": "Swazi lilangeni"
+   },
+   {
+    "code": "ZAR",
+    "name": "South African rand"
+   }
+  ],
+  "languages": [
+   "English",
+   "Swazi"
+  ],
+  "official_languages": [
+   "English",
+   "Swazi"
+  ],
+  "borders": [
+   "MOZ",
+   "ZAF"
+  ],
+  "landlocked": true,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "capital_source": "https://www.sadc.int/member-states/kingdom-eswatini",
+  "data_date": "2026-10-05",
+  "area_km2": 17364,
+  "domains": [
+   ".sz"
+  ],
+  "calling_codes": [
+   "+268"
+  ],
+  "landmarks": []
+ },
+ {
+  "id": "FJI",
+  "name": "Fiji",
+  "continent": "Oceania",
+  "region": "Melanesia",
+  "capitals": [
+   {
+    "name": "Suva",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "FJD",
+    "name": "Fijian dollar"
+   }
+  ],
+  "languages": [
+   "English",
+   "Fijian",
+   "Fiji Hindi"
+  ],
+  "official_languages": [
+   "English",
+   "Fijian",
+   "Fiji Hindi"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 18272,
+  "domains": [
+   ".fj"
+  ],
+  "calling_codes": [
+   "+679"
+  ],
+  "landmarks": [
+   {
+    "name": "Levuka Historical Port Town",
+    "source": "https://whc.unesco.org/en/list/1399/"
+   }
+  ]
+ },
+ {
+  "id": "FRA",
+  "name": "France",
+  "continent": "Europe",
+  "region": "Western Europe",
+  "capitals": [
+   {
+    "name": "Paris",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "EUR",
+    "name": "Euro"
+   }
+  ],
+  "languages": [
+   "French"
+  ],
+  "official_languages": [
+   "French"
+  ],
+  "borders": [
+   "AND",
+   "BEL",
+   "DEU",
+   "ITA",
+   "LUX",
+   "MCO",
+   "ESP",
+   "CHE"
+  ],
+  "landlocked": false,
+  "tier": 1,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 551695,
+  "domains": [
+   ".fr"
+  ],
+  "calling_codes": [
+   "+33"
+  ],
+  "landmarks": [
+   {
+    "name": "Mont-Saint-Michel and its Bay",
+    "source": "https://whc.unesco.org/en/list/80/"
+   },
+   {
+    "name": "Chartres Cathedral",
+    "source": "https://whc.unesco.org/en/list/81/"
+   },
+   {
+    "name": "Palace and Park of Versailles",
+    "source": "https://whc.unesco.org/en/list/83/"
+   }
+  ]
+ },
+ {
+  "id": "DEU",
+  "name": "Germany",
+  "continent": "Europe",
+  "region": "Western Europe",
+  "capitals": [
+   {
+    "name": "Berlin",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "EUR",
+    "name": "Euro"
+   }
+  ],
+  "languages": [
+   "German"
+  ],
+  "official_languages": [
+   "German"
+  ],
+  "borders": [
+   "AUT",
+   "BEL",
+   "CZE",
+   "DNK",
+   "FRA",
+   "LUX",
+   "NLD",
+   "POL",
+   "CHE"
+  ],
+  "landlocked": false,
+  "tier": 1,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 357114,
+  "domains": [
+   ".de"
+  ],
+  "calling_codes": [
+   "+49"
+  ],
+  "landmarks": [
+   {
+    "name": "Aachen Cathedral",
+    "source": "https://whc.unesco.org/en/list/3/"
+   },
+   {
+    "name": "Speyer Cathedral",
+    "source": "https://whc.unesco.org/en/list/168/"
+   },
+   {
+    "name": "Würzburg Residence with the Court Gardens and Residence Square",
+    "source": "https://whc.unesco.org/en/list/169/"
+   }
+  ]
+ },
+ {
+  "id": "GHA",
+  "name": "Ghana",
+  "continent": "Africa",
+  "region": "Western Africa",
+  "capitals": [
+   {
+    "name": "Accra",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "GHS",
+    "name": "Ghanaian cedi"
+   }
+  ],
+  "languages": [
+   "English"
+  ],
+  "official_languages": [
+   "English"
+  ],
+  "borders": [
+   "BFA",
+   "CIV",
+   "TGO"
+  ],
+  "landlocked": false,
+  "tier": 2,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 238533,
+  "domains": [
+   ".gh"
+  ],
+  "calling_codes": [
+   "+233"
+  ],
+  "landmarks": [
+   {
+    "name": "Forts and Castles, Volta, Greater Accra, Central and Western Regions",
+    "source": "https://whc.unesco.org/en/list/34/"
+   },
+   {
+    "name": "Asante Traditional Buildings",
+    "source": "https://whc.unesco.org/en/list/35/"
+   }
+  ]
+ },
+ {
+  "id": "GRD",
+  "name": "Grenada",
+  "continent": "North America",
+  "region": "Caribbean",
+  "capitals": [
+   {
+    "name": "St. George's",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "XCD",
+    "name": "Eastern Caribbean dollar"
+   }
+  ],
+  "languages": [
+   "English"
+  ],
+  "official_languages": [
+   "English"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 344,
+  "domains": [
+   ".gd"
+  ],
+  "calling_codes": [
+   "+1473"
+  ],
+  "landmarks": []
+ },
+ {
+  "id": "GTM",
+  "name": "Guatemala",
+  "continent": "North America",
+  "region": "Central America",
+  "capitals": [
+   {
+    "name": "Guatemala City",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "GTQ",
+    "name": "Guatemalan quetzal"
+   }
+  ],
+  "languages": [
+   "Spanish"
+  ],
+  "official_languages": [
+   "Spanish"
+  ],
+  "borders": [
+   "BLZ",
+   "SLV",
+   "HND",
+   "MEX"
+  ],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 108889,
+  "domains": [
+   ".gt"
+  ],
+  "calling_codes": [
+   "+502"
+  ],
+  "landmarks": [
+   {
+    "name": "Tikal National Park",
+    "source": "https://whc.unesco.org/en/list/64/"
+   },
+   {
+    "name": "Antigua Guatemala",
+    "source": "https://whc.unesco.org/en/list/65/"
+   },
+   {
+    "name": "Archaeological Park and Ruins of Quirigua",
+    "source": "https://whc.unesco.org/en/list/149/"
+   }
+  ]
+ },
+ {
+  "id": "GUY",
+  "name": "Guyana",
+  "continent": "South America",
+  "region": "South America",
+  "capitals": [
+   {
+    "name": "Georgetown",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "GYD",
+    "name": "Guyanese dollar"
+   }
+  ],
+  "languages": [
+   "English"
+  ],
+  "official_languages": [
+   "English"
+  ],
+  "borders": [
+   "BRA",
+   "SUR",
+   "VEN"
+  ],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 214969,
+  "domains": [
+   ".gy"
+  ],
+  "calling_codes": [
+   "+592"
+  ],
+  "landmarks": []
+ },
+ {
+  "id": "HND",
+  "name": "Honduras",
+  "continent": "North America",
+  "region": "Central America",
+  "capitals": [
+   {
+    "name": "Tegucigalpa",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "HNL",
+    "name": "Honduran lempira"
+   }
+  ],
+  "languages": [
+   "Spanish"
+  ],
+  "official_languages": [
+   "Spanish"
+  ],
+  "borders": [
+   "GTM",
+   "SLV",
+   "NIC"
+  ],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 112492,
+  "domains": [
+   ".hn"
+  ],
+  "calling_codes": [
+   "+504"
+  ],
+  "landmarks": [
+   {
+    "name": "Maya Site of Copan",
+    "source": "https://whc.unesco.org/en/list/129/"
+   },
+   {
+    "name": "Río Plátano Biosphere Reserve",
+    "source": "https://whc.unesco.org/en/list/196/"
+   }
+  ]
+ },
+ {
+  "id": "IND",
+  "name": "India",
+  "continent": "Asia",
+  "region": "Southern Asia",
+  "capitals": [
+   {
+    "name": "New Delhi",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "INR",
+    "name": "Indian rupee"
+   }
+  ],
+  "languages": [
+   "English",
+   "Hindi",
+   "Tamil"
+  ],
+  "official_languages": [],
+  "borders": [
+   "BGD",
+   "BTN",
+   "MMR",
+   "CHN",
+   "NPL",
+   "PAK"
+  ],
+  "landlocked": false,
+  "tier": 1,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 3287590,
+  "domains": [
+   ".in"
+  ],
+  "calling_codes": [
+   "+91"
+  ],
+  "landmarks": [
+   {
+    "name": "Ajanta Caves",
+    "source": "https://whc.unesco.org/en/list/242/"
+   },
+   {
+    "name": "Ellora Caves",
+    "source": "https://whc.unesco.org/en/list/243/"
+   },
+   {
+    "name": "Agra Fort",
+    "source": "https://whc.unesco.org/en/list/251/"
+   }
+  ]
+ },
+ {
+  "id": "ITA",
+  "name": "Italy",
+  "continent": "Europe",
+  "region": "Southern Europe",
+  "capitals": [
+   {
+    "name": "Rome",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "EUR",
+    "name": "Euro"
+   }
+  ],
+  "languages": [
+   "Italian"
+  ],
+  "official_languages": [
+   "Italian"
+  ],
+  "borders": [
+   "AUT",
+   "FRA",
+   "SMR",
+   "SVN",
+   "CHE",
+   "VAT"
+  ],
+  "landlocked": false,
+  "tier": 1,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 301336,
+  "domains": [
+   ".it"
+  ],
+  "calling_codes": [
+   "+39"
+  ],
+  "landmarks": [
+   {
+    "name": "Rock Drawings in Valcamonica",
+    "source": "https://whc.unesco.org/en/list/94/"
+   },
+   {
+    "name": "Church and Dominican Convent of Santa Maria delle Grazie with “The Last Supper” by Leonardo da Vinci",
+    "source": "https://whc.unesco.org/en/list/93/"
+   },
+   {
+    "name": "Historic Centre of Florence",
+    "source": "https://whc.unesco.org/en/list/174/"
+   }
+  ]
+ },
+ {
+  "id": "JAM",
+  "name": "Jamaica",
+  "continent": "North America",
+  "region": "Caribbean",
+  "capitals": [
+   {
+    "name": "Kingston",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "JMD",
+    "name": "Jamaican dollar"
+   }
+  ],
+  "languages": [
+   "English",
+   "Jamaican Patois"
+  ],
+  "official_languages": [
+   "English",
+   "Jamaican Patois"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 2,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 10991,
+  "domains": [
+   ".jm"
+  ],
+  "calling_codes": [
+   "+1876"
+  ],
+  "landmarks": [
+   {
+    "name": "Blue and John Crow Mountains",
+    "source": "https://whc.unesco.org/en/list/1356/"
+   },
+   {
+    "name": "The Archaeological Ensemble of 17th Century Port Royal",
+    "source": "https://whc.unesco.org/en/list/1595/"
+   }
+  ]
+ },
+ {
+  "id": "JPN",
+  "name": "Japan",
+  "continent": "Asia",
+  "region": "Eastern Asia",
+  "capitals": [
+   {
+    "name": "Tokyo",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "JPY",
+    "name": "Japanese yen"
+   }
+  ],
+  "languages": [
+   "Japanese"
+  ],
+  "official_languages": [],
+  "borders": [],
+  "landlocked": false,
+  "tier": 1,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 377930,
+  "domains": [
+   ".jp",
+   ".みんな"
+  ],
+  "calling_codes": [
+   "+81"
+  ],
+  "landmarks": [
+   {
+    "name": "Buddhist Monuments in the Horyu-ji Area",
+    "source": "https://whc.unesco.org/en/list/660/"
+   },
+   {
+    "name": "Himeji-jo",
+    "source": "https://whc.unesco.org/en/list/661/"
+   },
+   {
+    "name": "Yakushima",
+    "source": "https://whc.unesco.org/en/list/662/"
+   }
+  ]
+ },
+ {
+  "id": "KEN",
+  "name": "Kenya",
+  "continent": "Africa",
+  "region": "Eastern Africa",
+  "capitals": [
+   {
+    "name": "Nairobi",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "KES",
+    "name": "Kenyan shilling"
+   }
+  ],
+  "languages": [
+   "English",
+   "Swahili"
+  ],
+  "official_languages": [
+   "English",
+   "Swahili"
+  ],
+  "borders": [
+   "ETH",
+   "SOM",
+   "SSD",
+   "TZA",
+   "UGA"
+  ],
+  "landlocked": false,
+  "tier": 2,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 580367,
+  "domains": [
+   ".ke"
+  ],
+  "calling_codes": [
+   "+254"
+  ],
+  "landmarks": [
+   {
+    "name": "Mount Kenya National Park/Natural Forest",
+    "source": "https://whc.unesco.org/en/list/800/"
+   },
+   {
+    "name": "Lake Turkana National Parks",
+    "source": "https://whc.unesco.org/en/list/801/"
+   },
+   {
+    "name": "Lamu Old Town",
+    "source": "https://whc.unesco.org/en/list/1055/"
+   }
+  ]
+ },
+ {
+  "id": "KIR",
+  "name": "Kiribati",
+  "continent": "Oceania",
+  "region": "Micronesia",
+  "capitals": [
+   {
+    "name": "South Tarawa",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "AUD",
+    "name": "Australian dollar"
+   },
+   {
+    "code": "KID",
+    "name": "Kiribati dollar"
+   }
+  ],
+  "languages": [
+   "English",
+   "Gilbertese"
+  ],
+  "official_languages": [
+   "English",
+   "Gilbertese"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 811,
+  "domains": [
+   ".ki"
+  ],
+  "calling_codes": [
+   "+686"
+  ],
+  "landmarks": [
+   {
+    "name": "Phoenix Islands Protected Area",
+    "source": "https://whc.unesco.org/en/list/1325/"
+   }
+  ]
+ },
+ {
+  "id": "LAO",
+  "name": "Laos",
+  "continent": "Asia",
+  "region": "South-Eastern Asia",
+  "capitals": [
+   {
+    "name": "Vientiane",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "LAK",
+    "name": "Lao kip"
+   }
+  ],
+  "languages": [
+   "Lao"
+  ],
+  "official_languages": [
+   "Lao"
+  ],
+  "borders": [
+   "MMR",
+   "KHM",
+   "CHN",
+   "THA",
+   "VNM"
+  ],
+  "landlocked": true,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 236800,
+  "domains": [
+   ".la"
+  ],
+  "calling_codes": [
+   "+856"
+  ],
+  "landmarks": [
+   {
+    "name": "Town of Luang Prabang",
+    "source": "https://whc.unesco.org/en/list/479/"
+   },
+   {
+    "name": "Vat Phou and Associated Ancient Settlements within the Champasak Cultural Landscape",
+    "source": "https://whc.unesco.org/en/list/481/"
+   },
+   {
+    "name": "Megalithic Jar Sites in Xiengkhuang – Plain of Jars",
+    "source": "https://whc.unesco.org/en/list/1587/"
+   }
+  ]
+ },
+ {
+  "id": "LVA",
+  "name": "Latvia",
+  "continent": "Europe",
+  "region": "Northern Europe",
+  "capitals": [
+   {
+    "name": "Riga",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "EUR",
+    "name": "Euro"
+   }
+  ],
+  "languages": [
+   "Latvian"
+  ],
+  "official_languages": [
+   "Latvian"
+  ],
+  "borders": [
+   "BLR",
+   "EST",
+   "LTU",
+   "RUS"
+  ],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 64559,
+  "domains": [
+   ".lv"
+  ],
+  "calling_codes": [
+   "+371"
+  ],
+  "landmarks": [
+   {
+    "name": "Historic Centre of Riga",
+    "source": "https://whc.unesco.org/en/list/852/"
+   },
+   {
+    "name": "Old town of Kuldīga",
+    "source": "https://whc.unesco.org/en/list/1658/"
+   }
+  ]
+ },
+ {
+  "id": "LSO",
+  "name": "Lesotho",
+  "continent": "Africa",
+  "region": "Southern Africa",
+  "capitals": [
+   {
+    "name": "Maseru",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "LSL",
+    "name": "Lesotho loti"
+   },
+   {
+    "code": "ZAR",
+    "name": "South African rand"
+   }
+  ],
+  "languages": [
+   "English",
+   "Sotho"
+  ],
+  "official_languages": [
+   "English",
+   "Sotho"
+  ],
+  "borders": [
+   "ZAF"
+  ],
+  "landlocked": true,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 30355,
+  "domains": [
+   ".ls"
+  ],
+  "calling_codes": [
+   "+266"
+  ],
+  "landmarks": []
+ },
+ {
+  "id": "LIE",
+  "name": "Liechtenstein",
+  "continent": "Europe",
+  "region": "Western Europe",
+  "capitals": [
+   {
+    "name": "Vaduz",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "CHF",
+    "name": "Swiss franc"
+   }
+  ],
+  "languages": [
+   "German"
+  ],
+  "official_languages": [
+   "German"
+  ],
+  "borders": [
+   "AUT",
+   "CHE"
+  ],
+  "landlocked": true,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 160,
+  "domains": [
+   ".li"
+  ],
+  "calling_codes": [
+   "+423"
+  ],
+  "landmarks": []
+ },
+ {
+  "id": "LTU",
+  "name": "Lithuania",
+  "continent": "Europe",
+  "region": "Northern Europe",
+  "capitals": [
+   {
+    "name": "Vilnius",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "EUR",
+    "name": "Euro"
+   }
+  ],
+  "languages": [
+   "Lithuanian"
+  ],
+  "official_languages": [
+   "Lithuanian"
+  ],
+  "borders": [
+   "BLR",
+   "LVA",
+   "POL",
+   "RUS"
+  ],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 65300,
+  "domains": [
+   ".lt"
+  ],
+  "calling_codes": [
+   "+370"
+  ],
+  "landmarks": [
+   {
+    "name": "Vilnius Historic Centre",
+    "source": "https://whc.unesco.org/en/list/541/"
+   },
+   {
+    "name": "Kernavė Archaeological Site (Cultural Reserve of Kernavė)",
+    "source": "https://whc.unesco.org/en/list/1137/"
+   },
+   {
+    "name": "Modernist Kaunas: Architecture of Optimism, 1919-1939",
+    "source": "https://whc.unesco.org/en/list/1661/"
+   }
+  ]
+ },
+ {
+  "id": "LUX",
+  "name": "Luxembourg",
+  "continent": "Europe",
+  "region": "Western Europe",
+  "capitals": [
+   {
+    "name": "Luxembourg",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "EUR",
+    "name": "Euro"
+   }
+  ],
+  "languages": [
+   "German",
+   "French",
+   "Luxembourgish"
+  ],
+  "official_languages": [
+   "German",
+   "French",
+   "Luxembourgish"
+  ],
+  "borders": [
+   "BEL",
+   "FRA",
+   "DEU"
+  ],
+  "landlocked": true,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 2586,
+  "domains": [
+   ".lu"
+  ],
+  "calling_codes": [
+   "+352"
+  ],
+  "landmarks": [
+   {
+    "name": "City of Luxembourg: its Old Quarters and Fortifications",
+    "source": "https://whc.unesco.org/en/list/699/"
+   }
+  ]
+ },
+ {
+  "id": "MDG",
+  "name": "Madagascar",
+  "continent": "Africa",
+  "region": "Eastern Africa",
+  "capitals": [
+   {
+    "name": "Antananarivo",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "MGA",
+    "name": "Malagasy ariary"
+   }
+  ],
+  "languages": [
+   "French",
+   "Malagasy"
+  ],
+  "official_languages": [
+   "French",
+   "Malagasy"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 587041,
+  "domains": [
+   ".mg"
+  ],
+  "calling_codes": [
+   "+261"
+  ],
+  "landmarks": [
+   {
+    "name": "Andrefana Dry Forests",
+    "source": "https://whc.unesco.org/en/list/494/"
+   },
+   {
+    "name": "Royal Hill of Ambohimanga",
+    "source": "https://whc.unesco.org/en/list/950/"
+   },
+   {
+    "name": "Rainforests of the Atsinanana",
+    "source": "https://whc.unesco.org/en/list/1257/"
+   }
+  ]
+ },
+ {
+  "id": "MDV",
+  "name": "Maldives",
+  "continent": "Asia",
+  "region": "Southern Asia",
+  "capitals": [
+   {
+    "name": "Malé",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "MVR",
+    "name": "Maldivian rufiyaa"
+   }
+  ],
+  "languages": [
+   "Maldivian"
+  ],
+  "official_languages": [
+   "Maldivian"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 300,
+  "domains": [
+   ".mv"
+  ],
+  "calling_codes": [
+   "+960"
+  ],
+  "landmarks": []
+ },
+ {
+  "id": "MLT",
+  "name": "Malta",
+  "continent": "Europe",
+  "region": "Southern Europe",
+  "capitals": [
+   {
+    "name": "Valletta",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "EUR",
+    "name": "Euro"
+   }
+  ],
+  "languages": [
+   "English",
+   "Maltese"
+  ],
+  "official_languages": [
+   "English",
+   "Maltese"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 316,
+  "domains": [
+   ".mt"
+  ],
+  "calling_codes": [
+   "+356"
+  ],
+  "landmarks": [
+   {
+    "name": "Ħal Saflieni Hypogeum",
+    "source": "https://whc.unesco.org/en/list/130/"
+   },
+   {
+    "name": "City of Valletta",
+    "source": "https://whc.unesco.org/en/list/131/"
+   },
+   {
+    "name": "Megalithic Temples of Malta",
+    "source": "https://whc.unesco.org/en/list/132/"
+   }
+  ]
+ },
+ {
+  "id": "MHL",
+  "name": "Marshall Islands",
+  "continent": "Oceania",
+  "region": "Micronesia",
+  "capitals": [
+   {
+    "name": "Majuro",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "USD",
+    "name": "United States dollar"
+   }
+  ],
+  "languages": [
+   "English",
+   "Marshallese"
+  ],
+  "official_languages": [
+   "English",
+   "Marshallese"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 181,
+  "domains": [
+   ".mh"
+  ],
+  "calling_codes": [
+   "+692"
+  ],
+  "landmarks": [
+   {
+    "name": "Bikini Atoll Nuclear Test Site",
+    "source": "https://whc.unesco.org/en/list/1339/"
+   }
+  ]
+ },
+ {
+  "id": "MUS",
+  "name": "Mauritius",
+  "continent": "Africa",
+  "region": "Eastern Africa",
+  "capitals": [
+   {
+    "name": "Port Louis",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "MUR",
+    "name": "Mauritian rupee"
+   }
+  ],
+  "languages": [
+   "English",
+   "French",
+   "Mauritian Creole"
+  ],
+  "official_languages": [],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 2040,
+  "domains": [
+   ".mu"
+  ],
+  "calling_codes": [
+   "+230"
+  ],
+  "landmarks": [
+   {
+    "name": "Aapravasi Ghat",
+    "source": "https://whc.unesco.org/en/list/1227/"
+   },
+   {
+    "name": "Le Morne Cultural Landscape",
+    "source": "https://whc.unesco.org/en/list/1259/"
+   }
+  ]
+ },
+ {
+  "id": "MEX",
+  "name": "Mexico",
+  "continent": "North America",
+  "region": "North America",
+  "capitals": [
+   {
+    "name": "Mexico City",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "MXN",
+    "name": "Mexican peso"
+   }
+  ],
+  "languages": [
+   "Spanish"
+  ],
+  "official_languages": [],
+  "borders": [
+   "BLZ",
+   "GTM",
+   "USA"
+  ],
+  "landlocked": false,
+  "tier": 1,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 1964375,
+  "domains": [
+   ".mx"
+  ],
+  "calling_codes": [
+   "+52"
+  ],
+  "landmarks": [
+   {
+    "name": "Sian Ka'an",
+    "source": "https://whc.unesco.org/en/list/410/"
+   },
+   {
+    "name": "Pre-Hispanic City and National Park of Palenque",
+    "source": "https://whc.unesco.org/en/list/411/"
+   },
+   {
+    "name": "Historic Centre of Mexico City and Xochimilco",
+    "source": "https://whc.unesco.org/en/list/412/"
+   }
+  ]
+ },
+ {
+  "id": "FSM",
+  "name": "Micronesia",
+  "continent": "Oceania",
+  "region": "Micronesia",
+  "capitals": [
+   {
+    "name": "Palikir",
+    "role": "capital"
+   }
+  ],
+  "currencies": [],
+  "languages": [
+   "English"
+  ],
+  "official_languages": [
+   "English"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 702,
+  "domains": [
+   ".fm"
+  ],
+  "calling_codes": [
+   "+691"
+  ],
+  "landmarks": [
+   {
+    "name": "Nan Madol: Ceremonial Centre of Eastern Micronesia",
+    "source": "https://whc.unesco.org/en/list/1503/"
+   }
+  ]
+ },
+ {
+  "id": "MDA",
+  "name": "Moldova",
+  "continent": "Europe",
+  "region": "Eastern Europe",
+  "capitals": [
+   {
+    "name": "Chișinău",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "MDL",
+    "name": "Moldovan leu"
+   }
+  ],
+  "languages": [
+   "Romanian"
+  ],
+  "official_languages": [
+   "Romanian"
+  ],
+  "borders": [
+   "ROU",
+   "UKR"
+  ],
+  "landlocked": true,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 33846,
+  "domains": [
+   ".md"
+  ],
+  "calling_codes": [
+   "+373"
+  ],
+  "landmarks": []
+ },
+ {
+  "id": "MNG",
+  "name": "Mongolia",
+  "continent": "Asia",
+  "region": "Eastern Asia",
+  "capitals": [
+   {
+    "name": "Ulan Bator",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "MNT",
+    "name": "Mongolian tögrög"
+   }
+  ],
+  "languages": [
+   "Mongolian"
+  ],
+  "official_languages": [
+   "Mongolian"
+  ],
+  "borders": [
+   "CHN",
+   "RUS"
+  ],
+  "landlocked": true,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 1564110,
+  "domains": [
+   ".mn"
+  ],
+  "calling_codes": [
+   "+976"
+  ],
+  "landmarks": [
+   {
+    "name": "Orkhon Valley Cultural Landscape",
+    "source": "https://whc.unesco.org/en/list/1081/"
+   },
+   {
+    "name": "Petroglyphic Complexes of the Mongolian Altai",
+    "source": "https://whc.unesco.org/en/list/1382/"
+   },
+   {
+    "name": "Great Burkhan Khaldun Mountain and its surrounding sacred landscape",
+    "source": "https://whc.unesco.org/en/list/1440/"
+   }
+  ]
+ },
+ {
+  "id": "NAM",
+  "name": "Namibia",
+  "continent": "Africa",
+  "region": "Southern Africa",
+  "capitals": [
+   {
+    "name": "Windhoek",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "NAD",
+    "name": "Namibian dollar"
+   },
+   {
+    "code": "ZAR",
+    "name": "South African rand"
+   }
+  ],
+  "languages": [
+   "Afrikaans",
+   "German",
+   "English",
+   "Herero",
+   "Khoekhoe",
+   "Kwangali",
+   "Lozi",
+   "Ndonga",
+   "Tswana"
+  ],
+  "official_languages": [
+   "Afrikaans",
+   "German",
+   "English",
+   "Herero",
+   "Khoekhoe",
+   "Kwangali",
+   "Lozi",
+   "Ndonga",
+   "Tswana"
+  ],
+  "borders": [
+   "AGO",
+   "BWA",
+   "ZAF",
+   "ZMB"
+  ],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 825615,
+  "domains": [
+   ".na"
+  ],
+  "calling_codes": [
+   "+264"
+  ],
+  "landmarks": [
+   {
+    "name": "Twyfelfontein or /Ui-//aes",
+    "source": "https://whc.unesco.org/en/list/1255/"
+   },
+   {
+    "name": "Namib Sand Sea",
+    "source": "https://whc.unesco.org/en/list/1430/"
+   }
+  ]
+ },
+ {
+  "id": "NPL",
+  "name": "Nepal",
+  "continent": "Asia",
+  "region": "Southern Asia",
+  "capitals": [
+   {
+    "name": "Kathmandu",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "NPR",
+    "name": "Nepalese rupee"
+   }
+  ],
+  "languages": [
+   "Nepali"
+  ],
+  "official_languages": [
+   "Nepali"
+  ],
+  "borders": [
+   "CHN",
+   "IND"
+  ],
+  "landlocked": true,
+  "tier": 2,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 147181,
+  "domains": [
+   ".np"
+  ],
+  "calling_codes": [
+   "+977"
+  ],
+  "landmarks": [
+   {
+    "name": "Sagarmatha National Park",
+    "source": "https://whc.unesco.org/en/list/120/"
+   },
+   {
+    "name": "Kathmandu Valley",
+    "source": "https://whc.unesco.org/en/list/121/"
+   },
+   {
+    "name": "Chitwan National Park",
+    "source": "https://whc.unesco.org/en/list/284/"
+   }
+  ]
+ },
+ {
+  "id": "NZL",
+  "name": "New Zealand",
+  "continent": "Oceania",
+  "region": "Australia and New Zealand",
+  "capitals": [
+   {
+    "name": "Wellington",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "NZD",
+    "name": "New Zealand dollar"
+   }
+  ],
+  "languages": [
+   "English",
+   "Māori",
+   "New Zealand Sign Language"
+  ],
+  "official_languages": [
+   "Māori",
+   "New Zealand Sign Language"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 2,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 270467,
+  "domains": [
+   ".nz"
+  ],
+  "calling_codes": [
+   "+64"
+  ],
+  "landmarks": [
+   {
+    "name": "Tongariro National Park",
+    "source": "https://whc.unesco.org/en/list/421/"
+   },
+   {
+    "name": "Te Wahipounamu – South West New Zealand",
+    "source": "https://whc.unesco.org/en/list/551/"
+   },
+   {
+    "name": "New Zealand Sub-Antarctic Islands",
+    "source": "https://whc.unesco.org/en/list/877/"
+   }
+  ]
+ },
+ {
+  "id": "NIC",
+  "name": "Nicaragua",
+  "continent": "North America",
+  "region": "Central America",
+  "capitals": [
+   {
+    "name": "Managua",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "NIO",
+    "name": "Nicaraguan córdoba"
+   }
+  ],
+  "languages": [
+   "Spanish"
+  ],
+  "official_languages": [
+   "Spanish"
+  ],
+  "borders": [
+   "CRI",
+   "HND"
+  ],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 130373,
+  "domains": [
+   ".ni"
+  ],
+  "calling_codes": [
+   "+505"
+  ],
+  "landmarks": [
+   {
+    "name": "Ruins of León Viejo",
+    "source": "https://whc.unesco.org/en/list/613/"
+   },
+   {
+    "name": "León Cathedral",
+    "source": "https://whc.unesco.org/en/list/1236/"
+   }
+  ]
+ },
+ {
+  "id": "NGA",
+  "name": "Nigeria",
+  "continent": "Africa",
+  "region": "Western Africa",
+  "capitals": [
+   {
+    "name": "Abuja",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "NGN",
+    "name": "Nigerian naira"
+   }
+  ],
+  "languages": [
+   "English"
+  ],
+  "official_languages": [
+   "English"
+  ],
+  "borders": [
+   "BEN",
+   "CMR",
+   "TCD",
+   "NER"
+  ],
+  "landlocked": false,
+  "tier": 1,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 923768,
+  "domains": [
+   ".ng"
+  ],
+  "calling_codes": [
+   "+234"
+  ],
+  "landmarks": [
+   {
+    "name": "Sukur Cultural Landscape",
+    "source": "https://whc.unesco.org/en/list/938/"
+   },
+   {
+    "name": "Osun-Osogbo Sacred Grove",
+    "source": "https://whc.unesco.org/en/list/1118/"
+   }
+  ]
+ },
+ {
+  "id": "MKD",
+  "name": "North Macedonia",
+  "continent": "Europe",
+  "region": "Southeast Europe",
+  "capitals": [
+   {
+    "name": "Skopje",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "MKD",
+    "name": "denar"
+   }
+  ],
+  "languages": [
+   "Macedonian"
+  ],
+  "official_languages": [
+   "Macedonian"
+  ],
+  "borders": [
+   "ALB",
+   "BGR",
+   "GRC",
+   "UNK",
+   "SRB"
+  ],
+  "landlocked": true,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 25713,
+  "domains": [
+   ".mk"
+  ],
+  "calling_codes": [
+   "+389"
+  ],
+  "landmarks": []
+ },
+ {
+  "id": "PAK",
+  "name": "Pakistan",
+  "continent": "Asia",
+  "region": "Southern Asia",
+  "capitals": [
+   {
+    "name": "Islamabad",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "PKR",
+    "name": "Pakistani rupee"
+   }
+  ],
+  "languages": [
+   "English",
+   "Urdu"
+  ],
+  "official_languages": [
+   "English",
+   "Urdu"
+  ],
+  "borders": [
+   "AFG",
+   "CHN",
+   "IND",
+   "IRN"
+  ],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-08",
+  "area_km2": 881912,
+  "domains": [
+   ".pk"
+  ],
+  "calling_codes": [
+   "+92"
+  ],
+  "landmarks": [
+   {
+    "name": "Archaeological Ruins at Moenjodaro",
+    "source": "https://whc.unesco.org/en/list/138/"
+   },
+   {
+    "name": "Taxila",
+    "source": "https://whc.unesco.org/en/list/139/"
+   },
+   {
+    "name": "Buddhist Ruins of Takht-i-Bahi and Neighbouring City Remains at Sahr-i-Bahlol",
+    "source": "https://whc.unesco.org/en/list/140/"
+   }
+  ]
+ },
+ {
+  "id": "PLW",
+  "name": "Palau",
+  "continent": "Oceania",
+  "region": "Micronesia",
+  "capitals": [
+   {
+    "name": "Ngerulmud",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "USD",
+    "name": "United States dollar"
+   }
+  ],
+  "languages": [
+   "English",
+   "Palauan"
+  ],
+  "official_languages": [
+   "English",
+   "Palauan"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 459,
+  "domains": [
+   ".pw"
+  ],
+  "calling_codes": [
+   "+680"
+  ],
+  "landmarks": [
+   {
+    "name": "Rock Islands Southern Lagoon",
+    "source": "https://whc.unesco.org/en/list/1386/"
+   }
+  ]
+ },
+ {
+  "id": "PNG",
+  "name": "Papua New Guinea",
+  "continent": "Oceania",
+  "region": "Melanesia",
+  "capitals": [
+   {
+    "name": "Port Moresby",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "PGK",
+    "name": "Papua New Guinean kina"
+   }
+  ],
+  "languages": [
+   "English",
+   "Hiri Motu",
+   "Tok Pisin"
+  ],
+  "official_languages": [],
+  "borders": [
+   "IDN"
+  ],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 462840,
+  "domains": [
+   ".pg"
+  ],
+  "calling_codes": [
+   "+675"
+  ],
+  "landmarks": [
+   {
+    "name": "Kuk Early Agricultural Site",
+    "source": "https://whc.unesco.org/en/list/887/"
+   }
+  ]
+ },
+ {
+  "id": "PRY",
+  "name": "Paraguay",
+  "continent": "South America",
+  "region": "South America",
+  "capitals": [
+   {
+    "name": "Asunción",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "PYG",
+    "name": "Paraguayan guaraní"
+   }
+  ],
+  "languages": [
+   "Guaraní",
+   "Spanish"
+  ],
+  "official_languages": [
+   "Guaraní",
+   "Spanish"
+  ],
+  "borders": [
+   "ARG",
+   "BOL",
+   "BRA"
+  ],
+  "landlocked": true,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 406752,
+  "domains": [
+   ".py"
+  ],
+  "calling_codes": [
+   "+595"
+  ],
+  "landmarks": [
+   {
+    "name": "Jesuit Missions of La Santísima Trinidad de Paraná and Jesús de Tavarangue",
+    "source": "https://whc.unesco.org/en/list/648/"
+   }
+  ]
+ },
+ {
+  "id": "PER",
+  "name": "Peru",
+  "continent": "South America",
+  "region": "South America",
+  "capitals": [
+   {
+    "name": "Lima",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "PEN",
+    "name": "Peruvian sol"
+   }
+  ],
+  "languages": [
+   "Aymara",
+   "Quechua",
+   "Spanish"
+  ],
+  "official_languages": [
+   "Aymara",
+   "Quechua",
+   "Spanish"
+  ],
+  "borders": [
+   "BOL",
+   "BRA",
+   "CHL",
+   "COL",
+   "ECU"
+  ],
+  "landlocked": false,
+  "tier": 2,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 1285216,
+  "domains": [
+   ".pe"
+  ],
+  "calling_codes": [
+   "+51"
+  ],
+  "landmarks": [
+   {
+    "name": "City of Cuzco",
+    "source": "https://whc.unesco.org/en/list/273/"
+   },
+   {
+    "name": "Historic Sanctuary of Machu Picchu",
+    "source": "https://whc.unesco.org/en/list/274/"
+   },
+   {
+    "name": "Chavin (Archaeological Site)",
+    "source": "https://whc.unesco.org/en/list/330/"
+   }
+  ]
+ },
+ {
+  "id": "PRT",
+  "name": "Portugal",
+  "continent": "Europe",
+  "region": "Southern Europe",
+  "capitals": [
+   {
+    "name": "Lisbon",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "EUR",
+    "name": "Euro"
+   }
+  ],
+  "languages": [
+   "Portuguese"
+  ],
+  "official_languages": [
+   "Portuguese"
+  ],
+  "borders": [
+   "ESP"
+  ],
+  "landlocked": false,
+  "tier": 2,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 92090,
+  "domains": [
+   ".pt"
+  ],
+  "calling_codes": [
+   "+351"
+  ],
+  "landmarks": [
+   {
+    "name": "Central Zone of the Town of Angra do Heroismo in the Azores",
+    "source": "https://whc.unesco.org/en/list/206/"
+   },
+   {
+    "name": "Monastery of the Hieronymites and Tower of Belém in Lisbon",
+    "source": "https://whc.unesco.org/en/list/263/"
+   },
+   {
+    "name": "Monastery of Batalha",
+    "source": "https://whc.unesco.org/en/list/264/"
+   }
+  ]
+ },
+ {
+  "id": "KNA",
+  "name": "Saint Kitts and Nevis",
+  "continent": "North America",
+  "region": "Caribbean",
+  "capitals": [
+   {
+    "name": "Basseterre",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "XCD",
+    "name": "Eastern Caribbean dollar"
+   }
+  ],
+  "languages": [
+   "English"
+  ],
+  "official_languages": [
+   "English"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 261,
+  "domains": [
+   ".kn"
+  ],
+  "calling_codes": [
+   "+1869"
+  ],
+  "landmarks": [
+   {
+    "name": "Brimstone Hill Fortress National Park",
+    "source": "https://whc.unesco.org/en/list/910/"
+   }
+  ]
+ },
+ {
+  "id": "LCA",
+  "name": "Saint Lucia",
+  "continent": "North America",
+  "region": "Caribbean",
+  "capitals": [
+   {
+    "name": "Castries",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "XCD",
+    "name": "Eastern Caribbean dollar"
+   }
+  ],
+  "languages": [
+   "English"
+  ],
+  "official_languages": [
+   "English"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 616,
+  "domains": [
+   ".lc"
+  ],
+  "calling_codes": [
+   "+1758"
+  ],
+  "landmarks": [
+   {
+    "name": "Pitons Management Area",
+    "source": "https://whc.unesco.org/en/list/1161/"
+   }
+  ]
+ },
+ {
+  "id": "VCT",
+  "name": "Saint Vincent and the Grenadines",
+  "continent": "North America",
+  "region": "Caribbean",
+  "capitals": [
+   {
+    "name": "Kingstown",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "XCD",
+    "name": "Eastern Caribbean dollar"
+   }
+  ],
+  "languages": [
+   "English"
+  ],
+  "official_languages": [
+   "English"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 389,
+  "domains": [
+   ".vc"
+  ],
+  "calling_codes": [
+   "+1784"
+  ],
+  "landmarks": []
+ },
+ {
+  "id": "WSM",
+  "name": "Samoa",
+  "continent": "Oceania",
+  "region": "Polynesia",
+  "capitals": [
+   {
+    "name": "Apia",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "WST",
+    "name": "Samoan tālā"
+   }
+  ],
+  "languages": [
+   "English",
+   "Samoan"
+  ],
+  "official_languages": [
+   "English",
+   "Samoan"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 2842,
+  "domains": [
+   ".ws"
+  ],
+  "calling_codes": [
+   "+685"
+  ],
+  "landmarks": []
+ },
+ {
+  "id": "SMR",
+  "name": "San Marino",
+  "continent": "Europe",
+  "region": "Southern Europe",
+  "capitals": [
+   {
+    "name": "City of San Marino",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "EUR",
+    "name": "Euro"
+   }
+  ],
+  "languages": [
+   "Italian"
+  ],
+  "official_languages": [
+   "Italian"
+  ],
+  "borders": [
+   "ITA"
+  ],
+  "landlocked": true,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 61,
+  "domains": [
+   ".sm"
+  ],
+  "calling_codes": [
+   "+378"
+  ],
+  "landmarks": [
+   {
+    "name": "San Marino Historic Centre and Mount Titano",
+    "source": "https://whc.unesco.org/en/list/1245/"
+   }
+  ]
+ },
+ {
+  "id": "SEN",
+  "name": "Senegal",
+  "continent": "Africa",
+  "region": "Western Africa",
+  "capitals": [
+   {
+    "name": "Dakar",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "XOF",
+    "name": "West African CFA franc"
+   }
+  ],
+  "languages": [
+   "French"
+  ],
+  "official_languages": [
+   "French"
+  ],
+  "borders": [
+   "GMB",
+   "GIN",
+   "GNB",
+   "MLI",
+   "MRT"
+  ],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 196722,
+  "domains": [
+   ".sn"
+  ],
+  "calling_codes": [
+   "+221"
+  ],
+  "landmarks": [
+   {
+    "name": "Island of Gorée",
+    "source": "https://whc.unesco.org/en/list/26/"
+   },
+   {
+    "name": "Djoudj National Bird Sanctuary",
+    "source": "https://whc.unesco.org/en/list/25/"
+   },
+   {
+    "name": "Niokolo-Koba National Park",
+    "source": "https://whc.unesco.org/en/list/153/"
+   }
+  ]
+ },
+ {
+  "id": "SYC",
+  "name": "Seychelles",
+  "continent": "Africa",
+  "region": "Eastern Africa",
+  "capitals": [
+   {
+    "name": "Victoria",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "SCR",
+    "name": "Seychellois rupee"
+   }
+  ],
+  "languages": [
+   "Seychellois Creole",
+   "English",
+   "French"
+  ],
+  "official_languages": [
+   "Seychellois Creole",
+   "English",
+   "French"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 452,
+  "domains": [
+   ".sc"
+  ],
+  "calling_codes": [
+   "+248"
+  ],
+  "landmarks": [
+   {
+    "name": "Aldabra Atoll",
+    "source": "https://whc.unesco.org/en/list/185/"
+   },
+   {
+    "name": "Vallée de Mai Nature Reserve",
+    "source": "https://whc.unesco.org/en/list/261/"
+   }
+  ]
+ },
+ {
+  "id": "SVN",
+  "name": "Slovenia",
+  "continent": "Europe",
+  "region": "Central Europe",
+  "capitals": [
+   {
+    "name": "Ljubljana",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "EUR",
+    "name": "Euro"
+   }
+  ],
+  "languages": [
+   "Slovene"
+  ],
+  "official_languages": [
+   "Slovene"
+  ],
+  "borders": [
+   "AUT",
+   "HRV",
+   "ITA",
+   "HUN"
+  ],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 20273,
+  "domains": [
+   ".si"
+  ],
+  "calling_codes": [
+   "+386"
+  ],
+  "landmarks": [
+   {
+    "name": "Škocjan Caves",
+    "source": "https://whc.unesco.org/en/list/390/"
+   },
+   {
+    "name": "The works of Jože Plečnik in Ljubljana – Human Centred Urban Design",
+    "source": "https://whc.unesco.org/en/list/1643/"
+   }
+  ]
+ },
+ {
+  "id": "SLB",
+  "name": "Solomon Islands",
+  "continent": "Oceania",
+  "region": "Melanesia",
+  "capitals": [
+   {
+    "name": "Honiara",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "SBD",
+    "name": "Solomon Islands dollar"
+   }
+  ],
+  "languages": [
+   "English"
+  ],
+  "official_languages": [
+   "English"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 28896,
+  "domains": [
+   ".sb"
+  ],
+  "calling_codes": [
+   "+677"
+  ],
+  "landmarks": [
+   {
+    "name": "East Rennell",
+    "source": "https://whc.unesco.org/en/list/854/"
+   }
+  ]
+ },
+ {
+  "id": "ESP",
+  "name": "Spain",
+  "continent": "Europe",
+  "region": "Southern Europe",
+  "capitals": [
+   {
+    "name": "Madrid",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "EUR",
+    "name": "Euro"
+   }
+  ],
+  "languages": [
+   "Spanish"
+  ],
+  "official_languages": [
+   "Spanish"
+  ],
+  "borders": [
+   "AND",
+   "FRA",
+   "GIB",
+   "PRT",
+   "MAR"
+  ],
+  "landlocked": false,
+  "tier": 1,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 505992,
+  "domains": [
+   ".es"
+  ],
+  "calling_codes": [
+   "+34"
+  ],
+  "landmarks": [
+   {
+    "name": "Historic Centre of Cordoba",
+    "source": "https://whc.unesco.org/en/list/313/"
+   },
+   {
+    "name": "Alhambra, Generalife and Albayzín, Granada",
+    "source": "https://whc.unesco.org/en/list/314/"
+   },
+   {
+    "name": "Burgos Cathedral",
+    "source": "https://whc.unesco.org/en/list/316/"
+   }
+  ]
+ },
+ {
+  "id": "LKA",
+  "name": "Sri Lanka",
+  "continent": "Asia",
+  "region": "Southern Asia",
+  "capitals": [
+   {
+    "name": "Sri Jayewardenepura Kotte",
+    "role": "administrative capital"
+   },
+   {
+    "name": "Colombo",
+    "role": "commercial capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "LKR",
+    "name": "Sri Lankan rupee"
+   }
+  ],
+  "languages": [
+   "Sinhala",
+   "Tamil"
+  ],
+  "official_languages": [
+   "Sinhala",
+   "Tamil"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 2,
+  "source": "https://github.com/mledoze/countries",
+  "capital_source": "https://www.mfa.gov.lk/en/national-profile-and-geography",
+  "data_date": "2026-10-05",
+  "area_km2": 65610,
+  "domains": [
+   ".lk",
+   ".இலங்கை",
+   ".ලංකා"
+  ],
+  "calling_codes": [
+   "+94"
+  ],
+  "landmarks": [
+   {
+    "name": "Sacred City of Anuradhapura",
+    "source": "https://whc.unesco.org/en/list/200/"
+   },
+   {
+    "name": "Ancient City of Polonnaruwa",
+    "source": "https://whc.unesco.org/en/list/201/"
+   },
+   {
+    "name": "Ancient City of Sigiriya",
+    "source": "https://whc.unesco.org/en/list/202/"
+   }
+  ]
+ },
+ {
+  "id": "SUR",
+  "name": "Suriname",
+  "continent": "South America",
+  "region": "South America",
+  "capitals": [
+   {
+    "name": "Paramaribo",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "SRD",
+    "name": "Surinamese dollar"
+   }
+  ],
+  "languages": [
+   "Dutch"
+  ],
+  "official_languages": [
+   "Dutch"
+  ],
+  "borders": [
+   "BRA",
+   "GUF",
+   "GUY"
+  ],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 163820,
+  "domains": [
+   ".sr"
+  ],
+  "calling_codes": [
+   "+597"
+  ],
+  "landmarks": [
+   {
+    "name": "Central Suriname Nature Reserve",
+    "source": "https://whc.unesco.org/en/list/1017/"
+   },
+   {
+    "name": "Historic Inner City of Paramaribo",
+    "source": "https://whc.unesco.org/en/list/940/"
+   },
+   {
+    "name": "Jodensavanne Archaeological Site: Jodensavanne Settlement and Cassipora Creek Cemetery",
+    "source": "https://whc.unesco.org/en/list/1680/"
+   }
+  ]
+ },
+ {
+  "id": "STP",
+  "name": "São Tomé and Príncipe",
+  "continent": "Africa",
+  "region": "Middle Africa",
+  "capitals": [
+   {
+    "name": "São Tomé",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "STN",
+    "name": "São Tomé and Príncipe dobra"
+   }
+  ],
+  "languages": [
+   "Portuguese"
+  ],
+  "official_languages": [
+   "Portuguese"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 964,
+  "domains": [
+   ".st"
+  ],
+  "calling_codes": [
+   "+239"
+  ],
+  "landmarks": [
+   {
+    "name": "The Roças of Sao Tome and Principe: Colonial Agricultural System and Forced Migration",
+    "source": "https://whc.unesco.org/en/list/1750/"
+   }
+  ]
+ },
+ {
+  "id": "THA",
+  "name": "Thailand",
+  "continent": "Asia",
+  "region": "South-Eastern Asia",
+  "capitals": [
+   {
+    "name": "Bangkok",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "THB",
+    "name": "Thai baht"
+   }
+  ],
+  "languages": [
+   "Thai"
+  ],
+  "official_languages": [
+   "Thai"
+  ],
+  "borders": [
+   "MMR",
+   "KHM",
+   "LAO",
+   "MYS"
+  ],
+  "landlocked": false,
+  "tier": 2,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 513120,
+  "domains": [
+   ".th",
+   ".ไทย"
+  ],
+  "calling_codes": [
+   "+66"
+  ],
+  "landmarks": [
+   {
+    "name": "Historic Town of Sukhothai and Associated Historic Towns",
+    "source": "https://whc.unesco.org/en/list/574/"
+   },
+   {
+    "name": "Historic City of Ayutthaya",
+    "source": "https://whc.unesco.org/en/list/576/"
+   },
+   {
+    "name": "Thungyai-Huai Kha Khaeng Wildlife Sanctuaries",
+    "source": "https://whc.unesco.org/en/list/591/"
+   }
+  ]
+ },
+ {
+  "id": "TLS",
+  "name": "Timor-Leste",
+  "continent": "Asia",
+  "region": "South-Eastern Asia",
+  "capitals": [
+   {
+    "name": "Dili",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "USD",
+    "name": "United States dollar"
+   }
+  ],
+  "languages": [
+   "Portuguese",
+   "Tetum"
+  ],
+  "official_languages": [
+   "Portuguese",
+   "Tetum"
+  ],
+  "borders": [
+   "IDN"
+  ],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 14874,
+  "domains": [
+   ".tl"
+  ],
+  "calling_codes": [
+   "+670"
+  ],
+  "landmarks": []
+ },
+ {
+  "id": "TON",
+  "name": "Tonga",
+  "continent": "Oceania",
+  "region": "Polynesia",
+  "capitals": [
+   {
+    "name": "Nuku'alofa",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "TOP",
+    "name": "Tongan paʻanga"
+   }
+  ],
+  "languages": [
+   "English",
+   "Tongan"
+  ],
+  "official_languages": [
+   "English",
+   "Tongan"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 747,
+  "domains": [
+   ".to"
+  ],
+  "calling_codes": [
+   "+676"
+  ],
+  "landmarks": []
+ },
+ {
+  "id": "TTO",
+  "name": "Trinidad and Tobago",
+  "continent": "North America",
+  "region": "Caribbean",
+  "capitals": [
+   {
+    "name": "Port of Spain",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "TTD",
+    "name": "Trinidad and Tobago dollar"
+   }
+  ],
+  "languages": [
+   "English"
+  ],
+  "official_languages": [
+   "English"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 5130,
+  "domains": [
+   ".tt"
+  ],
+  "calling_codes": [
+   "+1868"
+  ],
+  "landmarks": []
+ },
+ {
+  "id": "TUV",
+  "name": "Tuvalu",
+  "continent": "Oceania",
+  "region": "Polynesia",
+  "capitals": [
+   {
+    "name": "Funafuti",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "AUD",
+    "name": "Australian dollar"
+   },
+   {
+    "code": "TVD",
+    "name": "Tuvaluan dollar"
+   }
+  ],
+  "languages": [
+   "English",
+   "Tuvaluan"
+  ],
+  "official_languages": [
+   "English",
+   "Tuvaluan"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 26,
+  "domains": [
+   ".tv"
+  ],
+  "calling_codes": [
+   "+688"
+  ],
+  "landmarks": []
+ },
+ {
+  "id": "USA",
+  "name": "United States",
+  "continent": "North America",
+  "region": "North America",
+  "capitals": [
+   {
+    "name": "Washington D.C.",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "USD",
+    "name": "United States dollar"
+   }
+  ],
+  "languages": [
+   "English"
+  ],
+  "official_languages": [],
+  "borders": [
+   "CAN",
+   "MEX"
+  ],
+  "landlocked": false,
+  "tier": 1,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 9372610,
+  "domains": [
+   ".us"
+  ],
+  "calling_codes": [],
+  "landmarks": [
+   {
+    "name": "Mesa Verde National Park",
+    "source": "https://whc.unesco.org/en/list/27/"
+   },
+   {
+    "name": "Yellowstone National Park",
+    "source": "https://whc.unesco.org/en/list/28/"
+   },
+   {
+    "name": "Grand Canyon National Park",
+    "source": "https://whc.unesco.org/en/list/75/"
+   }
+  ]
+ },
+ {
+  "id": "URY",
+  "name": "Uruguay",
+  "continent": "South America",
+  "region": "South America",
+  "capitals": [
+   {
+    "name": "Montevideo",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "UYU",
+    "name": "Uruguayan peso"
+   }
+  ],
+  "languages": [
+   "Spanish"
+  ],
+  "official_languages": [],
+  "borders": [
+   "ARG",
+   "BRA"
+  ],
+  "landlocked": false,
+  "tier": 2,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 181034,
+  "domains": [
+   ".uy"
+  ],
+  "calling_codes": [
+   "+598"
+  ],
+  "landmarks": [
+   {
+    "name": "Historic Quarter of the City of Colonia del Sacramento",
+    "source": "https://whc.unesco.org/en/list/747/"
+   },
+   {
+    "name": "Fray Bentos Industrial Landscape",
+    "source": "https://whc.unesco.org/en/list/1464/"
+   },
+   {
+    "name": "The work of engineer Eladio Dieste: Church of Atlántida",
+    "source": "https://whc.unesco.org/en/list/1612/"
+   }
+  ]
+ },
+ {
+  "id": "VUT",
+  "name": "Vanuatu",
+  "continent": "Oceania",
+  "region": "Melanesia",
+  "capitals": [
+   {
+    "name": "Port Vila",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "VUV",
+    "name": "Vanuatu vatu"
+   }
+  ],
+  "languages": [
+   "Bislama",
+   "English",
+   "French"
+  ],
+  "official_languages": [
+   "Bislama",
+   "English",
+   "French"
+  ],
+  "borders": [],
+  "landlocked": false,
+  "tier": 3,
+  "source": "https://www.un.int/vanuatu/vanuatu/country-facts",
+  "data_date": "2026-10-05",
+  "area_km2": 12189,
+  "domains": [
+   ".vu"
+  ],
+  "calling_codes": [
+   "+678"
+  ],
+  "landmarks": [
+   {
+    "name": "Chief Roi Mata’s Domain",
+    "source": "https://whc.unesco.org/en/list/1280/"
+   }
+  ]
+ },
+ {
+  "id": "VNM",
+  "name": "Vietnam",
+  "continent": "Asia",
+  "region": "South-Eastern Asia",
+  "capitals": [
+   {
+    "name": "Hanoi",
+    "role": "capital"
+   }
+  ],
+  "currencies": [
+   {
+    "code": "VND",
+    "name": "Vietnamese đồng"
+   }
+  ],
+  "languages": [
+   "Vietnamese"
+  ],
+  "official_languages": [
+   "Vietnamese"
+  ],
+  "borders": [
+   "KHM",
+   "CHN",
+   "LAO"
+  ],
+  "landlocked": false,
+  "tier": 2,
+  "source": "https://github.com/mledoze/countries",
+  "data_date": "2026-10-05",
+  "area_km2": 331212,
+  "domains": [
+   ".vn"
+  ],
+  "calling_codes": [
+   "+84"
+  ],
+  "landmarks": [
+   {
+    "name": "Complex of Hué Monuments",
+    "source": "https://whc.unesco.org/en/list/678/"
+   },
+   {
+    "name": "Ha Long Bay - Cat Ba Archipelago",
+    "source": "https://whc.unesco.org/en/list/672/"
+   },
+   {
+    "name": "Hoi An Ancient Town",
+    "source": "https://whc.unesco.org/en/list/948/"
+   }
+  ]
+ }
+]

@@ -1,0 +1,34 @@
+{
+ "NGA": {
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/74/Lekki_Ikoyi_Link_Bridge.jpg",
+  "caption": "Lekki–Ikoyi Link Bridge, Lagos",
+  "author": "Chippla",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+  "page": "https://commons.wikimedia.org/wiki/File:Lekki_Ikoyi_Link_Bridge.jpg"
+ },
+ "JPN": {
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Chureito_Pagoda_and_Mount_Fuji.jpg",
+  "caption": "Chūrei-tō pagoda and Mount Fuji",
+  "author": "Manishprabhune",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "page": "https://commons.wikimedia.org/wiki/File:Chureito_Pagoda_and_Mount_Fuji.jpg"
+ },
+ "ITA": {
+  "url": "https://upload.wikimedia.org/wikipedia/commons/3/32/Colosseum_-_Rome.jpg",
+  "caption": "Colosseum, Rome",
+  "author": "Mattia.masala",
+  "license": "CC0",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "page": "https://commons.wikimedia.org/wiki/File:Colosseum_-_Rome.jpg"
+ },
+ "BRA": {
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/98/National_Congress_of_Brazil_in_Bras%C3%ADlia.jpg",
+  "caption": "National Congress, Brasília",
+  "author": "Agência Brasil",
+  "license": "CC BY 3.0 BR",
+  "license_url": "https://creativecommons.org/licenses/by/3.0/br/",
+  "page": "https://commons.wikimedia.org/wiki/File:National_Congress_of_Brazil_in_Bras%C3%ADlia.jpg"
+ }
+}

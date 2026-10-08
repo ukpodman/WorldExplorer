@@ -1,0 +1,1130 @@
+{
+ "languages": [
+  "English",
+  "Deutsch",
+  "Español",
+  "中文（普通话）"
+ ],
+ "strings": {
+  "Explore": [
+   "Entdecken",
+   "Explorar",
+   "探索"
+  ],
+  "Learn": [
+   "Lernen",
+   "Aprender",
+   "学习"
+  ],
+  "Quiz": [
+   "Quiz",
+   "Cuestionario",
+   "测验"
+  ],
+  "Badges": [
+   "Erfolge",
+   "Logros",
+   "成就"
+  ],
+  "Settings": [
+   "Einstellungen",
+   "Ajustes",
+   "设置"
+  ],
+  "Profile": [
+   "Profil",
+   "Perfil",
+   "个人资料"
+  ],
+  "Display name": [
+   "Anzeigename",
+   "Nombre visible",
+   "显示名称"
+  ],
+  "App language": [
+   "App-Sprache",
+   "Idioma de la aplicación",
+   "应用语言"
+  ],
+  "Exploration area": [
+   "Entdeckungsbereich",
+   "Área de exploración",
+   "探索范围"
+  ],
+  "All countries": [
+   "Alle Länder",
+   "Todos los países",
+   "所有国家"
+  ],
+  "All Countries": [
+   "Alle Länder",
+   "Todos los países",
+   "所有国家"
+  ],
+  "One continent": [
+   "Ein Kontinent",
+   "Un continente",
+   "一个大洲"
+  ],
+  "One country": [
+   "Ein Land",
+   "Un país",
+   "一个国家"
+  ],
+  "Continent": [
+   "Kontinent",
+   "Continente",
+   "大洲"
+  ],
+  "Country": [
+   "Land",
+   "País",
+   "国家"
+  ],
+  "Apply settings": [
+   "Einstellungen übernehmen",
+   "Aplicar ajustes",
+   "应用设置"
+  ],
+  "World": [
+   "Welt",
+   "Mundo",
+   "世界"
+  ],
+  "Africa": [
+   "Afrika",
+   "África",
+   "非洲"
+  ],
+  "Asia": [
+   "Asien",
+   "Asia",
+   "亚洲"
+  ],
+  "Europe": [
+   "Europa",
+   "Europa",
+   "欧洲"
+  ],
+  "North America": [
+   "Nordamerika",
+   "América del Norte",
+   "北美洲"
+  ],
+  "South America": [
+   "Südamerika",
+   "América del Sur",
+   "南美洲"
+  ],
+  "Oceania": [
+   "Ozeanien",
+   "Oceanía",
+   "大洋洲"
+  ],
+  "Category": [
+   "Kategorie",
+   "Categoría",
+   "类别"
+  ],
+  "Difficulty": [
+   "Schwierigkeit",
+   "Dificultad",
+   "难度"
+  ],
+  "Questions": [
+   "Fragen",
+   "Preguntas",
+   "题数"
+  ],
+  "Timed challenge": [
+   "Zeitlimit",
+   "Desafío con tiempo",
+   "限时挑战"
+  ],
+  "Start quiz": [
+   "Quiz starten",
+   "Iniciar cuestionario",
+   "开始测验"
+  ],
+  "Build your challenge": [
+   "Deine Herausforderung",
+   "Crea tu desafío",
+   "创建挑战"
+  ],
+  "Your next adventure": [
+   "Dein nächstes Abenteuer",
+   "Tu próxima aventura",
+   "下一场冒险"
+  ],
+  "Mixed": [
+   "Gemischt",
+   "Mixto",
+   "混合"
+  ],
+  "Capitals": [
+   "Hauptstädte",
+   "Capitales",
+   "首都"
+  ],
+  "Heads of State": [
+   "Staatsoberhäupter",
+   "Jefes de Estado",
+   "国家元首"
+  ],
+  "Currency": [
+   "Währung",
+   "Moneda",
+   "货币"
+  ],
+  "Languages": [
+   "Sprachen",
+   "Idiomas",
+   "语言"
+  ],
+  "Country Identification": [
+   "Land erkennen",
+   "Identificar países",
+   "识别国家"
+  ],
+  "Geography / General Facts": [
+   "Geografie / Fakten",
+   "Geografía / Datos",
+   "地理与常识"
+  ],
+  "Continents": [
+   "Kontinente",
+   "Continentes",
+   "大洲"
+  ],
+  "True or False": [
+   "Richtig oder falsch",
+   "Verdadero o falso",
+   "判断题"
+  ],
+  "True": [
+   "Richtig",
+   "Verdadero",
+   "正确"
+  ],
+  "False": [
+   "Falsch",
+   "Falso",
+   "错误"
+  ],
+  "Easy": [
+   "Leicht",
+   "Fácil",
+   "简单"
+  ],
+  "Medium": [
+   "Mittel",
+   "Medio",
+   "中等"
+  ],
+  "Difficult": [
+   "Schwer",
+   "Difícil",
+   "困难"
+  ],
+  "Expert": [
+   "Experte",
+   "Experto",
+   "专家"
+  ],
+  "Return to current round": [
+   "Zur laufenden Runde",
+   "Volver a la ronda actual",
+   "返回当前轮次"
+  ],
+  "Scoring and hints": [
+   "Punkte und Hinweise",
+   "Puntos y pistas",
+   "计分与提示"
+  ],
+  "Current challenge": [
+   "Aktuelle Herausforderung",
+   "Desafío actual",
+   "当前挑战"
+  ],
+  "Change": [
+   "Ändern",
+   "Cambiar",
+   "更改"
+  ],
+  "Round score": [
+   "Rundenpunkte",
+   "Puntos de la ronda",
+   "本轮得分"
+  ],
+  "Current streak": [
+   "Aktuelle Serie",
+   "Racha actual",
+   "连续答对"
+  ],
+  "Hints remaining": [
+   "Verbleibende Hinweise",
+   "Pistas restantes",
+   "剩余提示"
+  ],
+  "Correct answer": [
+   "Richtige Antwort",
+   "Respuesta correcta",
+   "正确答案"
+  ],
+  "Your answer": [
+   "Deine Antwort",
+   "Tu respuesta",
+   "你的答案"
+  ],
+  "Removed by hint": [
+   "Durch Hinweis entfernt",
+   "Eliminada por la pista",
+   "由提示排除"
+  ],
+  "Use hint · −25 if correct": [
+   "Hinweis nutzen · −25 bei richtiger Antwort",
+   "Usar pista · −25 si aciertas",
+   "使用提示 · 答对扣25分"
+  ],
+  "Next question →": [
+   "Nächste Frage →",
+   "Siguiente pregunta →",
+   "下一题 →"
+  ],
+  "View results": [
+   "Ergebnis ansehen",
+   "Ver resultados",
+   "查看结果"
+  ],
+  "Your results": [
+   "Dein Ergebnis",
+   "Tus resultados",
+   "你的成绩"
+  ],
+  "Challenge complete": [
+   "Herausforderung abgeschlossen",
+   "Desafío completado",
+   "挑战完成"
+  ],
+  "Accuracy": [
+   "Genauigkeit",
+   "Precisión",
+   "正确率"
+  ],
+  "Correct answers": [
+   "Richtige Antworten",
+   "Respuestas correctas",
+   "答对题数"
+  ],
+  "Best streak": [
+   "Beste Serie",
+   "Mejor racha",
+   "最佳连对"
+  ],
+  "Play again": [
+   "Erneut spielen",
+   "Jugar de nuevo",
+   "再玩一次"
+  ],
+  "Change settings": [
+   "Einstellungen ändern",
+   "Cambiar ajustes",
+   "更改设置"
+  ],
+  "Try another continent": [
+   "Anderen Kontinent wählen",
+   "Probar otro continente",
+   "尝试其他大洲"
+  ],
+  "Try another country": [
+   "Anderes Land wählen",
+   "Probar otro país",
+   "尝试其他国家"
+  ],
+  "Review answers": [
+   "Antworten prüfen",
+   "Revisar respuestas",
+   "查看答题记录"
+  ],
+  "Answer review": [
+   "Antwortübersicht",
+   "Revisión de respuestas",
+   "答题回顾"
+  ],
+  "Choose a country": [
+   "Land auswählen",
+   "Elegir un país",
+   "选择国家"
+  ],
+  "Discover country →": [
+   "Land entdecken →",
+   "Descubrir país →",
+   "了解国家 →"
+  ],
+  "Search countries or capitals": [
+   "Länder oder Hauptstädte suchen",
+   "Buscar países o capitales",
+   "搜索国家或首都"
+  ],
+  "Previous": [
+   "Zurück",
+   "Anterior",
+   "上一页"
+  ],
+  "Next": [
+   "Weiter",
+   "Siguiente",
+   "下一页"
+  ],
+  "No countries match your search.": [
+   "Keine Länder gefunden.",
+   "No hay países que coincidan.",
+   "没有找到匹配的国家。"
+  ],
+  "Browse your world": [
+   "Entdecke deine Welt",
+   "Explora tu mundo",
+   "探索你的世界"
+  ],
+  "A little discovery, every day.": [
+   "Jeden Tag etwas Neues entdecken.",
+   "Un pequeño descubrimiento cada día.",
+   "每天发现一点新知。"
+  ],
+  "Choose your area in ☰ Settings, then search or open a country.": [
+   "Wähle deinen Bereich unter ☰ Einstellungen. Suche dann nach einem Land.",
+   "Elige tu área en ☰ Ajustes y busca o abre un país.",
+   "在☰设置中选择范围，然后搜索或打开一个国家。"
+  ],
+  "The world geography challenge": [
+   "Die Welt-Geografie-Challenge",
+   "El desafío de geografía mundial",
+   "世界地理挑战"
+  ],
+  "How well do you know your world?": [
+   "Wie gut kennst du deine Welt?",
+   "¿Cuánto conoces tu mundo?",
+   "你有多了解世界？"
+  ],
+  "Go beyond the familiar. Challenge yourself on capitals, currencies, languages and the places in between.": [
+   "Entdecke Neues. Teste dein Wissen über Hauptstädte, Währungen, Sprachen und Orte.",
+   "Descubre más. Ponte a prueba con capitales, monedas, idiomas y lugares.",
+   "超越熟悉的事物，挑战首都、货币、语言与各地知识。"
+  ],
+  "World Quiz": [
+   "Welt-Quiz",
+   "Cuestionario mundial",
+   "世界测验"
+  ],
+  "Every answer takes you further.": [
+   "Jede Antwort bringt dich weiter.",
+   "Cada respuesta te lleva más lejos.",
+   "每个答案都让你更进一步。"
+  ],
+  "Think carefully. Build a streak. Discover something new.": [
+   "Überlege gut. Baue eine Serie auf. Entdecke Neues.",
+   "Piensa bien. Crea una racha. Descubre algo nuevo.",
+   "仔细思考，连续答对，发现新知。"
+  ],
+  "The country collection": [
+   "Die Ländersammlung",
+   "La colección de países",
+   "国家知识库"
+  ],
+  "Get to know the world.": [
+   "Lerne die Welt kennen.",
+   "Conoce el mundo.",
+   "认识世界。"
+  ],
+  "Build your knowledge, one country at a time. The details make all the difference.": [
+   "Erweitere dein Wissen, Land für Land. Die Details machen den Unterschied.",
+   "Aprende país por país. Los detalles marcan la diferencia.",
+   "逐国积累知识，细节让世界更精彩。"
+  ],
+  "Continent / region": [
+   "Kontinent / Region",
+   "Continente / región",
+   "大洲与地区"
+  ],
+  "Capital roles": [
+   "Hauptstädte und Funktionen",
+   "Capitales y funciones",
+   "首都及其职能"
+  ],
+  "Currencies": [
+   "Währungen",
+   "Monedas",
+   "货币"
+  ],
+  "Official languages in this collection": [
+   "Erfasste Amtssprachen",
+   "Idiomas oficiales incluidos",
+   "本知识库收录的官方语言"
+  ],
+  "Not included yet": [
+   "Noch nicht enthalten",
+   "Aún no incluido",
+   "暂未收录"
+  ],
+  "Country data source": [
+   "Quelle der Länderdaten",
+   "Fuente de datos del país",
+   "国家数据来源"
+  ],
+  "Capital-role source": [
+   "Quelle zu Hauptstadtfunktionen",
+   "Fuente de las funciones de capital",
+   "首都职能来源"
+  ],
+  "Political source": [
+   "Politische Quelle",
+   "Fuente política",
+   "政治资料来源"
+  ],
+  "Your explorer passport": [
+   "Dein Entdeckerpass",
+   "Tu pasaporte de explorador",
+   "探索者护照"
+  ],
+  "Curiosity deserves recognition.": [
+   "Neugier verdient Anerkennung.",
+   "La curiosidad merece reconocimiento.",
+   "好奇心值得嘉奖。"
+  ],
+  "Every right answer is a step forward. Collect milestones as your knowledge grows.": [
+   "Jede richtige Antwort bringt dich weiter. Sammle Erfolge mit wachsendem Wissen.",
+   "Cada acierto es un paso adelante. Colecciona logros mientras aprendes.",
+   "每次答对都是进步，在学习中收集成就。"
+  ],
+  "First Steps": [
+   "Erste Schritte",
+   "Primeros pasos",
+   "初次进步"
+  ],
+  "Century": [
+   "Hundert Punkte",
+   "Cien puntos",
+   "百分成就"
+  ],
+  "Round Finisher": [
+   "Runde abgeschlossen",
+   "Ronda completada",
+   "完成一轮"
+  ],
+  "Earned": [
+   "Erreicht",
+   "Conseguido",
+   "已获得"
+  ],
+  "In progress": [
+   "In Arbeit",
+   "En progreso",
+   "进行中"
+  ],
+  "Answer your first question correctly.": [
+   "Beantworte deine erste Frage richtig.",
+   "Responde bien tu primera pregunta.",
+   "第一次正确回答问题。"
+  ],
+  "Earn 100 points.": [
+   "Sammle 100 Punkte.",
+   "Consigue 100 puntos.",
+   "获得100分。"
+  ],
+  "Complete your first quiz round.": [
+   "Schließe deine erste Quizrunde ab.",
+   "Completa tu primera ronda.",
+   "完成第一轮测验。"
+  ],
+  "For curious minds. Across every border.": [
+   "Für neugierige Köpfe. Über Grenzen hinweg.",
+   "Para mentes curiosas. Sin fronteras.",
+   "为好奇的心，跨越每道边界。"
+  ],
+  "A WORLD TO DISCOVER": [
+   "EINE WELT ZUM ENTDECKEN",
+   "UN MUNDO POR DESCUBRIR",
+   "发现世界"
+  ],
+  "Data sources and coverage": [
+   "Quellen und Datenumfang",
+   "Fuentes y cobertura",
+   "数据来源与覆盖范围"
+  ],
+  "Preferences and profile last for this browser session. This is not a sign-in account.": [
+   "Profil und Einstellungen gelten für diese Sitzung. Dies ist kein Benutzerkonto.",
+   "El perfil y los ajustes duran esta sesión. No es una cuenta de acceso.",
+   "资料与偏好仅在本次浏览器会话有效，这不是登录账户。"
+  ],
+  "Country names and factual names retain the dataset spelling.": [
+   "Länder- und Eigennamen behalten die Schreibweise der Datenquelle.",
+   "Los nombres de países y datos conservan la escritura original.",
+   "国家及事实名称保留数据来源的拼写。"
+  ],
+  "Area changes update Explore and Learn and the next quiz setup. Your current round is kept.": [
+   "Der Bereich gilt für Entdecken, Lernen und das nächste Quiz. Die laufende Runde bleibt erhalten.",
+   "El área cambia Explorar, Aprender y el próximo cuestionario. La ronda actual se conserva.",
+   "范围设置应用于探索、学习及下一轮测验，当前轮次保留。"
+  ],
+  "Capital / capital roles": [
+   "Hauptstädte und Funktionen",
+   "Capitales y funciones",
+   "首都及其职能"
+  ],
+  "capital": [
+   "Hauptstadt",
+   "capital",
+   "首都"
+  ],
+  "constitutional capital": [
+   "Verfassungshauptstadt",
+   "capital constitucional",
+   "宪法规定首都"
+  ],
+  "seat of government": [
+   "Regierungssitz",
+   "sede del gobierno",
+   "政府所在地"
+  ],
+  "administrative capital": [
+   "Verwaltungshauptstadt",
+   "capital administrativa",
+   "行政首都"
+  ],
+  "royal and legislative capital": [
+   "Königs- und Parlamentssitz",
+   "capital real y legislativa",
+   "王室与立法首都"
+  ],
+  "commercial capital": [
+   "Wirtschaftshauptstadt",
+   "capital comercial",
+   "商业首都"
+  ],
+  "President": [
+   "Präsident",
+   "Presidente",
+   "总统"
+  ],
+  "Federal President": [
+   "Bundespräsident",
+   "Presidente federal",
+   "联邦总统"
+  ],
+  "King": [
+   "König",
+   "Rey",
+   "国王"
+  ],
+  "Correct!": [
+   "Richtig!",
+   "¡Correcto!",
+   "答对了！"
+  ],
+  "Time is up.": [
+   "Die Zeit ist abgelaufen.",
+   "Se acabó el tiempo.",
+   "时间到。"
+  ],
+  "Answer recorded": [
+   "Antwort erfasst",
+   "Respuesta registrada",
+   "答案已记录"
+  ],
+  "Correct": [
+   "Richtig",
+   "Correcto",
+   "正确"
+  ],
+  "Incorrect": [
+   "Falsch",
+   "Incorrecto",
+   "错误"
+  ],
+  "Timed out": [
+   "Zeit abgelaufen",
+   "Tiempo agotado",
+   "超时"
+  ],
+  "Unanswered": [
+   "Nicht beantwortet",
+   "Sin respuesta",
+   "未作答"
+  ],
+  "points": [
+   "Punkte",
+   "puntos",
+   "分"
+  ],
+  "Only recently verified political records are included. Coverage is currently limited.": [
+   "Es werden nur kürzlich geprüfte politische Angaben verwendet. Der Umfang ist begrenzt.",
+   "Solo se incluyen datos políticos verificados recientemente. La cobertura es limitada.",
+   "仅收录近期核验的政治资料，覆盖范围有限。"
+  ],
+  "Your chosen country stays selected; difficulty changes question formats and answer choices.": [
+   "Dein Land bleibt ausgewählt. Die Schwierigkeit ändert Frageformen und Antwortmöglichkeiten.",
+   "Tu país sigue seleccionado; la dificultad cambia los formatos y las opciones.",
+   "所选国家保持不变，难度会改变题型及选项。"
+  ],
+  "No verified questions match these filters. Choose Mixed, another country, or a lower difficulty.": [
+   "Keine geprüften Fragen für diese Auswahl. Wähle Gemischt, ein anderes Land oder eine niedrigere Schwierigkeit.",
+   "No hay preguntas verificadas para estos filtros. Elige Mixto, otro país o menor dificultad.",
+   "此筛选范围没有可核验题目，请选择混合、其他国家或更低难度。"
+  ],
+  "Correct answers earn 100 base points, multiplied by difficulty: Easy ×1, Medium ×1.25, Difficult ×1.5, Expert ×2.": [
+   "Richtige Antworten bringen 100 Basispunkte: Leicht ×1, Mittel ×1,25, Schwer ×1,5, Experte ×2.",
+   "Cada acierto da 100 puntos base: Fácil ×1, Medio ×1,25, Difícil ×1,5, Experto ×2.",
+   "答对获100基础分，简单×1、中等×1.25、困难×1.5、专家×2。"
+  ],
+  "Fast answers earn 25 extra points. Every third correct answer in a streak adds 50; every fifth adds 100. A hint removes one wrong option and deducts 25 from a correct answer's award. Each round has three hints.": [
+   "Schnelle Antworten bringen 25 Bonuspunkte. Jede dritte richtige Antwort in Folge bringt 50, jede fünfte 100. Ein Hinweis entfernt eine falsche Option und zieht bei richtiger Antwort 25 Punkte ab. Drei Hinweise pro Runde.",
+   "Responder rápido añade 25 puntos. Cada tercer acierto seguido añade 50; cada quinto, 100. Una pista elimina una opción incorrecta y resta 25 puntos si aciertas. Tres pistas por ronda.",
+   "快速答对加25分。每连续答对3题加50分，每5题加100分。提示排除一个错误选项，答对扣25分，每轮有3次提示。"
+  ],
+  "A perfect round without hints adds 250 points × difficulty. Wrong and timed-out answers earn zero. You can always use Next to read the explanation at your own pace.": [
+   "Eine perfekte Runde ohne Hinweise bringt 250 Punkte × Schwierigkeit. Falsche Antworten und Zeitüberschreitungen bringen null. Mit Weiter liest du Erklärungen in deinem Tempo.",
+   "Una ronda perfecta sin pistas añade 250 puntos × dificultad. Los errores y el tiempo agotado dan cero. Avanza cuando termines de leer la explicación.",
+   "全对且未用提示可获250×难度的奖励分。答错或超时得0分。阅读解析后可自行进入下一题。"
+  ],
+  "Landmarks": [
+   "Sehenswürdigkeiten",
+   "Lugares de interés",
+   "地标"
+  ],
+  "Smaller question pools produce shorter rounds to avoid repeating the same facts.": [
+   "Kleine Fragenpools ergeben kürzere Runden, damit dieselben Fakten nicht wiederholt werden.",
+   "Los grupos pequeños de preguntas producen rondas más cortas para evitar repetir los mismos datos.",
+   "题库较小时，本轮题数会减少，以免重复考查相同知识。"
+  ],
+  "Profile photo": [
+   "Profilfoto",
+   "Foto de perfil",
+   "头像"
+  ],
+  "Remove photo": [
+   "Foto entfernen",
+   "Eliminar foto",
+   "删除头像"
+  ],
+  "Signed in": [
+   "Angemeldet",
+   "Sesión iniciada",
+   "已登录"
+  ],
+  "Sign out": [
+   "Abmelden",
+   "Cerrar sesión",
+   "退出登录"
+  ],
+  "Continue with Google": [
+   "Mit Google fortfahren",
+   "Continuar con Google",
+   "使用Google登录"
+  ],
+  "Email sign-in / Create account": [
+   "Mit E-Mail anmelden / Konto erstellen",
+   "Correo / Crear cuenta",
+   "邮箱登录 / 创建账户"
+  ],
+  "Guest explorer": [
+   "Gast",
+   "Explorador invitado",
+   "访客"
+  ],
+  "Saved to your account": [
+   "In deinem Konto gespeichert",
+   "Guardado en tu cuenta",
+   "已保存至账户"
+  ],
+  "Progress lasts for this browser session": [
+   "Fortschritt gilt für diese Sitzung",
+   "El progreso dura esta sesión",
+   "进度仅在本次会话有效"
+  ],
+  "Sign in to save your profile and progress across visits.": [
+   "Melde dich an, um Profil und Fortschritt zu speichern.",
+   "Inicia sesión para guardar tu perfil y progreso.",
+   "登录以保存个人资料和进度。"
+  ],
+  "Account sign-in is being set up. You can continue as a guest.": [
+   "Die Anmeldung wird eingerichtet. Du kannst als Gast fortfahren.",
+   "El acceso se está configurando. Puedes continuar como invitado.",
+   "账户登录正在配置，可继续以访客身份使用。"
+  ],
+  "Please choose a photo smaller than 2 MB.": [
+   "Bitte wähle ein Foto unter 2 MB.",
+   "Elige una foto de menos de 2 MB.",
+   "请选择小于2 MB的照片。"
+  ],
+  "This photo could not be opened. Please choose another image.": [
+   "Das Foto konnte nicht geöffnet werden. Wähle ein anderes Bild.",
+   "No se pudo abrir la foto. Elige otra imagen.",
+   "无法打开照片，请选择其他图片。"
+  ],
+  "Your saved profile could not be reached. Changes have not been saved online.": [
+   "Dein Profil ist nicht erreichbar. Änderungen wurden nicht online gespeichert.",
+   "No se pudo acceder a tu perfil. Los cambios no se guardaron en línea.",
+   "无法访问已保存的资料，更改尚未在线保存。"
+  ],
+  "Signed-in profiles save online when the account connection is ready. Guest profiles last for this session.": [
+   "Angemeldete Profile werden bei eingerichteter Verbindung online gespeichert. Gastprofile gelten für diese Sitzung.",
+   "Los perfiles se guardan en línea al conectar la cuenta. Los perfiles de invitados duran esta sesión.",
+   "账户连接就绪后，登录资料会在线保存，访客资料仅在本次会话有效。"
+  ],
+  "Email registration and password reset are available on the secure sign-in screen.": [
+   "Registrierung und Passwortzurücksetzung findest du auf der sicheren Anmeldeseite.",
+   "El registro y el restablecimiento de contraseña están en la pantalla segura de acceso.",
+   "邮箱注册和密码重置可在安全登录页面完成。"
+  ],
+  "Sign-in could not start. Please check the account connection.": [
+   "Anmeldung konnte nicht gestartet werden. Prüfe die Kontoverbindung.",
+   "No se pudo iniciar el acceso. Revisa la conexión de la cuenta.",
+   "无法启动登录，请检查账户连接。"
+  ],
+  "Featured destination": [
+   "Reiseziel im Fokus",
+   "Destino destacado",
+   "精选目的地"
+  ],
+  "A world of discovery.": [
+   "Eine Welt voller Entdeckungen.",
+   "Un mundo por descubrir.",
+   "发现精彩世界。"
+  ],
+  "Where will curiosity take you?": [
+   "Wohin führt dich deine Neugier?",
+   "¿Adónde te llevará la curiosidad?",
+   "好奇心会带你去哪里？"
+  ],
+  "Explore places. Build knowledge. Find your next challenge.": [
+   "Entdecke Orte. Erweitere dein Wissen. Finde deine nächste Herausforderung.",
+   "Explora lugares. Aprende. Encuentra tu próximo desafío.",
+   "探索各地，积累知识，迎接下一场挑战。"
+  ],
+  "Your next challenge": [
+   "Deine nächste Herausforderung",
+   "Tu próximo desafío",
+   "下一场挑战"
+  ],
+  "Capitals, currencies, languages and more.": [
+   "Hauptstädte, Währungen, Sprachen und mehr.",
+   "Capitales, monedas, idiomas y más.",
+   "首都、货币、语言及更多知识。"
+  ],
+  "Take a quiz →": [
+   "Quiz starten →",
+   "Hacer un cuestionario →",
+   "开始测验 →"
+  ],
+  "Explore at your pace.": [
+   "Entdecke in deinem Tempo.",
+   "Explora a tu ritmo.",
+   "按自己的节奏探索。"
+  ],
+  "Photography credits": [
+   "Bildnachweise",
+   "Créditos fotográficos",
+   "摄影署名"
+  ],
+  "Discover →": [
+   "Entdecken →",
+   "Descubrir →",
+   "探索 →"
+  ],
+  "Capital": [
+   "Hauptstadt",
+   "Capital",
+   "首都"
+  ],
+  "Your discovery atlas": [
+   "Dein Entdeckungsatlas",
+   "Tu atlas de descubrimientos",
+   "你的探索图集"
+  ],
+  "Photography loads online. Country illustrations are used where no curated photograph is included.": [
+   "Fotos werden online geladen. Für andere Länder werden Illustrationen angezeigt.",
+   "Las fotos se cargan en línea. Se usan ilustraciones para los demás países.",
+   "照片在线加载，未收录精选照片的国家使用插图。"
+  ],
+  "{n} countries": [
+   "{n} Länder",
+   "{n} países",
+   "{n}个国家"
+  ],
+  "6 continents": [
+   "6 Kontinente",
+   "6 continentes",
+   "6个大洲"
+  ],
+  "10 quiz categories": [
+   "10 Quizkategorien",
+   "10 categorías",
+   "10类测验"
+  ],
+  "Page {page} of {pages} · {count} countries": [
+   "Seite {page} von {pages} · {count} Länder",
+   "Página {page} de {pages} · {count} países",
+   "第{page}/{pages}页 · {count}个国家"
+  ],
+  "Question {n} of {total} · {kind} · {difficulty}": [
+   "Frage {n} von {total} · {kind} · {difficulty}",
+   "Pregunta {n} de {total} · {kind} · {difficulty}",
+   "第{n}/{total}题 · {kind} · {difficulty}"
+  ],
+  "Time remaining: {n} seconds": [
+   "Verbleibende Zeit: {n} Sekunden",
+   "Tiempo restante: {n} segundos",
+   "剩余时间：{n}秒"
+  ],
+  "Which place serves as the {role} of {name}?": [
+   "Welcher Ort ist {role} von {name}?",
+   "¿Qué lugar es {role} de {name}?",
+   "{name}的{role}是哪里？"
+  ],
+  "{place} is the {role} of which country?": [
+   "{place} ist {role} welchen Landes?",
+   "¿De qué país es {place} la {role}?",
+   "{place}是哪个国家的{role}？"
+  ],
+  "{place} is the {role} of {name}.": [
+   "{place} ist {role} von {name}.",
+   "{place} es {role} de {name}.",
+   "{place}是{name}的{role}。"
+  ],
+  "Which of these currencies is used in {name}?": [
+   "Welche dieser Währungen wird in {name} verwendet?",
+   "¿Cuál de estas monedas se usa en {name}?",
+   "{name}使用以下哪种货币？"
+  ],
+  "{name} uses {currencies}.": [
+   "{name} verwendet {currencies}.",
+   "{name} utiliza {currencies}.",
+   "{name}使用{currencies}。"
+  ],
+  "Which of these is an official language of {name}?": [
+   "Welche dieser Sprachen ist Amtssprache in {name}?",
+   "¿Cuál es un idioma oficial de {name}?",
+   "以下哪种是{name}的官方语言？"
+  ],
+  "{language} is an official language of {name}.": [
+   "{language} ist Amtssprache in {name}.",
+   "{language} es un idioma oficial de {name}.",
+   "{language}是{name}的官方语言。"
+  ],
+  "In which geographic subregion is {name}?": [
+   "In welcher geografischen Teilregion liegt {name}?",
+   "¿En qué subregión geográfica está {name}?",
+   "{name}位于哪个地理分区？"
+  ],
+  "{name} is in {region}, within {continent}.": [
+   "{name} liegt in {region}, in {continent}.",
+   "{name} está en {region}, en {continent}.",
+   "{name}位于{continent}的{region}。"
+  ],
+  "Which of these countries shares a land border with {name}?": [
+   "Welches dieser Länder hat eine Landgrenze mit {name}?",
+   "¿Qué país comparte una frontera terrestre con {name}?",
+   "以下哪个国家与{name}有陆地边界？"
+  ],
+  "{other} and {name} share a land border.": [
+   "{other} und {name} haben eine gemeinsame Landgrenze.",
+   "{other} y {name} comparten una frontera terrestre.",
+   "{other}与{name}有陆地边界。"
+  ],
+  "On which continent is {name}?": [
+   "Auf welchem Kontinent liegt {name}?",
+   "¿En qué continente está {name}?",
+   "{name}位于哪个大洲？"
+  ],
+  "{name} is in {continent}.": [
+   "{name} liegt in {continent}.",
+   "{name} está en {continent}.",
+   "{name}位于{continent}。"
+  ],
+  "These clues describe {name}.": [
+   "Diese Hinweise beschreiben {name}.",
+   "Estas pistas describen {name}.",
+   "这些线索描述的是{name}。"
+  ],
+  "Who is the {title} and head of state of {name}? (Record verified {verified})": [
+   "Wer ist {title} und Staatsoberhaupt von {name}? (Geprüft am {verified})",
+   "¿Quién es {title} y jefe de Estado de {name}? (Verificado: {verified})",
+   "谁是{name}的{title}及国家元首？（资料核验：{verified}）"
+  ],
+  "{n} unique questions will be included · {capacity} available for these filters.": [
+   "{n} verschiedene Fragen · {capacity} für diese Auswahl verfügbar.",
+   "{n} preguntas únicas · {capacity} disponibles para estos filtros.",
+   "本轮包含{n}道不同题目 · 此范围可用{capacity}道题。"
+  ],
+  "This round will contain {n} questions, without repeating the same question.": [
+   "Diese Runde enthält {n} Fragen ohne Wiederholung.",
+   "Esta ronda contiene {n} preguntas sin repetición.",
+   "本轮有{n}道题，不重复题目。"
+  ],
+  "{n} countries · Progress lasts for this browser session.": [
+   "{n} Länder · Fortschritt gilt für diese Sitzung.",
+   "{n} países · Progreso durante esta sesión.",
+   "{n}个国家 · 进度仅在本次浏览器会话有效。"
+  ],
+  "{points} lifetime session points · {rounds} rounds completed": [
+   "{points} Sitzungspunkte · {rounds} Runden abgeschlossen",
+   "{points} puntos en esta sesión · {rounds} rondas completadas",
+   "本次会话共{points}分 · 已完成{rounds}轮"
+  ],
+  "Perfect round without hints: +{points} bonus points.": [
+   "Perfekte Runde ohne Hinweise: +{points} Bonuspunkte.",
+   "Ronda perfecta sin pistas: +{points} puntos extra.",
+   "全对且未用提示：奖励{points}分。"
+  ],
+  "Neighbours in this collection: {names}": [
+   "Erfasste Nachbarländer: {names}",
+   "Países vecinos incluidos: {names}",
+   "本知识库收录的邻国：{names}"
+  ],
+  "Political record verified {date}.": [
+   "Politische Angaben geprüft am {date}.",
+   "Dato político verificado: {date}.",
+   "政治资料核验日期：{date}。"
+  ],
+  "+{points} points · Base {base} · Speed +{speed} · Streak +{streak} · Hint −{hint}": [
+   "+{points} Punkte · Basis {base} · Tempo +{speed} · Serie +{streak} · Hinweis −{hint}",
+   "+{points} puntos · Base {base} · Rapidez +{speed} · Racha +{streak} · Pista −{hint}",
+   "+{points}分 · 基础{base} · 速度+{speed} · 连对+{streak} · 提示−{hint}"
+  ],
+  "Incorrect / unanswered: {wrong} · Timed out: {timeout} · Average response time: {seconds} seconds": [
+   "Falsch / unbeantwortet: {wrong} · Zeitüberschreitung: {timeout} · Durchschnitt: {seconds} Sekunden",
+   "Incorrectas / sin responder: {wrong} · Tiempo agotado: {timeout} · Promedio: {seconds} segundos",
+   "答错或未作答：{wrong} · 超时：{timeout} · 平均答题时间：{seconds}秒"
+  ],
+  "{answer} is recorded as {title} of {name}, verified {date}. Head of state and head of government can be different offices.": [
+   "{answer} ist als {title} von {name} erfasst, geprüft am {date}. Staatsoberhaupt und Regierungschef können unterschiedliche Ämter sein.",
+   "{answer} figura como {title} de {name}, verificado el {date}. La jefatura del Estado y del Gobierno pueden ser cargos distintos.",
+   "资料记载{answer}为{name}的{title}，核验日期{date}。国家元首与政府首脑可能是不同职务。"
+  ],
+  "Up to {n} questions · no repeated facts in the same round.": [
+   "Bis zu {n} Fragen · keine wiederholten Fakten in derselben Runde.",
+   "Hasta {n} preguntas · sin repetir datos en la misma ronda.",
+   "最多{n}道题 · 同一轮不重复考查相同知识。"
+  ],
+  "In which country is the UNESCO World Heritage site {site}?": [
+   "In welchem Land liegt die UNESCO-Welterbestätte {site}?",
+   "¿En qué país está el sitio del Patrimonio Mundial de la UNESCO {site}?",
+   "联合国教科文组织世界遗产{site}位于哪个国家？"
+  ],
+  "Which of these UNESCO World Heritage sites is in {name}?": [
+   "Welche dieser UNESCO-Welterbestätten liegt in {name}?",
+   "¿Cuál de estos sitios del Patrimonio Mundial de la UNESCO está en {name}?",
+   "以下哪个联合国教科文组织世界遗产位于{name}？"
+  ],
+  "{site} is in {name}.": [
+   "{site} liegt in {name}.",
+   "{site} está en {name}.",
+   "{site}位于{name}。"
+  ],
+  "Which country has the larger total area: {name} or {other}?": [
+   "Welches Land hat die größere Gesamtfläche: {name} oder {other}?",
+   "¿Qué país tiene mayor superficie total: {name} o {other}?",
+   "哪个国家的总面积更大：{name}还是{other}？"
+  ],
+  "Which country-code internet domain belongs to {name}?": [
+   "Welche länderspezifische Internetdomain gehört zu {name}?",
+   "¿Qué dominio de internet de país pertenece a {name}?",
+   "{name}的国家互联网域名是哪个？"
+  ],
+  "Which international telephone calling code belongs to {name}?": [
+   "Welche internationale Telefonvorwahl gehört zu {name}?",
+   "¿Qué prefijo telefónico internacional pertenece a {name}?",
+   "{name}的国际电话区号是哪个？"
+  ],
+  "{name} is landlocked.": [
+   "{name} ist ein Binnenstaat.",
+   "{name} no tiene salida al mar.",
+   "{name}是内陆国家。"
+  ],
+  "{name} has a coastline.": [
+   "{name} hat eine Küste.",
+   "{name} tiene costa.",
+   "{name}拥有海岸线。"
+  ],
+  "Which country shares land borders with both {first} and {second}?": [
+   "Welches Land grenzt sowohl an {first} als auch an {second}?",
+   "¿Qué país tiene fronteras terrestres con {first} y {second}?",
+   "哪个国家同时与{first}和{second}有陆地边界？"
+  ],
+  "{name} shares land borders with {first} and {second}.": [
+   "{name} grenzt an {first} und {second}.",
+   "{name} tiene fronteras terrestres con {first} y {second}.",
+   "{name}与{first}和{second}有陆地边界。"
+  ],
+  "{n} continents": [
+   "{n} Kontinente",
+   "{n} continentes",
+   "{n}个大洲"
+  ],
+  "{n} quiz categories": [
+   "{n} Quizkategorien",
+   "{n} categorías",
+   "{n}类测验"
+  ],
+  "{n} questions": [
+   "{n} Fragen",
+   "{n} preguntas",
+   "{n}道题"
+  ],
+  "Identify the country: its {role} is {capital}.": [
+   "Welches Land ist gesucht? {role}: {capital}.",
+   "Identifica el país. {role}: {capital}.",
+   "识别国家：{role}为{capital}。"
+  ],
+  "It uses {currency}.": [
+   "Währung: {currency}.",
+   "Moneda: {currency}.",
+   "货币：{currency}。"
+  ],
+  "{language} is one of its official languages.": [
+   "Eine Amtssprache: {language}.",
+   "Un idioma oficial: {language}.",
+   "一种官方语言：{language}。"
+  ],
+  "{name}: {values}.": [
+   "{name}: {values}.",
+   "{name}: {values}.",
+   "{name}：{values}。"
+  ],
+  "{name}: {a} km²; {other}: {b} km².": [
+   "{name}: {a} km²; {other}: {b} km².",
+   "{name}: {a} km²; {other}: {b} km².",
+   "{name}：{a}平方公里；{other}：{b}平方公里。"
+  ],
+  "Head of state: **{names}** ({title}).": [
+   "Staatsoberhaupt: **{names}** ({title}).",
+   "Jefatura del Estado: **{names}** ({title}).",
+   "国家元首：**{names}**（{title}）。"
+  ],
+  "{seconds} seconds · {points} points · {hint}": [
+   "{seconds} Sekunden · {points} Punkte · {hint}",
+   "{seconds} segundos · {points} puntos · {hint}",
+   "{seconds}秒 · {points}分 · {hint}"
+  ],
+  "Hint used": [
+   "Hinweis genutzt",
+   "Pista usada",
+   "已用提示"
+  ],
+  "No hint": [
+   "Kein Hinweis",
+   "Sin pista",
+   "未用提示"
+  ],
+  "Source": [
+   "Quelle",
+   "Fuente",
+   "来源"
+  ],
+  "15 seconds per question on Expert; 20 seconds on other levels.": [
+   "15 Sekunden pro Frage bei Experte, sonst 20 Sekunden.",
+   "15 segundos por pregunta en Experto; 20 en los demás niveles.",
+   "专家难度每题15秒，其他难度20秒。"
+  ]
+ }
+}

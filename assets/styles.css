@@ -16,7 +16,7 @@
 :root { --toolbar-h:3.75rem; }
 .stApp .block-container { max-width:1240px !important; padding:calc(var(--toolbar-h) + 1.25rem) 2rem 3rem !important; }
 .stApp, .stApp h1, .stApp h2, .stApp h3, .stApp p, .stApp label, .stApp button, .stApp input, .stApp li,
-.stApp [data-baseweb="select"], .stApp [data-testid="stMarkdownContainer"],
+.stApp [data-testid="stMarkdownContainer"], .stApp [role="combobox"],
 [data-testid="stDialog"] :is(h1,h2,h3,h4,p,label,input,textarea,li,small,[data-testid="stMarkdownContainer"]) { font-family:var(--font) !important; }
 /* Never restyle icon glyphs: Streamlit draws them with the Material Symbols font. */
 [data-testid="stIconMaterial"] { font-family:"Material Symbols Rounded" !important; }
@@ -46,8 +46,32 @@
 .stApp button:focus-visible, .stApp a:focus-visible, .stApp input:focus-visible, .stApp [role="combobox"]:focus-visible,
 .stApp [role="slider"]:focus-visible, .stApp [role="switch"]:focus-visible, [data-testid="stDialog"] button:focus-visible {
   outline:3px solid var(--gold) !important; outline-offset:2px !important; box-shadow:0 0 0 5px rgba(23,40,59,.18) !important; }
-.stApp [data-baseweb="select"] > div, .stApp [data-baseweb="input"] { background:var(--paper) !important; border:1px solid var(--line-cool) !important; border-radius:10px; min-height:44px; }
-.stApp [data-baseweb="select"] *, .stApp [data-baseweb="input"] input { color:var(--navy) !important; }
+/* Text inputs and dropdowns (Streamlit 1.65 / react-aria markup): white fill, warm border, navy text. */
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stTextInputRootElement"],
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stSelectbox"] [role="group"] {
+  background:var(--paper) !important; border:1px solid #CFC9BB !important; border-radius:10px !important; min-height:44px; }
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stTextInputRootElement"]:focus-within,
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stSelectbox"] [role="group"]:focus-within {
+  border-color:var(--teal) !important; box-shadow:0 0 0 3px rgba(36,124,128,.18) !important; }
+:is(.stApp, [data-testid="stDialog"]) :is([data-testid="stTextInputRootElement"] input, [data-testid="stSelectbox"] input) { color:var(--navy) !important; -webkit-text-fill-color:var(--navy); }
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stSelectbox"] [role="group"] button { color:var(--slate) !important; }
+/* Switches and sliders follow the teal palette even if .streamlit/config.toml is missing on the server. */
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stCheckbox"] label[data-selected="true"] > div:not([data-testid]) { background-color:var(--teal) !important; }
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stCheckbox"] label[data-focus-visible="true"] > div:not([data-testid]) { outline:3px solid var(--gold); outline-offset:2px; }
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stCheckbox"] label[data-disabled="true"] { opacity:.75; }
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stSlider"] [role="group"]:not([data-disabled]) > div > div:nth-child(2) { background-color:var(--teal) !important; }
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stSlider"] [role="group"] > div > div:nth-child(2)[data-focus-visible="true"] { outline:3px solid var(--gold); outline-offset:3px; }
+/* Segmented controls (answer review "Missed only / All answers"), 1.65 react-aria markup. */
+.stApp button[data-variant="segmented_control"][data-selected="true"] { background:var(--teal-soft) !important; border-color:var(--teal) !important; color:var(--teal-dark) !important; }
+.stApp button[data-variant="segmented_control"][data-selected="true"] :is(p, span, div) { color:var(--teal-dark) !important; }
+.stApp button[data-variant="segmented_control"]:not([data-selected="true"]):hover { border-color:var(--teal) !important; color:var(--teal-dark) !important; }
+.stApp button[data-variant="segmented_control"][data-focus-visible="true"] { outline:3px solid var(--gold) !important; outline-offset:2px; }
+/* The filled part of the slider is an inline gradient in the theme colour; this filter turns Streamlit's default red into the teal. */
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stSlider"] [role="group"]:not([data-disabled]) > div > div:first-child { filter:hue-rotate(184deg) saturate(.62) brightness(.78); }
+
+/* Fewer keyboard stops: no heading-anchor links on decorative headings, no fullscreen button on small flag images. */
+:is(.hero, .st-key-atlas_feature, .st-key-learn_card) [data-testid="stHeaderActionElements"] { display:none !important; }
+:is([class*="st-key-country_card_"], .st-key-learn_card, .st-key-quiz_flag, [data-testid="stExpander"]) [data-testid="stElementToolbar"] { display:none !important; }
 
 /* ---------- header ---------- */
 .brand { display:flex; align-items:center; gap:12px; min-height:52px; }
@@ -57,6 +81,8 @@
 .st-key-navigation button { background:transparent !important; border:1px solid transparent !important; }
 .st-key-navigation button[kind="primary"] { background:var(--navy) !important; border-color:var(--navy) !important; box-shadow:inset 0 -3px 0 var(--gold) !important; }
 .st-key-navigation button[kind="primary"] p { color:#fff !important; }
+.st-key-navigation button[kind="primary"]:hover { background:var(--navy-2) !important; }
+.st-key-navigation button[kind="secondary"]:hover { background:var(--teal-soft) !important; }
 .st-key-settings_menu button p { font-size:1.35rem !important; }
 .profile-note { display:flex; align-items:center; gap:8px; margin:4px 0 2px; font-size:.82rem; color:var(--slate); }
 .header-avatar { width:30px; height:30px; object-fit:cover; border-radius:50%; border:2px solid var(--line); flex-shrink:0; }
@@ -131,6 +157,29 @@
 .fact-label { font-size:.72rem; text-transform:uppercase; letter-spacing:.07em; color:var(--slate); }
 .fact-value { font-size:1.05rem; font-weight:600; color:var(--navy); line-height:1.45; margin-top:4px; overflow-wrap:anywhere; }
 
+/* ---------- quiz setup (stage 3) ---------- */
+.setup-section { display:flex; flex-wrap:wrap; align-items:baseline; gap:.35rem .75rem; font-size:.78rem; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--slate); margin:.1rem 0 .15rem; }
+.where-summary { text-transform:none; letter-spacing:0; font-weight:600; font-size:.88rem; color:var(--teal-dark);
+  background:var(--teal-soft); border-radius:20px; padding:2px 10px; }
+.st-key-what_box, .st-key-where_box { border:1px solid var(--line); border-radius:14px; padding:14px 16px 6px !important; background:#FBFAF6; }
+.st-key-where_box { background:#F6F8F7; }
+.st-key-start_box button[kind="primary"] { min-height:52px; font-size:1.05rem; }
+/* ---------- learn media (stage 3) ---------- */
+.learn-photo { width:100%; aspect-ratio:4 / 3; border-radius:14px; background-size:cover; background-position:center; background-color:var(--navy-2);
+  border:1px solid var(--line); }
+.st-key-learn_flag_small img { margin-top:4px; }
+[class*="st-key-learn_flag_panel_"] { border-radius:14px; padding:22px !important; align-items:center; justify-content:center; min-height:180px;
+  background:linear-gradient(135deg,#EEF4F2,#F6F1E6); border:1px solid var(--line); }
+.st-key-learn_flag_panel_Africa { background:linear-gradient(135deg,#F4ECDD,#EAF1EC); }
+.st-key-learn_flag_panel_Asia { background:linear-gradient(135deg,#F3E9E4,#EDF1F5); }
+.st-key-learn_flag_panel_Europe { background:linear-gradient(135deg,#ECEFF5,#F4F0E8); }
+.st-key-learn_flag_panel_North_America, .st-key-learn_flag_panel_South_America { background:linear-gradient(135deg,#E8F1EE,#F3EEE3); }
+.st-key-learn_flag_panel_Oceania { background:linear-gradient(135deg,#E4F0F1,#F2F0E7); }
+[class*="st-key-learn_flag_panel_"] img { box-shadow:0 6px 18px rgba(23,40,59,.14); border-radius:6px; }
+.st-key-learn_quiz_action { margin-top:.5rem; }
+.st-key-learn_quiz_action button { min-height:48px; padding:0 1.25rem; }
+
 /* ---------- quiz ---------- */
 .score-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:6px 0 10px; }
 .score-item { background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:14px 18px; }
@@ -161,6 +210,13 @@
   clip:rect(0 0 0 0) !important; white-space:nowrap !important; margin:-1px !important; padding:0 !important; border:0 !important; }
 
 /* ---------- badges ---------- */
+.badge-summary { display:inline-block; font-weight:700; color:var(--teal-dark); background:var(--teal-soft); border-radius:20px; padding:4px 12px; margin:4px 0; }
+.award-head { display:flex; align-items:center; gap:14px; }
+.award-head .award-medal { width:56px; height:56px; font-size:1.5rem; margin:0; flex-shrink:0; }
+.award-name { font-size:1.08rem; font-weight:700; color:var(--navy); margin-bottom:4px; line-height:1.25; }
+[class*="st-key-award_card_"] { padding:18px !important; height:100%; }
+[class*="st-key-award_card_"] [data-testid="stProgress"] p { color:var(--slate) !important; font-size:.82rem !important; }
+[class*="st-key-award_card_"] [data-testid="stProgress"] [role="progressbar"] > div > div > div { background-color:var(--teal) !important; }
 .award-medal { width:72px; height:72px; border:1px solid #D9BE86; border-radius:50%; display:grid; place-items:center;
   background:radial-gradient(circle,#FFF9EA,var(--gold-soft)); font-size:1.9rem; color:var(--gold-text); margin-bottom:14px; }
 .award-medal.locked { filter:grayscale(1); opacity:.7; }
@@ -195,6 +251,7 @@
 
 /* ---------- responsive ---------- */
 @media (max-width:900px) {
+  .brand-note { display:none; }
   .hero-art { flex-basis:150px; }
   .fact-grid { grid-template-columns:1fr; }
 }
@@ -237,6 +294,59 @@
   /* Extra bottom room so the last control scrolls clear of Streamlit Cloud's corner badges. */
   [data-testid="stDialog"] [role="dialog"] { max-height:100dvh; padding-bottom:calc(4.5rem + env(safe-area-inset-bottom,0px)); }
 }
+/* Medium widths (tablets, zoomed laptops): navigation columns size to their labels so long words are not cut. */
+@media (max-width:1100px) {
+  .st-key-navigation [data-testid="stHorizontalBlock"] { gap:4px !important; }
+  .st-key-navigation [data-testid="stColumn"] { flex:1 1 auto !important; width:auto !important; min-width:0 !important; }
+  .st-key-navigation button { padding:0 .6rem !important; }
+}
+/* ---------- phone layout (stage 2) ---------- */
+@media (max-width:700px) {
+  /* Explore: slimmer featured banner so the collection starts sooner. */
+  .st-key-atlas_feature { padding:0 16px 14px !important; }
+  .feature-copy { padding-top:16px; }
+  .feature-kicker { margin-bottom:6px; font-size:.66rem; }
+  .stApp .feature-title { font-size:1.5rem !important; margin-bottom:6px; }
+  .feature-place { margin:4px 0 2px; }
+  .st-key-atlas_feature .stButton { max-width:none; }
+  .st-key-atlas_feature button { min-height:44px; }
+  /* Filters: search on its own row, continent and status side by side. */
+  .st-key-explore_filters { padding:8px 12px 0 !important; }
+  .st-key-explore_filters [data-testid="stHorizontalBlock"] { flex-wrap:wrap !important; gap:8px 10px !important; }
+  .st-key-explore_filters [data-testid="stColumn"]:first-child { flex:0 0 100% !important; min-width:0 !important; }
+  .st-key-explore_filters [data-testid="stColumn"]:not(:first-child) { flex:1 1 calc(50% - 6px) !important; min-width:0 !important; width:auto !important; }
+  /* Country cards: compact rows (flag left, name and action right) instead of tall tiles. */
+  [class*="st-key-country_card_"] { display:grid !important; grid-template-columns:72px minmax(0,1fr); column-gap:12px; row-gap:0;
+    align-items:center; padding:10px 12px !important; }
+  [class*="st-key-country_card_"] > :nth-child(1) { grid-row:1 / span 2; }
+  [class*="st-key-country_card_"] > :nth-child(2), [class*="st-key-country_card_"] > :nth-child(3) { grid-column:2; }
+  [class*="st-key-country_card_"] img { max-height:48px; max-width:72px; height:auto; }
+  .destination-region { margin-top:0; } .destination-name { margin-top:1px; font-size:1.05rem; }
+  [class*="st-key-country_card_"] .stButton button { min-height:44px; }
+  /* Pagination: full labels; the page caption takes the remaining space. */
+  .st-key-explore_pagination [data-testid="stColumn"]:first-child, .st-key-explore_pagination [data-testid="stColumn"]:last-child { flex:0 0 auto !important; width:auto !important; }
+  .st-key-explore_pagination [data-testid="stColumn"]:nth-child(2) { flex:1 1 0 !important; }
+  .st-key-explore_pagination button { padding:0 .8rem !important; white-space:nowrap; }
+  .st-key-explore_pagination [data-testid="stCaptionContainer"] p { text-align:center; font-size:.78rem !important; line-height:1.3; }
+  /* Quiz setup: pairs stay side by side; the switches wrap with a small gap; the intro banner is slimmer. */
+  :is(.st-key-what_box, .st-key-where_box) [data-testid="stHorizontalBlock"] { flex-wrap:nowrap !important; gap:10px !important; }
+  :is(.st-key-what_box, .st-key-where_box) [data-testid="stColumn"] { flex:1 1 0 !important; min-width:0 !important; width:auto !important; }
+  .st-key-what_box .st-key-setup_toggles[data-testid] { flex-wrap:wrap !important; gap:.4rem 1.25rem !important; }
+  .st-key-setup_toggles > * { min-width:0 !important; max-width:100%; }
+  .st-key-what_box, .st-key-where_box { padding:12px 12px 4px !important; }
+  .hero.hero-tall .hero-description, .hero.hero-tall .hero-tags { display:none; }
+  .hero.hero-tall { padding:16px 18px !important; }
+  /* Stacked intro + setup columns: a normal gap, not the wide desktop one. */
+  .st-key-view_quiz [data-testid="stHorizontalBlock"]:has(.hero-tall) { row-gap:.75rem !important; }
+  /* Results: the three headline numbers stay in one row. */
+  .st-key-result_card [data-testid="stHorizontalBlock"]:has([data-testid="stMetric"]) { flex-wrap:nowrap !important; gap:8px !important; }
+  .st-key-result_card [data-testid="stHorizontalBlock"]:has([data-testid="stMetric"]) > [data-testid="stColumn"] { flex:1 1 0 !important; min-width:0 !important; }
+  .st-key-result_card [data-testid="stMetricValue"] { font-size:1.35rem !important; }
+  .st-key-result_card [data-testid="stMetricLabel"] p { font-size:.72rem !important; }
+  /* The Next button sits above Streamlit Cloud's corner badges and the phone's safe area. */
+  .st-key-quiz_next_action { padding:10px 16px calc(3.4rem + env(safe-area-inset-bottom,0px)) !important; }
+  .stApp .block-container:has(.st-key-quiz_next_action) { padding-bottom:calc(9.5rem + env(safe-area-inset-bottom,0px)) !important; }
+}
 /* Very narrow phones (and phones at 125% zoom): keep all four navigation labels whole. */
 @media (max-width:420px) {
   .st-key-navigation button { padding:0 .25rem !important; min-width:0 !important; }
@@ -244,5 +354,8 @@
   .st-key-navigation [data-testid="stHorizontalBlock"] { gap:2px !important; }
   /* Columns size to their labels so long words (e.g. "Cuestionario") are not cut off. */
   .st-key-navigation [data-testid="stColumn"] { flex:1 1 auto !important; width:auto !important; }
+  /* Quiz setup pairs stack again when there is no room for two readable dropdowns. */
+  :is(.st-key-what_box, .st-key-where_box) [data-testid="stHorizontalBlock"]:not(.st-key-setup_toggles) { flex-wrap:wrap !important; }
+  :is(.st-key-what_box, .st-key-where_box) [data-testid="stHorizontalBlock"]:not(.st-key-setup_toggles) > [data-testid="stColumn"] { flex:0 0 100% !important; }
 }
 @media (prefers-reduced-motion:reduce) { * { transition:none !important; } [class*="st-key-country_card_"]:hover { transform:none; } }

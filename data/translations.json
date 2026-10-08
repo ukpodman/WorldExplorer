@@ -1630,6 +1630,116 @@
    "{n} Orte insgesamt",
    "{n} lugares en total",
    "共{n}个地方"
+  ],
+  "Flag questions": [
+   "Flaggenfragen",
+   "Preguntas de banderas",
+   "国旗题"
+  ],
+  "Badges count answers and rounds you complete. Progress is saved with your account when you are signed in.": [
+   "Abzeichen zählen Antworten und abgeschlossene Runden. Wenn du angemeldet bist, wird der Fortschritt in deinem Konto gespeichert.",
+   "Las insignias cuentan las respuestas y las rondas que completas. Si inicias sesión, el progreso se guarda en tu cuenta.",
+   "徽章根据你完成的答题和回合计算。登录后，进度会保存到你的账户。"
+  ],
+  "New badge earned: {names}": [
+   "Neues Abzeichen: {names}",
+   "Nueva insignia: {names}",
+   "获得新徽章：{names}"
+  ],
+  "Opens the quiz setup with this country selected.": [
+   "Öffnet die Quiz-Einstellungen mit diesem Land.",
+   "Abre la configuración del cuestionario con este país seleccionado.",
+   "打开测验设置，并选中这个国家。"
+  ],
+  "Quiz me on this country": [
+   "Quiz zu diesem Land",
+   "Ponme a prueba con este país",
+   "测验这个国家"
+  ],
+  "What to practise": [
+   "Was du üben möchtest",
+   "Qué practicar",
+   "练习内容"
+  ],
+  "Where": [
+   "Wo",
+   "Dónde",
+   "范围"
+  ],
+  "You have a round in progress. Starting a new quiz replaces it; use “Return to current round” to continue it.": [
+   "Du hast eine laufende Runde. Ein neues Quiz ersetzt sie; mit „Zur laufenden Runde“ spielst du weiter.",
+   "Tienes una ronda en curso. Empezar un cuestionario nuevo la reemplaza; usa «Volver a la ronda actual» para continuarla.",
+   "你有一轮正在进行。开始新的测验会替换它；点击“返回当前轮次”可以继续。"
+  ],
+  "{n} of {total} badges earned": [
+   "{n} von {total} Abzeichen erhalten",
+   "{n} de {total} insignias conseguidas",
+   "已获得 {n}/{total} 枚徽章"
+  ],
+  "{value} of {target}": [
+   "{value} von {target}",
+   "{value} de {target}",
+   "{value}/{target}"
+  ],
+  "Seasoned Explorer": [
+   "Erfahrene Entdecker",
+   "Explorador experimentado",
+   "资深探索者"
+  ],
+  "Complete 5 quiz rounds.": [
+   "Schließe 5 Quizrunden ab.",
+   "Completa 5 rondas de cuestionario.",
+   "完成 5 轮测验。"
+  ],
+  "Flawless": [
+   "Fehlerlos",
+   "Impecable",
+   "完美无缺"
+  ],
+  "Finish a round with every answer correct and no hints.": [
+   "Beende eine Runde ohne Fehler und ohne Hinweise.",
+   "Termina una ronda con todas las respuestas correctas y sin pistas.",
+   "在不使用提示的情况下全对完成一轮。"
+  ],
+  "Flag Spotter": [
+   "Flaggenkenner",
+   "Experto en banderas",
+   "国旗达人"
+  ],
+  "Identify 10 flags correctly.": [
+   "Erkenne 10 Flaggen richtig.",
+   "Identifica correctamente 10 banderas.",
+   "正确识别 10 面国旗。"
+  ],
+  "Sharp Mind": [
+   "Kluger Kopf",
+   "Mente aguda",
+   "思维敏捷"
+  ],
+  "Give 50 correct answers.": [
+   "Gib 50 richtige Antworten.",
+   "Da 50 respuestas correctas.",
+   "答对 50 道题。"
+  ],
+  "{continent} Explorer": [
+   "{continent}-Entdecker",
+   "Explorador de {continent}",
+   "{continent}探索者"
+  ],
+  "Answer 5 questions about {continent} correctly.": [
+   "Beantworte 5 Fragen zu {continent} richtig.",
+   "Responde correctamente 5 preguntas sobre {continent}.",
+   "答对 5 道关于{continent}的题目。"
+  ],
+  "Globetrotter": [
+   "Weltenbummler",
+   "Trotamundos",
+   "环球旅行者"
+  ],
+  "Answer at least one question correctly about every continent.": [
+   "Beantworte zu jedem Kontinent mindestens eine Frage richtig.",
+   "Responde correctamente al menos una pregunta sobre cada continente.",
+   "每个大洲至少答对一道题。"
   ]
  }
 }

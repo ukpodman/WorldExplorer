@@ -6,6 +6,7 @@ from html import escape
 
 import streamlit as st
 
+from core import badges as badge_engine
 from core import quiz as engine
 from core.data import (AREAS, COLLECTIONS, PHOTOS, STATUS_LABELS, STATUSES, flag_image, get_countries,
                        get_country, load_political_records, neighbours)
@@ -128,9 +129,23 @@ def _tile(label: str, value: str) -> str:
     return f'<div class="fact-tile"><div class="fact-label">{e(label)}</div><div class="fact-value">{escape(value)}</div></div>'
 
 
+def _learn_media(c: dict) -> None:
+    """A licensed destination photo when one is bundled; otherwise the flag on a calm continent-tinted panel."""
+    photo = PHOTOS.get(c["id"])
+    if photo:
+        html(f'<div class="learn-photo" role="img" aria-label="{escape(photo["caption"], quote=True)}" '
+             f'style="background-image:url(\'{escape(photo["url"], quote=True)}\')"></div>')
+        st.caption(f"{photo['caption']} — {photo['author']} · [{photo['license']}]({photo['license_url']})")
+        with st.container(key="learn_flag_small"):
+            _flag(c, 96, t("Flag of {name}", name=c["name"]))
+    else:
+        with st.container(key=f"learn_flag_panel_{c['continent'].replace(' ', '_')}"):
+            _flag(c, 200, t("Flag of {name}", name=c["name"]))
+
+
 def learn() -> None:
     hero("The country collection", "Get to know the world.",
-         "Build your knowledge, one country at a time. The details make all the difference.")
+         "Build your knowledge, one country at a time. The details make all the difference.", variant="compact")
     ids = [c["id"] for c in state.scoped_countries()]
     requested = st.session_state.get("learn_country")
     if get_country(requested) and requested not in ids:
@@ -140,7 +155,7 @@ def learn() -> None:
     c = get_country(st.selectbox(t("Choose a country"), ids, format_func=country_formatter(), key="learn_country"))
     none = t("Not included yet")
     with st.container(key="learn_card"):
-        top, art = st.columns([3, 1], vertical_alignment="center")
+        top, art = st.columns([3, 2], vertical_alignment="center", gap="large")
         with top:
             html(f'<div class="country-top"><span class="country-code">{c["id"]}</span>'
                  f'<span class="country-region">{escape(c["region"])}</span>{status_chip(c)}</div>'
@@ -148,8 +163,12 @@ def learn() -> None:
                  f'<div class="official-name">{escape(c.get("official_name", ""))}</div>')
             if c["status_note"]:
                 st.caption(t(c["status_note"]))
+            with st.container(key="learn_quiz_action"):
+                st.button(t("Quiz me on this country"), key="learn_quiz_me", type="primary",
+                          on_click=state.quiz_on_country, args=(c["id"],),
+                          help=t("Opens the quiz setup with this country selected."))
         with art:
-            _flag(c, 180, t("Flag of {name}", name=c["name"]))
+            _learn_media(c)
         capitals = "; ".join(f"{x['name']} ({t(x['role'])})" for x in c["capitals"]) or t("No capital listed")
         facts = [("Continent / region", " · ".join([" / ".join(t(x) for x in c["continents"]), c["region"]]).strip(" ·")),
                  ("Capital roles", capitals),
@@ -182,34 +201,51 @@ def _reset_country_filter() -> None:
     st.session_state.filter_country = "all"
 
 
+def _where_summary(collection: str, continent: str, country_id: str) -> str:
+    place = country_label(country_id) if country_id != "all" else t(continent)
+    return " · ".join([place, t(collection)])
+
+
 def _setup() -> None:
-    st.session_state.setdefault("filter_continent", st.session_state.scope_continent)
-    st.session_state.setdefault("filter_country", st.session_state.scope_country)
-    st.session_state.setdefault("filter_collection", st.session_state.scope_collection)
+    state.restore_quiz_filters()
     with st.container(key="settings_card"):
         html(f'<div class="eyebrow">{e("Your next adventure")}</div>')
         st.subheader(t("Build your challenge"))
-        collection = st.selectbox(t("Places to include"), COLLECTIONS, format_func=formatter(COLLECTIONS),
-                                  key="filter_collection", on_change=_reset_country_filter)
-        one, two = st.columns(2)
-        continent = one.selectbox(t("Continent"), AREAS, format_func=formatter(AREAS), key="filter_continent",
-                                  on_change=_reset_country_filter)
-        ids = ["all"] + [c["id"] for c in get_countries(continent, collection=collection)]
-        if st.session_state.filter_country not in ids:
-            st.session_state.filter_country = "all"
-        country_id = two.selectbox(t("Country"), ids, key="filter_country",
-                                   format_func=country_formatter(t("All Countries")))
-        left, right = st.columns(2)
-        category = left.selectbox(t("Category"), CATEGORIES, format_func=formatter(CATEGORIES), key="filter_category")
-        count = left.selectbox(t("Questions"), QUESTION_COUNTS, index=1, key="filter_count")
-        difficulty = right.selectbox(t("Difficulty"), DIFFICULTIES, format_func=formatter(DIFFICULTIES), index=1,
-                                     key="filter_difficulty")
-        timer = right.toggle(t("Timed challenge"), value=False, key="filter_timer",
-                             help=t("15 seconds per question on Expert; 20 seconds on other levels."))
-        flags = True
-        if category == "Mixed":
-            flags = right.toggle(t("Include flag questions"), value=True, key="filter_flags",
-                                 help=t("Flag questions show an image. Turn them off if you use a screen reader."))
+        if st.session_state.quiz and not st.session_state.quiz["finished"]:
+            st.info(t("You have a round in progress. Starting a new quiz replaces it; use “Return to current round” to continue it."))
+
+        with st.container(key="what_box"):
+            html(f'<div class="setup-section">{e("What to practise")}</div>')
+            category = st.selectbox(t("Category"), CATEGORIES, format_func=formatter(CATEGORIES), key="filter_category")
+            left, right = st.columns(2)
+            difficulty = left.selectbox(t("Difficulty"), DIFFICULTIES, format_func=formatter(DIFFICULTIES), key="filter_difficulty")
+            count = right.selectbox(t("Questions"), QUESTION_COUNTS, key="filter_count")
+            with st.container(key="setup_toggles", horizontal=True, gap="large"):
+                timer = st.toggle(t("Timed challenge"), key="filter_timer",
+                                  help=t("15 seconds per question on Expert; 20 seconds on other levels."))
+                flags = True
+                if category == "Mixed":
+                    flags = st.toggle(t("Flag questions"), key="filter_flags",
+                                      help=t("Flag questions show an image. Turn them off if you use a screen reader."))
+
+        with st.container(key="where_box"):
+            collection = st.session_state.filter_collection
+            summary_slot = st.empty()
+            collection = st.selectbox(t("Places to include"), COLLECTIONS, format_func=formatter(COLLECTIONS),
+                                      key="filter_collection", on_change=_reset_country_filter)
+            one, two = st.columns(2)
+            continent = one.selectbox(t("Continent"), AREAS, format_func=formatter(AREAS), key="filter_continent",
+                                      on_change=_reset_country_filter)
+            ids = ["all"] + [c["id"] for c in get_countries(continent, collection=collection)]
+            if st.session_state.filter_country not in ids:
+                st.session_state.filter_country = "all"
+            country_id = two.selectbox(t("Country"), ids, key="filter_country",
+                                       format_func=country_formatter(t("All Countries")))
+            summary_slot.markdown(f'<div class="setup-section">{e("Where")}'
+                                  f'<span class="where-summary">{escape(_where_summary(collection, continent, country_id))}</span></div>',
+                                  unsafe_allow_html=True)
+        state.remember_quiz_filters()
+
         settings = {"continent": continent, "country_id": country_id, "category": category, "difficulty": difficulty,
                     "count": count, "timer": timer, "collection": collection, "flags": flags}
         round_size, _ = state.preview(settings)
@@ -224,11 +260,12 @@ def _setup() -> None:
             st.info(t("No verified questions match these filters. Choose Mixed, another country, or a lower difficulty."))
         elif round_size < count:
             st.info(t("This round will contain {n} questions, without repeating the same question.", n=round_size))
-        if st.button(t("Start quiz"), key="start_quiz", type="primary", width="stretch", disabled=not round_size):
-            state.start_round(settings)
-            st.rerun()
-        if st.session_state.quiz and not st.session_state.quiz["finished"]:
-            st.button(t("Return to current round"), width="stretch", on_click=state.close_setup)
+        with st.container(key="start_box"):
+            if st.button(t("Start quiz"), key="start_quiz", type="primary", width="stretch", disabled=not round_size):
+                state.start_round(settings)
+                st.rerun()
+            if st.session_state.quiz and not st.session_state.quiz["finished"]:
+                st.button(t("Return to current round"), width="stretch", on_click=state.close_setup)
         with st.expander(t("Scoring and hints")):
             st.write(t("Correct answers earn 100 base points, multiplied by difficulty: Easy ×1, Medium ×1.25, Difficult ×1.5, Expert ×2."))
             st.write(t("Fast answers earn 25 extra points. Every third correct answer in a streak adds 50; every fifth adds 100. "
@@ -346,6 +383,11 @@ def _results(quiz) -> None:
                                t(settings["category"]), t(settings["difficulty"]), t("{n} questions", n=stats["total"])]))
         if quiz["perfect_bonus"]:
             st.success(t("Perfect round without hints: +{points} bonus points.", points=quiz["perfect_bonus"]), icon="🌟")
+        before = set(quiz.get("badges_before", []))
+        new = [b for b in badge_engine.evaluate(st.session_state.stats, st.session_state.points, st.session_state.rounds_finished)
+               if b["earned"] and b["id"] not in before]
+        if new and "badges_before" in quiz:
+            st.success(t("New badge earned: {names}", names=", ".join(_badge_name(b) for b in new)), icon="🏅")
         one, two = st.columns(2)
         if one.button(t("Play again"), type="primary", width="stretch"):
             state.start_round(settings)
@@ -396,20 +438,29 @@ def quiz() -> None:
 
 # --------------------------------------------------------------------------- Badges
 
+def _badge_name(b: dict) -> str:
+    return t(b["name"], **b["fields"]) if b["fields"] else t(b["name"])
+
+
 def badges() -> None:
     hero("Your explorer passport", "Curiosity deserves recognition.",
-         "Every right answer is a step forward. Collect milestones as your knowledge grows.")
+         "Every right answer is a step forward. Collect milestones as your knowledge grows.", variant="compact")
     points, rounds = st.session_state.points, st.session_state.rounds_finished
+    stats = st.session_state.stats
+    status = badge_engine.evaluate(stats, points, rounds)
+    earned = sum(b["earned"] for b in status)
     st.caption(t("{points} lifetime session points · {rounds} rounds completed", points=f"{points:,}", rounds=rounds))
-    awards = (("First Steps", points > 0, "Answer your first question correctly.", "✦"),
-              ("Century", points >= 100, "Earn 100 points.", "★"),
-              ("Round Finisher", rounds >= 1, "Complete your first quiz round.", "✓"))
-    for i, (column, (name, earned, description, symbol)) in enumerate(zip(st.columns(len(awards)), awards)):
-        with column, st.container(key=f"award_card_{i}"):
-            html(f'<div class="award-medal {"" if earned else "locked"}" aria-hidden="true">{symbol}</div>')
-            st.subheader(t(name))
-            html(f'<span class="award-state {"earned" if earned else ""}">{e("Earned" if earned else "In progress")}</span>')
-            st.caption(t(description))
+    html(f'<div class="badge-summary">{e("{n} of {total} badges earned", n=earned, total=len(status))}</div>')
+    st.caption(t("Badges count answers and rounds you complete. Progress is saved with your account when you are signed in."))
+    ordered = sorted(status, key=lambda b: (not b["earned"], -(b["value"] / b["target"])))
+    for row in range(0, len(ordered), 3):
+        for column, b in zip(st.columns(3), ordered[row:row + 3]):
+            with column, st.container(key=f"award_card_{b['id']}"):
+                html(f'<div class="award-head"><div class="award-medal {"" if b["earned"] else "locked"}" aria-hidden="true">{b["symbol"]}</div>'
+                     f'<div><div class="award-name">{escape(_badge_name(b))}</div>'
+                     f'<span class="award-state {"earned" if b["earned"] else ""}">{e("Earned" if b["earned"] else "In progress")}</span></div></div>')
+                st.caption(t(b["description"], **b["fields"]))
+                st.progress(b["value"] / b["target"], text=t("{value} of {target}", value=b["value"], target=b["target"]))
 
 
 ROUTES = {"Explore": explore, "Learn": learn, "Quiz": quiz, "Badges": badges}

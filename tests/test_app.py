@@ -130,6 +130,78 @@ class AppTests(unittest.TestCase):
         self.assertTrue(any("keep playing as a guest" in i.value for i in at.info))
 
 
+@unittest.skipIf(AppTest is None, "streamlit is not installed")
+class RefinementTests(unittest.TestCase):
+    def new(self, **state):
+        at = AppTest.from_file(APP, default_timeout=60)
+        for k, v in state.items():
+            at.session_state[k] = v
+        return at.run()
+
+    def test_quiz_me_carries_country_and_keeps_active_round(self):
+        at = self.new(page="Learn", learn_country="JPN")
+        at.button(key="learn_quiz_me").click().run()
+        self.assertEqual(at.session_state["page"], "Quiz")
+        self.assertEqual((at.session_state["filter_continent"], at.session_state["filter_country"]), ("Asia", "JPN"))
+        self.assertEqual([e.value for e in at.exception], [])
+        at.button(key="start_quiz").click().run()
+        serial = at.session_state["quiz"]["serial"]
+        at.button(key="nav_Learn").click().run()
+        at.button(key="learn_quiz_me").click().run()
+        self.assertEqual(at.session_state["quiz"]["serial"], serial)          # the round was not discarded
+        self.assertFalse(at.session_state["quiz"]["finished"])
+        self.assertTrue(any("round in progress" in i.value for i in at.info))
+
+    def test_quiz_me_on_a_territory_switches_to_all_places(self):
+        at = self.new(page="Learn", learn_country="PRI")
+        at.button(key="learn_quiz_me").click().run()
+        self.assertEqual(at.session_state["filter_collection"], "All countries and territories")
+        self.assertEqual(at.session_state["filter_country"], "PRI")
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_quiz_filters_survive_leaving_the_page(self):
+        at = self.new(page="Quiz")
+        at.selectbox(key="filter_category").select("Capitals").run()
+        at.selectbox(key="filter_difficulty").select("Expert").run()
+        at.button(key="nav_Explore").click().run()
+        at.button(key="nav_Badges").click().run()
+        at.button(key="nav_Quiz").click().run()
+        self.assertEqual(at.selectbox(key="filter_category").value, "Capitals")
+        self.assertEqual(at.selectbox(key="filter_difficulty").value, "Expert")
+        self.assertEqual([w.value for w in at.warning], [])
+
+    def test_badges_recorded_once_from_quiz_activity(self):
+        at = self.new(page="Badges")
+        self.assertEqual(at.session_state["stats"]["answered"], 0)        # opening Badges records nothing
+        at.run()
+        self.assertEqual(at.session_state["stats"]["answered"], 0)
+        at.button(key="nav_Quiz").click().run()
+        at.selectbox(key="filter_count").select(5).run()
+        at.button(key="start_quiz").click().run()
+        for i in range(5):
+            quiz = at.session_state["quiz"]
+            q = quiz["questions"][i]
+            at.button(key=f"answer_{quiz['serial']}_{i}_{q['choices'].index(q['answer'])}").click().run()
+            at.run()                                                     # extra reruns must not double count
+            at.button(key=f"next_{quiz['serial']}_{i}").click().run()
+        stats = at.session_state["stats"]
+        self.assertEqual((stats["answered"], stats["correct"]), (5, 5))
+        self.assertEqual(at.session_state["rounds_finished"], 1)
+        self.assertTrue(any("New badge earned" in s.value for s in at.success))
+        at.run(); at.run()
+        self.assertEqual(at.session_state["stats"]["answered"], 5)
+        at.button(key="nav_Badges").click().run()
+        self.assertEqual([e.value for e in at.exception], [])
+        self.assertTrue(any("badges earned" in m.value for m in at.markdown))
+
+    def test_flag_questions_label_in_every_language(self):
+        from core.i18n import translate
+        for lang in LANGS:
+            at = self.new(page="Quiz", app_language=lang)
+            labels = [tg.label for tg in at.toggle]
+            self.assertIn(translate("Flag questions", lang), labels, lang)
+
+
 class FakeState(dict):
     __getattr__ = dict.__getitem__
 
@@ -161,6 +233,9 @@ class AccountTests(unittest.TestCase):
         self.assertEqual(clean["points"], 1200)
         self.assertNotIn("unknown_future_key", clean)
         self.assertNotIn("sound_enabled", clean)  # missing → the session default (off) is kept
+        self.assertNotIn("stats", clean)          # missing → empty statistics; points and rounds unchanged
+        self.assertEqual(self.accounts.sanitize_profile({"stats": {"correct": 3}})["stats"]["correct"], 3)
+        self.assertNotIn("stats", self.accounts.sanitize_profile({"stats": "corrupt"}))
         bad = self.accounts.sanitize_profile({"sound_enabled": "yes", "sound_volume": 400, "points": -5,
                                               "scope_collection": "Mars", "profile_photo": "http://x"})
         self.assertEqual(bad, {})

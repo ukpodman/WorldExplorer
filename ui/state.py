@@ -6,8 +6,9 @@ from datetime import date
 
 import streamlit as st
 
+from core import badges
 from core import quiz as engine
-from core.data import DEFAULT_COLLECTION, get_countries, get_country
+from core.data import COLLECTIONS, DEFAULT_COLLECTION, get_countries, get_country
 from core.i18n import DEFAULT_LANGUAGE, render_parts, translate
 
 PAGES = ("Explore", "Learn", "Quiz", "Badges")
@@ -28,6 +29,8 @@ DEFAULTS = {
 def init() -> None:
     for key, value in DEFAULTS.items():
         st.session_state.setdefault(key, list(value) if isinstance(value, list) else value)
+    if badges.sanitize_stats(st.session_state.get("stats")) is None:
+        st.session_state.stats = badges.empty_stats()
 
 
 # --------------------------------------------------------------------------- language
@@ -117,6 +120,10 @@ def apply_pending_preferences() -> None:
     st.session_state.filter_continent = st.session_state.scope_continent
     st.session_state.filter_country = st.session_state.scope_country
     st.session_state.filter_collection = st.session_state.scope_collection
+    st.session_state.quiz_prefs = {**st.session_state.get("quiz_prefs", {}),
+                                   "filter_continent": st.session_state.scope_continent,
+                                   "filter_country": st.session_state.scope_country,
+                                   "filter_collection": st.session_state.scope_collection}
     st.session_state.explore_page = 0
     st.session_state.explore_search = ""
     st.session_state.pop("explore_continent", None)
@@ -145,6 +152,9 @@ def start_round(settings: dict) -> bool:
         return False
     st.session_state.quiz_serial += 1
     st.session_state.quiz = engine.new_round(settings, questions, available, st.session_state.quiz_serial)
+    # Badges held when the round began, so the results screen can name newly earned ones.
+    st.session_state.quiz["badges_before"] = sorted(badges.earned_ids(st.session_state.stats, st.session_state.points,
+                                                                      st.session_state.rounds_finished))
     st.session_state.review_mode = "missed"
     st.session_state.show_setup = False
     return True
@@ -157,8 +167,10 @@ def _tracked(action) -> None:
     before = len(quiz["history"])
     points = action(quiz)
     if len(quiz["history"]) > before:
-        q = quiz["history"][-1]["question"]
+        record = quiz["history"][-1]
+        q = record["question"]
         st.session_state.points += points or 0
+        badges.record_answer(st.session_state.stats, q, record["correct"])
         st.session_state.recent = (st.session_state.recent + [q["country_id"]])[-RECENT_COUNTRIES:]
         st.session_state.recent_facts = (st.session_state.recent_facts + q["facts"])[-RECENT_FACTS:]
 
@@ -185,6 +197,42 @@ def next_question(serial: int, index: int) -> None:
     st.session_state.points += engine.advance(quiz)
     if quiz["finished"]:
         st.session_state.rounds_finished += 1
+        badges.record_round(st.session_state.stats, quiz)
+
+
+QUIZ_FILTER_DEFAULTS = {"filter_category": "Mixed", "filter_difficulty": "Medium", "filter_count": 10,
+                        "filter_timer": False, "filter_flags": True}
+
+
+def restore_quiz_filters() -> None:
+    """Quiz setup choices survive leaving the Quiz page (Streamlit drops widget state for unrendered widgets)."""
+    saved = st.session_state.get("quiz_prefs", {})
+    defaults = dict(QUIZ_FILTER_DEFAULTS, filter_collection=st.session_state.scope_collection,
+                    filter_continent=st.session_state.scope_continent, filter_country=st.session_state.scope_country)
+    for key, default in defaults.items():
+        if key not in st.session_state:
+            st.session_state[key] = saved.get(key, default)
+
+
+def remember_quiz_filters() -> None:
+    keys = list(QUIZ_FILTER_DEFAULTS) + ["filter_collection", "filter_continent", "filter_country"]
+    st.session_state.quiz_prefs = {k: st.session_state[k] for k in keys if k in st.session_state}
+
+
+def quiz_on_country(country_id: str) -> None:
+    """From Learn: open quiz setup for one country. An unfinished round is kept (setup offers to return to it)."""
+    country = get_country(country_id)
+    if not country:
+        return
+    collection = st.session_state.scope_collection
+    if not get_countries(country_id=country_id, collection=collection):
+        collection = COLLECTIONS[1]  # a territory: include all places so it can be selected
+    st.session_state.filter_collection = collection
+    st.session_state.filter_continent = country["continent"]
+    st.session_state.filter_country = country_id
+    remember_quiz_filters()
+    st.session_state.show_setup = True
+    navigate("Quiz")
 
 
 def open_setup() -> None:

@@ -19,26 +19,29 @@ Guest mode works out of the box. Sign-in and saved profiles are optional: see `L
 
 ## Upload to the existing GitHub repository (ukpodman/WorldExplorer, branch main)
 
-Extract the ZIP. Inside the `WorldExplorer` folder you will find `app.py`, `requirements.txt`, the
-folders `core/`, `ui/`, `data/`, `assets/`, `tests/` and `tools/`, the `.md` files, and the hidden
-`.streamlit/config.toml` and `.gitignore`.
+Extract the ZIP and open the `WorldExplorer` folder.
 
-**Browser upload (about 40 files, one upload):**
-1. Open https://github.com/ukpodman/WorldExplorer on the `main` branch.
-2. **Add file → Upload files**.
-3. Open the extracted `WorldExplorer` folder, select **everything inside it** (not the folder itself,
-   not the ZIP) and drag it onto the page. Folders keep their structure; same-named files are replaced.
-4. Check the list shows `app.py` at the top level and paths such as `core/quiz.py` and `assets/flags.json`.
-5. Commit directly to `main`.
-6. Hidden files: if `.streamlit/config.toml` (light theme) or `.gitignore` are missing afterwards
-   (some systems hide dot files), use **Add file → Create new file**, type the same path and name,
-   and paste the contents. The app also works without them.
+**1. Upload the visible files (one browser upload).**
+1. Open https://github.com/ukpodman/WorldExplorer on the `main` branch → **Add file → Upload files**.
+2. Select everything inside the extracted folder (not the folder itself, not the ZIP) and drag it in.
+   Folders keep their structure and same-named files are replaced.
+3. Check the list shows `app.py` at the top level and paths such as `core/badges.py` and `assets/styles.css`.
+4. Commit directly to `main`.
 
-**Or with GitHub Desktop:** clone the repository, copy everything from the extracted folder into
-the clone, replacing files, then commit and push to `main`.
+**2. Add the hidden theme file (the browser upload usually skips it).**
+`.streamlit/config.toml` is not in the repository yet. The app now looks right without it, but it
+also themes Streamlit's built-in widgets. To add it:
+1. In the repository, choose **Add file → Create new file**.
+2. Type the name exactly: `.streamlit/config.toml` (typing the `/` creates the folder).
+3. Open `.streamlit/config.toml` from the extracted folder in a text editor (e.g. Notepad; on Windows
+   enable *View → Show → Hidden items* if the folder is hidden), copy everything, paste it into GitHub.
+4. Commit to `main`. Optionally repeat for `.gitignore` the same way.
 
-Streamlit Community Cloud redeploys automatically. Keep the main file path as `app.py` and keep
-your existing Cloud secrets (never upload `secrets.toml`).
+Never upload `.streamlit/secrets.toml`. Keep the existing Streamlit Cloud secrets and the main file
+path `app.py`; the app redeploys automatically after each commit.
+
+**Or with GitHub Desktop / git:** copy everything (including hidden files) into your clone,
+commit and push to `main`. Hidden files are included automatically.
 
 ## Project layout
 
@@ -50,6 +53,7 @@ core/
   i18n.py                  interface translations + localised country names
   quiz.py                  question generation, deduplication, scoring, round state (pure Python)
   accounts.py              optional sign-in diagnostics and Supabase profile storage
+  badges.py                badge rules and the quiz statistics they are earned from
 ui/
   state.py                 session state and round callbacks
   components.py            header, hero, settings drawer (profile, sign-in help, places, sound)
@@ -116,3 +120,20 @@ Country data: [mledoze/countries](https://github.com/mledoze/countries), ODbL 1.
 database in `data/` is distributed under the same licence. Flags come from the same repository
 but are not covered by the ODbL (see `COVERAGE.md`). Photo credits are listed in the app and in
 `data/photos.json`. Landmarks link to the UNESCO World Heritage List.
+
+## Changes in this update
+
+- **Look:** switches, sliders, progress bars and the review toggle use the teal palette even when
+  `.streamlit/config.toml` is missing; inputs and dropdowns have a white fill and warm border;
+  "Flag questions" replaces the truncated label (all four languages); the tagline hides below 900 px;
+  navigation labels never truncate (German/Spanish checked down to 300 px wide).
+- **Phones:** compact country rows on Explore with search and filters side by side; slimmer banners on
+  Explore, Quiz, Learn and Badges; the "next challenge" card stays below the country list; the Next
+  button sits above Streamlit Cloud's corner badges; result numbers stay in one row.
+- **Quiz setup:** grouped into "What to practise" and "Where" (with a summary of the selected area);
+  choices are remembered when you leave the Quiz page and come back.
+- **Learn:** "Quiz me on this country" opens quiz setup with that country (an unfinished round is kept,
+  with a clear note); photo or a continent-tinted flag panel on the right; facts and sources unchanged.
+- **Badges:** 14 badges (the original 3 unchanged) with requirements and progress bars, earned only from
+  recorded answers and finished rounds; new statistics are saved with signed-in profiles
+  (older profiles load with empty statistics and keep their points and rounds).

@@ -369,5 +369,55 @@ class TranslationTests(unittest.TestCase):
         self.assertEqual(translate("{name} is in {continent}.", LANGUAGES[0], name="Japan", continent="Asia"), "Japan is in Asia.")
 
 
+class BadgeTests(unittest.TestCase):
+    def setUp(self):
+        from core import badges
+        self.b = badges
+
+    def test_existing_badges_keep_their_rules(self):
+        earned = self.b.earned_ids(self.b.empty_stats(), points=120, rounds=1)
+        self.assertEqual(earned, {"first_steps", "century", "round_finisher"})  # old profiles keep what they had
+        self.assertEqual(self.b.earned_ids(self.b.empty_stats(), 0, 0), set())
+
+    def test_progress_comes_from_recorded_answers(self):
+        stats = self.b.empty_stats()
+        flag_q = {"family": "Flags", "country_id": "JPN"}
+        for _ in range(10):
+            self.b.record_answer(stats, flag_q, True)
+        self.b.record_answer(stats, {"family": "Capitals", "country_id": "FRA"}, False)
+        self.assertEqual((stats["answered"], stats["correct"], stats["flags_correct"]), (11, 10, 10))
+        self.assertEqual(stats["correct_by_continent"]["Asia"], 10)
+        earned = self.b.earned_ids(stats, points=1000, rounds=0)
+        self.assertIn("flag_spotter", earned)
+        self.assertIn("continent_asia", earned)
+        self.assertNotIn("globetrotter", earned)
+        status = {x["id"]: x for x in self.b.evaluate(stats, 1000, 0)}
+        self.assertEqual((status["globetrotter"]["value"], status["globetrotter"]["target"]), (1, 6))
+
+    def test_perfect_round_counted_once_per_round(self):
+        stats = self.b.empty_stats()
+        self.b.record_round(stats, {"perfect_bonus": 250})
+        self.b.record_round(stats, {"perfect_bonus": 0})
+        self.assertEqual(stats["perfect_rounds"], 1)
+
+    def test_stored_stats_are_validated(self):
+        self.assertIsNone(self.b.sanitize_stats("nope"))
+        clean = self.b.sanitize_stats({"correct": 4, "answered": -2, "flags_correct": True,
+                                       "correct_by_continent": {"Asia": 3, "Mars": 9, "Europe": "x"}})
+        self.assertEqual(clean["correct"], 4)
+        self.assertEqual(clean["answered"], 0)
+        self.assertEqual(clean["flags_correct"], 0)
+        self.assertEqual(clean["correct_by_continent"]["Asia"], 3)
+        self.assertNotIn("Mars", clean["correct_by_continent"])
+        self.assertEqual(self.b.sanitize_stats({}), self.b.empty_stats())
+
+    def test_badge_text_translated(self):
+        for b in self.b.BADGES:
+            for _ in LANGUAGES[1:]:
+                self.assertIn(b["name"], STRINGS, b["id"])
+                self.assertIn(b["description"], STRINGS, b["id"])
+        self.assertEqual(translate("{continent} Explorer", "Deutsch", continent="Africa"), "Afrika-Entdecker")
+
+
 if __name__ == "__main__":
     unittest.main()

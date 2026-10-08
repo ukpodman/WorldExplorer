@@ -1,0 +1,38 @@
+{
+ "upstream": {
+  "repository": "https://github.com/mledoze/countries",
+  "commit": "c2ac0049c14edcf2436c7aa1b2493222a020b462",
+  "date": "2026-09-29",
+  "entries": 250,
+  "licence": "ODbL 1.0"
+ },
+ "reference": {
+  "un_members": 193,
+  "un_observers": 2,
+  "checked_on": "2026-10-08"
+ },
+ "missing_from_collection": [],
+ "duplicate_upstream_ids": [],
+ "holy_see_mapping": "UN observer 'Holy See' and ISO 'Vatican City' are the single record VAT.",
+ "upstream_un_member_flag_disagreements": [
+  "VAT"
+ ],
+ "excluded": {
+  "ATA": "Antarctica is a continent governed by the Antarctic Treaty, not a country or territory with a capital.",
+  "ATF": "Mostly uninhabited Antarctic and sub-Antarctic lands with no permanent population or capital.",
+  "BVT": "Uninhabited sub-Antarctic island.",
+  "HMD": "Uninhabited sub-Antarctic islands.",
+  "SGS": "No permanent population; sub-Antarctic.",
+  "UMI": "Scattered, essentially uninhabited islands in the Pacific and Caribbean; no capital and no single continent."
+ },
+ "asymmetric_borders": [],
+ "counts": {
+  "un_member": 193,
+  "territory": 44,
+  "associated_state": 2,
+  "limited_recognition": 2,
+  "un_observer": 2,
+  "disputed_territory": 1,
+  "total": 244
+ }
+}

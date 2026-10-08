@@ -1,36 +1,49 @@
-"""Optional sign-in (Streamlit OIDC) and server-side profile storage (Supabase REST).
+"""Optional sign-in (Streamlit OIDC via st.login) and server-side profile storage (Supabase REST).
 
-Credentials live only in .streamlit/secrets.toml — see secrets.toml.example.
-The browser never talks to Supabase: the server derives the row id from the
-verified OIDC issuer + subject, so users cannot read or write each other's rows.
+Credentials live only in Streamlit secrets — see .streamlit/secrets.toml.example and LOGIN_SETUP.md.
+The browser never talks to Supabase: the server derives the row id from the verified
+OIDC issuer + subject, so users cannot read or write each other's rows.
+
+Safety rules:
+  * guests can always play; sign-in problems never block the app;
+  * nothing is written until the saved profile has been read successfully, so a
+    connection failure can never overwrite saved progress with an empty profile;
+  * failed reads are retried with a delay rather than on every click.
 """
 from __future__ import annotations
 
 import hashlib
 import json
+import time
 import urllib.parse
 import urllib.request
 
 import streamlit as st
 
-from .data import AREAS, get_country
+from .data import AREAS, COLLECTIONS, get_country
 from .i18n import LANGUAGES
 
 PROFILE_KEYS = ("profile_name", "profile_photo", "app_language", "scope_mode", "scope_continent",
-                "scope_country", "points", "rounds_finished", "recent", "recent_facts")
+                "scope_country", "scope_collection", "points", "rounds_finished", "recent", "recent_facts",
+                "sound_enabled", "sound_volume")
 SCOPE_MODES = ("All countries", "One continent", "One country")
 PHOTO_PREFIX = "data:image/jpeg;base64,"
 MAX_PHOTO_CHARS = 500_000
 TABLE = "world_explorer_profiles"
+RETRY_SECONDS = 60
+CALLBACK_PATH = "/oauth2callback"
 
 
 def sanitize_profile(values) -> dict:
-    """Keep only well-formed profile fields. Never trust stored data blindly."""
+    """Keep only well-formed profile fields. Unknown keys are ignored and missing keys keep
+    their defaults, so profiles saved by older versions load unchanged."""
     if not isinstance(values, dict):
         return {}
     out = {}
     for key in PROFILE_KEYS:
-        v = values.get(key)
+        if key not in values:
+            continue
+        v = values[key]
         if key in ("points", "rounds_finished"):
             ok = isinstance(v, int) and not isinstance(v, bool) and v >= 0
         elif key in ("recent", "recent_facts"):
@@ -47,6 +60,12 @@ def sanitize_profile(values) -> dict:
             ok = v in SCOPE_MODES
         elif key == "scope_continent":
             ok = v in AREAS
+        elif key == "scope_collection":
+            ok = v in COLLECTIONS
+        elif key == "sound_enabled":
+            ok = isinstance(v, bool)
+        elif key == "sound_volume":
+            ok = isinstance(v, int) and not isinstance(v, bool) and 0 <= v <= 100
         else:  # scope_country
             ok = v == "all" or get_country(v) is not None
         if ok:
@@ -63,11 +82,63 @@ def _secret_section(name) -> dict:
         return {}
 
 
-def provider_ready(name) -> bool:
+def _authlib_ready() -> bool:
+    try:
+        import authlib  # noqa: F401  (installed by streamlit[auth])
+        return True
+    except ImportError:
+        return False
+
+
+def _current_origin() -> str | None:
+    try:
+        url = st.context.url
+    except Exception:
+        return None
+    if not url:
+        return None
+    parsed = urllib.parse.urlparse(url)
+    return f"{parsed.scheme}://{parsed.netloc}" if parsed.scheme and parsed.netloc else None
+
+
+def auth_diagnosis(provider: str | None = None) -> dict:
+    """Explain whether sign-in can work, without revealing any secret.
+
+    Returns {"ok": bool, "problem": code or None, "expected": callback for this address,
+    "configured": configured callback}. The callback URL is not a secret: it is the app's
+    own address and is shown to the owner so it can be registered with Google.
+    """
     auth = _secret_section("auth")
-    provider = auth.get(name) or {}
-    return bool(auth.get("redirect_uri") and auth.get("cookie_secret")
-                and all(provider.get(k) for k in ("client_id", "client_secret", "server_metadata_url")))
+    origin = _current_origin()
+    expected = origin + CALLBACK_PATH if origin else None
+    configured = str(auth.get("redirect_uri", "") or "")
+    result = {"ok": False, "problem": None, "expected": expected, "configured": configured or None}
+    providers = [provider] if provider else ["google", "account"]
+    ready_providers = [p for p in providers if all((auth.get(p) or {}).get(k)
+                                                   for k in ("client_id", "client_secret", "server_metadata_url"))]
+    if not auth or not configured or not auth.get("cookie_secret") or not ready_providers:
+        result["problem"] = "not_configured"
+    elif not _authlib_ready():
+        result["problem"] = "authlib_missing"
+    elif not configured.endswith(CALLBACK_PATH):
+        result["problem"] = "callback_path"
+    else:
+        parsed = urllib.parse.urlparse(configured)
+        local = parsed.hostname in ("localhost", "127.0.0.1")
+        configured_origin = f"{parsed.scheme}://{parsed.netloc}"
+        if parsed.scheme != "https" and not local:
+            result["problem"] = "not_https"
+        else:
+            result["ok"] = True
+            if origin and configured_origin != origin and "{port}" not in configured:
+                # Not blocking (the reported address could differ behind a proxy), but almost
+                # always the cause of Google's "redirect_uri_mismatch" or a failed callback.
+                result["problem"] = "origin_mismatch"
+    return result
+
+
+def provider_ready(name) -> bool:
+    return auth_diagnosis(name)["ok"]
 
 
 def _storage():
@@ -90,7 +161,7 @@ def identity() -> dict | None:
         if not st.user.is_logged_in:
             return None
         claims = dict(st.user)
-    except (AttributeError, KeyError):  # older Streamlit without st.user / auth not configured
+    except Exception:  # auth not configured, or an older Streamlit without st.user
         return None
     issuer, subject = claims.get("iss"), claims.get("sub")
     if not issuer or not subject:
@@ -120,8 +191,24 @@ def _fingerprint() -> str:
     return json.dumps({k: st.session_state.get(k) for k in PROFILE_KEYS}, sort_keys=True)
 
 
-def restore_profile() -> None:
-    """Load the signed-in user's saved profile once per session."""
+def connection_state() -> str:
+    """'guest', 'no_storage', 'loading_failed', 'saved' or 'save_failed'."""
+    who = identity()
+    if not who:
+        return "guest"
+    if not storage_ready():
+        return "no_storage"
+    if st.session_state.get("account_loaded") != who["profile_id"]:
+        return "loading_failed"
+    return "save_failed" if st.session_state.get("profile_save_error") else "saved"
+
+
+def retry_now() -> None:
+    st.session_state.profile_retry_at = 0.0
+
+
+def restore_profile(now: float | None = None) -> None:
+    """Load the signed-in user's saved profile once per session (retrying after failures)."""
     who = identity()
     if not who or st.session_state.get("account_loaded") == who["profile_id"]:
         return
@@ -129,13 +216,20 @@ def restore_profile() -> None:
         st.session_state.profile_name = str(who.get("name", ""))[:40]
     if not storage_ready():
         return
+    now = time.time() if now is None else now
+    if now < st.session_state.get("profile_retry_at", 0.0):
+        return
     try:
         rows = _request(who["profile_id"])
+        if rows is not None and not isinstance(rows, list):
+            raise ValueError("unexpected response")
     except Exception:
         # Never write until a read has succeeded: an outage must not overwrite saved progress.
         st.session_state.profile_save_error = True
+        st.session_state.profile_retry_at = now + RETRY_SECONDS
         return
-    st.session_state.update(sanitize_profile(rows[0]["profile"] if rows else {}))
+    stored = rows[0].get("profile") if rows and isinstance(rows[0], dict) else {}
+    st.session_state.update(sanitize_profile(stored))
     st.session_state.account_loaded = who["profile_id"]
     st.session_state.profile_save_error = False
     st.session_state.profile_saved_fingerprint = _fingerprint() if rows else ""
@@ -157,12 +251,12 @@ def save_profile() -> None:
 
 
 def is_saved_online() -> bool:
-    who = identity()
-    return bool(who and st.session_state.get("account_loaded") == who["profile_id"]
-                and storage_ready() and not st.session_state.get("profile_save_error"))
+    return connection_state() == "saved"
 
 
 def login(provider: str) -> bool:
+    if not provider_ready(provider):
+        return False
     save_profile()
     try:
         st.login(provider)
@@ -173,4 +267,7 @@ def login(provider: str) -> bool:
 
 def logout() -> None:
     save_profile()
-    st.logout()
+    try:
+        st.logout()
+    except Exception:
+        pass

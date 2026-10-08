@@ -1,0 +1,202 @@
+{
+ "about": "Documented corrections and editorial decisions applied on top of mledoze/countries when data/countries.json is built (tools/build_countries.py). Every entry says why. Facts here take precedence over the upstream dataset.",
+ "id_mapping": {
+  "UNK": "XKX"
+ },
+ "id_mapping_reason": "Upstream uses the user-assigned code UNK for Kosovo; XKX is the code widely used by the EU, IMF and others. Flag file data/unk.svg maps to XKX.",
+ "excluded": {
+  "ATA": "Antarctica is a continent governed by the Antarctic Treaty, not a country or territory with a capital.",
+  "ATF": "Mostly uninhabited Antarctic and sub-Antarctic lands with no permanent population or capital.",
+  "BVT": "Uninhabited sub-Antarctic island.",
+  "HMD": "Uninhabited sub-Antarctic islands.",
+  "SGS": "No permanent population; sub-Antarctic.",
+  "UMI": "Scattered, essentially uninhabited islands in the Pacific and Caribbean; no capital and no single continent."
+ },
+ "status_overrides": {
+  "XKX": [
+   "limited_recognition",
+   "Declared independence in 2008; recognised by some UN member states, not a UN member."
+  ],
+  "TWN": [
+   "limited_recognition",
+   "Governed separately; recognised by a small number of states, not a UN member."
+  ],
+  "ESH": [
+   "disputed_territory",
+   "Sovereignty disputed; listed by the UN as a non-self-governing territory."
+  ],
+  "COK": [
+   "associated_state",
+   "Self-governing in free association with New Zealand; not a UN member."
+  ],
+  "NIU": [
+   "associated_state",
+   "Self-governing in free association with New Zealand; not a UN member."
+  ]
+ },
+ "territory_notes": {
+  "FLK": "Sovereignty disputed.",
+  "GIB": "Sovereignty disputed.",
+  "IOT": "Sovereignty disputed.",
+  "MYT": "Sovereignty disputed."
+ },
+ "continents": {
+  "RUS": [
+   "Europe",
+   "Asia"
+  ],
+  "TUR": [
+   "Asia",
+   "Europe"
+  ],
+  "KAZ": [
+   "Asia",
+   "Europe"
+  ],
+  "AZE": [
+   "Asia",
+   "Europe"
+  ],
+  "GEO": [
+   "Asia",
+   "Europe"
+  ],
+  "ARM": [
+   "Asia",
+   "Europe"
+  ],
+  "CYP": [
+   "Europe",
+   "Asia"
+  ],
+  "EGY": [
+   "Africa",
+   "Asia"
+  ],
+  "IDN": [
+   "Asia",
+   "Oceania"
+  ]
+ },
+ "continents_reason": "Transcontinental or classified differently by different sources. Listed under each continent in filters; continent questions are skipped for them.",
+ "capitals": {
+  "ZAF": {
+   "capitals": [
+    {
+     "name": "Pretoria",
+     "role": "administrative capital"
+    },
+    {
+     "name": "Cape Town",
+     "role": "legislative capital"
+    },
+    {
+     "name": "Bloemfontein",
+     "role": "judicial capital"
+    }
+   ],
+   "source": "https://www.gov.za/about-sa/south-africa-glance",
+   "checked_on": "2026-10-08"
+  }
+ },
+ "no_capital_question": {
+  "ISR": "The status of Jerusalem as capital is disputed internationally.",
+  "PSE": "The capital is disputed; Ramallah is the administrative seat.",
+  "ESH": "Sovereignty is disputed.",
+  "NRU": "Nauru has no official capital; Yaren is the seat of government.",
+  "BES": "Each island has its own administrative centre."
+ },
+ "borders": {
+  "LKA": []
+ },
+ "borders_reason": {
+  "LKA": "Sri Lanka is an island with no land borders (upstream lists India, a maritime neighbour)."
+ },
+ "calling_codes": {
+  "ESH": [],
+  "VAT": [],
+  "SJM": []
+ },
+ "calling_codes_reason": "Upstream artefacts: Western Sahara uses Morocco's +212, Vatican City is reached through Italy's +39 (+379 is assigned but unused), Svalbard and Jan Mayen use Norway's +47.",
+ "never_distractor_currencies": [
+  "USD",
+  "EUR"
+ ],
+ "never_distractor_currencies_reason": "Widely used outside the places that list them, so they could be a defensible answer for many countries.",
+ "flag_lookalikes": [
+  [
+   "TCD",
+   "ROU"
+  ],
+  [
+   "IDN",
+   "MCO"
+  ],
+  [
+   "IRL",
+   "CIV"
+  ],
+  [
+   "AUS",
+   "NZL"
+  ],
+  [
+   "NLD",
+   "LUX"
+  ],
+  [
+   "ECU",
+   "COL"
+  ],
+  [
+   "MLI",
+   "GIN"
+  ],
+  [
+   "SEN",
+   "MLI"
+  ],
+  [
+   "NOR",
+   "ISL"
+  ],
+  [
+   "SVN",
+   "SVK"
+  ]
+ ],
+ "flag_lookalikes_reason": "Near-identical or easily confused flags never appear together as answer choices.",
+ "no_currency_question": {
+  "ZWE": "Multi-currency system with recent changes; the upstream list mixes legal tenders and is not reliable enough to quiz.",
+  "ESH": "Currency use differs across the disputed territory."
+ },
+ "languages": {
+  "MDA": [
+   "Romanian"
+  ]
+ },
+ "languages_reason": {
+  "MDA": "Upstream lists 'Moldavian'; Moldova's 2023 constitutional amendment names the state language Romanian."
+ },
+ "global_languages": [
+  "English",
+  "French",
+  "Spanish",
+  "Portuguese",
+  "Arabic",
+  "Russian",
+  "Chinese",
+  "German",
+  "Hindi",
+  "Urdu",
+  "Tamil",
+  "Bengali",
+  "Italian",
+  "Dutch",
+  "Turkish",
+  "Persian",
+  "Swahili",
+  "Malay"
+ ],
+ "global_languages_reason": "Widely spoken far beyond the places that list them (including through diaspora communities), so they are never used as wrong answers in language questions."
+}

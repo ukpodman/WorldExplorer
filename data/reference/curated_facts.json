@@ -1,0 +1,1179 @@
+{
+ "about": "Facts carried over from the earlier 86-country collection: capital roles with sources for countries with split capitals, UNESCO World Heritage sites located in a single country (each linked to its UNESCO page), and a familiarity tier (1 = widely known) used to balance rounds.",
+ "records": {
+  "AFG": {
+   "landmarks": [
+    {
+     "name": "Minaret and Archaeological Remains of Jam",
+     "source": "https://whc.unesco.org/en/list/211/"
+    },
+    {
+     "name": "Cultural Landscape and Archaeological Remains of the Bamiyan Valley",
+     "source": "https://whc.unesco.org/en/list/208/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-08"
+  },
+  "ALB": {
+   "landmarks": [
+    {
+     "name": "Butrint",
+     "source": "https://whc.unesco.org/en/list/570/"
+    },
+    {
+     "name": "Historic Centres of Berat and Gjirokastra",
+     "source": "https://whc.unesco.org/en/list/569/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "AND": {
+   "landmarks": [
+    {
+     "name": "Madriu-Perafita-Claror Valley",
+     "source": "https://whc.unesco.org/en/list/1160/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "ARG": {
+   "landmarks": [
+    {
+     "name": "Los Glaciares National Park",
+     "source": "https://whc.unesco.org/en/list/145/"
+    },
+    {
+     "name": "Iguazu National Park",
+     "source": "https://whc.unesco.org/en/list/303/"
+    },
+    {
+     "name": "Cueva de las Manos, Río Pinturas",
+     "source": "https://whc.unesco.org/en/list/936/"
+    }
+   ],
+   "tier": 1,
+   "checked_on": "2026-10-05"
+  },
+  "AUS": {
+   "landmarks": [
+    {
+     "name": "Kakadu National Park",
+     "source": "https://whc.unesco.org/en/list/147/"
+    },
+    {
+     "name": "Great Barrier Reef",
+     "source": "https://whc.unesco.org/en/list/154/"
+    },
+    {
+     "name": "Willandra Lakes Region",
+     "source": "https://whc.unesco.org/en/list/167/"
+    }
+   ],
+   "tier": 1,
+   "checked_on": "2026-10-05"
+  },
+  "BLZ": {
+   "landmarks": [
+    {
+     "name": "Belize Barrier Reef Reserve System",
+     "source": "https://whc.unesco.org/en/list/764/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "BTN": {
+   "landmarks": [],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "BOL": {
+   "landmarks": [
+    {
+     "name": "City of Potosí",
+     "source": "https://whc.unesco.org/en/list/420/"
+    },
+    {
+     "name": "Jesuit Missions of the Chiquitos",
+     "source": "https://whc.unesco.org/en/list/529/"
+    },
+    {
+     "name": "Historic City of Sucre",
+     "source": "https://whc.unesco.org/en/list/566/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05",
+   "capitals": [
+    {
+     "name": "Sucre",
+     "role": "constitutional capital"
+    },
+    {
+     "name": "La Paz",
+     "role": "seat of government"
+    }
+   ],
+   "capital_source": "https://tcpbolivia.bo/2026/07/12/"
+  },
+  "BWA": {
+   "landmarks": [
+    {
+     "name": "Tsodilo",
+     "source": "https://whc.unesco.org/en/list/1021/"
+    },
+    {
+     "name": "Okavango Delta",
+     "source": "https://whc.unesco.org/en/list/1432/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "BRA": {
+   "landmarks": [
+    {
+     "name": "Historic Town of Ouro Preto",
+     "source": "https://whc.unesco.org/en/list/124/"
+    },
+    {
+     "name": "Historic Centre of the Town of Olinda",
+     "source": "https://whc.unesco.org/en/list/189/"
+    },
+    {
+     "name": "Historic Centre of Salvador de Bahia",
+     "source": "https://whc.unesco.org/en/list/309/"
+    }
+   ],
+   "tier": 1,
+   "checked_on": "2026-10-05"
+  },
+  "KHM": {
+   "landmarks": [
+    {
+     "name": "Angkor",
+     "source": "https://whc.unesco.org/en/list/668/"
+    },
+    {
+     "name": "Temple of Preah Vihear",
+     "source": "https://whc.unesco.org/en/list/1224/"
+    },
+    {
+     "name": "Temple Zone of Sambor Prei Kuk, Archaeological Site of Ancient Ishanapura",
+     "source": "https://whc.unesco.org/en/list/1532/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "CAN": {
+   "landmarks": [
+    {
+     "name": "L’Anse aux Meadows National Historic Site",
+     "source": "https://whc.unesco.org/en/list/4/"
+    },
+    {
+     "name": "Nahanni National Park",
+     "source": "https://whc.unesco.org/en/list/24/"
+    },
+    {
+     "name": "Dinosaur Provincial Park",
+     "source": "https://whc.unesco.org/en/list/71/"
+    }
+   ],
+   "tier": 1,
+   "checked_on": "2026-10-05"
+  },
+  "CPV": {
+   "landmarks": [
+    {
+     "name": "Cidade Velha, Historic Centre of Ribeira Grande",
+     "source": "https://whc.unesco.org/en/list/1310/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "CHL": {
+   "landmarks": [
+    {
+     "name": "Rapa Nui National Park",
+     "source": "https://whc.unesco.org/en/list/715/"
+    },
+    {
+     "name": "Churches of Chiloé",
+     "source": "https://whc.unesco.org/en/list/971/"
+    },
+    {
+     "name": "Historic Quarter of the Seaport City of Valparaíso",
+     "source": "https://whc.unesco.org/en/list/959/"
+    }
+   ],
+   "tier": 2,
+   "checked_on": "2026-10-05"
+  },
+  "CHN": {
+   "landmarks": [
+    {
+     "name": "Mount Taishan",
+     "source": "https://whc.unesco.org/en/list/437/"
+    },
+    {
+     "name": "The Great Wall",
+     "source": "https://whc.unesco.org/en/list/438/"
+    },
+    {
+     "name": "Imperial Palaces of the Ming and Qing Dynasties in Beijing and Shenyang",
+     "source": "https://whc.unesco.org/en/list/439/"
+    }
+   ],
+   "tier": 1,
+   "checked_on": "2026-10-05"
+  },
+  "COL": {
+   "landmarks": [
+    {
+     "name": "Port, Fortresses and Group of Monuments, Cartagena",
+     "source": "https://whc.unesco.org/en/list/285/"
+    },
+    {
+     "name": "Los Katíos National Park",
+     "source": "https://whc.unesco.org/en/list/711/"
+    },
+    {
+     "name": "Historic Centre of Santa Cruz de Mompox",
+     "source": "https://whc.unesco.org/en/list/742/"
+    }
+   ],
+   "tier": 2,
+   "checked_on": "2026-10-05"
+  },
+  "COM": {
+   "landmarks": [
+    {
+     "name": "The Medinas of the Historic Sultanates of the Comoros",
+     "source": "https://whc.unesco.org/en/list/1768/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "CRI": {
+   "landmarks": [
+    {
+     "name": "Cocos Island National Park",
+     "source": "https://whc.unesco.org/en/list/820/"
+    },
+    {
+     "name": "Area de Conservación Guanacaste",
+     "source": "https://whc.unesco.org/en/list/928/"
+    },
+    {
+     "name": "Precolumbian Chiefdom Settlements with Stone Spheres of the Diquís",
+     "source": "https://whc.unesco.org/en/list/1453/"
+    }
+   ],
+   "tier": 2,
+   "checked_on": "2026-10-05"
+  },
+  "CUB": {
+   "landmarks": [
+    {
+     "name": "Old Havana and its Fortification System",
+     "source": "https://whc.unesco.org/en/list/204/"
+    },
+    {
+     "name": "Trinidad and the Valley de los Ingenios",
+     "source": "https://whc.unesco.org/en/list/460/"
+    },
+    {
+     "name": "San Pedro de la Roca Castle, Santiago de Cuba",
+     "source": "https://whc.unesco.org/en/list/841/"
+    }
+   ],
+   "tier": 2,
+   "checked_on": "2026-10-05"
+  },
+  "DMA": {
+   "landmarks": [
+    {
+     "name": "Morne Trois Pitons National Park",
+     "source": "https://whc.unesco.org/en/list/814/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "EGY": {
+   "landmarks": [
+    {
+     "name": "Memphis and its Necropolis – the Pyramid Fields from Giza to Dahshur",
+     "source": "https://whc.unesco.org/en/list/86/"
+    },
+    {
+     "name": "Ancient Thebes with its Necropolis",
+     "source": "https://whc.unesco.org/en/list/87/"
+    },
+    {
+     "name": "Nubian Monuments from Abu Simbel to Philae",
+     "source": "https://whc.unesco.org/en/list/88/"
+    }
+   ],
+   "tier": 1,
+   "checked_on": "2026-10-05"
+  },
+  "EST": {
+   "landmarks": [
+    {
+     "name": "Historic Centre (Old Town) of Tallinn",
+     "source": "https://whc.unesco.org/en/list/822/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "SWZ": {
+   "landmarks": [],
+   "tier": 3,
+   "checked_on": "2026-10-05",
+   "capitals": [
+    {
+     "name": "Mbabane",
+     "role": "administrative capital"
+    },
+    {
+     "name": "Lobamba",
+     "role": "royal and legislative capital"
+    }
+   ],
+   "capital_source": "https://www.sadc.int/member-states/kingdom-eswatini"
+  },
+  "FJI": {
+   "landmarks": [
+    {
+     "name": "Levuka Historical Port Town",
+     "source": "https://whc.unesco.org/en/list/1399/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "FRA": {
+   "landmarks": [
+    {
+     "name": "Mont-Saint-Michel and its Bay",
+     "source": "https://whc.unesco.org/en/list/80/"
+    },
+    {
+     "name": "Chartres Cathedral",
+     "source": "https://whc.unesco.org/en/list/81/"
+    },
+    {
+     "name": "Palace and Park of Versailles",
+     "source": "https://whc.unesco.org/en/list/83/"
+    }
+   ],
+   "tier": 1,
+   "checked_on": "2026-10-05"
+  },
+  "DEU": {
+   "landmarks": [
+    {
+     "name": "Aachen Cathedral",
+     "source": "https://whc.unesco.org/en/list/3/"
+    },
+    {
+     "name": "Speyer Cathedral",
+     "source": "https://whc.unesco.org/en/list/168/"
+    },
+    {
+     "name": "Würzburg Residence with the Court Gardens and Residence Square",
+     "source": "https://whc.unesco.org/en/list/169/"
+    }
+   ],
+   "tier": 1,
+   "checked_on": "2026-10-05"
+  },
+  "GHA": {
+   "landmarks": [
+    {
+     "name": "Forts and Castles, Volta, Greater Accra, Central and Western Regions",
+     "source": "https://whc.unesco.org/en/list/34/"
+    },
+    {
+     "name": "Asante Traditional Buildings",
+     "source": "https://whc.unesco.org/en/list/35/"
+    }
+   ],
+   "tier": 2,
+   "checked_on": "2026-10-05"
+  },
+  "GRD": {
+   "landmarks": [],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "GTM": {
+   "landmarks": [
+    {
+     "name": "Tikal National Park",
+     "source": "https://whc.unesco.org/en/list/64/"
+    },
+    {
+     "name": "Antigua Guatemala",
+     "source": "https://whc.unesco.org/en/list/65/"
+    },
+    {
+     "name": "Archaeological Park and Ruins of Quirigua",
+     "source": "https://whc.unesco.org/en/list/149/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "GUY": {
+   "landmarks": [],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "HND": {
+   "landmarks": [
+    {
+     "name": "Maya Site of Copan",
+     "source": "https://whc.unesco.org/en/list/129/"
+    },
+    {
+     "name": "Río Plátano Biosphere Reserve",
+     "source": "https://whc.unesco.org/en/list/196/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "IND": {
+   "landmarks": [
+    {
+     "name": "Ajanta Caves",
+     "source": "https://whc.unesco.org/en/list/242/"
+    },
+    {
+     "name": "Ellora Caves",
+     "source": "https://whc.unesco.org/en/list/243/"
+    },
+    {
+     "name": "Agra Fort",
+     "source": "https://whc.unesco.org/en/list/251/"
+    }
+   ],
+   "tier": 1,
+   "checked_on": "2026-10-05"
+  },
+  "ITA": {
+   "landmarks": [
+    {
+     "name": "Rock Drawings in Valcamonica",
+     "source": "https://whc.unesco.org/en/list/94/"
+    },
+    {
+     "name": "Church and Dominican Convent of Santa Maria delle Grazie with “The Last Supper” by Leonardo da Vinci",
+     "source": "https://whc.unesco.org/en/list/93/"
+    },
+    {
+     "name": "Historic Centre of Florence",
+     "source": "https://whc.unesco.org/en/list/174/"
+    }
+   ],
+   "tier": 1,
+   "checked_on": "2026-10-05"
+  },
+  "JAM": {
+   "landmarks": [
+    {
+     "name": "Blue and John Crow Mountains",
+     "source": "https://whc.unesco.org/en/list/1356/"
+    },
+    {
+     "name": "The Archaeological Ensemble of 17th Century Port Royal",
+     "source": "https://whc.unesco.org/en/list/1595/"
+    }
+   ],
+   "tier": 2,
+   "checked_on": "2026-10-05"
+  },
+  "JPN": {
+   "landmarks": [
+    {
+     "name": "Buddhist Monuments in the Horyu-ji Area",
+     "source": "https://whc.unesco.org/en/list/660/"
+    },
+    {
+     "name": "Himeji-jo",
+     "source": "https://whc.unesco.org/en/list/661/"
+    },
+    {
+     "name": "Yakushima",
+     "source": "https://whc.unesco.org/en/list/662/"
+    }
+   ],
+   "tier": 1,
+   "checked_on": "2026-10-05"
+  },
+  "KEN": {
+   "landmarks": [
+    {
+     "name": "Mount Kenya National Park/Natural Forest",
+     "source": "https://whc.unesco.org/en/list/800/"
+    },
+    {
+     "name": "Lake Turkana National Parks",
+     "source": "https://whc.unesco.org/en/list/801/"
+    },
+    {
+     "name": "Lamu Old Town",
+     "source": "https://whc.unesco.org/en/list/1055/"
+    }
+   ],
+   "tier": 2,
+   "checked_on": "2026-10-05"
+  },
+  "KIR": {
+   "landmarks": [
+    {
+     "name": "Phoenix Islands Protected Area",
+     "source": "https://whc.unesco.org/en/list/1325/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "LAO": {
+   "landmarks": [
+    {
+     "name": "Town of Luang Prabang",
+     "source": "https://whc.unesco.org/en/list/479/"
+    },
+    {
+     "name": "Vat Phou and Associated Ancient Settlements within the Champasak Cultural Landscape",
+     "source": "https://whc.unesco.org/en/list/481/"
+    },
+    {
+     "name": "Megalithic Jar Sites in Xiengkhuang – Plain of Jars",
+     "source": "https://whc.unesco.org/en/list/1587/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "LVA": {
+   "landmarks": [
+    {
+     "name": "Historic Centre of Riga",
+     "source": "https://whc.unesco.org/en/list/852/"
+    },
+    {
+     "name": "Old town of Kuldīga",
+     "source": "https://whc.unesco.org/en/list/1658/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "LSO": {
+   "landmarks": [],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "LIE": {
+   "landmarks": [],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "LTU": {
+   "landmarks": [
+    {
+     "name": "Vilnius Historic Centre",
+     "source": "https://whc.unesco.org/en/list/541/"
+    },
+    {
+     "name": "Kernavė Archaeological Site (Cultural Reserve of Kernavė)",
+     "source": "https://whc.unesco.org/en/list/1137/"
+    },
+    {
+     "name": "Modernist Kaunas: Architecture of Optimism, 1919-1939",
+     "source": "https://whc.unesco.org/en/list/1661/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "LUX": {
+   "landmarks": [
+    {
+     "name": "City of Luxembourg: its Old Quarters and Fortifications",
+     "source": "https://whc.unesco.org/en/list/699/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "MDG": {
+   "landmarks": [
+    {
+     "name": "Andrefana Dry Forests",
+     "source": "https://whc.unesco.org/en/list/494/"
+    },
+    {
+     "name": "Royal Hill of Ambohimanga",
+     "source": "https://whc.unesco.org/en/list/950/"
+    },
+    {
+     "name": "Rainforests of the Atsinanana",
+     "source": "https://whc.unesco.org/en/list/1257/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "MDV": {
+   "landmarks": [],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "MLT": {
+   "landmarks": [
+    {
+     "name": "Ħal Saflieni Hypogeum",
+     "source": "https://whc.unesco.org/en/list/130/"
+    },
+    {
+     "name": "City of Valletta",
+     "source": "https://whc.unesco.org/en/list/131/"
+    },
+    {
+     "name": "Megalithic Temples of Malta",
+     "source": "https://whc.unesco.org/en/list/132/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "MHL": {
+   "landmarks": [
+    {
+     "name": "Bikini Atoll Nuclear Test Site",
+     "source": "https://whc.unesco.org/en/list/1339/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "MUS": {
+   "landmarks": [
+    {
+     "name": "Aapravasi Ghat",
+     "source": "https://whc.unesco.org/en/list/1227/"
+    },
+    {
+     "name": "Le Morne Cultural Landscape",
+     "source": "https://whc.unesco.org/en/list/1259/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "MEX": {
+   "landmarks": [
+    {
+     "name": "Sian Ka'an",
+     "source": "https://whc.unesco.org/en/list/410/"
+    },
+    {
+     "name": "Pre-Hispanic City and National Park of Palenque",
+     "source": "https://whc.unesco.org/en/list/411/"
+    },
+    {
+     "name": "Historic Centre of Mexico City and Xochimilco",
+     "source": "https://whc.unesco.org/en/list/412/"
+    }
+   ],
+   "tier": 1,
+   "checked_on": "2026-10-05"
+  },
+  "FSM": {
+   "landmarks": [
+    {
+     "name": "Nan Madol: Ceremonial Centre of Eastern Micronesia",
+     "source": "https://whc.unesco.org/en/list/1503/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "MDA": {
+   "landmarks": [],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "MNG": {
+   "landmarks": [
+    {
+     "name": "Orkhon Valley Cultural Landscape",
+     "source": "https://whc.unesco.org/en/list/1081/"
+    },
+    {
+     "name": "Petroglyphic Complexes of the Mongolian Altai",
+     "source": "https://whc.unesco.org/en/list/1382/"
+    },
+    {
+     "name": "Great Burkhan Khaldun Mountain and its surrounding sacred landscape",
+     "source": "https://whc.unesco.org/en/list/1440/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "NAM": {
+   "landmarks": [
+    {
+     "name": "Twyfelfontein or /Ui-//aes",
+     "source": "https://whc.unesco.org/en/list/1255/"
+    },
+    {
+     "name": "Namib Sand Sea",
+     "source": "https://whc.unesco.org/en/list/1430/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "NPL": {
+   "landmarks": [
+    {
+     "name": "Sagarmatha National Park",
+     "source": "https://whc.unesco.org/en/list/120/"
+    },
+    {
+     "name": "Kathmandu Valley",
+     "source": "https://whc.unesco.org/en/list/121/"
+    },
+    {
+     "name": "Chitwan National Park",
+     "source": "https://whc.unesco.org/en/list/284/"
+    }
+   ],
+   "tier": 2,
+   "checked_on": "2026-10-05"
+  },
+  "NZL": {
+   "landmarks": [
+    {
+     "name": "Tongariro National Park",
+     "source": "https://whc.unesco.org/en/list/421/"
+    },
+    {
+     "name": "Te Wahipounamu – South West New Zealand",
+     "source": "https://whc.unesco.org/en/list/551/"
+    },
+    {
+     "name": "New Zealand Sub-Antarctic Islands",
+     "source": "https://whc.unesco.org/en/list/877/"
+    }
+   ],
+   "tier": 2,
+   "checked_on": "2026-10-05"
+  },
+  "NIC": {
+   "landmarks": [
+    {
+     "name": "Ruins of León Viejo",
+     "source": "https://whc.unesco.org/en/list/613/"
+    },
+    {
+     "name": "León Cathedral",
+     "source": "https://whc.unesco.org/en/list/1236/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "NGA": {
+   "landmarks": [
+    {
+     "name": "Sukur Cultural Landscape",
+     "source": "https://whc.unesco.org/en/list/938/"
+    },
+    {
+     "name": "Osun-Osogbo Sacred Grove",
+     "source": "https://whc.unesco.org/en/list/1118/"
+    }
+   ],
+   "tier": 1,
+   "checked_on": "2026-10-05"
+  },
+  "MKD": {
+   "landmarks": [],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "PAK": {
+   "landmarks": [
+    {
+     "name": "Archaeological Ruins at Moenjodaro",
+     "source": "https://whc.unesco.org/en/list/138/"
+    },
+    {
+     "name": "Taxila",
+     "source": "https://whc.unesco.org/en/list/139/"
+    },
+    {
+     "name": "Buddhist Ruins of Takht-i-Bahi and Neighbouring City Remains at Sahr-i-Bahlol",
+     "source": "https://whc.unesco.org/en/list/140/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-08"
+  },
+  "PLW": {
+   "landmarks": [
+    {
+     "name": "Rock Islands Southern Lagoon",
+     "source": "https://whc.unesco.org/en/list/1386/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "PNG": {
+   "landmarks": [
+    {
+     "name": "Kuk Early Agricultural Site",
+     "source": "https://whc.unesco.org/en/list/887/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "PRY": {
+   "landmarks": [
+    {
+     "name": "Jesuit Missions of La Santísima Trinidad de Paraná and Jesús de Tavarangue",
+     "source": "https://whc.unesco.org/en/list/648/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "PER": {
+   "landmarks": [
+    {
+     "name": "City of Cuzco",
+     "source": "https://whc.unesco.org/en/list/273/"
+    },
+    {
+     "name": "Historic Sanctuary of Machu Picchu",
+     "source": "https://whc.unesco.org/en/list/274/"
+    },
+    {
+     "name": "Chavin (Archaeological Site)",
+     "source": "https://whc.unesco.org/en/list/330/"
+    }
+   ],
+   "tier": 2,
+   "checked_on": "2026-10-05"
+  },
+  "PRT": {
+   "landmarks": [
+    {
+     "name": "Central Zone of the Town of Angra do Heroismo in the Azores",
+     "source": "https://whc.unesco.org/en/list/206/"
+    },
+    {
+     "name": "Monastery of the Hieronymites and Tower of Belém in Lisbon",
+     "source": "https://whc.unesco.org/en/list/263/"
+    },
+    {
+     "name": "Monastery of Batalha",
+     "source": "https://whc.unesco.org/en/list/264/"
+    }
+   ],
+   "tier": 2,
+   "checked_on": "2026-10-05"
+  },
+  "KNA": {
+   "landmarks": [
+    {
+     "name": "Brimstone Hill Fortress National Park",
+     "source": "https://whc.unesco.org/en/list/910/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "LCA": {
+   "landmarks": [
+    {
+     "name": "Pitons Management Area",
+     "source": "https://whc.unesco.org/en/list/1161/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "VCT": {
+   "landmarks": [],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "WSM": {
+   "landmarks": [],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "SMR": {
+   "landmarks": [
+    {
+     "name": "San Marino Historic Centre and Mount Titano",
+     "source": "https://whc.unesco.org/en/list/1245/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "SEN": {
+   "landmarks": [
+    {
+     "name": "Island of Gorée",
+     "source": "https://whc.unesco.org/en/list/26/"
+    },
+    {
+     "name": "Djoudj National Bird Sanctuary",
+     "source": "https://whc.unesco.org/en/list/25/"
+    },
+    {
+     "name": "Niokolo-Koba National Park",
+     "source": "https://whc.unesco.org/en/list/153/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "SYC": {
+   "landmarks": [
+    {
+     "name": "Aldabra Atoll",
+     "source": "https://whc.unesco.org/en/list/185/"
+    },
+    {
+     "name": "Vallée de Mai Nature Reserve",
+     "source": "https://whc.unesco.org/en/list/261/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "SVN": {
+   "landmarks": [
+    {
+     "name": "Škocjan Caves",
+     "source": "https://whc.unesco.org/en/list/390/"
+    },
+    {
+     "name": "The works of Jože Plečnik in Ljubljana – Human Centred Urban Design",
+     "source": "https://whc.unesco.org/en/list/1643/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "SLB": {
+   "landmarks": [
+    {
+     "name": "East Rennell",
+     "source": "https://whc.unesco.org/en/list/854/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "ESP": {
+   "landmarks": [
+    {
+     "name": "Historic Centre of Cordoba",
+     "source": "https://whc.unesco.org/en/list/313/"
+    },
+    {
+     "name": "Alhambra, Generalife and Albayzín, Granada",
+     "source": "https://whc.unesco.org/en/list/314/"
+    },
+    {
+     "name": "Burgos Cathedral",
+     "source": "https://whc.unesco.org/en/list/316/"
+    }
+   ],
+   "tier": 1,
+   "checked_on": "2026-10-05"
+  },
+  "LKA": {
+   "landmarks": [
+    {
+     "name": "Sacred City of Anuradhapura",
+     "source": "https://whc.unesco.org/en/list/200/"
+    },
+    {
+     "name": "Ancient City of Polonnaruwa",
+     "source": "https://whc.unesco.org/en/list/201/"
+    },
+    {
+     "name": "Ancient City of Sigiriya",
+     "source": "https://whc.unesco.org/en/list/202/"
+    }
+   ],
+   "tier": 2,
+   "checked_on": "2026-10-05",
+   "capitals": [
+    {
+     "name": "Sri Jayewardenepura Kotte",
+     "role": "administrative capital"
+    },
+    {
+     "name": "Colombo",
+     "role": "commercial capital"
+    }
+   ],
+   "capital_source": "https://www.mfa.gov.lk/en/national-profile-and-geography"
+  },
+  "SUR": {
+   "landmarks": [
+    {
+     "name": "Central Suriname Nature Reserve",
+     "source": "https://whc.unesco.org/en/list/1017/"
+    },
+    {
+     "name": "Historic Inner City of Paramaribo",
+     "source": "https://whc.unesco.org/en/list/940/"
+    },
+    {
+     "name": "Jodensavanne Archaeological Site: Jodensavanne Settlement and Cassipora Creek Cemetery",
+     "source": "https://whc.unesco.org/en/list/1680/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "STP": {
+   "landmarks": [
+    {
+     "name": "The Roças of Sao Tome and Principe: Colonial Agricultural System and Forced Migration",
+     "source": "https://whc.unesco.org/en/list/1750/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "THA": {
+   "landmarks": [
+    {
+     "name": "Historic Town of Sukhothai and Associated Historic Towns",
+     "source": "https://whc.unesco.org/en/list/574/"
+    },
+    {
+     "name": "Historic City of Ayutthaya",
+     "source": "https://whc.unesco.org/en/list/576/"
+    },
+    {
+     "name": "Thungyai-Huai Kha Khaeng Wildlife Sanctuaries",
+     "source": "https://whc.unesco.org/en/list/591/"
+    }
+   ],
+   "tier": 2,
+   "checked_on": "2026-10-05"
+  },
+  "TLS": {
+   "landmarks": [],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "TON": {
+   "landmarks": [],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "TTO": {
+   "landmarks": [],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "TUV": {
+   "landmarks": [],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "USA": {
+   "landmarks": [
+    {
+     "name": "Mesa Verde National Park",
+     "source": "https://whc.unesco.org/en/list/27/"
+    },
+    {
+     "name": "Yellowstone National Park",
+     "source": "https://whc.unesco.org/en/list/28/"
+    },
+    {
+     "name": "Grand Canyon National Park",
+     "source": "https://whc.unesco.org/en/list/75/"
+    }
+   ],
+   "tier": 1,
+   "checked_on": "2026-10-05"
+  },
+  "URY": {
+   "landmarks": [
+    {
+     "name": "Historic Quarter of the City of Colonia del Sacramento",
+     "source": "https://whc.unesco.org/en/list/747/"
+    },
+    {
+     "name": "Fray Bentos Industrial Landscape",
+     "source": "https://whc.unesco.org/en/list/1464/"
+    },
+    {
+     "name": "The work of engineer Eladio Dieste: Church of Atlántida",
+     "source": "https://whc.unesco.org/en/list/1612/"
+    }
+   ],
+   "tier": 2,
+   "checked_on": "2026-10-05"
+  },
+  "VUT": {
+   "landmarks": [
+    {
+     "name": "Chief Roi Mata’s Domain",
+     "source": "https://whc.unesco.org/en/list/1280/"
+    }
+   ],
+   "tier": 3,
+   "checked_on": "2026-10-05"
+  },
+  "VNM": {
+   "landmarks": [
+    {
+     "name": "Complex of Hué Monuments",
+     "source": "https://whc.unesco.org/en/list/678/"
+    },
+    {
+     "name": "Ha Long Bay - Cat Ba Archipelago",
+     "source": "https://whc.unesco.org/en/list/672/"
+    },
+    {
+     "name": "Hoi An Ancient Town",
+     "source": "https://whc.unesco.org/en/list/948/"
+    }
+   ],
+   "tier": 2,
+   "checked_on": "2026-10-05"
+  }
+ }
+}

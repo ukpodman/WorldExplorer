@@ -1125,6 +1125,511 @@
    "15 Sekunden pro Frage bei Experte, sonst 20 Sekunden.",
    "15 segundos por pregunta en Experto; 20 en los demás niveles.",
    "专家难度每题15秒，其他难度20秒。"
+  ],
+  "{n} places": [
+   "{n} Orte",
+   "{n} lugares",
+   "{n}个地方"
+  ],
+  "All answers": [
+   "Alle Antworten",
+   "Todas las respuestas",
+   "全部答案"
+  ],
+  "All countries and territories": [
+   "Alle Länder und Gebiete",
+   "Todos los países y territorios",
+   "所有国家和地区"
+  ],
+  "All statuses": [
+   "Alle Status",
+   "Todos los estatus",
+   "所有类别"
+  ],
+  "Associated state": [
+   "Assoziierter Staat",
+   "Estado asociado",
+   "自由联系国"
+  ],
+  "Australia and New Zealand": [
+   "Australien und Neuseeland",
+   "Australia y Nueva Zelanda",
+   "澳大利亚和新西兰"
+  ],
+  "Callback address currently configured:": [
+   "Derzeit konfigurierte Rückleitungsadresse:",
+   "Dirección de retorno configurada actualmente:",
+   "当前配置的回调地址："
+  ],
+  "Callback address for this app:": [
+   "Rückleitungsadresse für diese App:",
+   "Dirección de retorno de esta aplicación:",
+   "本应用的回调地址："
+  ],
+  "Capitals, flags, currencies, languages and more.": [
+   "Hauptstädte, Flaggen, Währungen, Sprachen und mehr.",
+   "Capitales, banderas, monedas, idiomas y más.",
+   "首都、国旗、货币、语言等等。"
+  ],
+  "Caribbean": [
+   "Karibik",
+   "Caribe",
+   "加勒比"
+  ],
+  "Central America": [
+   "Mittelamerika",
+   "Centroamérica",
+   "中美洲"
+  ],
+  "Central Asia": [
+   "Zentralasien",
+   "Asia Central",
+   "中亚"
+  ],
+  "Central Europe": [
+   "Mitteleuropa",
+   "Europa Central",
+   "中欧"
+  ],
+  "Country names are translated; capitals, currencies and languages keep the dataset spelling.": [
+   "Ländernamen werden übersetzt; Hauptstädte, Währungen und Sprachen behalten die Schreibweise des Datensatzes.",
+   "Los nombres de países se traducen; capitales, monedas e idiomas conservan la grafía del conjunto de datos.",
+   "国家名称已翻译；首都、货币和语言保留数据集中的拼写。"
+  ],
+  "Currency use differs across the disputed territory.": [
+   "Die Währungsnutzung unterscheidet sich im umstrittenen Gebiet.",
+   "El uso de moneda varía dentro del territorio en disputa.",
+   "该争议地区各地使用的货币不同。"
+  ],
+  "Dataset version {date}": [
+   "Datenstand {date}",
+   "Versión de los datos: {date}",
+   "数据版本 {date}"
+  ],
+  "Declared independence in 2008; recognised by some UN member states, not a UN member.": [
+   "Erklärte 2008 die Unabhängigkeit; von einigen UN-Mitgliedstaaten anerkannt, kein UN-Mitglied.",
+   "Declaró su independencia en 2008; reconocido por algunos Estados miembros de la ONU, no es miembro de la ONU.",
+   "2008年宣布独立；获部分联合国会员国承认，并非联合国会员国。"
+  ],
+  "Disputed territory": [
+   "Umstrittenes Gebiet",
+   "Territorio en disputa",
+   "争议地区"
+  ],
+  "Each island has its own administrative centre.": [
+   "Jede Insel hat ihr eigenes Verwaltungszentrum.",
+   "Cada isla tiene su propio centro administrativo.",
+   "每个岛屿都有各自的行政中心。"
+  ],
+  "Eastern Africa": [
+   "Ostafrika",
+   "África Oriental",
+   "东非"
+  ],
+  "Eastern Asia": [
+   "Ostasien",
+   "Asia Oriental",
+   "东亚"
+  ],
+  "Eastern Europe": [
+   "Osteuropa",
+   "Europa Oriental",
+   "东欧"
+  ],
+  "Flag of {name}": [
+   "Flagge von {name}",
+   "Bandera de {name}",
+   "{name}国旗"
+  ],
+  "Flag questions show an image. Turn them off if you use a screen reader.": [
+   "Flaggenfragen zeigen ein Bild. Schalte sie aus, wenn du einen Screenreader nutzt.",
+   "Las preguntas de banderas muestran una imagen. Desactívalas si usas un lector de pantalla.",
+   "国旗题会显示图片。如使用读屏软件，可关闭此类题目。"
+  ],
+  "Flag to identify. No text description is available for flag images.": [
+   "Zu erkennende Flagge. Für Flaggenbilder gibt es keine Textbeschreibung.",
+   "Bandera que identificar. No hay descripción en texto para las imágenes de banderas.",
+   "待识别的国旗。国旗图片暂无文字描述。"
+  ],
+  "Flags": [
+   "Flaggen",
+   "Banderas",
+   "国旗"
+  ],
+  "Go beyond the familiar. Challenge yourself on capitals, flags, currencies, languages and the places in between.": [
+   "Geh über das Bekannte hinaus. Teste dich bei Hauptstädten, Flaggen, Währungen, Sprachen und allem dazwischen.",
+   "Ve más allá de lo conocido. Ponte a prueba con capitales, banderas, monedas, idiomas y los lugares intermedios.",
+   "超越熟悉的范围，挑战首都、国旗、货币、语言以及更多地方。"
+  ],
+  "Governed separately; recognised by a small number of states, not a UN member.": [
+   "Eigenständig regiert; von wenigen Staaten anerkannt, kein UN-Mitglied.",
+   "Gobernado por separado; reconocido por un pequeño número de Estados, no es miembro de la ONU.",
+   "单独治理；获少数国家承认，并非联合国会员国。"
+  ],
+  "If Google shows “Error 400: redirect_uri_mismatch”, the configured callback address is not registered on the Google OAuth client. Add exactly the address above under Authorized redirect URIs. This is fixed in Google Cloud and the app's secrets, not in the code. See LOGIN_SETUP.md.": [
+   "Wenn Google „Error 400: redirect_uri_mismatch“ anzeigt, ist die konfigurierte Rückleitungsadresse beim Google-OAuth-Client nicht eingetragen. Trage genau die obige Adresse unter „Autorisierte Weiterleitungs-URIs“ ein. Das wird in Google Cloud und in den Secrets der App behoben, nicht im Code. Siehe LOGIN_SETUP.md.",
+   "Si Google muestra «Error 400: redirect_uri_mismatch», la dirección de retorno configurada no está registrada en el cliente OAuth de Google. Añade exactamente la dirección anterior en «URI de redireccionamiento autorizados». Se corrige en Google Cloud y en los secretos de la aplicación, no en el código. Consulta LOGIN_SETUP.md.",
+   "如果 Google 显示“Error 400: redirect_uri_mismatch”，说明所配置的回调地址未在 Google OAuth 客户端中登记。请将上面的地址原样添加到“已获授权的重定向 URI”。此问题需在 Google Cloud 和应用的密钥设置中修复，而不是在代码中。详见 LOGIN_SETUP.md。"
+  ],
+  "Include flag questions": [
+   "Flaggenfragen einbeziehen",
+   "Incluir preguntas de banderas",
+   "包含国旗题"
+  ],
+  "Latest changes not saved online yet": [
+   "Letzte Änderungen noch nicht online gespeichert",
+   "Los últimos cambios aún no se han guardado en línea",
+   "最新更改尚未在线保存"
+  ],
+  "Learn about {name}": [
+   "Mehr über {name}",
+   "Conocer {name}",
+   "了解{name}"
+  ],
+  "Limited recognition": [
+   "Eingeschränkt anerkannt",
+   "Reconocimiento limitado",
+   "有限承认"
+  ],
+  "Melanesia": [
+   "Melanesien",
+   "Melanesia",
+   "美拉尼西亚"
+  ],
+  "Micronesia": [
+   "Mikronesien",
+   "Micronesia",
+   "密克罗尼西亚"
+  ],
+  "Middle Africa": [
+   "Zentralafrika",
+   "África Central",
+   "中部非洲"
+  ],
+  "Missed only": [
+   "Nur verpasste",
+   "Solo falladas",
+   "仅看答错"
+  ],
+  "Multi-currency system with recent changes; the upstream list mixes legal tenders and is not reliable enough to quiz.": [
+   "Mehrwährungssystem mit jüngsten Änderungen; die Quellliste mischt gesetzliche Zahlungsmittel und ist für das Quiz nicht verlässlich genug.",
+   "Sistema multimoneda con cambios recientes; la lista de origen mezcla monedas de curso legal y no es lo bastante fiable para el cuestionario.",
+   "多货币体系且近期有变化；源数据混合了多种法定货币，不足以可靠出题。"
+  ],
+  "Nauru has no official capital; Yaren is the seat of government.": [
+   "Nauru hat keine offizielle Hauptstadt; Yaren ist Regierungssitz.",
+   "Nauru no tiene capital oficial; Yaren es la sede del gobierno.",
+   "瑙鲁没有官方首都；亚伦是政府所在地。"
+  ],
+  "No capital listed": [
+   "Keine Hauptstadt angegeben",
+   "Sin capital indicada",
+   "未列出首都"
+  ],
+  "No land borders with other places in this collection.": [
+   "Keine Landgrenzen zu anderen Orten in dieser Sammlung.",
+   "Sin fronteras terrestres con otros lugares de esta colección.",
+   "与本合集中的其他地方没有陆地边界。"
+  ],
+  "No missed answers in this round — well done.": [
+   "Keine verpassten Antworten in dieser Runde – gut gemacht.",
+   "Ninguna respuesta fallada en esta ronda: ¡bien hecho!",
+   "本轮没有答错的题目——做得好。"
+  ],
+  "Northern Africa": [
+   "Nordafrika",
+   "África del Norte",
+   "北非"
+  ],
+  "Northern Europe": [
+   "Nordeuropa",
+   "Europa del Norte",
+   "北欧"
+  ],
+  "Not quite.": [
+   "Nicht ganz.",
+   "No exactamente.",
+   "不太对。"
+  ],
+  "Online saving is not set up yet, so progress lasts for this session.": [
+   "Online-Speichern ist noch nicht eingerichtet; der Fortschritt gilt für diese Sitzung.",
+   "El guardado en línea aún no está configurado; el progreso dura esta sesión.",
+   "尚未设置在线保存，进度仅保留在本次会话。"
+  ],
+  "Photography loads online.": [
+   "Fotos werden online geladen.",
+   "Las fotografías se cargan en línea.",
+   "照片需在线加载。"
+  ],
+  "Places to include": [
+   "Einbezogene Orte",
+   "Lugares incluidos",
+   "包含的地方"
+  ],
+  "Play preview": [
+   "Hörprobe abspielen",
+   "Reproducir muestra",
+   "试听"
+  ],
+  "Polynesia": [
+   "Polynesien",
+   "Polinesia",
+   "波利尼西亚"
+  ],
+  "Preview played. If you heard nothing, your browser or device may be blocking sound.": [
+   "Hörprobe abgespielt. Wenn du nichts gehört hast, blockiert dein Browser oder Gerät eventuell Ton.",
+   "Muestra reproducida. Si no oíste nada, tu navegador o dispositivo puede estar bloqueando el sonido.",
+   "已播放试听。如果没有听到声音，可能是浏览器或设备阻止了声音。"
+  ],
+  "Review missed answers": [
+   "Verpasste Antworten ansehen",
+   "Repasar respuestas falladas",
+   "复习答错的题目"
+  ],
+  "Saved profile not reachable yet · nothing has been overwritten": [
+   "Gespeichertes Profil noch nicht erreichbar · nichts wurde überschrieben",
+   "Perfil guardado aún no disponible · no se ha sobrescrito nada",
+   "暂时无法访问已保存的资料 · 未覆盖任何内容"
+  ],
+  "Self-governing in free association with New Zealand; not a UN member.": [
+   "Selbstverwaltet in freier Assoziierung mit Neuseeland; kein UN-Mitglied.",
+   "Autónomo en libre asociación con Nueva Zelanda; no es miembro de la ONU.",
+   "与新西兰自由联系的自治国家；并非联合国会员国。"
+  ],
+  "Short, quiet tones for correct answers, incorrect answers and finished rounds. No music.": [
+   "Kurze, leise Töne für richtige und falsche Antworten sowie beendete Runden. Keine Musik.",
+   "Tonos breves y suaves para respuestas correctas, incorrectas y rondas terminadas. Sin música.",
+   "答对、答错和完成一轮时的简短轻柔提示音。无背景音乐。"
+  ],
+  "Show": [
+   "Anzeigen",
+   "Mostrar",
+   "显示"
+  ],
+  "Sign in to save your profile and progress across visits. You can always play as a guest.": [
+   "Melde dich an, um Profil und Fortschritt dauerhaft zu speichern. Du kannst jederzeit als Gast spielen.",
+   "Inicia sesión para guardar tu perfil y tu progreso entre visitas. Siempre puedes jugar como invitado.",
+   "登录后可跨访问保存资料和进度。你也可以随时以访客身份游玩。"
+  ],
+  "Sign-in could not start. You can keep playing as a guest.": [
+   "Die Anmeldung konnte nicht starten. Du kannst als Gast weiterspielen.",
+   "No se pudo iniciar sesión. Puedes seguir jugando como invitado.",
+   "无法开始登录。你可以继续以访客身份游玩。"
+  ],
+  "Sign-in has not been set up for this app yet.": [
+   "Die Anmeldung ist für diese App noch nicht eingerichtet.",
+   "El inicio de sesión aún no está configurado para esta aplicación.",
+   "本应用尚未设置登录。"
+  ],
+  "Sign-in help for the app owner": [
+   "Anmeldehilfe für den App-Betreiber",
+   "Ayuda de inicio de sesión para el propietario",
+   "面向应用所有者的登录帮助"
+  ],
+  "Sign-in is not available right now. You can keep playing as a guest; progress lasts for this session.": [
+   "Die Anmeldung ist gerade nicht verfügbar. Du kannst als Gast weiterspielen; der Fortschritt gilt für diese Sitzung.",
+   "El inicio de sesión no está disponible ahora. Puedes seguir como invitado; el progreso dura esta sesión.",
+   "登录目前不可用。你可以继续以访客身份游玩，进度仅保留在本次会话。"
+  ],
+  "Signed in · progress lasts for this browser session": [
+   "Angemeldet · Fortschritt gilt für diese Browsersitzung",
+   "Sesión iniciada · el progreso dura esta sesión del navegador",
+   "已登录 · 进度仅保留在本次浏览器会话"
+  ],
+  "Single-country rounds focus on that country's facts; questions answered by its own name are left out.": [
+   "Runden zu einem Land konzentrieren sich auf dessen Fakten; Fragen, deren Antwort sein eigener Name ist, entfallen.",
+   "Las rondas de un solo país se centran en sus datos; se omiten las preguntas cuya respuesta es su propio nombre.",
+   "单一国家的回合聚焦该国的知识；答案就是该国名称的题目会被略去。"
+  ],
+  "Sound effects": [
+   "Soundeffekte",
+   "Efectos de sonido",
+   "音效"
+  ],
+  "South-Eastern Asia": [
+   "Südostasien",
+   "Sudeste Asiático",
+   "东南亚"
+  ],
+  "Southeast Europe": [
+   "Südosteuropa",
+   "Europa del Sudeste",
+   "东南欧"
+  ],
+  "Southern Africa": [
+   "Südliches Afrika",
+   "África Austral",
+   "南部非洲"
+  ],
+  "Southern Asia": [
+   "Südasien",
+   "Asia del Sur",
+   "南亚"
+  ],
+  "Southern Europe": [
+   "Südeuropa",
+   "Europa del Sur",
+   "南欧"
+  ],
+  "Sovereignty disputed.": [
+   "Souveränität umstritten.",
+   "Soberanía en disputa.",
+   "主权存在争议。"
+  ],
+  "Sovereignty disputed; listed by the UN as a non-self-governing territory.": [
+   "Souveränität umstritten; von den UN als Gebiet ohne Selbstregierung geführt.",
+   "Soberanía en disputa; la ONU lo incluye como territorio no autónomo.",
+   "主权存在争议；被联合国列为非自治领土。"
+  ],
+  "Sovereignty is disputed.": [
+   "Die Souveränität ist umstritten.",
+   "La soberanía está en disputa.",
+   "主权存在争议。"
+  ],
+  "Status": [
+   "Status",
+   "Estatus",
+   "类别"
+  ],
+  "Territory or dependency": [
+   "Gebiet oder abhängiges Territorium",
+   "Territorio o dependencia",
+   "领地或属地"
+  ],
+  "The capital is disputed; Ramallah is the administrative seat.": [
+   "Die Hauptstadt ist umstritten; Ramallah ist Verwaltungssitz.",
+   "La capital está en disputa; Ramala es la sede administrativa.",
+   "首都存在争议；拉姆安拉是行政所在地。"
+  ],
+  "The sign-in callback address must end with /oauth2callback.": [
+   "Die Rückleitungsadresse muss auf /oauth2callback enden.",
+   "La dirección de retorno debe terminar en /oauth2callback.",
+   "回调地址必须以 /oauth2callback 结尾。"
+  ],
+  "The sign-in callback address must use https:// (except on localhost).": [
+   "Die Rückleitungsadresse muss https:// verwenden (außer auf localhost).",
+   "La dirección de retorno debe usar https:// (salvo en localhost).",
+   "回调地址必须使用 https://（localhost 除外）。"
+  ],
+  "The sign-in callback is configured for a different address than the one you are using.": [
+   "Die Rückleitung ist für eine andere Adresse eingerichtet als die, die du gerade verwendest.",
+   "La dirección de retorno está configurada para una dirección distinta de la que usas.",
+   "回调地址配置的网址与你当前使用的网址不同。"
+  ],
+  "The sign-in component is not installed on the server.": [
+   "Die Anmeldekomponente ist auf dem Server nicht installiert.",
+   "El componente de inicio de sesión no está instalado en el servidor.",
+   "服务器上未安装登录组件。"
+  ],
+  "The status of Jerusalem as capital is disputed internationally.": [
+   "Der Status Jerusalems als Hauptstadt ist international umstritten.",
+   "El estatus de Jerusalén como capital está en disputa internacional.",
+   "耶路撒冷的首都地位在国际上存在争议。"
+  ],
+  "This is the flag of {name}.": [
+   "Das ist die Flagge von {name}.",
+   "Esta es la bandera de {name}.",
+   "这是{name}的国旗。"
+  ],
+  "Try again now": [
+   "Jetzt erneut versuchen",
+   "Reintentar ahora",
+   "立即重试"
+  ],
+  "UN member and observer states": [
+   "UN-Mitglieds- und Beobachterstaaten",
+   "Estados miembros y observadores de la ONU",
+   "联合国会员国和观察员国"
+  ],
+  "UN member state": [
+   "UN-Mitgliedstaat",
+   "Estado miembro de la ONU",
+   "联合国会员国"
+  ],
+  "UN observer state": [
+   "UN-Beobachterstaat",
+   "Estado observador de la ONU",
+   "联合国观察员国"
+  ],
+  "Volume": [
+   "Lautstärke",
+   "Volumen",
+   "音量"
+  ],
+  "Western Africa": [
+   "Westafrika",
+   "África Occidental",
+   "西非"
+  ],
+  "Western Asia": [
+   "Westasien",
+   "Asia Occidental",
+   "西亚"
+  ],
+  "Western Europe": [
+   "Westeuropa",
+   "Europa Occidental",
+   "西欧"
+  ],
+  "Which country does this flag belong to?": [
+   "Zu welchem Land gehört diese Flagge?",
+   "¿A qué país pertenece esta bandera?",
+   "这面国旗属于哪个国家？"
+  ],
+  "Which of these countries is landlocked?": [
+   "Welches dieser Länder ist ein Binnenstaat?",
+   "¿Cuál de estos países no tiene salida al mar?",
+   "以下哪个国家是内陆国？"
+  ],
+  "Which of these languages has official status or wide use in {name}?": [
+   "Welche dieser Sprachen hat in {name} offiziellen Status oder ist weit verbreitet?",
+   "¿Cuál de estos idiomas tiene estatus oficial o uso extendido en {name}?",
+   "以下哪种语言在{name}具有官方地位或被广泛使用？"
+  ],
+  "Your latest changes could not be saved online yet. They will be saved when the connection returns.": [
+   "Deine letzten Änderungen konnten noch nicht online gespeichert werden. Sie werden gespeichert, sobald die Verbindung zurück ist.",
+   "Tus últimos cambios aún no se han podido guardar en línea. Se guardarán cuando vuelva la conexión.",
+   "你的最新更改暂时无法在线保存，连接恢复后会自动保存。"
+  ],
+  "Your saved profile could not be reached. Nothing has been overwritten; it will be tried again shortly.": [
+   "Dein gespeichertes Profil war nicht erreichbar. Nichts wurde überschrieben; es wird gleich erneut versucht.",
+   "No se pudo acceder a tu perfil guardado. No se ha sobrescrito nada; se volverá a intentar en breve.",
+   "无法访问你已保存的资料。没有覆盖任何内容，稍后会自动重试。"
+  ],
+  "incl. territories": [
+   "inkl. Gebiete",
+   "incl. territorios",
+   "含地区"
+  ],
+  "judicial capital": [
+   "Hauptstadt der Justiz",
+   "capital judicial",
+   "司法首都"
+  ],
+  "legislative capital": [
+   "Hauptstadt der Gesetzgebung",
+   "capital legislativa",
+   "立法首都"
+  ],
+  "{language} has official status or wide use in {name}.": [
+   "{language} hat in {name} offiziellen Status oder ist weit verbreitet.",
+   "{language} tiene estatus oficial o uso extendido en {name}.",
+   "{language}在{name}具有官方地位或被广泛使用。"
+  ],
+  "{language} has official status or wide use there.": [
+   "{language} hat dort offiziellen Status oder ist weit verbreitet.",
+   "{language} tiene allí estatus oficial o uso extendido.",
+   "{language}在当地具有官方地位或被广泛使用。"
+  ],
+  "{n} UN member and observer states": [
+   "{n} UN-Mitglieds- und Beobachterstaaten",
+   "{n} Estados miembros y observadores de la ONU",
+   "{n}个联合国会员国和观察员国"
+  ],
+  "{n} places in total": [
+   "{n} Orte insgesamt",
+   "{n} lugares en total",
+   "共{n}个地方"
   ]
  }
 }

@@ -4,9 +4,10 @@ Run with:  streamlit run app.py
 
 Layout:
   core/     pure logic (data, translations, quiz engine) + account storage
-  ui/       Streamlit state, components and pages
-  data/     country, political, photo and translation data (JSON)
-  assets/   styles.css
+  ui/       Streamlit state, components, pages and sound
+  data/     country, political, photo and translation data (JSON) + reference lists
+  assets/   styles.css and flag images
+  tools/    scripts that rebuild the bundled data (not used at runtime)
 """
 import streamlit as st
 
@@ -17,6 +18,14 @@ from core.data import COUNTRIES  # noqa: E402
 from ui import state  # noqa: E402
 from ui.components import header, inject_styles  # noqa: E402
 from ui.pages import ROUTES  # noqa: E402
+
+FOOTER = {
+    "guest": "Progress lasts for this browser session",
+    "no_storage": "Signed in · progress lasts for this browser session",
+    "loading_failed": "Saved profile not reachable yet · nothing has been overwritten",
+    "save_failed": "Latest changes not saved online yet",
+    "saved": "Saved to your account",
+}
 
 
 def main() -> None:
@@ -30,8 +39,7 @@ def main() -> None:
         ROUTES[page]()
     st.divider()
     accounts.save_profile()
-    persistence = "Saved to your account" if accounts.is_saved_online() else "Progress lasts for this browser session"
-    st.caption(f"{state.t('{n} countries', n=len(COUNTRIES))} · {state.t(persistence)}.")
+    st.caption(f"{state.t('{n} places', n=len(COUNTRIES))} · {state.t(FOOTER[accounts.connection_state()])}.")
 
 
 main()

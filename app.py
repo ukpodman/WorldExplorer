@@ -239,10 +239,51 @@ st.markdown("""
 
 # Interface language is a display layer: canonical quiz answers and state never change.
 UI_TRANSLATIONS = {'Explore': ['Entdecken', 'Explorar', '探索'], 'Learn': ['Lernen', 'Aprender', '学习'], 'Quiz': ['Quiz', 'Cuestionario', '测验'], 'Badges': ['Erfolge', 'Logros', '成就'], 'Settings': ['Einstellungen', 'Ajustes', '设置'], 'Profile': ['Profil', 'Perfil', '个人资料'], 'Display name': ['Anzeigename', 'Nombre visible', '显示名称'], 'App language': ['App-Sprache', 'Idioma de la aplicación', '应用语言'], 'Exploration area': ['Entdeckungsbereich', 'Área de exploración', '探索范围'], 'All countries': ['Alle Länder', 'Todos los países', '所有国家'], 'All Countries': ['Alle Länder', 'Todos los países', '所有国家'], 'One continent': ['Ein Kontinent', 'Un continente', '一个大洲'], 'One country': ['Ein Land', 'Un país', '一个国家'], 'Continent': ['Kontinent', 'Continente', '大洲'], 'Country': ['Land', 'País', '国家'], 'Apply settings': ['Einstellungen übernehmen', 'Aplicar ajustes', '应用设置'], 'World': ['Welt', 'Mundo', '世界'], 'Africa': ['Afrika', 'África', '非洲'], 'Asia': ['Asien', 'Asia', '亚洲'], 'Europe': ['Europa', 'Europa', '欧洲'], 'North America': ['Nordamerika', 'América del Norte', '北美洲'], 'South America': ['Südamerika', 'América del Sur', '南美洲'], 'Oceania': ['Ozeanien', 'Oceanía', '大洋洲'], 'Category': ['Kategorie', 'Categoría', '类别'], 'Difficulty': ['Schwierigkeit', 'Dificultad', '难度'], 'Questions': ['Fragen', 'Preguntas', '题数'], 'Timed challenge': ['Zeitlimit', 'Desafío con tiempo', '限时挑战'], 'Start quiz': ['Quiz starten', 'Iniciar cuestionario', '开始测验'], 'Build your challenge': ['Deine Herausforderung', 'Crea tu desafío', '创建挑战'], 'Your next adventure': ['Dein nächstes Abenteuer', 'Tu próxima aventura', '下一场冒险'], 'Mixed': ['Gemischt', 'Mixto', '混合'], 'Capitals': ['Hauptstädte', 'Capitales', '首都'], 'Heads of State': ['Staatsoberhäupter', 'Jefes de Estado', '国家元首'], 'Currency': ['Währung', 'Moneda', '货币'], 'Languages': ['Sprachen', 'Idiomas', '语言'], 'Country Identification': ['Land erkennen', 'Identificar países', '识别国家'], 'Geography / General Facts': ['Geografie / Fakten', 'Geografía / Datos', '地理与常识'], 'Continents': ['Kontinente', 'Continentes', '大洲'], 'True or False': ['Richtig oder falsch', 'Verdadero o falso', '判断题'], 'True': ['Richtig', 'Verdadero', '正确'], 'False': ['Falsch', 'Falso', '错误'], 'Easy': ['Leicht', 'Fácil', '简单'], 'Medium': ['Mittel', 'Medio', '中等'], 'Difficult': ['Schwer', 'Difícil', '困难'], 'Expert': ['Experte', 'Experto', '专家'], 'Return to current round': ['Zur laufenden Runde', 'Volver a la ronda actual', '返回当前轮次'], 'Scoring and hints': ['Punkte und Hinweise', 'Puntos y pistas', '计分与提示'], 'Current challenge': ['Aktuelle Herausforderung', 'Desafío actual', '当前挑战'], 'Change': ['Ändern', 'Cambiar', '更改'], 'Round score': ['Rundenpunkte', 'Puntos de la ronda', '本轮得分'], 'Current streak': ['Aktuelle Serie', 'Racha actual', '连续答对'], 'Hints remaining': ['Verbleibende Hinweise', 'Pistas restantes', '剩余提示'], 'Correct answer': ['Richtige Antwort', 'Respuesta correcta', '正确答案'], 'Your answer': ['Deine Antwort', 'Tu respuesta', '你的答案'], 'Removed by hint': ['Durch Hinweis entfernt', 'Eliminada por la pista', '由提示排除'], 'Use hint · −25 if correct': ['Hinweis nutzen · −25 bei richtiger Antwort', 'Usar pista · −25 si aciertas', '使用提示 · 答对扣25分'], 'Next question →': ['Nächste Frage →', 'Siguiente pregunta →', '下一题 →'], 'View results': ['Ergebnis ansehen', 'Ver resultados', '查看结果'], 'Your results': ['Dein Ergebnis', 'Tus resultados', '你的成绩'], 'Challenge complete': ['Herausforderung abgeschlossen', 'Desafío completado', '挑战完成'], 'Accuracy': ['Genauigkeit', 'Precisión', '正确率'], 'Correct answers': ['Richtige Antworten', 'Respuestas correctas', '答对题数'], 'Best streak': ['Beste Serie', 'Mejor racha', '最佳连对'], 'Play again': ['Erneut spielen', 'Jugar de nuevo', '再玩一次'], 'Change settings': ['Einstellungen ändern', 'Cambiar ajustes', '更改设置'], 'Try another continent': ['Anderen Kontinent wählen', 'Probar otro continente', '尝试其他大洲'], 'Try another country': ['Anderes Land wählen', 'Probar otro país', '尝试其他国家'], 'Review answers': ['Antworten prüfen', 'Revisar respuestas', '查看答题记录'], 'Answer review': ['Antwortübersicht', 'Revisión de respuestas', '答题回顾'], 'Choose a country': ['Land auswählen', 'Elegir un país', '选择国家'], 'Discover country →': ['Land entdecken →', 'Descubrir país →', '了解国家 →'], 'Search countries or capitals': ['Länder oder Hauptstädte suchen', 'Buscar países o capitales', '搜索国家或首都'], 'Previous': ['Zurück', 'Anterior', '上一页'], 'Next': ['Weiter', 'Siguiente', '下一页'], 'No countries match your search.': ['Keine Länder gefunden.', 'No hay países que coincidan.', '没有找到匹配的国家。'], 'Browse your world': ['Entdecke deine Welt', 'Explora tu mundo', '探索你的世界'], 'A little discovery, every day.': ['Jeden Tag etwas Neues entdecken.', 'Un pequeño descubrimiento cada día.', '每天发现一点新知。'], 'Choose your area in ☰ Settings, then search or open a country.': ['Wähle deinen Bereich unter ☰ Einstellungen. Suche dann nach einem Land.', 'Elige tu área en ☰ Ajustes y busca o abre un país.', '在☰设置中选择范围，然后搜索或打开一个国家。'], 'The world geography challenge': ['Die Welt-Geografie-Challenge', 'El desafío de geografía mundial', '世界地理挑战'], 'How well do you know your world?': ['Wie gut kennst du deine Welt?', '¿Cuánto conoces tu mundo?', '你有多了解世界？'], 'Go beyond the familiar. Challenge yourself on capitals, currencies, languages and the places in between.': ['Entdecke Neues. Teste dein Wissen über Hauptstädte, Währungen, Sprachen und Orte.', 'Descubre más. Ponte a prueba con capitales, monedas, idiomas y lugares.', '超越熟悉的事物，挑战首都、货币、语言与各地知识。'], 'World Quiz': ['Welt-Quiz', 'Cuestionario mundial', '世界测验'], 'Every answer takes you further.': ['Jede Antwort bringt dich weiter.', 'Cada respuesta te lleva más lejos.', '每个答案都让你更进一步。'], 'Think carefully. Build a streak. Discover something new.': ['Überlege gut. Baue eine Serie auf. Entdecke Neues.', 'Piensa bien. Crea una racha. Descubre algo nuevo.', '仔细思考，连续答对，发现新知。'], 'The country collection': ['Die Ländersammlung', 'La colección de países', '国家知识库'], 'Get to know the world.': ['Lerne die Welt kennen.', 'Conoce el mundo.', '认识世界。'], 'Build your knowledge, one country at a time. The details make all the difference.': ['Erweitere dein Wissen, Land für Land. Die Details machen den Unterschied.', 'Aprende país por país. Los detalles marcan la diferencia.', '逐国积累知识，细节让世界更精彩。'], 'Continent / region': ['Kontinent / Region', 'Continente / región', '大洲与地区'], 'Capital roles': ['Hauptstädte und Funktionen', 'Capitales y funciones', '首都及其职能'], 'Currencies': ['Währungen', 'Monedas', '货币'], 'Official languages in this collection': ['Erfasste Amtssprachen', 'Idiomas oficiales incluidos', '本知识库收录的官方语言'], 'Not included yet': ['Noch nicht enthalten', 'Aún no incluido', '暂未收录'], 'Country data source': ['Quelle der Länderdaten', 'Fuente de datos del país', '国家数据来源'], 'Capital-role source': ['Quelle zu Hauptstadtfunktionen', 'Fuente de las funciones de capital', '首都职能来源'], 'Political source': ['Politische Quelle', 'Fuente política', '政治资料来源'], 'Your explorer passport': ['Dein Entdeckerpass', 'Tu pasaporte de explorador', '探索者护照'], 'Curiosity deserves recognition.': ['Neugier verdient Anerkennung.', 'La curiosidad merece reconocimiento.', '好奇心值得嘉奖。'], 'Every right answer is a step forward. Collect milestones as your knowledge grows.': ['Jede richtige Antwort bringt dich weiter. Sammle Erfolge mit wachsendem Wissen.', 'Cada acierto es un paso adelante. Colecciona logros mientras aprendes.', '每次答对都是进步，在学习中收集成就。'], 'First Steps': ['Erste Schritte', 'Primeros pasos', '初次进步'], 'Century': ['Hundert Punkte', 'Cien puntos', '百分成就'], 'Round Finisher': ['Runde abgeschlossen', 'Ronda completada', '完成一轮'], 'Earned': ['Erreicht', 'Conseguido', '已获得'], 'In progress': ['In Arbeit', 'En progreso', '进行中'], 'Answer your first question correctly.': ['Beantworte deine erste Frage richtig.', 'Responde bien tu primera pregunta.', '第一次正确回答问题。'], 'Earn 100 points.': ['Sammle 100 Punkte.', 'Consigue 100 puntos.', '获得100分。'], 'Complete your first quiz round.': ['Schließe deine erste Quizrunde ab.', 'Completa tu primera ronda.', '完成第一轮测验。'], 'For curious minds. Across every border.': ['Für neugierige Köpfe. Über Grenzen hinweg.', 'Para mentes curiosas. Sin fronteras.', '为好奇的心，跨越每道边界。'], 'A WORLD TO DISCOVER': ['EINE WELT ZUM ENTDECKEN', 'UN MUNDO POR DESCUBRIR', '发现世界'], 'Data sources and coverage': ['Quellen und Datenumfang', 'Fuentes y cobertura', '数据来源与覆盖范围'], 'Preferences and profile last for this browser session. This is not a sign-in account.': ['Profil und Einstellungen gelten für diese Sitzung. Dies ist kein Benutzerkonto.', 'El perfil y los ajustes duran esta sesión. No es una cuenta de acceso.', '资料与偏好仅在本次浏览器会话有效，这不是登录账户。'], 'Country names and factual names retain the dataset spelling.': ['Länder- und Eigennamen behalten die Schreibweise der Datenquelle.', 'Los nombres de países y datos conservan la escritura original.', '国家及事实名称保留数据来源的拼写。'], 'Area changes update Explore and Learn and the next quiz setup. Your current round is kept.': ['Der Bereich gilt für Entdecken, Lernen und das nächste Quiz. Die laufende Runde bleibt erhalten.', 'El área cambia Explorar, Aprender y el próximo cuestionario. La ronda actual se conserva.', '范围设置应用于探索、学习及下一轮测验，当前轮次保留。'], 'Capital / capital roles': ['Hauptstädte und Funktionen', 'Capitales y funciones', '首都及其职能'], 'capital': ['Hauptstadt', 'capital', '首都'], 'constitutional capital': ['Verfassungshauptstadt', 'capital constitucional', '宪法规定首都'], 'seat of government': ['Regierungssitz', 'sede del gobierno', '政府所在地'], 'administrative capital': ['Verwaltungshauptstadt', 'capital administrativa', '行政首都'], 'royal and legislative capital': ['Königs- und Parlamentssitz', 'capital real y legislativa', '王室与立法首都'], 'commercial capital': ['Wirtschaftshauptstadt', 'capital comercial', '商业首都'], 'President': ['Präsident', 'Presidente', '总统'], 'Federal President': ['Bundespräsident', 'Presidente federal', '联邦总统'], 'King': ['König', 'Rey', '国王']}
-UI_TEMPLATES = [('{n} countries', ['{n} Länder', '{n} países', '{n}个国家']), ('6 continents', ['6 Kontinente', '6 continentes', '6个大洲']), ('9 quiz categories', ['9 Quizkategorien', '9 categorías', '9类测验']), ('Page {page} of {pages} · {count} countries', ['Seite {page} von {pages} · {count} Länder', 'Página {page} de {pages} · {count} países', '第{page}/{pages}页 · {count}个国家']), ('Question {n} of {total} · {kind} · {difficulty}', ['Frage {n} von {total} · {kind} · {difficulty}', 'Pregunta {n} de {total} · {kind} · {difficulty}', '第{n}/{total}题 · {kind} · {difficulty}']), ('Time remaining: {n} seconds', ['Verbleibende Zeit: {n} Sekunden', 'Tiempo restante: {n} segundos', '剩余时间：{n}秒']), ('Which place serves as the {role} of {name}?', ['Welcher Ort ist {role} von {name}?', '¿Qué lugar es {role} de {name}?', '{name}的{role}是哪里？']), ('{place} is the {role} of which country?', ['{place} ist {role} welchen Landes?', '¿De qué país es {place} la {role}?', '{place}是哪个国家的{role}？']), ('{place} is the {role} of {name}.', ['{place} ist {role} von {name}.', '{place} es {role} de {name}.', '{place}是{name}的{role}。']), ('Which of these currencies is used in {name}?', ['Welche dieser Währungen wird in {name} verwendet?', '¿Cuál de estas monedas se usa en {name}?', '{name}使用以下哪种货币？']), ('{name} uses {currencies}.', ['{name} verwendet {currencies}.', '{name} utiliza {currencies}.', '{name}使用{currencies}。']), ('Which of these is an official language of {name}?', ['Welche dieser Sprachen ist Amtssprache in {name}?', '¿Cuál es un idioma oficial de {name}?', '以下哪种是{name}的官方语言？']), ('{language} is an official language of {name}.', ['{language} ist Amtssprache in {name}.', '{language} es un idioma oficial de {name}.', '{language}是{name}的官方语言。']), ('In which geographic subregion is {name}?', ['In welcher geografischen Teilregion liegt {name}?', '¿En qué subregión geográfica está {name}?', '{name}位于哪个地理分区？']), ('{name} is in {region}, within {continent}.', ['{name} liegt in {region}, in {continent}.', '{name} está en {region}, en {continent}.', '{name}位于{continent}的{region}。']), ('Which of these countries shares a land border with {name}?', ['Welches dieser Länder hat eine Landgrenze mit {name}?', '¿Qué país comparte una frontera terrestre con {name}?', '以下哪个国家与{name}有陆地边界？']), ('{other} and {name} share a land border.', ['{other} und {name} haben eine gemeinsame Landgrenze.', '{other} y {name} comparten una frontera terrestre.', '{other}与{name}有陆地边界。']), ('On which continent is {name}?', ['Auf welchem Kontinent liegt {name}?', '¿En qué continente está {name}?', '{name}位于哪个大洲？']), ('{name} is in {continent}.', ['{name} liegt in {continent}.', '{name} está en {continent}.', '{name}位于{continent}。']), ('These clues describe {name}.', ['Diese Hinweise beschreiben {name}.', 'Estas pistas describen {name}.', '这些线索描述的是{name}。']), ('Who is the {title} and head of state of {name}? (Record verified {verified})', ['Wer ist {title} und Staatsoberhaupt von {name}? (Geprüft am {verified})', '¿Quién es {title} y jefe de Estado de {name}? (Verificado: {verified})', '谁是{name}的{title}及国家元首？（资料核验：{verified}）']), ('{n} unique questions will be included · {capacity} available for these filters.', ['{n} verschiedene Fragen · {capacity} für diese Auswahl verfügbar.', '{n} preguntas únicas · {capacity} disponibles para estos filtros.', '本轮包含{n}道不同题目 · 此范围可用{capacity}道题。']), ('This round will contain {n} questions, without repeating the same question.', ['Diese Runde enthält {n} Fragen ohne Wiederholung.', 'Esta ronda contiene {n} preguntas sin repetición.', '本轮有{n}道题，不重复题目。']), ('{n} countries · Progress lasts for this browser session.', ['{n} Länder · Fortschritt gilt für diese Sitzung.', '{n} países · Progreso durante esta sesión.', '{n}个国家 · 进度仅在本次浏览器会话有效。'])]
+UI_TEMPLATES = [('{n} countries', ['{n} Länder', '{n} países', '{n}个国家']), ('6 continents', ['6 Kontinente', '6 continentes', '6个大洲']), ('10 quiz categories', ['10 Quizkategorien', '10 categorías', '10类测验']), ('Page {page} of {pages} · {count} countries', ['Seite {page} von {pages} · {count} Länder', 'Página {page} de {pages} · {count} países', '第{page}/{pages}页 · {count}个国家']), ('Question {n} of {total} · {kind} · {difficulty}', ['Frage {n} von {total} · {kind} · {difficulty}', 'Pregunta {n} de {total} · {kind} · {difficulty}', '第{n}/{total}题 · {kind} · {difficulty}']), ('Time remaining: {n} seconds', ['Verbleibende Zeit: {n} Sekunden', 'Tiempo restante: {n} segundos', '剩余时间：{n}秒']), ('Which place serves as the {role} of {name}?', ['Welcher Ort ist {role} von {name}?', '¿Qué lugar es {role} de {name}?', '{name}的{role}是哪里？']), ('{place} is the {role} of which country?', ['{place} ist {role} welchen Landes?', '¿De qué país es {place} la {role}?', '{place}是哪个国家的{role}？']), ('{place} is the {role} of {name}.', ['{place} ist {role} von {name}.', '{place} es {role} de {name}.', '{place}是{name}的{role}。']), ('Which of these currencies is used in {name}?', ['Welche dieser Währungen wird in {name} verwendet?', '¿Cuál de estas monedas se usa en {name}?', '{name}使用以下哪种货币？']), ('{name} uses {currencies}.', ['{name} verwendet {currencies}.', '{name} utiliza {currencies}.', '{name}使用{currencies}。']), ('Which of these is an official language of {name}?', ['Welche dieser Sprachen ist Amtssprache in {name}?', '¿Cuál es un idioma oficial de {name}?', '以下哪种是{name}的官方语言？']), ('{language} is an official language of {name}.', ['{language} ist Amtssprache in {name}.', '{language} es un idioma oficial de {name}.', '{language}是{name}的官方语言。']), ('In which geographic subregion is {name}?', ['In welcher geografischen Teilregion liegt {name}?', '¿En qué subregión geográfica está {name}?', '{name}位于哪个地理分区？']), ('{name} is in {region}, within {continent}.', ['{name} liegt in {region}, in {continent}.', '{name} está en {region}, en {continent}.', '{name}位于{continent}的{region}。']), ('Which of these countries shares a land border with {name}?', ['Welches dieser Länder hat eine Landgrenze mit {name}?', '¿Qué país comparte una frontera terrestre con {name}?', '以下哪个国家与{name}有陆地边界？']), ('{other} and {name} share a land border.', ['{other} und {name} haben eine gemeinsame Landgrenze.', '{other} y {name} comparten una frontera terrestre.', '{other}与{name}有陆地边界。']), ('On which continent is {name}?', ['Auf welchem Kontinent liegt {name}?', '¿En qué continente está {name}?', '{name}位于哪个大洲？']), ('{name} is in {continent}.', ['{name} liegt in {continent}.', '{name} está en {continent}.', '{name}位于{continent}。']), ('These clues describe {name}.', ['Diese Hinweise beschreiben {name}.', 'Estas pistas describen {name}.', '这些线索描述的是{name}。']), ('Who is the {title} and head of state of {name}? (Record verified {verified})', ['Wer ist {title} und Staatsoberhaupt von {name}? (Geprüft am {verified})', '¿Quién es {title} y jefe de Estado de {name}? (Verificado: {verified})', '谁是{name}的{title}及国家元首？（资料核验：{verified}）']), ('{n} unique questions will be included · {capacity} available for these filters.', ['{n} verschiedene Fragen · {capacity} für diese Auswahl verfügbar.', '{n} preguntas únicas · {capacity} disponibles para estos filtros.', '本轮包含{n}道不同题目 · 此范围可用{capacity}道题。']), ('This round will contain {n} questions, without repeating the same question.', ['Diese Runde enthält {n} Fragen ohne Wiederholung.', 'Esta ronda contiene {n} preguntas sin repetición.', '本轮有{n}道题，不重复题目。']), ('{n} countries · Progress lasts for this browser session.', ['{n} Länder · Fortschritt gilt für diese Sitzung.', '{n} países · Progreso durante esta sesión.', '{n}个国家 · 进度仅在本次浏览器会话有效。'])]
 UI_TRANSLATIONS.update({'Correct!': ['Richtig!', '¡Correcto!', '答对了！'], 'Time is up.': ['Die Zeit ist abgelaufen.', 'Se acabó el tiempo.', '时间到。'], 'Answer recorded': ['Antwort erfasst', 'Respuesta registrada', '答案已记录'], 'Correct': ['Richtig', 'Correcto', '正确'], 'Incorrect': ['Falsch', 'Incorrecto', '错误'], 'Timed out': ['Zeit abgelaufen', 'Tiempo agotado', '超时'], 'Unanswered': ['Nicht beantwortet', 'Sin respuesta', '未作答'], 'points': ['Punkte', 'puntos', '分'], 'Only recently verified political records are included. Coverage is currently limited.': ['Es werden nur kürzlich geprüfte politische Angaben verwendet. Der Umfang ist begrenzt.', 'Solo se incluyen datos políticos verificados recientemente. La cobertura es limitada.', '仅收录近期核验的政治资料，覆盖范围有限。'], 'Your chosen country stays selected; difficulty changes question formats and answer choices.': ['Dein Land bleibt ausgewählt. Die Schwierigkeit ändert Frageformen und Antwortmöglichkeiten.', 'Tu país sigue seleccionado; la dificultad cambia los formatos y las opciones.', '所选国家保持不变，难度会改变题型及选项。'], 'No verified questions match these filters. Choose Mixed, another country, or a lower difficulty.': ['Keine geprüften Fragen für diese Auswahl. Wähle Gemischt, ein anderes Land oder eine niedrigere Schwierigkeit.', 'No hay preguntas verificadas para estos filtros. Elige Mixto, otro país o menor dificultad.', '此筛选范围没有可核验题目，请选择混合、其他国家或更低难度。'], 'Correct answers earn 100 base points, multiplied by difficulty: Easy ×1, Medium ×1.25, Difficult ×1.5, Expert ×2.': ['Richtige Antworten bringen 100 Basispunkte: Leicht ×1, Mittel ×1,25, Schwer ×1,5, Experte ×2.', 'Cada acierto da 100 puntos base: Fácil ×1, Medio ×1,25, Difícil ×1,5, Experto ×2.', '答对获100基础分，简单×1、中等×1.25、困难×1.5、专家×2。'], "Fast answers earn 25 extra points. Every third correct answer in a streak adds 50; every fifth adds 100. A hint removes one wrong option and deducts 25 from a correct answer's award. Each round has three hints.": ['Schnelle Antworten bringen 25 Bonuspunkte. Jede dritte richtige Antwort in Folge bringt 50, jede fünfte 100. Ein Hinweis entfernt eine falsche Option und zieht bei richtiger Antwort 25 Punkte ab. Drei Hinweise pro Runde.', 'Responder rápido añade 25 puntos. Cada tercer acierto seguido añade 50; cada quinto, 100. Una pista elimina una opción incorrecta y resta 25 puntos si aciertas. Tres pistas por ronda.', '快速答对加25分。每连续答对3题加50分，每5题加100分。提示排除一个错误选项，答对扣25分，每轮有3次提示。'], 'A perfect round without hints adds 250 points × difficulty. Wrong and timed-out answers earn zero. You can always use Next to read the explanation at your own pace.': ['Eine perfekte Runde ohne Hinweise bringt 250 Punkte × Schwierigkeit. Falsche Antworten und Zeitüberschreitungen bringen null. Mit Weiter liest du Erklärungen in deinem Tempo.', 'Una ronda perfecta sin pistas añade 250 puntos × dificultad. Los errores y el tiempo agotado dan cero. Avanza cuando termines de leer la explicación.', '全对且未用提示可获250×难度的奖励分。答错或超时得0分。阅读解析后可自行进入下一题。']})
 UI_TEMPLATES.extend([('{points} lifetime session points · {rounds} rounds completed', ['{points} Sitzungspunkte · {rounds} Runden abgeschlossen', '{points} puntos en esta sesión · {rounds} rondas completadas', '本次会话共{points}分 · 已完成{rounds}轮']), ('Perfect round without hints: +{points} bonus points.', ['Perfekte Runde ohne Hinweise: +{points} Bonuspunkte.', 'Ronda perfecta sin pistas: +{points} puntos extra.', '全对且未用提示：奖励{points}分。']), ('Neighbours in this collection: {names}', ['Erfasste Nachbarländer: {names}', 'Países vecinos incluidos: {names}', '本知识库收录的邻国：{names}']), ('Political record verified {date}.', ['Politische Angaben geprüft am {date}.', 'Dato político verificado: {date}.', '政治资料核验日期：{date}。']), ('+{points} points · Base {base} · Speed +{speed} · Streak +{streak} · Hint −{hint}', ['+{points} Punkte · Basis {base} · Tempo +{speed} · Serie +{streak} · Hinweis −{hint}', '+{points} puntos · Base {base} · Rapidez +{speed} · Racha +{streak} · Pista −{hint}', '+{points}分 · 基础{base} · 速度+{speed} · 连对+{streak} · 提示−{hint}']), ('Incorrect / unanswered: {wrong} · Timed out: {timeout} · Average response time: {seconds} seconds', ['Falsch / unbeantwortet: {wrong} · Zeitüberschreitung: {timeout} · Durchschnitt: {seconds} Sekunden', 'Incorrectas / sin responder: {wrong} · Tiempo agotado: {timeout} · Promedio: {seconds} segundos', '答错或未作答：{wrong} · 超时：{timeout} · 平均答题时间：{seconds}秒']), ('{answer} is recorded as {title} of {name}, verified {date}. Head of state and head of government can be different offices.', ['{answer} ist als {title} von {name} erfasst, geprüft am {date}. Staatsoberhaupt und Regierungschef können unterschiedliche Ämter sein.', '{answer} figura como {title} de {name}, verificado el {date}. La jefatura del Estado y del Gobierno pueden ser cargos distintos.', '资料记载{answer}为{name}的{title}，核验日期{date}。国家元首与政府首脑可能是不同职务。'])])
 APP_LANGUAGES = ["English", "Deutsch", "Español", "中文（普通话）"]
+
+UI_TRANSLATIONS.update({"Landmarks": ["Sehenswürdigkeiten", "Lugares de interés", "地标"]})
+UI_TRANSLATIONS.update({"Smaller question pools produce shorter rounds to avoid repeating the same facts.": [
+    "Kleine Fragenpools ergeben kürzere Runden, damit dieselben Fakten nicht wiederholt werden.",
+    "Los grupos pequeños de preguntas producen rondas más cortas para evitar repetir los mismos datos.",
+    "题库较小时，本轮题数会减少，以免重复考查相同知识。"]})
+UI_TEMPLATES.append(("Up to {n} questions · no repeated facts in the same round.", [
+    "Bis zu {n} Fragen · keine wiederholten Fakten in derselben Runde.",
+    "Hasta {n} preguntas · sin repetir datos en la misma ronda.", "最多{n}道题 · 同一轮不重复考查相同知识。"]))
+UI_TEMPLATES.extend([('In which country is the UNESCO World Heritage site {site}?',
+  ['In welchem Land liegt die UNESCO-Welterbestätte {site}?',
+   '¿En qué país está el sitio del Patrimonio Mundial de la UNESCO {site}?',
+   '联合国教科文组织世界遗产{site}位于哪个国家？']),
+ ('Which of these UNESCO World Heritage sites is in {name}?',
+  ['Welche dieser UNESCO-Welterbestätten liegt in {name}?',
+   '¿Cuál de estos sitios del Patrimonio Mundial de la UNESCO está en {name}?',
+   '以下哪个联合国教科文组织世界遗产位于{name}？']),
+ ('{site} is in {name}.', ['{site} liegt in {name}.', '{site} está en {name}.', '{site}位于{name}。']),
+ ('Which country has the larger total area: {name} or {other}?',
+  ['Welches Land hat die größere Gesamtfläche: {name} oder {other}?',
+   '¿Qué país tiene mayor superficie total: {name} o {other}?',
+   '哪个国家的总面积更大：{name}还是{other}？']),
+ ('Which country-code internet domain belongs to {name}?',
+  ['Welche länderspezifische Internetdomain gehört zu {name}?',
+   '¿Qué dominio de internet de país pertenece a {name}?',
+   '{name}的国家互联网域名是哪个？']),
+ ('Which international telephone calling code belongs to {name}?',
+  ['Welche internationale Telefonvorwahl gehört zu {name}?',
+   '¿Qué prefijo telefónico internacional pertenece a {name}?',
+   '{name}的国际电话区号是哪个？']),
+ ('{name} is landlocked.', ['{name} ist ein Binnenstaat.', '{name} no tiene salida al mar.', '{name}是内陆国家。']),
+ ('{name} has a coastline.', ['{name} hat eine Küste.', '{name} tiene costa.', '{name}拥有海岸线。']),
+ ('Which country shares land borders with both {first} and {second}?',
+  ['Welches Land grenzt sowohl an {first} als auch an {second}?',
+   '¿Qué país tiene fronteras terrestres con {first} y {second}?',
+   '哪个国家同时与{first}和{second}有陆地边界？']),
+ ('{name} shares land borders with {first} and {second}.',
+  ['{name} grenzt an {first} und {second}.',
+   '{name} tiene fronteras terrestres con {first} y {second}.',
+   '{name}与{first}和{second}有陆地边界。'])])
+
 
 def tr(value):
     if not isinstance(value, str):
@@ -393,7 +434,7 @@ UI_TRANSLATIONS.update({
 })
 
 PROFILE_KEYS = ("profile_name", "profile_photo", "app_language", "scope_mode",
-                "scope_continent", "scope_country", "points", "rounds_finished", "recent")
+                "scope_continent", "scope_country", "points", "rounds_finished", "recent", "recent_facts")
 
 
 def account_identity():
@@ -477,7 +518,7 @@ def restore_account_profile():
             value = values[key]
             if key in ("points", "rounds_finished") and isinstance(value, int) and value >= 0:
                 st.session_state[key] = value
-            elif key == "recent" and isinstance(value, list):
+            elif key in ("recent", "recent_facts") and isinstance(value, list):
                 st.session_state[key] = [x for x in value if isinstance(x, str)][-500:]
             elif key == "profile_name" and isinstance(value, str):
                 st.session_state[key] = value[:40]
@@ -623,6 +664,476 @@ def open_settings():
     st.dialog(tr("Settings"), width="small", on_dismiss=dismiss_settings)(settings_body)()
 
 
+
+# Offline quiz facts, checked against country data and UNESCO DataHub on 2026-10-08.
+COUNTRIES.extend([{'id': 'AFG', 'name': 'Afghanistan', 'continent': 'Asia', 'region': 'Southern Asia', 'capitals': [{'name': 'Kabul', 'role': 'capital'}], 'currencies': [{'code': 'AFN', 'name': 'Afghan afghani'}], 'languages': ['Dari', 'Pashto', 'Turkmen'], 'official_languages': ['Dari', 'Pashto'], 'borders': ['IRN', 'PAK', 'TKM', 'UZB', 'TJK', 'CHN'], 'landlocked': True, 'tier': 3, 'population': None, 'source': 'https://github.com/mledoze/countries', 'data_date': '2026-10-08'}, {'id': 'PAK', 'name': 'Pakistan', 'continent': 'Asia', 'region': 'Southern Asia', 'capitals': [{'name': 'Islamabad', 'role': 'capital'}], 'currencies': [{'code': 'PKR', 'name': 'Pakistani rupee'}], 'languages': ['English', 'Urdu'], 'official_languages': ['English', 'Urdu'], 'borders': ['AFG', 'CHN', 'IND', 'IRN'], 'landlocked': False, 'tier': 3, 'population': None, 'source': 'https://github.com/mledoze/countries', 'data_date': '2026-10-08'}])
+COUNTRY_DETAILS = {'AFG': {'area_km2': 652230,
+         'domains': ['.af'],
+         'calling_codes': ['+93'],
+         'landmarks': [{'name': 'Minaret and Archaeological Remains of Jam',
+                        'source': 'https://whc.unesco.org/en/list/211/'},
+                       {'name': 'Cultural Landscape and Archaeological Remains of the Bamiyan Valley',
+                        'source': 'https://whc.unesco.org/en/list/208/'}]},
+ 'ALB': {'area_km2': 28748,
+         'domains': ['.al'],
+         'calling_codes': ['+355'],
+         'landmarks': [{'name': 'Butrint', 'source': 'https://whc.unesco.org/en/list/570/'},
+                       {'name': 'Historic Centres of Berat and Gjirokastra',
+                        'source': 'https://whc.unesco.org/en/list/569/'}]},
+ 'AND': {'area_km2': 468,
+         'domains': ['.ad'],
+         'calling_codes': ['+376'],
+         'landmarks': [{'name': 'Madriu-Perafita-Claror Valley',
+                        'source': 'https://whc.unesco.org/en/list/1160/'}]},
+ 'ARG': {'area_km2': 2780400,
+         'domains': ['.ar'],
+         'calling_codes': ['+54'],
+         'landmarks': [{'name': 'Los Glaciares National Park', 'source': 'https://whc.unesco.org/en/list/145/'},
+                       {'name': 'Iguazu National Park', 'source': 'https://whc.unesco.org/en/list/303/'},
+                       {'name': 'Cueva de las Manos, Río Pinturas',
+                        'source': 'https://whc.unesco.org/en/list/936/'}]},
+ 'AUS': {'area_km2': 7692024,
+         'domains': ['.au'],
+         'calling_codes': ['+61'],
+         'landmarks': [{'name': 'Kakadu National Park', 'source': 'https://whc.unesco.org/en/list/147/'},
+                       {'name': 'Great Barrier Reef', 'source': 'https://whc.unesco.org/en/list/154/'},
+                       {'name': 'Willandra Lakes Region', 'source': 'https://whc.unesco.org/en/list/167/'}]},
+ 'BLZ': {'area_km2': 22966,
+         'domains': ['.bz'],
+         'calling_codes': ['+501'],
+         'landmarks': [{'name': 'Belize Barrier Reef Reserve System',
+                        'source': 'https://whc.unesco.org/en/list/764/'}]},
+ 'BOL': {'area_km2': 1098581,
+         'domains': ['.bo'],
+         'calling_codes': ['+591'],
+         'landmarks': [{'name': 'City of Potosí', 'source': 'https://whc.unesco.org/en/list/420/'},
+                       {'name': 'Jesuit Missions of the Chiquitos',
+                        'source': 'https://whc.unesco.org/en/list/529/'},
+                       {'name': 'Historic City of Sucre', 'source': 'https://whc.unesco.org/en/list/566/'}]},
+ 'BRA': {'area_km2': 8515767,
+         'domains': ['.br'],
+         'calling_codes': ['+55'],
+         'landmarks': [{'name': 'Historic Town of Ouro Preto', 'source': 'https://whc.unesco.org/en/list/124/'},
+                       {'name': 'Historic Centre of the Town of Olinda',
+                        'source': 'https://whc.unesco.org/en/list/189/'},
+                       {'name': 'Historic Centre of Salvador de Bahia',
+                        'source': 'https://whc.unesco.org/en/list/309/'}]},
+ 'BTN': {'area_km2': 38394, 'domains': ['.bt'], 'calling_codes': ['+975'], 'landmarks': []},
+ 'BWA': {'area_km2': 582000,
+         'domains': ['.bw'],
+         'calling_codes': ['+267'],
+         'landmarks': [{'name': 'Tsodilo', 'source': 'https://whc.unesco.org/en/list/1021/'},
+                       {'name': 'Okavango Delta', 'source': 'https://whc.unesco.org/en/list/1432/'}]},
+ 'CAN': {'area_km2': 9984670,
+         'domains': ['.ca'],
+         'calling_codes': [],
+         'landmarks': [{'name': 'L’Anse aux Meadows National Historic Site',
+                        'source': 'https://whc.unesco.org/en/list/4/'},
+                       {'name': 'Nahanni National Park', 'source': 'https://whc.unesco.org/en/list/24/'},
+                       {'name': 'Dinosaur Provincial Park', 'source': 'https://whc.unesco.org/en/list/71/'}]},
+ 'CHL': {'area_km2': 756102,
+         'domains': ['.cl'],
+         'calling_codes': ['+56'],
+         'landmarks': [{'name': 'Rapa Nui National Park', 'source': 'https://whc.unesco.org/en/list/715/'},
+                       {'name': 'Churches of Chiloé', 'source': 'https://whc.unesco.org/en/list/971/'},
+                       {'name': 'Historic Quarter of the Seaport City of Valparaíso',
+                        'source': 'https://whc.unesco.org/en/list/959/'}]},
+ 'CHN': {'area_km2': 9706961,
+         'domains': ['.cn', '.中国', '.中國', '.公司', '.网络'],
+         'calling_codes': ['+86'],
+         'landmarks': [{'name': 'Mount Taishan', 'source': 'https://whc.unesco.org/en/list/437/'},
+                       {'name': 'The Great Wall', 'source': 'https://whc.unesco.org/en/list/438/'},
+                       {'name': 'Imperial Palaces of the Ming and Qing Dynasties in Beijing and Shenyang',
+                        'source': 'https://whc.unesco.org/en/list/439/'}]},
+ 'COL': {'area_km2': 1141748,
+         'domains': ['.co'],
+         'calling_codes': ['+57'],
+         'landmarks': [{'name': 'Port, Fortresses and Group of Monuments, Cartagena',
+                        'source': 'https://whc.unesco.org/en/list/285/'},
+                       {'name': 'Los Katíos National Park', 'source': 'https://whc.unesco.org/en/list/711/'},
+                       {'name': 'Historic Centre of Santa Cruz de Mompox',
+                        'source': 'https://whc.unesco.org/en/list/742/'}]},
+ 'COM': {'area_km2': 1862,
+         'domains': ['.km'],
+         'calling_codes': ['+269'],
+         'landmarks': [{'name': 'The Medinas of the Historic Sultanates of the Comoros',
+                        'source': 'https://whc.unesco.org/en/list/1768/'}]},
+ 'CPV': {'area_km2': 4033,
+         'domains': ['.cv'],
+         'calling_codes': ['+238'],
+         'landmarks': [{'name': 'Cidade Velha, Historic Centre of Ribeira Grande',
+                        'source': 'https://whc.unesco.org/en/list/1310/'}]},
+ 'CRI': {'area_km2': 51100,
+         'domains': ['.cr'],
+         'calling_codes': ['+506'],
+         'landmarks': [{'name': 'Cocos Island National Park', 'source': 'https://whc.unesco.org/en/list/820/'},
+                       {'name': 'Area de Conservación Guanacaste',
+                        'source': 'https://whc.unesco.org/en/list/928/'},
+                       {'name': 'Precolumbian Chiefdom Settlements with Stone Spheres of the Diquís',
+                        'source': 'https://whc.unesco.org/en/list/1453/'}]},
+ 'CUB': {'area_km2': 109884,
+         'domains': ['.cu'],
+         'calling_codes': ['+53'],
+         'landmarks': [{'name': 'Old Havana and its Fortification System',
+                        'source': 'https://whc.unesco.org/en/list/204/'},
+                       {'name': 'Trinidad and the Valley de los Ingenios',
+                        'source': 'https://whc.unesco.org/en/list/460/'},
+                       {'name': 'San Pedro de la Roca Castle, Santiago de Cuba',
+                        'source': 'https://whc.unesco.org/en/list/841/'}]},
+ 'DEU': {'area_km2': 357114,
+         'domains': ['.de'],
+         'calling_codes': ['+49'],
+         'landmarks': [{'name': 'Aachen Cathedral', 'source': 'https://whc.unesco.org/en/list/3/'},
+                       {'name': 'Speyer Cathedral', 'source': 'https://whc.unesco.org/en/list/168/'},
+                       {'name': 'Würzburg Residence with the Court Gardens and Residence Square',
+                        'source': 'https://whc.unesco.org/en/list/169/'}]},
+ 'DMA': {'area_km2': 751,
+         'domains': ['.dm'],
+         'calling_codes': ['+1767'],
+         'landmarks': [{'name': 'Morne Trois Pitons National Park',
+                        'source': 'https://whc.unesco.org/en/list/814/'}]},
+ 'EGY': {'area_km2': 1002450,
+         'domains': ['.eg', '.مصر'],
+         'calling_codes': ['+20'],
+         'landmarks': [{'name': 'Memphis and its Necropolis – the Pyramid Fields from Giza to Dahshur',
+                        'source': 'https://whc.unesco.org/en/list/86/'},
+                       {'name': 'Ancient Thebes with its Necropolis',
+                        'source': 'https://whc.unesco.org/en/list/87/'},
+                       {'name': 'Nubian Monuments from Abu Simbel to Philae',
+                        'source': 'https://whc.unesco.org/en/list/88/'}]},
+ 'ESP': {'area_km2': 505992,
+         'domains': ['.es'],
+         'calling_codes': ['+34'],
+         'landmarks': [{'name': 'Historic Centre of Cordoba', 'source': 'https://whc.unesco.org/en/list/313/'},
+                       {'name': 'Alhambra, Generalife and Albayzín, Granada',
+                        'source': 'https://whc.unesco.org/en/list/314/'},
+                       {'name': 'Burgos Cathedral', 'source': 'https://whc.unesco.org/en/list/316/'}]},
+ 'EST': {'area_km2': 45227,
+         'domains': ['.ee'],
+         'calling_codes': ['+372'],
+         'landmarks': [{'name': 'Historic Centre (Old Town) of Tallinn',
+                        'source': 'https://whc.unesco.org/en/list/822/'}]},
+ 'FJI': {'area_km2': 18272,
+         'domains': ['.fj'],
+         'calling_codes': ['+679'],
+         'landmarks': [{'name': 'Levuka Historical Port Town', 'source': 'https://whc.unesco.org/en/list/1399/'}]},
+ 'FRA': {'area_km2': 551695,
+         'domains': ['.fr'],
+         'calling_codes': ['+33'],
+         'landmarks': [{'name': 'Mont-Saint-Michel and its Bay', 'source': 'https://whc.unesco.org/en/list/80/'},
+                       {'name': 'Chartres Cathedral', 'source': 'https://whc.unesco.org/en/list/81/'},
+                       {'name': 'Palace and Park of Versailles', 'source': 'https://whc.unesco.org/en/list/83/'}]},
+ 'FSM': {'area_km2': 702,
+         'domains': ['.fm'],
+         'calling_codes': ['+691'],
+         'landmarks': [{'name': 'Nan Madol: Ceremonial Centre of Eastern Micronesia',
+                        'source': 'https://whc.unesco.org/en/list/1503/'}]},
+ 'GHA': {'area_km2': 238533,
+         'domains': ['.gh'],
+         'calling_codes': ['+233'],
+         'landmarks': [{'name': 'Forts and Castles, Volta, Greater Accra, Central and Western Regions',
+                        'source': 'https://whc.unesco.org/en/list/34/'},
+                       {'name': 'Asante Traditional Buildings', 'source': 'https://whc.unesco.org/en/list/35/'}]},
+ 'GRD': {'area_km2': 344, 'domains': ['.gd'], 'calling_codes': ['+1473'], 'landmarks': []},
+ 'GTM': {'area_km2': 108889,
+         'domains': ['.gt'],
+         'calling_codes': ['+502'],
+         'landmarks': [{'name': 'Tikal National Park', 'source': 'https://whc.unesco.org/en/list/64/'},
+                       {'name': 'Antigua Guatemala', 'source': 'https://whc.unesco.org/en/list/65/'},
+                       {'name': 'Archaeological Park and Ruins of Quirigua',
+                        'source': 'https://whc.unesco.org/en/list/149/'}]},
+ 'GUY': {'area_km2': 214969, 'domains': ['.gy'], 'calling_codes': ['+592'], 'landmarks': []},
+ 'HND': {'area_km2': 112492,
+         'domains': ['.hn'],
+         'calling_codes': ['+504'],
+         'landmarks': [{'name': 'Maya Site of Copan', 'source': 'https://whc.unesco.org/en/list/129/'},
+                       {'name': 'Río Plátano Biosphere Reserve',
+                        'source': 'https://whc.unesco.org/en/list/196/'}]},
+ 'IND': {'area_km2': 3287590,
+         'domains': ['.in'],
+         'calling_codes': ['+91'],
+         'landmarks': [{'name': 'Ajanta Caves', 'source': 'https://whc.unesco.org/en/list/242/'},
+                       {'name': 'Ellora Caves', 'source': 'https://whc.unesco.org/en/list/243/'},
+                       {'name': 'Agra Fort', 'source': 'https://whc.unesco.org/en/list/251/'}]},
+ 'ITA': {'area_km2': 301336,
+         'domains': ['.it'],
+         'calling_codes': ['+39'],
+         'landmarks': [{'name': 'Rock Drawings in Valcamonica', 'source': 'https://whc.unesco.org/en/list/94/'},
+                       {'name': 'Church and Dominican Convent of Santa Maria delle Grazie with “The Last Supper” '
+                                'by Leonardo da Vinci',
+                        'source': 'https://whc.unesco.org/en/list/93/'},
+                       {'name': 'Historic Centre of Florence', 'source': 'https://whc.unesco.org/en/list/174/'}]},
+ 'JAM': {'area_km2': 10991,
+         'domains': ['.jm'],
+         'calling_codes': ['+1876'],
+         'landmarks': [{'name': 'Blue and John Crow Mountains', 'source': 'https://whc.unesco.org/en/list/1356/'},
+                       {'name': 'The Archaeological Ensemble of 17th Century Port Royal',
+                        'source': 'https://whc.unesco.org/en/list/1595/'}]},
+ 'JPN': {'area_km2': 377930,
+         'domains': ['.jp', '.みんな'],
+         'calling_codes': ['+81'],
+         'landmarks': [{'name': 'Buddhist Monuments in the Horyu-ji Area',
+                        'source': 'https://whc.unesco.org/en/list/660/'},
+                       {'name': 'Himeji-jo', 'source': 'https://whc.unesco.org/en/list/661/'},
+                       {'name': 'Yakushima', 'source': 'https://whc.unesco.org/en/list/662/'}]},
+ 'KEN': {'area_km2': 580367,
+         'domains': ['.ke'],
+         'calling_codes': ['+254'],
+         'landmarks': [{'name': 'Mount Kenya National Park/Natural Forest',
+                        'source': 'https://whc.unesco.org/en/list/800/'},
+                       {'name': 'Lake Turkana National Parks', 'source': 'https://whc.unesco.org/en/list/801/'},
+                       {'name': 'Lamu Old Town', 'source': 'https://whc.unesco.org/en/list/1055/'}]},
+ 'KHM': {'area_km2': 181035,
+         'domains': ['.kh'],
+         'calling_codes': ['+855'],
+         'landmarks': [{'name': 'Angkor', 'source': 'https://whc.unesco.org/en/list/668/'},
+                       {'name': 'Temple of Preah Vihear', 'source': 'https://whc.unesco.org/en/list/1224/'},
+                       {'name': 'Temple Zone of Sambor Prei Kuk, Archaeological Site of Ancient Ishanapura',
+                        'source': 'https://whc.unesco.org/en/list/1532/'}]},
+ 'KIR': {'area_km2': 811,
+         'domains': ['.ki'],
+         'calling_codes': ['+686'],
+         'landmarks': [{'name': 'Phoenix Islands Protected Area',
+                        'source': 'https://whc.unesco.org/en/list/1325/'}]},
+ 'KNA': {'area_km2': 261,
+         'domains': ['.kn'],
+         'calling_codes': ['+1869'],
+         'landmarks': [{'name': 'Brimstone Hill Fortress National Park',
+                        'source': 'https://whc.unesco.org/en/list/910/'}]},
+ 'LAO': {'area_km2': 236800,
+         'domains': ['.la'],
+         'calling_codes': ['+856'],
+         'landmarks': [{'name': 'Town of Luang Prabang', 'source': 'https://whc.unesco.org/en/list/479/'},
+                       {'name': 'Vat Phou and Associated Ancient Settlements within the Champasak Cultural '
+                                'Landscape',
+                        'source': 'https://whc.unesco.org/en/list/481/'},
+                       {'name': 'Megalithic Jar Sites in Xiengkhuang – Plain of Jars',
+                        'source': 'https://whc.unesco.org/en/list/1587/'}]},
+ 'LCA': {'area_km2': 616,
+         'domains': ['.lc'],
+         'calling_codes': ['+1758'],
+         'landmarks': [{'name': 'Pitons Management Area', 'source': 'https://whc.unesco.org/en/list/1161/'}]},
+ 'LIE': {'area_km2': 160, 'domains': ['.li'], 'calling_codes': ['+423'], 'landmarks': []},
+ 'LKA': {'area_km2': 65610,
+         'domains': ['.lk', '.இலங்கை', '.ලංකා'],
+         'calling_codes': ['+94'],
+         'landmarks': [{'name': 'Sacred City of Anuradhapura', 'source': 'https://whc.unesco.org/en/list/200/'},
+                       {'name': 'Ancient City of Polonnaruwa', 'source': 'https://whc.unesco.org/en/list/201/'},
+                       {'name': 'Ancient City of Sigiriya', 'source': 'https://whc.unesco.org/en/list/202/'}]},
+ 'LSO': {'area_km2': 30355, 'domains': ['.ls'], 'calling_codes': ['+266'], 'landmarks': []},
+ 'LTU': {'area_km2': 65300,
+         'domains': ['.lt'],
+         'calling_codes': ['+370'],
+         'landmarks': [{'name': 'Vilnius Historic Centre', 'source': 'https://whc.unesco.org/en/list/541/'},
+                       {'name': 'Kernavė Archaeological Site (Cultural Reserve of Kernavė)',
+                        'source': 'https://whc.unesco.org/en/list/1137/'},
+                       {'name': 'Modernist Kaunas: Architecture of Optimism, 1919-1939',
+                        'source': 'https://whc.unesco.org/en/list/1661/'}]},
+ 'LUX': {'area_km2': 2586,
+         'domains': ['.lu'],
+         'calling_codes': ['+352'],
+         'landmarks': [{'name': 'City of Luxembourg: its Old Quarters and Fortifications',
+                        'source': 'https://whc.unesco.org/en/list/699/'}]},
+ 'LVA': {'area_km2': 64559,
+         'domains': ['.lv'],
+         'calling_codes': ['+371'],
+         'landmarks': [{'name': 'Historic Centre of Riga', 'source': 'https://whc.unesco.org/en/list/852/'},
+                       {'name': 'Old town of Kuldīga', 'source': 'https://whc.unesco.org/en/list/1658/'}]},
+ 'MDA': {'area_km2': 33846, 'domains': ['.md'], 'calling_codes': ['+373'], 'landmarks': []},
+ 'MDG': {'area_km2': 587041,
+         'domains': ['.mg'],
+         'calling_codes': ['+261'],
+         'landmarks': [{'name': 'Andrefana Dry Forests', 'source': 'https://whc.unesco.org/en/list/494/'},
+                       {'name': 'Royal Hill of Ambohimanga', 'source': 'https://whc.unesco.org/en/list/950/'},
+                       {'name': 'Rainforests of the Atsinanana',
+                        'source': 'https://whc.unesco.org/en/list/1257/'}]},
+ 'MDV': {'area_km2': 300, 'domains': ['.mv'], 'calling_codes': ['+960'], 'landmarks': []},
+ 'MEX': {'area_km2': 1964375,
+         'domains': ['.mx'],
+         'calling_codes': ['+52'],
+         'landmarks': [{'name': "Sian Ka'an", 'source': 'https://whc.unesco.org/en/list/410/'},
+                       {'name': 'Pre-Hispanic City and National Park of Palenque',
+                        'source': 'https://whc.unesco.org/en/list/411/'},
+                       {'name': 'Historic Centre of Mexico City and Xochimilco',
+                        'source': 'https://whc.unesco.org/en/list/412/'}]},
+ 'MHL': {'area_km2': 181,
+         'domains': ['.mh'],
+         'calling_codes': ['+692'],
+         'landmarks': [{'name': 'Bikini Atoll Nuclear Test Site',
+                        'source': 'https://whc.unesco.org/en/list/1339/'}]},
+ 'MKD': {'area_km2': 25713, 'domains': ['.mk'], 'calling_codes': ['+389'], 'landmarks': []},
+ 'MLT': {'area_km2': 316,
+         'domains': ['.mt'],
+         'calling_codes': ['+356'],
+         'landmarks': [{'name': 'Ħal Saflieni Hypogeum', 'source': 'https://whc.unesco.org/en/list/130/'},
+                       {'name': 'City of Valletta', 'source': 'https://whc.unesco.org/en/list/131/'},
+                       {'name': 'Megalithic Temples of Malta', 'source': 'https://whc.unesco.org/en/list/132/'}]},
+ 'MNG': {'area_km2': 1564110,
+         'domains': ['.mn'],
+         'calling_codes': ['+976'],
+         'landmarks': [{'name': 'Orkhon Valley Cultural Landscape',
+                        'source': 'https://whc.unesco.org/en/list/1081/'},
+                       {'name': 'Petroglyphic Complexes of the Mongolian Altai',
+                        'source': 'https://whc.unesco.org/en/list/1382/'},
+                       {'name': 'Great Burkhan Khaldun Mountain and its surrounding sacred landscape',
+                        'source': 'https://whc.unesco.org/en/list/1440/'}]},
+ 'MUS': {'area_km2': 2040,
+         'domains': ['.mu'],
+         'calling_codes': ['+230'],
+         'landmarks': [{'name': 'Aapravasi Ghat', 'source': 'https://whc.unesco.org/en/list/1227/'},
+                       {'name': 'Le Morne Cultural Landscape', 'source': 'https://whc.unesco.org/en/list/1259/'}]},
+ 'NAM': {'area_km2': 825615,
+         'domains': ['.na'],
+         'calling_codes': ['+264'],
+         'landmarks': [{'name': 'Twyfelfontein or /Ui-//aes', 'source': 'https://whc.unesco.org/en/list/1255/'},
+                       {'name': 'Namib Sand Sea', 'source': 'https://whc.unesco.org/en/list/1430/'}]},
+ 'NGA': {'area_km2': 923768,
+         'domains': ['.ng'],
+         'calling_codes': ['+234'],
+         'landmarks': [{'name': 'Sukur Cultural Landscape', 'source': 'https://whc.unesco.org/en/list/938/'},
+                       {'name': 'Osun-Osogbo Sacred Grove', 'source': 'https://whc.unesco.org/en/list/1118/'}]},
+ 'NIC': {'area_km2': 130373,
+         'domains': ['.ni'],
+         'calling_codes': ['+505'],
+         'landmarks': [{'name': 'Ruins of León Viejo', 'source': 'https://whc.unesco.org/en/list/613/'},
+                       {'name': 'León Cathedral', 'source': 'https://whc.unesco.org/en/list/1236/'}]},
+ 'NPL': {'area_km2': 147181,
+         'domains': ['.np'],
+         'calling_codes': ['+977'],
+         'landmarks': [{'name': 'Sagarmatha National Park', 'source': 'https://whc.unesco.org/en/list/120/'},
+                       {'name': 'Kathmandu Valley', 'source': 'https://whc.unesco.org/en/list/121/'},
+                       {'name': 'Chitwan National Park', 'source': 'https://whc.unesco.org/en/list/284/'}]},
+ 'NZL': {'area_km2': 270467,
+         'domains': ['.nz'],
+         'calling_codes': ['+64'],
+         'landmarks': [{'name': 'Tongariro National Park', 'source': 'https://whc.unesco.org/en/list/421/'},
+                       {'name': 'Te Wahipounamu – South West New Zealand',
+                        'source': 'https://whc.unesco.org/en/list/551/'},
+                       {'name': 'New Zealand Sub-Antarctic Islands',
+                        'source': 'https://whc.unesco.org/en/list/877/'}]},
+ 'PAK': {'area_km2': 881912,
+         'domains': ['.pk'],
+         'calling_codes': ['+92'],
+         'landmarks': [{'name': 'Archaeological Ruins at Moenjodaro',
+                        'source': 'https://whc.unesco.org/en/list/138/'},
+                       {'name': 'Taxila', 'source': 'https://whc.unesco.org/en/list/139/'},
+                       {'name': 'Buddhist Ruins of Takht-i-Bahi and Neighbouring City Remains at Sahr-i-Bahlol',
+                        'source': 'https://whc.unesco.org/en/list/140/'}]},
+ 'PER': {'area_km2': 1285216,
+         'domains': ['.pe'],
+         'calling_codes': ['+51'],
+         'landmarks': [{'name': 'City of Cuzco', 'source': 'https://whc.unesco.org/en/list/273/'},
+                       {'name': 'Historic Sanctuary of Machu Picchu',
+                        'source': 'https://whc.unesco.org/en/list/274/'},
+                       {'name': 'Chavin (Archaeological Site)', 'source': 'https://whc.unesco.org/en/list/330/'}]},
+ 'PLW': {'area_km2': 459,
+         'domains': ['.pw'],
+         'calling_codes': ['+680'],
+         'landmarks': [{'name': 'Rock Islands Southern Lagoon',
+                        'source': 'https://whc.unesco.org/en/list/1386/'}]},
+ 'PNG': {'area_km2': 462840,
+         'domains': ['.pg'],
+         'calling_codes': ['+675'],
+         'landmarks': [{'name': 'Kuk Early Agricultural Site', 'source': 'https://whc.unesco.org/en/list/887/'}]},
+ 'PRT': {'area_km2': 92090,
+         'domains': ['.pt'],
+         'calling_codes': ['+351'],
+         'landmarks': [{'name': 'Central Zone of the Town of Angra do Heroismo in the Azores',
+                        'source': 'https://whc.unesco.org/en/list/206/'},
+                       {'name': 'Monastery of the Hieronymites and Tower of Belém in Lisbon',
+                        'source': 'https://whc.unesco.org/en/list/263/'},
+                       {'name': 'Monastery of Batalha', 'source': 'https://whc.unesco.org/en/list/264/'}]},
+ 'PRY': {'area_km2': 406752,
+         'domains': ['.py'],
+         'calling_codes': ['+595'],
+         'landmarks': [{'name': 'Jesuit Missions of La Santísima Trinidad de Paraná and Jesús de Tavarangue',
+                        'source': 'https://whc.unesco.org/en/list/648/'}]},
+ 'SEN': {'area_km2': 196722,
+         'domains': ['.sn'],
+         'calling_codes': ['+221'],
+         'landmarks': [{'name': 'Island of Gorée', 'source': 'https://whc.unesco.org/en/list/26/'},
+                       {'name': 'Djoudj National Bird Sanctuary', 'source': 'https://whc.unesco.org/en/list/25/'},
+                       {'name': 'Niokolo-Koba National Park', 'source': 'https://whc.unesco.org/en/list/153/'}]},
+ 'SLB': {'area_km2': 28896,
+         'domains': ['.sb'],
+         'calling_codes': ['+677'],
+         'landmarks': [{'name': 'East Rennell', 'source': 'https://whc.unesco.org/en/list/854/'}]},
+ 'SMR': {'area_km2': 61,
+         'domains': ['.sm'],
+         'calling_codes': ['+378'],
+         'landmarks': [{'name': 'San Marino Historic Centre and Mount Titano',
+                        'source': 'https://whc.unesco.org/en/list/1245/'}]},
+ 'STP': {'area_km2': 964,
+         'domains': ['.st'],
+         'calling_codes': ['+239'],
+         'landmarks': [{'name': 'The Roças of Sao Tome and Principe: Colonial Agricultural System and Forced '
+                                'Migration',
+                        'source': 'https://whc.unesco.org/en/list/1750/'}]},
+ 'SUR': {'area_km2': 163820,
+         'domains': ['.sr'],
+         'calling_codes': ['+597'],
+         'landmarks': [{'name': 'Central Suriname Nature Reserve',
+                        'source': 'https://whc.unesco.org/en/list/1017/'},
+                       {'name': 'Historic Inner City of Paramaribo',
+                        'source': 'https://whc.unesco.org/en/list/940/'},
+                       {'name': 'Jodensavanne Archaeological Site: Jodensavanne Settlement and Cassipora Creek '
+                                'Cemetery',
+                        'source': 'https://whc.unesco.org/en/list/1680/'}]},
+ 'SVN': {'area_km2': 20273,
+         'domains': ['.si'],
+         'calling_codes': ['+386'],
+         'landmarks': [{'name': 'Škocjan Caves', 'source': 'https://whc.unesco.org/en/list/390/'},
+                       {'name': 'The works of Jože Plečnik in Ljubljana – Human Centred Urban Design',
+                        'source': 'https://whc.unesco.org/en/list/1643/'}]},
+ 'SWZ': {'area_km2': 17364, 'domains': ['.sz'], 'calling_codes': ['+268'], 'landmarks': []},
+ 'SYC': {'area_km2': 452,
+         'domains': ['.sc'],
+         'calling_codes': ['+248'],
+         'landmarks': [{'name': 'Aldabra Atoll', 'source': 'https://whc.unesco.org/en/list/185/'},
+                       {'name': 'Vallée de Mai Nature Reserve', 'source': 'https://whc.unesco.org/en/list/261/'}]},
+ 'THA': {'area_km2': 513120,
+         'domains': ['.th', '.ไทย'],
+         'calling_codes': ['+66'],
+         'landmarks': [{'name': 'Historic Town of Sukhothai and Associated Historic Towns',
+                        'source': 'https://whc.unesco.org/en/list/574/'},
+                       {'name': 'Historic City of Ayutthaya', 'source': 'https://whc.unesco.org/en/list/576/'},
+                       {'name': 'Thungyai-Huai Kha Khaeng Wildlife Sanctuaries',
+                        'source': 'https://whc.unesco.org/en/list/591/'}]},
+ 'TLS': {'area_km2': 14874, 'domains': ['.tl'], 'calling_codes': ['+670'], 'landmarks': []},
+ 'TON': {'area_km2': 747, 'domains': ['.to'], 'calling_codes': ['+676'], 'landmarks': []},
+ 'TTO': {'area_km2': 5130, 'domains': ['.tt'], 'calling_codes': ['+1868'], 'landmarks': []},
+ 'TUV': {'area_km2': 26, 'domains': ['.tv'], 'calling_codes': ['+688'], 'landmarks': []},
+ 'URY': {'area_km2': 181034,
+         'domains': ['.uy'],
+         'calling_codes': ['+598'],
+         'landmarks': [{'name': 'Historic Quarter of the City of Colonia del Sacramento',
+                        'source': 'https://whc.unesco.org/en/list/747/'},
+                       {'name': 'Fray Bentos Industrial Landscape',
+                        'source': 'https://whc.unesco.org/en/list/1464/'},
+                       {'name': 'The work of engineer Eladio Dieste: Church of Atlántida',
+                        'source': 'https://whc.unesco.org/en/list/1612/'}]},
+ 'USA': {'area_km2': 9372610,
+         'domains': ['.us'],
+         'calling_codes': [],
+         'landmarks': [{'name': 'Mesa Verde National Park', 'source': 'https://whc.unesco.org/en/list/27/'},
+                       {'name': 'Yellowstone National Park', 'source': 'https://whc.unesco.org/en/list/28/'},
+                       {'name': 'Grand Canyon National Park', 'source': 'https://whc.unesco.org/en/list/75/'}]},
+ 'VCT': {'area_km2': 389, 'domains': ['.vc'], 'calling_codes': ['+1784'], 'landmarks': []},
+ 'VNM': {'area_km2': 331212,
+         'domains': ['.vn'],
+         'calling_codes': ['+84'],
+         'landmarks': [{'name': 'Complex of Hué Monuments', 'source': 'https://whc.unesco.org/en/list/678/'},
+                       {'name': 'Ha Long Bay - Cat Ba Archipelago',
+                        'source': 'https://whc.unesco.org/en/list/672/'},
+                       {'name': 'Hoi An Ancient Town', 'source': 'https://whc.unesco.org/en/list/948/'}]},
+ 'VUT': {'area_km2': 12189,
+         'domains': ['.vu'],
+         'calling_codes': ['+678'],
+         'landmarks': [{'name': 'Chief Roi Mata’s Domain', 'source': 'https://whc.unesco.org/en/list/1280/'}]},
+ 'WSM': {'area_km2': 2842, 'domains': ['.ws'], 'calling_codes': ['+685'], 'landmarks': []}}
+for _country in COUNTRIES:
+    _country.update(COUNTRY_DETAILS.get(_country["id"], {}))
+
 def normalize_country(record):
     if not isinstance(record, dict) or not record.get("id") or not record.get("name") or not record.get("continent"):
         return None
@@ -644,7 +1155,7 @@ COUNTRIES = [c for row in COUNTRIES if (c := normalize_country(row)) is not None
 CONTINENTS = ["Africa", "Asia", "Europe", "North America", "South America", "Oceania"]
 AREAS = ["World"] + CONTINENTS
 CATEGORIES = ["Mixed", "Capitals", "Heads of State", "Currency", "Languages",
-              "Country Identification", "Geography / General Facts", "Continents", "True or False"]
+              "Country Identification", "Geography / General Facts", "Continents", "True or False", "Landmarks"]
 DIFFICULTIES = ["Easy", "Medium", "Difficult", "Expert"]
 QUESTION_COUNTS = [5, 10, 15, 20, 25, 50]
 DIFFICULTY_MULTIPLIERS = {"Easy": 1.0, "Medium": 1.25, "Difficult": 1.5, "Expert": 2.0}
@@ -736,14 +1247,16 @@ def question_candidates(country, category, difficulty, rng, leaders):
     rng.shuffle(currencies)
     result = []
 
-    def add(suffix, kind, prompt, answer, options, explanation, source=None):
+    def add(suffix, kind, prompt, answer, options, explanation, source=None, facts=None, family=None):
         if (not options or len(options) not in (2, 4) or len(set(options)) != len(options)
                 or options.count(answer) != 1):
             return
         result.append({"id": f"{country['id']}:{suffix}", "country_id": country["id"],
-                       "country": name, "kind": kind, "prompt": prompt, "answer": answer,
+                       "country": name, "kind": kind, "family": family or kind,
+                       "facts": facts or [f"{country['id']}:{suffix.split(':')[0]}"],
+                       "prompt": prompt, "answer": answer,
                        "choices": options, "explanation": explanation,
-                       "source": source or (country.get("capital_source") if kind in ("Capitals", "True or False") else None) or country["source"],
+                       "source": source or (country.get("capital_source") if kind == "Capitals" or suffix == "truefalse:capital" else None) or country["source"],
                        "extra_source": country.get("capital_source") if kind == "Country Identification" else None})
 
     if category in ("Mixed", "Capitals"):
@@ -753,11 +1266,11 @@ def question_candidates(country, category, difficulty, rng, leaders):
             prompt = f"Which place serves as the {role} of {name}?"
             options = plausible_choices(country, "capital", answer, capitals, difficulty, rng)
             add(f"capital:{answer}", "Capitals", prompt, answer, options,
-                f"{answer} is the {role} of {name}.")
+                f"{answer} is the {role} of {name}.", facts=[f"{country['id']}:capital"])
             if difficulty in ("Difficult", "Expert"):
                 options = plausible_choices(country, "country", name, [name], difficulty, rng)
                 add(f"reverse:{answer}", "Capitals", f"{answer} is the {role} of which country?",
-                    name, options, f"{answer} is the {role} of {name}.")
+                    name, options, f"{answer} is the {role} of {name}.", facts=[f"{country['id']}:capital"])
     if category in ("Mixed", "Currency"):
         for currency in currencies:
             options = plausible_choices(country, "currency", currency, currencies, difficulty, rng)
@@ -767,7 +1280,8 @@ def question_candidates(country, category, difficulty, rng, leaders):
         for language in languages:
             options = plausible_choices(country, "language", language, languages, difficulty, rng)
             add(f"language:{language}", "Languages", f"Which of these is an official language of {name}?",
-                language, options, f"{language} is an official language of {name}.")
+                language, options, f"{language} is an official language of {name}.",
+                source="https://ungegn.un.org/dashboard/countries/details?id=4" if country["id"] == "AFG" else None)
     if category in ("Mixed", "Country Identification") and capitals:
         answer = name
         options = plausible_choices(country, "country", answer, [answer], difficulty, rng)
@@ -777,7 +1291,9 @@ def question_candidates(country, category, difficulty, rng, leaders):
         if difficulty == "Expert" and languages:
             clue += f". {languages[0]} is one of its official languages"
         add("identify", "Country Identification", f"Identify the country: {clue}.",
-            answer, options, f"These clues describe {name}.")
+            answer, options, f"These clues describe {name}.",
+            facts=[f"{country['id']}:capital"] + ([f"{country['id']}:currency"] if difficulty in ("Difficult", "Expert") and currencies else [])
+            + ([f"{country['id']}:language"] if difficulty == "Expert" and languages else []))
     if category in ("Mixed", "Geography / General Facts"):
         region = country.get("region")
         if region:
@@ -790,20 +1306,101 @@ def question_candidates(country, category, difficulty, rng, leaders):
             valid = [c["name"] for c in neighbours] + [name]
             options = plausible_choices(country, "country", answer, valid, difficulty, rng)
             add("border", "Geography / General Facts", f"Which of these countries shares a land border with {name}?",
-                answer, options, f"{answer} and {name} share a land border.")
+                answer, options, f"{answer} and {name} share a land border.",
+                facts=["border:" + ":".join(sorted([country["id"], next(c["id"] for c in neighbours if c["name"] == answer)]))], family="Neighbours")
     if category in ("Mixed", "Continents"):
         options = rng.sample([c for c in CONTINENTS if c != country["continent"]], 3) + [country["continent"]]
         rng.shuffle(options)
         add("continent", "Continents", f"On which continent is {name}?", country["continent"],
             options, f"{name} is in {country['continent']}.")
-    if category == "True or False" and capitals:
+    if category in ("Mixed", "True or False"):
+        statements = [(f"{name} is landlocked.", bool(country.get("landlocked")),
+                       f"{name} " + ("is landlocked." if country.get("landlocked") else "has a coastline."), "coast")]
+        if capitals:
+            role = country["capitals"][0].get("role", "capital")
+            choices = plausible_choices(country, "capital", capitals[0], capitals, difficulty, rng)
+            truthful = rng.choice([True, False])
+            if choices:
+                stated = capitals[0] if truthful else rng.choice([v for v in choices if v not in capitals])
+                statements.append((f"{stated} is the {role} of {name}.", truthful,
+                                   f"{capitals[0]} is the {role} of {name}.", "capital"))
         truthful = rng.choice([True, False])
-        role = country["capitals"][0].get("role", "capital")
-        choices = plausible_choices(country, "capital", capitals[0], capitals, difficulty, rng)
-        stated = capitals[0] if truthful else rng.choice([v for v in choices if v not in capitals])
-        add("truefalse", "True or False", f"{stated} is the {role} of {name}.",
-            "True" if truthful else "False", ["True", "False"],
-            f"{capitals[0]} is the {role} of {name}.")
+        stated_continent = country["continent"] if truthful else rng.choice([c for c in CONTINENTS if c != country["continent"]])
+        statements.append((f"{name} is in {stated_continent}.", truthful,
+                           f"{name} is in {country['continent']}.", "continent"))
+        for field, values, topic in [("currency", currencies, "currency"), ("language", languages, "language")]:
+            if not values:
+                continue
+            truthful = rng.choice([True, False])
+            choices = plausible_choices(country, field, values[0], values, difficulty, rng)
+            if not choices:
+                continue
+            stated = values[0] if truthful else rng.choice([v for v in choices if v not in values])
+            statement = (f"{name} uses {stated}." if topic == "currency" else
+                         f"{stated} is an official language of {name}.")
+            explanation = (f"{name} uses {', '.join(values)}." if topic == "currency" else
+                           f"{name}: {', '.join(values)}.")
+            statements.append((statement, truthful, explanation, topic))
+        for statement, truthful, explanation, topic in statements:
+            add("truefalse:" + topic, "True or False", statement, "True" if truthful else "False",
+                ["True", "False"], explanation,
+                source=("https://ungegn.un.org/dashboard/countries/details?id=4" if country["id"] == "AFG" and topic == "language" else
+                        "https://github.com/mledoze/countries" if topic == "coast" else None),
+                facts=[f"{country['id']}:{topic}"], family="True or False")
+    if category in ("Mixed", "Country Identification"):
+        neighbours = [get_country(i) for i in country.get("borders", []) if get_country(i)]
+        pairs = [(a, b) for i, a in enumerate(neighbours) for b in neighbours[i + 1:]
+                 if [c["id"] for c in COUNTRIES if {a["id"], b["id"]}.issubset(c.get("borders", []))] == [country["id"]]]
+        if pairs:
+            a, b = rng.choice(pairs)
+            options = plausible_choices(country, "country", name, [name], difficulty, rng)
+            add("identify-borders", "Country Identification",
+                f"Which country shares land borders with both {a['name']} and {b['name']}?",
+                name, options, f"{name} shares land borders with {a['name']} and {b['name']}.",
+                facts=["border:" + ":".join(sorted([country["id"], n["id"]])) for n in (a, b)],
+                family="Neighbour clues")
+    if category in ("Mixed", "Landmarks", "Country Identification"):
+        for site in country.get("landmarks", []):
+            options = plausible_choices(country, "country", name, [name], difficulty, rng)
+            add("landmark-reverse:" + site["name"], "Country Identification" if category == "Country Identification" else "Landmarks",
+                f"In which country is the UNESCO World Heritage site {site['name']}?",
+                name, options, f"{site['name']} is in {name}.", site["source"],
+                facts=[f"landmark:{site['name']}"], family="Landmarks")
+            alternatives = list({s["name"] for c in COUNTRIES if c["id"] != country["id"]
+                                 for s in c.get("landmarks", [])})
+            if len(alternatives) >= 3 and category != "Country Identification":
+                options = rng.sample(alternatives, 3) + [site["name"]]
+                rng.shuffle(options)
+                add("landmark:" + site["name"], "Landmarks",
+                    f"Which of these UNESCO World Heritage sites is in {name}?",
+                    site["name"], options, f"{site['name']} is in {name}.", site["source"],
+                    facts=[f"landmark:{site['name']}"], family="Landmarks")
+    if category in ("Mixed", "Geography / General Facts"):
+        if country.get("area_km2"):
+            # Require a substantial size difference so rounding cannot change the answer.
+            others = [c for c in COUNTRIES if c["id"] != country["id"] and c.get("area_km2")
+                      and max(c["area_km2"], country["area_km2"]) / min(c["area_km2"], country["area_km2"]) > 1.2]
+            if others:
+                other = rng.choice(others)
+                answer = max([country, other], key=lambda c: c["area_km2"])["name"]
+                options = [name, other["name"]]
+                rng.shuffle(options)
+                add("area:" + other["id"], "Geography / General Facts",
+                    f"Which country has the larger total area: {name} or {other['name']}?", answer, options,
+                    f"{name}: {country['area_km2']:,.0f} km²; {other['name']}: {other['area_km2']:,.0f} km².",
+                    source="https://github.com/mledoze/countries",
+                    facts=[f"{country['id']}:area", f"{other['id']}:area"], family="Size comparisons")
+        for field, label, prompt in [
+                ("domains", "Internet domains", f"Which country-code internet domain belongs to {name}?"),
+                ("calling_codes", "Calling codes", f"Which international telephone calling code belongs to {name}?")]:
+            values = country.get(field, [])
+            alternatives = list({v for c in COUNTRIES for v in c.get(field, []) if v not in values})
+            if values and len(alternatives) >= 3:
+                answer = rng.choice(values)
+                options = rng.sample(alternatives, 3) + [answer]
+                rng.shuffle(options)
+                add(field, "Geography / General Facts", prompt, answer, options,
+                    f"{name}: {', '.join(values)}.", source="https://github.com/mledoze/countries", family=label)
     if category in ("Mixed", "Heads of State") and country["id"] in leaders:
         leader = leaders[country["id"]]
         answer = " / ".join(leader["names"])
@@ -822,7 +1419,7 @@ def question_candidates(country, category, difficulty, rng, leaders):
     return result
 
 
-def generate_quiz(settings, recent=None, seed=None, leaders=None):
+def generate_quiz(settings, recent=None, seed=None, leaders=None, recent_facts=None):
     required = {"continent", "country_id", "category", "difficulty", "count", "timer"}
     if (not isinstance(settings, dict) or not required.issubset(settings)
             or settings["continent"] not in AREAS
@@ -833,25 +1430,28 @@ def generate_quiz(settings, recent=None, seed=None, leaders=None):
     rng = random.Random(seed)
     leaders = load_political_records() if leaders is None else leaders
     pool = get_countries(settings["continent"], settings["country_id"])
-    difficulty = settings["difficulty"]
-    if settings["country_id"] == "all" and settings["category"] != "Heads of State":
-        minimum = {"Easy": 1, "Medium": 1, "Difficult": 2, "Expert": 3}[difficulty]
-        pool = [c for c in pool if c.get("tier", 1) >= minimum]
-    candidates = [q for c in pool for q in question_candidates(c, settings["category"], difficulty, rng, leaders)]
+    candidates = [q for c in pool for q in question_candidates(c, settings["category"], settings["difficulty"], rng, leaders)]
+    if settings["country_id"] != "all" and settings["category"] != "Country Identification":
+        candidates = [q for q in candidates if ":landmark-reverse:" not in q["id"] and ":reverse:" not in q["id"]]
     candidates = list({q["prompt"]: q for q in candidates}.values())
     rng.shuffle(candidates)
-    # Prefer fresh countries; then balance question types and country reuse.
-    selected, countries_used, types_used = [], Counter(), Counter()
-    recent = set(recent or [])
-    while candidates and len(selected) < settings["count"]:
-        candidates.sort(key=lambda q: (countries_used[q["country_id"]],
-                        types_used[q["kind"]], q["country_id"] in recent,
-                        bool(selected and q["kind"] == selected[-1]["kind"])))
+    selected, countries_used, types_used, used_facts = [], Counter(), Counter(), set()
+    recent, recent_facts = set(recent or []), set(recent_facts or [])
+    # Build a full compatible schedule: its length is the actual capacity,
+    # not the number of alternate phrasings of the same underlying fact.
+    while candidates:
+        candidates.sort(key=lambda q: (
+            bool(set(q["facts"]) & recent_facts),
+            countries_used[q["country_id"]], types_used[q["family"]],
+            q["country_id"] in recent,
+            bool(selected and q["family"] == selected[-1]["family"])))
         choice = candidates.pop(0)
         selected.append(choice)
         countries_used[choice["country_id"]] += 1
-        types_used[choice["kind"]] += 1
-    return selected, len(candidates) + len(selected)
+        types_used[choice["family"]] += 1
+        used_facts.update(choice["facts"])
+        candidates = [q for q in candidates if not used_facts.intersection(q["facts"])]
+    return selected[:settings["count"]], len(selected)
 
 
 # --- Scoring and game state ---
@@ -868,7 +1468,7 @@ def score_answer(correct, difficulty, elapsed, streak, used_hint=False, time_lim
 
 def initialise_state():
     defaults = {"points": 0, "streak": 0, "rounds_finished": 0,
-                "recent": [], "page": "Explore", "quiz": None, "quiz_serial": 0,
+                "recent": [], "recent_facts": [], "page": "Explore", "quiz": None, "quiz_serial": 0,
                 "show_setup": False, "review_answers": False, "app_language": "English",
                 "profile_name": "", "profile_photo": "", "scope_mode": "All countries", "scope_continent": "World",
                 "scope_country": "all", "explore_page": 0, "settings_open": False}
@@ -878,7 +1478,7 @@ def initialise_state():
 
 
 def start_quiz(settings):
-    questions, available = generate_quiz(settings, st.session_state.recent)
+    questions, available = generate_quiz(settings, st.session_state.recent, recent_facts=st.session_state.recent_facts)
     if not questions:
         return False
     st.session_state.quiz_serial += 1
@@ -943,6 +1543,7 @@ def resolve_answer(choice, serial=None, index=None, now=None):
                             "elapsed": elapsed, "hint": quiz["hint_used"],
                             "timed_out": timed_out, "points": points})
     st.session_state.recent = (st.session_state.recent + [q["country_id"]])[-40:]
+    st.session_state.recent_facts = (st.session_state.recent_facts + q.get("facts", []))[-160:]
 
 
 def use_hint(serial, index):
@@ -1036,7 +1637,7 @@ def globe_art():
 def render_hero(kicker, title, description, tall=False, compact=False):
     variant = " hero-tall" if tall else " hero-compact" if compact else ""
     tags = '' if compact else (f'<div class="hero-tags"><span>{len(COUNTRIES)} countries</span>'
-                               '<span>6 continents</span><span>9 quiz categories</span></div>')
+                               '<span>6 continents</span><span>10 quiz categories</span></div>')
     html(f'<section class="hero{variant}"><div class="hero-copy">'
          f'<div class="hero-kicker">{escape(tr(kicker))}</div><div class="hero-title">{escape(tr(title))}</div>'
          f'<div class="hero-description">{escape(tr(description))}</div>{tags}</div>'
@@ -1110,7 +1711,7 @@ def render_quiz_setup():
                     "difficulty": difficulty, "count": count, "timer": timer}
         # Deterministic preview; starting still creates a fresh random round.
         preview, capacity = generate_quiz(settings, seed=0)
-        st.caption(tr(f"{len(preview)} unique questions will be included · {capacity} available for these filters."))
+        st.caption(tr(f"Up to {settings['count']} questions · no repeated facts in the same round."))
         if category == "Heads of State":
             st.caption(tr("Only recently verified political records are included. Coverage is currently limited."))
         if country_id != "all" and difficulty in ("Difficult", "Expert"):
@@ -1118,7 +1719,7 @@ def render_quiz_setup():
         if not preview:
             st.info(tr("No verified questions match these filters. Choose Mixed, another country, or a lower difficulty."))
         elif len(preview) < count:
-            st.info(tr(f"This round will contain {len(preview)} questions, without repeating the same question."))
+            st.info(tr("Smaller question pools produce shorter rounds to avoid repeating the same facts."))
         if st.button(tr("Start quiz"), key="start_quiz", type="primary", use_container_width=True, disabled=not preview):
             start_quiz(settings)
             st.rerun()
@@ -1507,6 +2108,7 @@ def render_data_sources():
                     "The adapted embedded country database is distributed under the same license.")
         st.write(tr("Language questions use the included official-language lists. Missing or uncertain entries are skipped. "
                  "Population questions are omitted because this version has no dated population dataset."))
+        st.markdown("Landmark locations are adapted from the [UNESCO World Heritage List](https://data.unesco.org/explore/dataset/whc001/), checked 8 October 2026. Only sites within one country are used. Country areas, domains and calling codes use the embedded country dataset; areas follow that source’s definitions.")
         st.write(tr("Head-of-state coverage is limited to dated, sourced records. Records older than 30 days are excluded until verified again. "
                  "This offline version does not automatically fetch political updates."))
 

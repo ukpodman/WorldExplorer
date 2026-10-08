@@ -121,7 +121,22 @@ database in `data/` is distributed under the same licence. Flags come from the s
 but are not covered by the ODbL (see `COVERAGE.md`). Photo credits are listed in the app and in
 `data/photos.json`. Landmarks link to the UNESCO World Heritage List.
 
-## Changes in this update
+## Changes in this update (compact layout)
+
+- **Explore, desktop:** 7 countries per page. Row 1 shows three countries and the "Your next challenge" card;
+  row 2 shows countries four to seven, so the seventh sits directly under the challenge card. All cards share one
+  width and each row shares one height. Search and filters span the full width above, and pagination sits beneath
+  the whole layout. Every country is reachable exactly once through the pages, with or without filters.
+- **Explore, phones:** a one-line featured banner, so search sits near the top. Each country is a compact row
+  (small flag, name, capital, Discover), and the quiz card comes after the list and pagination. The same cards are
+  re-arranged with CSS; nothing is rendered twice.
+- **Badges:** a short heading and one row of points, rounds and badges. Earned badges come first, then the three
+  goals closest to completion; the rest are under "See all badges". Each badge appears once. Opening the list
+  changes no progress. Progress bars are teal even without the theme file. Compact rows on phones.
+- **Learn, quiz setup, Settings on phones:** slimmer banners, a smaller flag panel, two-column fact tiles, side-by-side
+  quiz dropdowns from 360 px wide, and tighter Settings spacing. Header clearance and Settings scrolling are unchanged.
+
+## Earlier changes
 
 - **Look:** switches, sliders, progress bars and the review toggle use the teal palette even when
   `.streamlit/config.toml` is missing; inputs and dropdowns have a white fill and warm border;

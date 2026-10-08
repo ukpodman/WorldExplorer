@@ -374,6 +374,25 @@ class BadgeTests(unittest.TestCase):
         from core import badges
         self.b = badges
 
+    def test_arrange_shows_earned_then_three_closest_and_never_twice(self):
+        cases = [(self.b.empty_stats(), 0, 0)]
+        busy = self.b.empty_stats(); busy.update(answered=40, correct=30, flags_correct=7)
+        cases.append((busy, 300, 3))
+        for stats, points, rounds in cases:
+            status = self.b.evaluate(stats, points, rounds)
+            earned, upcoming, rest = self.b.arrange(status)
+            ids = [b["id"] for b in earned + upcoming + rest]
+            self.assertEqual(sorted(ids), sorted(b["id"] for b in self.b.BADGES))   # all 14, each once
+            self.assertEqual(len(ids), 14)
+            self.assertTrue(all(b["earned"] for b in earned))
+            self.assertFalse(any(b["earned"] for b in upcoming + rest))
+            self.assertLessEqual(len(upcoming), 3)
+            ratio = lambda b: b["value"] / b["target"]
+            if rest:
+                self.assertGreaterEqual(min(map(ratio, upcoming)), max(map(ratio, rest)))
+            self.assertEqual([b["id"] for b in earned], [b["id"] for b in status if b["earned"]])  # catalogue order
+        self.assertEqual(self.b.evaluate(busy, 300, 3), self.b.evaluate(busy, 300, 3))  # evaluating is read-only
+
     def test_existing_badges_keep_their_rules(self):
         earned = self.b.earned_ids(self.b.empty_stats(), points=120, rounds=1)
         self.assertEqual(earned, {"first_steps", "century", "round_finisher"})  # old profiles keep what they had

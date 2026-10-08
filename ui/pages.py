@@ -16,7 +16,7 @@ from . import sound, state
 from .components import e, hero, html, photo_credits, status_chip
 from .state import country_formatter, country_label, formatter, parts, t
 
-EXPLORE_PAGE_SIZE = 9
+EXPLORE_PAGE_SIZE = 7  # desktop: 3 + challenge card in row 1, 4 in row 2
 FEATURED = ("NGA", "JPN", "ITA", "BRA")
 
 
@@ -72,6 +72,15 @@ def _filtered(available: list[dict]) -> list[dict]:
     return out if needle else sorted(out, key=lambda c: (c["id"] not in PHOTOS, t(c["name"])))
 
 
+def _challenge() -> None:
+    with st.container(key="atlas_quiz"):
+        html(f'<div class="feature-kicker">{e("Your next adventure")}</div>'
+             f'<div class="challenge-title">{e("Your next challenge")}</div>'
+             f'<div class="challenge-note">{e("Capitals, flags, currencies, languages and more.")}</div>')
+        st.button(t("Take a quiz →"), key="atlas_take_quiz", type="primary", width="stretch",
+                  on_click=state.navigate, args=("Quiz",))
+
+
 def explore() -> None:
     available = state.scoped_countries()
     feature = next((c for code in FEATURED for c in available if c["id"] == code), available[0])
@@ -91,17 +100,28 @@ def explore() -> None:
         area.markdown(f'<div class="browse-scope">{escape(state.scope_label())}</div>', unsafe_allow_html=True)
         change.button(t("Change"), key="atlas_scope_change", width="stretch", on_click=state.open_settings)
 
-    collection, invitation = st.columns([2.6, 1], gap="large")
-    with collection:
-        entries = _filtered(available)
+    entries = _filtered(available)  # filters span the full width, above the cards and the challenge card
+    with st.container(key="explore_grid"):
         if not entries:
-            st.info(t("No countries match your search."))
+            message, side = st.columns([3, 1])
+            message.info(t("No countries match your search."))
+            with side:
+                _challenge()
         else:
             pages = math.ceil(len(entries) / EXPLORE_PAGE_SIZE)
             page = st.session_state.explore_page = min(st.session_state.explore_page, pages - 1)
             batch = entries[page * EXPLORE_PAGE_SIZE:(page + 1) * EXPLORE_PAGE_SIZE]  # never render the whole list
-            for row in range(0, len(batch), 3):
-                for column, country in zip(st.columns(3), batch[row:row + 3]):
+            # Desktop: two rows of four equal columns. Row 1 = three countries + the challenge card,
+            # row 2 = countries four to seven, so the seventh sits directly under the challenge card.
+            # On phones CSS moves the challenge card after the list; nothing is rendered twice.
+            first = st.columns(4)
+            for column, country in zip(first[:3], batch[:3]):
+                with column:
+                    _country_card(country)
+            with first[3]:
+                _challenge()
+            if len(batch) > 3:
+                for column, country in zip(st.columns(4), batch[3:]):
                     with column:
                         _country_card(country)
             with st.container(key="explore_pagination"):
@@ -111,15 +131,6 @@ def explore() -> None:
                 status.caption(t("Page {page} of {pages} · {count} countries", page=page + 1, pages=pages, count=len(entries)))
                 following.button(t("Next"), key="explore_next", disabled=page + 1 >= pages,
                                  width="stretch", on_click=_turn_page, args=(1,))
-    with invitation:
-        with st.container(key="atlas_quiz"):
-            html(f'<div class="feature-kicker">{e("Your next adventure")}</div>'
-                 '<div class="challenge-compass" aria-hidden="true">✧</div>'
-                 f'<div class="challenge-title">{e("Your next challenge")}</div>'
-                 f'<div class="challenge-note">{e("Capitals, flags, currencies, languages and more.")}</div>')
-            st.button(t("Take a quiz →"), key="atlas_take_quiz", type="primary", width="stretch",
-                      on_click=state.navigate, args=("Quiz",))
-        html(f'<div class="atlas-small">{e("Explore at your pace.")}</div>')
     photo_credits()
 
 
@@ -442,25 +453,45 @@ def _badge_name(b: dict) -> str:
     return t(b["name"], **b["fields"]) if b["fields"] else t(b["name"])
 
 
+def _award_card(b: dict) -> None:
+    with st.container(key=f"award_card_{b['id']}"):
+        html(f'<div class="award-head"><div class="award-medal {"" if b["earned"] else "locked"}" aria-hidden="true">{b["symbol"]}</div>'
+             f'<div><div class="award-name">{escape(_badge_name(b))}</div>'
+             f'<span class="award-state {"earned" if b["earned"] else ""}">{e("Earned" if b["earned"] else "In progress")}</span></div></div>')
+        st.caption(t(b["description"], **b["fields"]))
+        st.progress(b["value"] / b["target"], text=t("{value} of {target}", value=b["value"], target=b["target"]))
+
+
+def _award_grid(group: list[dict]) -> None:
+    for row in range(0, len(group), 3):
+        for column, b in zip(st.columns(3), group[row:row + 3]):
+            with column:
+                _award_card(b)
+
+
 def badges() -> None:
-    hero("Your explorer passport", "Curiosity deserves recognition.",
+    hero("Your explorer passport", "Badges",
          "Every right answer is a step forward. Collect milestones as your knowledge grows.", variant="compact")
     points, rounds = st.session_state.points, st.session_state.rounds_finished
-    stats = st.session_state.stats
-    status = badge_engine.evaluate(stats, points, rounds)
-    earned = sum(b["earned"] for b in status)
-    st.caption(t("{points} lifetime session points · {rounds} rounds completed", points=f"{points:,}", rounds=rounds))
-    html(f'<div class="badge-summary">{e("{n} of {total} badges earned", n=earned, total=len(status))}</div>')
-    st.caption(t("Badges count answers and rounds you complete. Progress is saved with your account when you are signed in."))
-    ordered = sorted(status, key=lambda b: (not b["earned"], -(b["value"] / b["target"])))
-    for row in range(0, len(ordered), 3):
-        for column, b in zip(st.columns(3), ordered[row:row + 3]):
-            with column, st.container(key=f"award_card_{b['id']}"):
-                html(f'<div class="award-head"><div class="award-medal {"" if b["earned"] else "locked"}" aria-hidden="true">{b["symbol"]}</div>'
-                     f'<div><div class="award-name">{escape(_badge_name(b))}</div>'
-                     f'<span class="award-state {"earned" if b["earned"] else ""}">{e("Earned" if b["earned"] else "In progress")}</span></div></div>')
-                st.caption(t(b["description"], **b["fields"]))
-                st.progress(b["value"] / b["target"], text=t("{value} of {target}", value=b["value"], target=b["target"]))
+    status = badge_engine.evaluate(st.session_state.stats, points, rounds)  # read-only: viewing never changes progress
+    earned, upcoming, rest = badge_engine.arrange(status)
+    html('<div class="badge-stats">'
+         f'<div><b>{points:,}</b><span>{e("Points")}</span></div>'
+         f'<div><b>{rounds}</b><span>{e("Rounds")}</span></div>'
+         f'<div><b>{len(earned)}/{len(status)}</b><span>{e("Badges")}</span></div></div>'
+         f'<p class="badge-note">{e("Badges count answers and rounds you complete. Progress is saved with your account when you are signed in.")}</p>')
+    html(f'<h2 class="badge-section">{e("Earned badges")}</h2>')
+    if earned:
+        _award_grid(earned)
+    else:
+        html(f'<p class="badge-empty">{e("No badges yet. Answer quiz questions to earn your first one.")}</p>')
+    if upcoming:
+        html(f'<h2 class="badge-section">{e("Next goals")}</h2>')
+        _award_grid(upcoming)
+    if rest:
+        # Opening the list only reveals cards; it does not rerun the script or touch progress.
+        with st.expander(t("See all badges ({count} more)", count=len(rest)), key="badges_more"):
+            _award_grid(rest)
 
 
 ROUTES = {"Explore": explore, "Learn": learn, "Quiz": quiz, "Badges": badges}

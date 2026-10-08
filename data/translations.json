@@ -1740,6 +1740,36 @@
    "Beantworte zu jedem Kontinent mindestens eine Frage richtig.",
    "Responde correctamente al menos una pregunta sobre cada continente.",
    "每个大洲至少答对一道题。"
+  ],
+  "Points": [
+   "Punkte",
+   "Puntos",
+   "积分"
+  ],
+  "Rounds": [
+   "Runden",
+   "Rondas",
+   "轮次"
+  ],
+  "Earned badges": [
+   "Erhaltene Abzeichen",
+   "Insignias conseguidas",
+   "已获得的徽章"
+  ],
+  "Next goals": [
+   "Nächste Ziele",
+   "Próximas metas",
+   "下一个目标"
+  ],
+  "See all badges ({count} more)": [
+   "Alle Abzeichen ansehen ({count} weitere)",
+   "Ver todas las insignias ({count} más)",
+   "查看全部徽章（另有 {count} 枚）"
+  ],
+  "No badges yet. Answer quiz questions to earn your first one.": [
+   "Noch keine Abzeichen. Beantworte Quizfragen, um dein erstes zu erhalten.",
+   "Aún no tienes insignias. Responde preguntas del quiz para conseguir la primera.",
+   "还没有徽章。回答测验题即可获得第一枚。"
   ]
  }
 }

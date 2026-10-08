@@ -94,3 +94,14 @@ def evaluate(stats: dict, points: int, rounds: int) -> list[dict]:
 
 def earned_ids(stats: dict, points: int, rounds: int) -> set[str]:
     return {b["id"] for b in evaluate(stats, points, rounds) if b["earned"]}
+
+
+def arrange(status: list[dict], upcoming: int = 3) -> tuple[list[dict], list[dict], list[dict]]:
+    """Split evaluated badges for display: (earned, next goals, the rest).
+
+    Earned keep their catalogue order; the next goals are the `upcoming` unearned badges closest to
+    completion (ties keep catalogue order). Every badge appears in exactly one group.
+    """
+    earned = [b for b in status if b["earned"]]
+    pending = sorted((b for b in status if not b["earned"]), key=lambda b: -(b["value"] / b["target"]))
+    return earned, pending[:upcoming], pending[upcoming:]

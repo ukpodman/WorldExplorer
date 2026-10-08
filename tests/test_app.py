@@ -48,7 +48,7 @@ class AppTests(unittest.TestCase):
     def test_explore_paginates_and_filters(self):
         at = self.new()
         cards = [b for b in at.button if b.key and b.key.startswith("discover_")]
-        self.assertEqual(len(cards), 9)  # never hundreds of cards at once
+        self.assertEqual(len(cards), 7)  # seven per page, never hundreds of cards at once
         at.text_input(key="explore_search").input("Bern").run()
         self.assertEqual([b.key for b in at.button if b.key and b.key.startswith("discover_")], ["discover_CHE"])
         at = self.new(scope_collection="All countries and territories")
@@ -192,7 +192,68 @@ class RefinementTests(unittest.TestCase):
         self.assertEqual(at.session_state["stats"]["answered"], 5)
         at.button(key="nav_Badges").click().run()
         self.assertEqual([e.value for e in at.exception], [])
-        self.assertTrue(any("badges earned" in m.value for m in at.markdown))
+        self.assertTrue(any("Earned badges" in m.value for m in at.markdown))
+
+    # ---------------------------------------------------------------- compact layout (7 per page, badges)
+
+    def _walk_explore(self, at):
+        """Click Next until the last page; return the Discover keys of every page in order."""
+        pages = []
+        while True:
+            self.assertEqual([e.value for e in at.exception], [])
+            pages.append([b.key for b in at.button if b.key and b.key.startswith("discover_")])
+            if at.button(key="explore_next").disabled:
+                return pages
+            at.button(key="explore_next").click().run()
+
+    def test_every_country_reachable_once_through_pagination(self):
+        from core.data import get_countries
+        cases = [({}, {}),
+                 ({"scope_collection": "All countries and territories"}, {}),
+                 ({"scope_collection": "All countries and territories"}, {"explore_continent": "Europe"}),
+                 ({"scope_collection": "All countries and territories"}, {"explore_status": "territory"}),
+                 ({}, {"explore_search": "an"})]
+        for state, filters in cases:
+            at = self.new(**state)
+            for key, value in filters.items():
+                (at.text_input(key=key).input(value) if key == "explore_search" else at.selectbox(key=key).select(value)).run()
+            pages = self._walk_explore(at)
+            keys = [k for page in pages for k in page]
+            self.assertEqual(len(keys), len(set(keys)), (state, filters))                       # no duplicates
+            self.assertTrue(all(len(p) == 7 for p in pages[:-1]) and 1 <= len(pages[-1]) <= 7)  # no gaps
+            caption = " ".join(c.value for c in at.caption)
+            self.assertIn(f"· {len(keys)} countries", caption, (state, filters))
+            if not filters:  # unfiltered: exactly the places in the chosen collection
+                everything = get_countries(collection="All countries and territories")
+                expected = {c["id"] for c in everything if state or c["status"] in ("un_member", "un_observer")}
+                self.assertEqual(len(expected), 244 if state else 195)
+                self.assertEqual({k.removeprefix("discover_") for k in keys}, expected)
+
+    def test_seventh_card_discover_opens_learn(self):
+        at = self.new()
+        seventh = [b.key for b in at.button if b.key and b.key.startswith("discover_")][6]
+        at.button(key=seventh).click().run()
+        self.assertEqual(at.session_state["page"], "Learn")
+        self.assertEqual(at.session_state["learn_country"], seventh.removeprefix("discover_"))
+
+    def test_badges_show_each_badge_once_and_viewing_changes_nothing(self):
+        from core import badges
+        stats = badges.empty_stats()
+        stats.update(answered=12, correct=9, flags_correct=4)
+        at = self.new(page="Badges", stats=stats, points=450, rounds_finished=2)
+        self.assertEqual([e.value for e in at.exception], [])
+        markup = " ".join(m.value for m in at.markdown)
+        status = badges.evaluate(stats, 450, 2)
+        for b in status:
+            name = b["name"].format(**b["fields"]) if b["fields"] else b["name"]
+            self.assertEqual(markup.count(f'<div class="award-name">{name}</div>'), 1, name)
+        earned, upcoming, rest = badges.arrange(status)
+        more = [e for e in at.expander if e.label.startswith("See all badges")]
+        self.assertEqual(len(more), 1)
+        self.assertIn(f"({len(rest)} more)", more[0].label)
+        before = (dict(at.session_state["stats"]), at.session_state["points"], at.session_state["rounds_finished"])
+        at.run(); at.run()
+        self.assertEqual((dict(at.session_state["stats"]), at.session_state["points"], at.session_state["rounds_finished"]), before)
 
     def test_flag_questions_label_in_every_language(self):
         from core.i18n import translate

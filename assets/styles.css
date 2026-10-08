@@ -12,13 +12,20 @@
 
 /* ---------- base ---------- */
 .stApp { background:var(--ivory); color:var(--navy); }
-.stApp .block-container { max-width:1240px !important; padding:1.6rem 2rem 3rem !important; }
+/* Streamlit's fixed top toolbar (stHeader) is 3.75rem tall at every width and zoom level; clear it plus breathing room. */
+:root { --toolbar-h:3.75rem; }
+.stApp .block-container { max-width:1240px !important; padding:calc(var(--toolbar-h) + 1.25rem) 2rem 3rem !important; }
 .stApp, .stApp h1, .stApp h2, .stApp h3, .stApp p, .stApp label, .stApp button, .stApp input, .stApp li,
-.stApp [data-baseweb="select"], .stApp [data-testid="stMarkdownContainer"], [data-testid="stDialog"] * { font-family:var(--font) !important; }
+.stApp [data-baseweb="select"], .stApp [data-testid="stMarkdownContainer"],
+[data-testid="stDialog"] :is(h1,h2,h3,h4,p,label,input,textarea,li,small,[data-testid="stMarkdownContainer"]) { font-family:var(--font) !important; }
+/* Never restyle icon glyphs: Streamlit draws them with the Material Symbols font. */
+[data-testid="stIconMaterial"] { font-family:"Material Symbols Rounded" !important; }
 .stApp h1, .stApp h2, .stApp h3 { color:var(--navy); letter-spacing:-.02em; }
 .stApp h2 { font-size:1.9rem !important; font-weight:700 !important; }
 .stApp h3 { font-size:1.3rem !important; font-weight:650 !important; }
 .stApp p, .stApp label, .stApp li { font-size:1rem; line-height:1.6; color:var(--navy); }
+/* Streamlit renders captions at 60% opacity; that drops slate text below 3:1, so use full opacity and slate (5.4:1). */
+[data-testid="stCaptionContainer"] { opacity:1 !important; }
 .stApp [data-testid="stCaptionContainer"] p { color:var(--slate) !important; font-size:.88rem !important; }
 .stApp a { color:var(--teal-dark); text-underline-offset:2px; }
 .stApp hr { margin:1rem 0 1.4rem; border-color:var(--line); }
@@ -162,10 +169,29 @@
 .award-state.earned::before { content:"✓ "; }
 
 /* ---------- settings drawer ---------- */
-[data-testid="stDialog"] [role="dialog"] { position:fixed !important; left:0 !important; right:auto !important; top:0 !important; margin:0 !important;
-  height:100dvh !important; max-height:100dvh !important; width:430px !important; max-width:100vw !important; border-radius:0 18px 18px 0 !important;
-  overflow-y:auto !important; background:var(--ivory) !important; box-shadow:10px 0 35px rgba(23,40,59,.2) !important; }
-[data-testid="stDialog"] h2, [data-testid="stDialog"] h3, [data-testid="stDialog"] p, [data-testid="stDialog"] label { color:var(--navy); }
+/* Centred by Streamlit; we only bound its height so long settings scroll inside the dialog. */
+[data-testid="stDialog"] [role="dialog"] { background:var(--ivory); max-height:calc(100dvh - 4rem); overflow-y:auto; overscroll-behavior:contain; }
+/* The close button stays readable when it floats over scrolled content. */
+[data-testid="stDialog"] [role="dialog"] > button[aria-label="Close"] { color:var(--navy); background:var(--paper); border:1px solid var(--line);
+  border-radius:10px; width:2.25rem; height:2.25rem; display:grid; place-items:center; box-shadow:0 2px 8px rgba(23,40,59,.12); z-index:3; }
+[data-testid="stDialog"] [role="dialog"] > button[aria-label="Close"]:focus-visible { outline:3px solid var(--gold); outline-offset:2px; }
+[data-testid="stDialog"] :is(h2,h3,p,label,li) { color:var(--navy); }
+[data-testid="stDialog"] [data-testid="stCaptionContainer"] p { color:var(--slate); }
+[data-testid="stDialog"] .stButton button { min-height:44px; border-radius:10px; background:#fff; border:1px solid var(--line-cool); color:var(--navy); }
+[data-testid="stDialog"] .stButton button:hover { border-color:var(--teal); background:var(--teal-soft); }
+/* Primary buttons: white text on teal (4.9:1). */
+[data-testid="stDialog"] button[kind="primary"], [data-testid="stDialog"] .stButton button[kind="primary"] { background:var(--teal) !important; border:1px solid var(--teal-dark) !important; }
+[data-testid="stDialog"] button[kind="primary"]:hover { background:var(--teal-dark) !important; }
+[data-testid="stDialog"] button[kind="primary"] :is(p,span,div) { color:#fff !important; }
+[data-testid="stDialog"] button:disabled :is(p,span) { color:var(--slate) !important; }
+/* File uploader, expanders and sliders: keep Streamlit's own layout; just make them legible. */
+[data-testid="stDialog"] [data-testid="stFileUploaderDropzone"] { background:#fff; border:1px dashed #B9B4A7; border-radius:12px; align-items:center; gap:.75rem; }
+[data-testid="stDialog"] [data-testid="stFileUploaderDropzone"] button { white-space:nowrap; }
+[data-testid="stDialog"] [data-testid="stFileUploaderDropzoneInstructions"] :is(span,small) { color:var(--slate); }
+[data-testid="stDialog"] [data-testid="stExpander"] details { background:#fff; border:1px solid var(--line); border-radius:12px; }
+[data-testid="stDialog"] [data-testid="stExpander"] summary { color:var(--navy); }
+[data-testid="stDialog"] [data-testid="stSlider"] { padding:0 .35rem; }
+[data-testid="stDialog"] [data-testid="stSliderThumbValue"] { color:var(--navy); }
 
 /* ---------- responsive ---------- */
 @media (max-width:900px) {
@@ -173,7 +199,7 @@
   .fact-grid { grid-template-columns:1fr; }
 }
 @media (max-width:700px) {
-  .stApp .block-container { padding:.7rem .9rem calc(96px + env(safe-area-inset-bottom,0px)) !important; }
+  .stApp .block-container { padding:calc(var(--toolbar-h) + .75rem) .9rem calc(96px + env(safe-area-inset-bottom,0px)) !important; }
   .brand-note { display:none; } .brand-symbol { width:38px; height:38px; } .brand-name { font-size:1.2rem; }
   .st-key-app_header [data-testid="stHorizontalBlock"]:has(.st-key-header_menu) { flex-wrap:wrap !important; gap:8px !important; }
   .st-key-app_header [data-testid="stColumn"]:has(.st-key-header_brand) { flex:1 1 calc(100% - 64px) !important; min-width:0 !important; order:1; }
@@ -205,6 +231,18 @@
   .stApp .feature-title { font-size:1.7rem !important; }
   .challenge-compass, .atlas-small { display:none; } .challenge-title { font-size:1.2rem; margin:4px 0; }
   .result-number { font-size:2.6rem; }
-  [data-testid="stDialog"] [role="dialog"] { width:100vw !important; border-radius:0 !important; }
+  /* Phones: the dialog fills the screen and scrolls internally. */
+  [data-testid="stDialog"] { padding:0 !important; align-items:stretch !important; }
+  [data-testid="stDialog"] > div { width:100% !important; max-width:100% !important; min-height:100dvh; margin:0 !important; border-radius:0 !important; }
+  /* Extra bottom room so the last control scrolls clear of Streamlit Cloud's corner badges. */
+  [data-testid="stDialog"] [role="dialog"] { max-height:100dvh; padding-bottom:calc(4.5rem + env(safe-area-inset-bottom,0px)); }
+}
+/* Very narrow phones (and phones at 125% zoom): keep all four navigation labels whole. */
+@media (max-width:420px) {
+  .st-key-navigation button { padding:0 .25rem !important; min-width:0 !important; }
+  .st-key-navigation button p { font-size:.74rem !important; letter-spacing:-.01em; }
+  .st-key-navigation [data-testid="stHorizontalBlock"] { gap:2px !important; }
+  /* Columns size to their labels so long words (e.g. "Cuestionario") are not cut off. */
+  .st-key-navigation [data-testid="stColumn"] { flex:1 1 auto !important; width:auto !important; }
 }
 @media (prefers-reduced-motion:reduce) { * { transition:none !important; } [class*="st-key-country_card_"]:hover { transform:none; } }

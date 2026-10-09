@@ -161,7 +161,18 @@ accounts). After uploading:
    `records` entry next to `points`, `rounds_finished` and `stats`. Older rows without it keep working.
 5. If the footer says "Saved profile not reachable yet", nothing is written until the profile has loaded.
 
-## Changes in this update (automatic light/dark appearance)
+## Changes in this update (clearer Explore controls)
+
+- **Explore:** "Change" is now **Exploration area**, beside the area summary. It opens a compact inline section
+  (closed by default) with only *Places to include*, *Exploration area* and, when needed, *Continent* or *Country*.
+  Changes apply immediately to the same shared preferences Settings uses, so Explore, Learn, quiz setup and Settings
+  always agree. After a change Explore returns to page 1 with its search/continent/status filters cleared, and Learn
+  moves to a country inside the new area if needed. Search, Continent and Status stay visible.
+- **☰ Settings** keeps profile, sign-in, language, sound and the same exploration choices. Its accessible name is
+  "Settings" (translated). Opening it closes the inline section, so the controls never appear twice.
+- **Quiz:** "Change" is now **Quiz settings**. It opens quiz setup and keeps an unfinished round (unchanged protection).
+
+## Earlier: automatic light/dark appearance
 
 - **Cause of the tester's issue:** without `.streamlit/config.toml` on the server, Streamlit followed the phone's
   dark mode for its own widgets (segmented buttons, expander headers) while our stylesheet kept a light page with

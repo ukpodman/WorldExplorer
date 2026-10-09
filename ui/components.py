@@ -128,7 +128,8 @@ def header() -> None:
                               type="primary" if st.session_state.page == page else "secondary",
                               on_click=navigate, args=(page,))
         with menu, st.container(key="header_menu"):
-            st.button("☰", key="settings_menu", help=t("Settings"), width="stretch", on_click=open_settings)
+            # Shows a ☰ drawn by CSS; its accessible name is the (visually hidden) translated word "Settings".
+            st.button(t("Settings"), key="settings_menu", help=t("Settings"), width="stretch", on_click=open_settings)
         photo = st.session_state.profile_photo
         avatar = (f'<img class="header-avatar" src="{escape(photo, quote=True)}" alt="">' if photo
                   else '<span class="header-avatar default-avatar" aria-hidden="true">●</span>')

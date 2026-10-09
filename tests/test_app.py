@@ -445,6 +445,71 @@ class RefinementTests(unittest.TestCase):
         self.assertEqual([e.value for e in at.exception], [])
         self.assertTrue(any("not recorded" in c.value for c in at.caption))
 
+    # ---------------------------------------------------------------- Explore: exploration area, Settings, Quiz settings
+
+    def test_exploration_area_section_shares_preferences(self):
+        at = self.new()
+        self.assertNotIn("explore_area_mode", [s.key for s in at.selectbox])          # closed by default
+        self.assertIn("explore_search", [x.key for x in at.text_input])               # filters stay visible
+        at.button(key="explore_area_toggle").click().run()
+        self.assertNotIn("preferences_mode", [x.key for x in at.selectbox])           # inline only, not the Settings dialog
+        self.assertNotIn("apply_preferences", [b.key for b in at.button])
+        at.selectbox(key="explore_area_mode").select("One continent").run()
+        at.selectbox(key="explore_area_continent").select("Asia").run()
+        ss = at.session_state
+        self.assertEqual((ss["scope_mode"], ss["scope_continent"]), ("One continent", "Asia"))
+        self.assertEqual((ss["filter_continent"], ss["quiz_prefs"]["filter_continent"]), ("Asia", "Asia"))  # quiz setup
+        self.assertIn("Asia", " ".join(m.value for m in at.markdown))                # area summary
+        at.button(key="nav_Learn").click().run()
+        from core.data import get_country
+        self.assertEqual(get_country(at.session_state["learn_country"])["continent"], "Asia")   # Learn moved inside
+        at.button(key="nav_Quiz").click().run()
+        self.assertEqual(at.selectbox(key="filter_continent").value, "Asia")
+        at.button(key="settings_menu").click().run()                                 # Settings shows the same state
+        self.assertEqual(at.selectbox(key="preferences_mode").value, "One continent")
+        self.assertEqual(at.selectbox(key="preferences_continent").value, "Asia")
+        self.assertEqual(at.button(key="settings_menu").label, "Settings")            # accessible name, icon on screen
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_area_change_resets_pagination_and_filters(self):
+        at = self.new()
+        at.button(key="explore_next").click().run()
+        at.button(key="explore_next").click().run()
+        at.text_input(key="explore_search").input("an").run()
+        self.assertGreater(at.session_state["explore_page"], -1)
+        at.button(key="explore_area_toggle").click().run()
+        at.selectbox(key="explore_area_mode").select("One country").run()
+        at.selectbox(key="explore_area_country").select("JPN").run()
+        self.assertEqual(at.session_state["explore_page"], 0)
+        self.assertEqual(at.session_state["explore_search"], "")
+        self.assertEqual([b.key for b in at.button if b.key and b.key.startswith("discover_")], ["discover_JPN"])
+        self.assertTrue(at.button(key="explore_next").disabled)
+        at.selectbox(key="explore_area_collection").select("All countries and territories").run()
+        at.selectbox(key="explore_area_mode").select("All countries").run()
+        cards = [b.key for b in at.button if b.key and b.key.startswith("discover_")]
+        self.assertEqual(len(cards), 7)
+        self.assertIn("· 244 countries", " ".join(c.value for c in at.caption))
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_area_change_and_quiz_settings_keep_an_unfinished_round(self):
+        at = self.new(page="Quiz")
+        at.button(key="start_quiz").click().run()
+        quiz = at.session_state["quiz"]
+        qn = quiz["questions"][0]
+        at.button(key=f"answer_{quiz['serial']}_0_{qn['choices'].index(qn['answer'])}").click().run()
+        snapshot = (quiz["serial"], quiz["index"], quiz["score"], len(quiz["history"]), at.session_state["points"])
+        at.button(key="nav_Explore").click().run()
+        at.button(key="explore_area_toggle").click().run()
+        at.selectbox(key="explore_area_mode").select("One continent").run()
+        at.button(key="nav_Quiz").click().run()
+        at.button(key="quiz_settings").click().run()                                 # renamed from "Change"
+        self.assertTrue(at.session_state["show_setup"])
+        self.assertTrue(any("round in progress" in i.value for i in at.info))
+        quiz = at.session_state["quiz"]
+        self.assertEqual((quiz["serial"], quiz["index"], quiz["score"], len(quiz["history"]), at.session_state["points"]), snapshot)
+        self.assertFalse(quiz["finished"])
+        self.assertEqual([e.value for e in at.exception], [])
+
     def test_flag_questions_label_in_every_language(self):
         from core.i18n import translate
         for lang in LANGS:

@@ -8,7 +8,7 @@ import streamlit as st
 
 from core import badges, records
 from core import quiz as engine
-from core.data import COLLECTIONS, DEFAULT_COLLECTION, get_countries, get_country
+from core.data import COLLECTIONS, CONTINENTS, DEFAULT_COLLECTION, get_countries, get_country
 from core.i18n import DEFAULT_LANGUAGE, render_parts, translate
 
 PAGES = ("Explore", "Learn", "Quiz", "Badges")
@@ -115,6 +115,7 @@ def remember_size_reference() -> None:
 
 def open_settings() -> None:
     st.session_state.settings_open = True
+    st.session_state.explore_area_open = False  # never show the same exploration controls twice
 
 
 def scoped_countries() -> list[dict]:
@@ -141,13 +142,10 @@ def scope_label() -> str:
     return area
 
 
-def apply_pending_preferences() -> None:
-    """Settings are staged in the dialog and applied at the start of the next run,
-    before any widget that depends on them is drawn."""
-    pending = st.session_state.pop("pending_preferences", None)
-    if not pending:
-        return
-    st.session_state.update(pending)
+def _after_scope_change() -> None:
+    """Keep every page consistent after the exploration area or places collection changes (Settings or Explore):
+    quiz setup defaults follow the new area, Explore returns to page 1 with its filters cleared, and Learn moves to a
+    country inside the new area if its current one is no longer included. An unfinished quiz round is untouched."""
     st.session_state.filter_continent = st.session_state.scope_continent
     st.session_state.filter_country = st.session_state.scope_country
     st.session_state.filter_collection = st.session_state.scope_collection
@@ -162,6 +160,58 @@ def apply_pending_preferences() -> None:
     ids = [c["id"] for c in scoped_countries()]
     if st.session_state.get("learn_country") not in ids:
         st.session_state.learn_country = ids[0]
+
+
+def normalized_scope(mode: str, continent: str, country_id: str, collection: str) -> dict:
+    """The same selection rules as Settings: a country must exist in the chosen places collection (otherwise the
+    first one is used) and its continent becomes the area; a continent applies only in "One continent" mode."""
+    if collection not in COLLECTIONS:
+        collection = DEFAULT_COLLECTION
+    if mode == "One country":
+        ids = [c["id"] for c in get_countries(collection=collection)]
+        country_id = country_id if country_id in ids else ids[0]
+        continent = get_country(country_id)["continent"]
+    elif mode == "One continent":
+        continent, country_id = (continent if continent in CONTINENTS else CONTINENTS[0]), "all"
+    else:
+        mode, continent, country_id = "All countries", "World", "all"
+    return {"scope_mode": mode, "scope_continent": continent, "scope_country": country_id, "scope_collection": collection}
+
+
+def apply_pending_preferences() -> None:
+    """Settings are staged in the dialog and applied at the start of the next run,
+    before any widget that depends on them is drawn."""
+    pending = st.session_state.pop("pending_preferences", None)
+    if not pending:
+        return
+    st.session_state.update(pending)
+    _after_scope_change()
+
+
+def apply_exploration_area() -> None:
+    """Explore's inline "Exploration area" controls: apply the change right away to the shared preferences."""
+    ss = st.session_state
+    chosen = normalized_scope(ss.get("explore_area_mode", ss.scope_mode),
+                              ss.get("explore_area_continent", ss.scope_continent),
+                              ss.get("explore_area_country", ss.scope_country),
+                              ss.get("explore_area_collection", ss.scope_collection))
+    if all(ss.get(k) == v for k, v in chosen.items()):
+        return
+    ss.update(chosen)
+    # Keep the inline widgets on valid values (e.g. a country that is not in the newly chosen places).
+    if chosen["scope_mode"] == "One country":
+        ss.explore_area_country = chosen["scope_country"]
+    elif chosen["scope_mode"] == "One continent":
+        ss.explore_area_continent = chosen["scope_continent"]
+    _after_scope_change()
+
+
+def toggle_exploration_area() -> None:
+    opening = not st.session_state.get("explore_area_open", False)
+    st.session_state.explore_area_open = opening
+    if opening:  # start from the shared preferences (they may have changed in Settings meanwhile)
+        for key in ("explore_area_collection", "explore_area_mode", "explore_area_continent", "explore_area_country"):
+            st.session_state.pop(key, None)
 
 
 # --------------------------------------------------------------------------- quiz

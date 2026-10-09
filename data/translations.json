@@ -2145,6 +2145,31 @@
    "Ländercode",
    "Código de país",
    "国家代码"
+  ],
+  "Quiz settings": [
+   "Quiz-Einstellungen",
+   "Ajustes del cuestionario",
+   "测验设置"
+  ],
+  "Hide the exploration area options": [
+   "Optionen für den Entdeckungsbereich ausblenden",
+   "Ocultar las opciones del área de exploración",
+   "隐藏探索范围选项"
+  ],
+  "Choose which countries Explore, Learn and the quiz use": [
+   "Wähle, welche Länder Entdecken, Lernen und das Quiz verwenden",
+   "Elige qué países usan Explorar, Aprender y el cuestionario",
+   "选择探索、学习和测验所用的国家"
+  ],
+  "Changes apply right away to Explore, Learn and the next quiz setup. Your current round is kept.": [
+   "Änderungen gelten sofort für Entdecken, Lernen und das nächste Quiz. Die laufende Runde bleibt erhalten.",
+   "Los cambios se aplican al momento en Explorar, Aprender y el próximo cuestionario. La ronda actual se conserva.",
+   "更改会立即应用于探索、学习和下一轮测验设置，当前轮次保留。"
+  ],
+  "Opens quiz setup. Your current round is kept until you start a new one.": [
+   "Öffnet die Quiz-Einstellungen. Deine laufende Runde bleibt erhalten, bis du eine neue startest.",
+   "Abre los ajustes del cuestionario. Tu ronda actual se conserva hasta que empieces una nueva.",
+   "打开测验设置。在开始新一轮之前，当前轮次会保留。"
   ]
  }
 }

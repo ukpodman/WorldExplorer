@@ -104,7 +104,11 @@
 .st-key-navigation button[kind="primary"] p { color:#fff !important; }
 .st-key-navigation button[kind="primary"]:hover { background:var(--ink-2) !important; }
 .st-key-navigation button[kind="secondary"]:hover { background:var(--teal-soft) !important; }
-.st-key-settings_menu button p { font-size:1.35rem !important; }
+.st-key-settings_menu button p { position:absolute !important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; margin:-1px; }
+.st-key-settings_menu button::before { content:""; display:block; flex-shrink:0; width:26px; height:26px; background-color:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z'/%3E%3C/svg%3E") center / contain no-repeat; }
+.st-key-settings_menu button { color:var(--navy) !important; }
 .profile-note { display:flex; align-items:center; gap:8px; margin:4px 0 2px; font-size:.82rem; color:var(--slate); }
 .header-avatar { width:30px; height:30px; object-fit:cover; border-radius:50%; border:2px solid var(--line); flex-shrink:0; }
 .default-avatar { display:grid; place-items:center; background:var(--teal-soft); color:var(--teal-dark); font-size:16px; }
@@ -150,6 +154,13 @@
 .feature-description { color:#E3E9EC; line-height:1.6; max-width:440px; }
 .feature-place { color:#E7D6B3; font-size:.74rem; margin:12px 0 4px; }
 .st-key-atlas_feature .stButton { position:relative; z-index:2; max-width:240px; }
+/* Explore: area summary with the "Exploration area" button beside it (wraps on narrow screens). */
+.st-key-explore_scope { flex-wrap:wrap !important; gap:8px 12px !important; justify-content:space-between; }
+.st-key-explore_scope > * { width:auto !important; flex:0 1 auto !important; min-width:0 !important; }
+.st-key-explore_area_toggle button { min-height:44px; white-space:nowrap; }
+.st-key-explore_area_panel { background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:12px 16px 6px !important; gap:.6rem !important; }
+.st-key-explore_area_row { flex-wrap:wrap !important; gap:8px 12px !important; }
+.st-key-explore_area_row > * { flex:1 1 220px !important; min-width:0 !important; }
 .browse-scope { display:inline-block; background:var(--teal-soft); color:var(--teal-dark); font-size:.86rem; font-weight:650; border-radius:30px; padding:6px 14px; }
 .st-key-explore_filters { background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:10px 16px 2px !important; }
 [class*="st-key-country_card_"] { padding:16px 16px 10px !important; transition:box-shadow .2s, transform .2s; }
@@ -325,7 +336,8 @@
   .st-key-round_bar [data-testid="stHorizontalBlock"] { flex-wrap:nowrap !important; gap:8px !important; }
   .st-key-explore_scope [data-testid="stColumn"], .st-key-explore_pagination [data-testid="stColumn"],
   .st-key-round_bar [data-testid="stColumn"] { min-width:0 !important; }
-  .st-key-explore_scope [data-testid="stColumn"]:last-child, .st-key-round_bar [data-testid="stColumn"]:last-child { flex:0 0 96px !important; }
+  .st-key-round_bar [data-testid="stColumn"]:last-child { flex:0 0 auto !important; width:auto !important; }
+  .st-key-round_bar button { white-space:nowrap; padding:0 .8rem !important; }
   .feature-description { display:none; }
   .challenge-title { font-size:1.15rem; margin:2px 0 4px; } .challenge-note { font-size:.85rem; }
   .result-number { font-size:2.6rem; }
@@ -365,8 +377,8 @@
   .st-key-atlas_feature [data-testid="stMarkdownContainer"] { margin-bottom:0 !important; }
   .stApp .st-key-atlas_feature .feature-title { font-size:1.3rem !important; margin:0; }
   .st-key-atlas_feature .stButton button { padding:0 .9rem !important; white-space:nowrap; }
-  .st-key-explore_scope [data-testid="stHorizontalBlock"] { align-items:center; }
-  .st-key-explore_scope button { min-height:40px; }
+  .st-key-explore_area_panel { padding:10px 12px 4px !important; }
+  .st-key-explore_scope { margin:-2px 0 -4px; }  /* the 44 px touch target costs no extra page height */
   /* Country list: one compact row per country (small flag | name and capital | Discover). The two desktop rows
      are flattened so every card stacks in page order, then pagination, then the challenge card. */
   .st-key-explore_grid { gap:.5rem !important; }

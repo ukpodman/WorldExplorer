@@ -19,6 +19,7 @@ from . import sound, state
 from .components import e, hero, html, photo_credits, status_chip
 from .state import country_formatter, country_label, formatter, parts, t
 
+CONTINENTS_LIST = list(AREAS[1:])
 EXPLORE_PAGE_SIZE = 7  # desktop: 3 + challenge card in row 1, 4 in row 2
 FEATURED = ("NGA", "JPN", "ITA", "BRA")
 
@@ -84,6 +85,40 @@ def _challenge() -> None:
                   on_click=state.navigate, args=("Quiz",))
 
 
+def _exploration_area() -> None:
+    """Area summary with an "Exploration area" button that opens a compact inline section (closed by default).
+    It edits the same shared preferences as Settings and applies changes immediately."""
+    is_open = st.session_state.get("explore_area_open", False)
+    with st.container(key="explore_scope", horizontal=True, vertical_alignment="center"):
+        html(f'<div class="browse-scope">{escape(state.scope_label())}</div>')
+        st.button(t("Exploration area"), key="explore_area_toggle", icon=":material/expand_less:" if is_open else ":material/expand_more:",
+                  on_click=state.toggle_exploration_area,
+                  help=t("Hide the exploration area options") if is_open else t("Choose which countries Explore, Learn and the quiz use"))
+    if not is_open:
+        return
+    ss = st.session_state
+
+    def initial(key, options, current):
+        """Default index only for a widget's first render; afterwards its own state (kept valid by the callback) wins."""
+        return {} if key in ss else {"index": options.index(current) if current in options else 0}
+
+    with st.container(key="explore_area_panel"):
+        modes = list(accounts.SCOPE_MODES)
+        collection = st.selectbox(t("Places to include"), COLLECTIONS, format_func=formatter(COLLECTIONS), key="explore_area_collection",
+                                  on_change=state.apply_exploration_area, **initial("explore_area_collection", COLLECTIONS, ss.scope_collection))
+        with st.container(key="explore_area_row", horizontal=True):
+            mode = st.selectbox(t("Exploration area"), modes, format_func=formatter(modes), key="explore_area_mode",
+                                on_change=state.apply_exploration_area, **initial("explore_area_mode", modes, ss.scope_mode))
+            if mode == "One continent":
+                st.selectbox(t("Continent"), CONTINENTS_LIST, format_func=formatter(CONTINENTS_LIST), key="explore_area_continent",
+                             on_change=state.apply_exploration_area, **initial("explore_area_continent", CONTINENTS_LIST, ss.scope_continent))
+            elif mode == "One country":
+                ids = [c["id"] for c in get_countries(collection=collection)]
+                st.selectbox(t("Country"), ids, format_func=country_formatter(), key="explore_area_country",
+                             on_change=state.apply_exploration_area, **initial("explore_area_country", ids, ss.scope_country))
+        st.caption(t("Changes apply right away to Explore, Learn and the next quiz setup. Your current round is kept."))
+
+
 def explore() -> None:
     available = state.scoped_countries()
     feature = next((c for code in FEATURED for c in available if c["id"] == code), available[0])
@@ -98,10 +133,7 @@ def explore() -> None:
         st.button(t("Discover country →"), key="featured_discover", type="primary", width="stretch",
                   on_click=state.learn, args=(feature["id"],))
 
-    with st.container(key="explore_scope"):
-        area, change = st.columns([4, 1], vertical_alignment="center")
-        area.markdown(f'<div class="browse-scope">{escape(state.scope_label())}</div>', unsafe_allow_html=True)
-        change.button(t("Change"), key="atlas_scope_change", width="stretch", on_click=state.open_settings)
+    _exploration_area()
 
     entries = _filtered(available)  # filters span the full width, above the cards and the challenge card
     with st.container(key="explore_grid"):
@@ -690,7 +722,8 @@ def quiz() -> None:
         summary.markdown(f'<div class="round-label">{e("Current challenge")}</div>'
                          f'<div class="round-summary">{escape(label)} · {e(s["difficulty"])} · {e(s["category"])}</div>',
                          unsafe_allow_html=True)
-        action.button(t("Change"), width="stretch", on_click=state.open_setup)
+        action.button(t("Quiz settings"), key="quiz_settings", width="stretch", on_click=state.open_setup,
+                      help=t("Opens quiz setup. Your current round is kept until you start a new one."))
     if current["finished"]:
         _results(current)
     else:

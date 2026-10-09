@@ -1,0 +1,14 @@
+[theme.light]
+primaryColor = "#247C80"
+backgroundColor = "#F7F4ED"
+secondaryBackgroundColor = "#EFEBE1"
+textColor = "#17283B"
+
+[theme.dark]
+primaryColor = "#247C80"
+backgroundColor = "#0E1A26"
+secondaryBackgroundColor = "#1B2D42"
+textColor = "#E8EDF2"
+
+[client]
+toolbarMode = "viewer"

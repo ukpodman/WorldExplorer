@@ -362,7 +362,7 @@ class RefinementTests(unittest.TestCase):
             self._answer_all(at, correct=True)
             self.assertEqual([e.value for e in at.exception], [], lang)
 
-    # ---------------------------------------------------------------- Learn: navigation, recall, size comparison
+    # ---------------------------------------------------------------- Learn: navigation, sections, size comparison
 
     def test_learn_navigation_and_dropdown_sync(self):
         at = self.new(page="Learn", learn_country="FRA")
@@ -395,25 +395,24 @@ class RefinementTests(unittest.TestCase):
         self.assertTrue(any("no land borders" in c.value for c in at.caption))
         self.assertEqual([e.value for e in at.exception], [])
 
-    def test_recall_cards_reset_and_never_score(self):
+    def test_learn_sections_start_collapsed_and_hold_the_details(self):
         at = self.new(page="Learn", learn_country="FRA")
-        before = (at.session_state["points"], dict(at.session_state["stats"]), at.session_state["rounds_finished"])
-        at.button(key="recall_reveal_FRA_capital").click().run()
-        self.assertIn('<p class="recall-answer">Paris</p>', " ".join(m.value for m in at.markdown))
-        at.button(key="recall_knew_FRA_capital").click().run()
-        self.assertIn("You knew it", " ".join(m.value for m in at.markdown))
-        at.button(key="recall_again_FRA_capital").click().run()               # hides the answer again
-        self.assertNotIn('<p class="recall-answer">', " ".join(m.value for m in at.markdown))
-        self.assertIn("recall_reveal_FRA_capital", [b.key for b in at.button])
-        at.button(key="recall_reveal_FRA_currency").click().run()
-        at.button(key="learn_next_top").click().run()                          # new country: all cards hidden
+        self.assertFalse([b.key for b in at.button if b.key and b.key.startswith("recall_")])   # recall cards removed
+        sections = {x.label.split(" (")[0]: x for x in at.expander}
+        for name in ("Neighbours", "Landmarks", "Compare country size", "More details"):
+            self.assertIn(name, sections)
+            self.assertFalse(sections[name].proto.expanded, name)                # all start collapsed
+        self.assertEqual(sections["Neighbours"].label, "Neighbours (8)")
         markup = " ".join(m.value for m in at.markdown)
-        self.assertNotIn('<p class="recall-answer">', markup)
-        self.assertFalse([b.key for b in at.button if b.key and "_FRA_" in b.key])  # no stale controls
-        self.assertEqual((at.session_state["points"], dict(at.session_state["stats"]), at.session_state["rounds_finished"]), before)
-        at = self.new(page="Learn", learn_country="ISR")
-        self.assertNotIn("recall_reveal_ISR_capital", [b.key for b in at.button])   # unsettled capital omitted
-        self.assertIn("recall_reveal_ISR_currency", [b.key for b in at.button])
+        self.assertIn("French Republic", markup)                                # official name kept (More details)
+        self.assertIn("+33", markup)                                           # calling code kept (More details)
+        at = self.new(page="Learn", learn_country="ZAF")
+        markup = " ".join(m.value for m in at.markdown)
+        self.assertIn("Republic of South Africa", markup)                       # official name kept (More details)
+        self.assertIn("Pretoria (administrative capital); Cape Town (legislative capital)", markup)  # roles kept in the tile
+        self.assertIn("Calling codes and internet domains", markup)
+        self.assertIn("learn_surprise", [b.key for b in at.button])
+        self.assertEqual([e.value for e in at.exception], [])
 
     def test_learn_navigation_keeps_an_unfinished_quiz(self):
         at = self.new(page="Quiz")
@@ -425,8 +424,8 @@ class RefinementTests(unittest.TestCase):
         at.button(key="nav_Learn").click().run()
         for key in ("learn_next_top", "learn_surprise", "learn_prev_bottom"):
             at.button(key=key).click().run()
-        at.button(key=[b.key for b in at.button if b.key and b.key.startswith("nb_")][0]).click().run()
-        at.button(key="recall_reveal_" + at.session_state["learn_country"] + "_languages").click().run()
+        at.selectbox(key="learn_country").select("FRA").run()
+        at.button(key="nb_DEU").click().run()
         at.button(key="nav_Quiz").click().run()
         quiz = at.session_state["quiz"]
         self.assertEqual((quiz["serial"], quiz["index"], quiz["score"], len(quiz["history"])), snapshot)

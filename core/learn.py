@@ -1,11 +1,9 @@
-"""Pure helpers for the Learn page: country stepping, neighbours by collection, recall cards and
-size comparison. No Streamlit here, so every rule is unit-tested directly."""
+"""Pure helpers for the Learn page: country stepping, neighbours by collection and size comparison. No Streamlit here, so every rule is unit-tested directly."""
 from __future__ import annotations
 
 import random
 
 from .data import get_country
-from .quiz import currency_label
 
 # --------------------------------------------------------------------------- navigation
 
@@ -35,47 +33,6 @@ def split_neighbours(country: dict, allowed_ids: set[str]) -> tuple[list[dict], 
     """(neighbours in the selected places collection, neighbours left out by that selection)."""
     near = [n for n in map(get_country, country["borders"]) if n]
     return [n for n in near if n["id"] in allowed_ids], [n for n in near if n["id"] not in allowed_ids]
-
-
-# --------------------------------------------------------------------------- recall cards
-
-def recall_items(country: dict) -> list[dict]:
-    """Capital, currency and languages cards, built from the same curated fields the quiz uses.
-
-    Each item: {kind, title, question (parts), answer (str) or None, note (str) when omitted}.
-    Unsettled capitals and unreliable currency lists (curation flags) are omitted, not guessed.
-    """
-    name = country["name"]
-    items = []
-    caps = country["capitals"]
-    if country["capital_question"] and caps:
-        multiple = len(caps) > 1
-        items.append({"kind": "capital", "title": "Capital",
-                      "question": [("Which places serve as the capitals of {name}?" if multiple else
-                                    "What is the capital of {name}?", dict(name=name))],
-                      "answer": [(x["name"], x["role"]) for x in caps], "note": None})
-    else:
-        items.append({"kind": "capital", "title": "Capital", "question": None, "answer": None,
-                      "note": country.get("capital_note") or "No settled capital is recorded for this place, so it is not tested here."})
-    curs = country["currencies"]
-    if country["currency_question"] and curs:
-        multiple = len(curs) > 1
-        items.append({"kind": "currency", "title": "Currency",
-                      "question": [("Which currencies are used in {name}?" if multiple else
-                                    "Which currency is used in {name}?", dict(name=name))],
-                      "answer": [(currency_label(x), None) for x in curs], "note": None})
-    else:
-        items.append({"kind": "currency", "title": "Currency", "question": None, "answer": None,
-                      "note": country.get("currency_note") or "The currency record for this place is not reliable enough to test here."})
-    langs = country["languages"]
-    if langs:
-        items.append({"kind": "languages", "title": "Languages",
-                      "question": [("Which languages have official status or wide use in {name}?", dict(name=name))],
-                      "answer": [(x, None) for x in langs], "note": None})
-    else:
-        items.append({"kind": "languages", "title": "Languages", "question": None, "answer": None,
-                      "note": "No languages are recorded for this place."})
-    return items
 
 
 # --------------------------------------------------------------------------- size comparison

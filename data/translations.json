@@ -2130,6 +2130,21 @@
    "Vorwahlen und Internet-Domains",
    "Prefijos telefónicos y dominios de internet",
    "国际电话区号和互联网域名"
+  ],
+  "More details": [
+   "Weitere Details",
+   "Más detalles",
+   "更多信息"
+  ],
+  "Official name": [
+   "Offizieller Name",
+   "Nombre oficial",
+   "正式名称"
+  ],
+  "Country code": [
+   "Ländercode",
+   "Código de país",
+   "国家代码"
   ]
  }
 }

@@ -541,26 +541,6 @@ class LearnHelperTests(unittest.TestCase):
         self.assertEqual(hidden, [])
         self.assertEqual(self.l.split_neighbours(COUNTRY_BY_ID["ISL"], states), ([], []))  # no land neighbours
 
-    def test_recall_cards_use_curated_fields(self):
-        zaf = {x["kind"]: x for x in self.l.recall_items(COUNTRY_BY_ID["ZAF"])}
-        self.assertIn("capitals", zaf["capital"]["question"][0][0])          # several capitals, with roles
-        self.assertEqual(len(zaf["capital"]["answer"]), 3)
-        isr = {x["kind"]: x for x in self.l.recall_items(COUNTRY_BY_ID["ISR"])}
-        self.assertIsNone(isr["capital"]["answer"])                          # disputed capital: omitted, explained
-        self.assertTrue(isr["capital"]["note"])
-        zwe = {x["kind"]: x for x in self.l.recall_items(COUNTRY_BY_ID["ZWE"])}
-        self.assertIsNone(zwe["currency"]["answer"])
-        fra = {x["kind"]: x for x in self.l.recall_items(COUNTRY_BY_ID["FRA"])}
-        self.assertIn("official status or wide use", fra["languages"]["question"][0][0])
-        for c in COUNTRIES:
-            for item in self.l.recall_items(c):
-                self.assertTrue(item["answer"] or item["note"], (c["id"], item["kind"]))
-                for lang in LANGUAGES:
-                    if item["question"]:
-                        self.assertNotIn("{", render_parts(item["question"], lang))
-                    else:
-                        self.assertTrue(translate(item["note"], lang))
-
     def test_area_comparison(self):
         fra, deu = COUNTRY_BY_ID["FRA"], COUNTRY_BY_ID["DEU"]
         r = self.l.compare_areas(deu, fra)

@@ -56,7 +56,7 @@ core/
   badges.py                badge rules and the quiz statistics they are earned from
   records.py               medals and personal records (per round settings)
   facts.py                 the sourced "Did you know?" fact after each answer
-  learn.py                 Learn helpers: country stepping, neighbours by collection, recall cards, size comparison
+  learn.py                 Learn helpers: country stepping, neighbours by collection, size comparison
 ui/
   state.py                 session state and round callbacks
   components.py            header, hero, settings drawer (profile, sign-in help, places, sound)
@@ -157,7 +157,21 @@ accounts). After uploading:
    `records` entry next to `points`, `rounds_finished` and `stats`. Older rows without it keep working.
 5. If the footer says "Saved profile not reachable yet", nothing is written until the profile has loaded.
 
-## Changes in this update (Learn)
+## Changes in this update (shorter Learn page)
+
+- **Removed** the three "Test yourself" cards (they repeated the facts below). "Quiz me on this country" is unchanged.
+- **Phones and tablets (up to 1024 px):** a small flag beside the country name and one continent/region line; the
+  large flag/photo panel and the top Previous/Next row are hidden. Four fact tiles (capital roles, currencies,
+  languages with official status or wide use, total area) in as many columns as fit, one column on very narrow
+  screens. Neighbours, Landmarks, Compare country size and **More details** (official name, country code, calling
+  codes and domains, head of state, sources) start collapsed. Surprise me sits beside the country menu; Previous and
+  Next stay at the bottom, in the normal page flow.
+- **Desktop:** heading, photo/flag panel, six tiles, neighbours, landmarks and source lines look as before; only
+  Surprise me moved beside the menu. A small script opens the Neighbours and Landmarks sections on screens wider than
+  1024 px so they read as plain sections; without JavaScript they stay collapsible.
+- Default Learn page at 390 px: 2,146 px → 1,158 px tall (−46 %); at 768 px it now fits one screen.
+
+## Earlier: interactive Learn
 
 - **Navigation:** Previous, Next and Surprise me under the country menu (Previous and Next also at the bottom). They
   follow the dropdown order (alphabetical) within your exploration area and wrap round at the ends; a country opened
@@ -166,9 +180,7 @@ accounts). After uploading:
 - **Neighbours:** flag buttons with translated names replace the sentence; tapping one opens it and the menu follows.
   Neighbours left out by your *Places to include* setting (for example Gibraltar for Spain) are named with a note on
   how to include them — the setting is never changed for you. Places without land borders say so.
-- **Test yourself:** capital, currency and languages cards with Reveal answer, then I knew it / Practise again.
-  Practice only: no points, badges or statistics. Cards reset when you change country. Several capitals or currencies
-  are listed with their roles; disputed capitals and unreliable currency records are left out with a short reason.
+- **Test yourself** cards (later removed again, see above).
 - **Compare country size** (collapsed): choose a reference country to see both total areas, two proportional bars
   and the ratio in words. Same country, a missing area and very small areas are handled explicitly. The choice is
   remembered for the session and saved with signed-in profiles (new `size_reference` field; older profiles start

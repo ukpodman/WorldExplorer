@@ -31,8 +31,45 @@ def _stylesheet() -> str:
     return STYLES.read_text(encoding="utf-8")
 
 
+# Follows Streamlit's *effective* theme (system setting, live changes, or an explicit Light/Dark choice in
+# Streamlit's settings): reads the background colour Streamlit gives its header and mirrors it as
+# <html data-we-theme="light|dark">, which assets/styles.css uses to switch its colour tokens.
+THEME_SYNC = """<script data-we-theme-sync="1">
+(function () {
+  if (window.__weThemeSync) { window.__weThemeSync(); return; }
+  var root = document.documentElement, pending = false;
+  function luminance(colour) {
+    var m = (colour || "").match(/[\\d.]+/g);
+    if (!m || m.length < 3 || (m.length > 3 && parseFloat(m[3]) === 0)) return null;
+    return (0.2126 * m[0] + 0.7152 * m[1] + 0.0722 * m[2]) / 255;
+  }
+  function sync() {
+    pending = false;
+    var probe = document.querySelector('[data-testid="stApp"]');
+    if (!probe) return;
+    var l = luminance(getComputedStyle(probe).backgroundColor);
+    if (l === null) return;
+    var mode = l < 0.5 ? "dark" : "light";
+    if (root.getAttribute("data-we-theme") !== mode) root.setAttribute("data-we-theme", mode);
+  }
+  function schedule() { if (!pending) { pending = true; requestAnimationFrame(sync); } }
+  window.__weThemeSync = schedule;
+  new MutationObserver(schedule).observe(document.head, {childList: true, subtree: true, characterData: true});
+  new MutationObserver(schedule).observe(document.body, {attributes: true, subtree: false});
+  if (window.matchMedia) {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    (mq.addEventListener ? mq.addEventListener("change", function () { setTimeout(schedule, 50); }) : mq.addListener(schedule));
+  }
+  window.addEventListener("storage", schedule);
+  setInterval(sync, 1500);
+  schedule();
+})();
+</script>"""
+
+
 def inject_styles() -> None:
     html(f"<style>{_stylesheet()}</style>")
+    st.html(THEME_SYNC, unsafe_allow_javascript=True)
 
 
 def e(text, **fields) -> str:

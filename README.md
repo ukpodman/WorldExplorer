@@ -28,14 +28,18 @@ Extract the ZIP and open the `WorldExplorer` folder.
 3. Check the list shows `app.py` at the top level and paths such as `core/badges.py` and `assets/styles.css`.
 4. Commit directly to `main`.
 
-**2. Add the hidden theme file (the browser upload usually skips it).**
-`.streamlit/config.toml` is not in the repository yet. The app now looks right without it, but it
-also themes Streamlit's built-in widgets. To add it:
-1. In the repository, choose **Add file → Create new file**.
-2. Type the name exactly: `.streamlit/config.toml` (typing the `/` creates the folder).
-3. Open `.streamlit/config.toml` from the extracted folder in a text editor (e.g. Notepad; on Windows
-   enable *View → Show → Hidden items* if the folder is hidden), copy everything, paste it into GitHub.
-4. Commit to `main`. Optionally repeat for `.gitignore` the same way.
+**2. Add or replace the hidden theme file `.streamlit/config.toml` (required for automatic light/dark).**
+The browser upload usually skips files in hidden folders, so do this step by hand:
+1. In the repository, check whether `.streamlit/config.toml` exists (open the `.streamlit` folder if it is listed).
+   - **It exists:** open it, click the pencil (Edit) icon, select all and delete the old text.
+   - **It does not exist:** choose **Add file → Create new file** and type the name exactly: `.streamlit/config.toml`
+     (typing the `/` creates the folder).
+2. Open `.streamlit/config.toml` from the extracted folder in a text editor (Notepad/TextEdit; on Windows enable
+   *View → Show → Hidden items*, on a Mac press Cmd+Shift+. in Finder), copy everything and paste it into GitHub.
+3. Commit to `main`. Optionally repeat for `.gitignore` the same way.
+
+Without this file Streamlit uses its own default colours; the app stays readable (it follows whichever theme
+Streamlit shows) but the ivory/navy palette is only exact with the file in place.
 
 Never upload `.streamlit/secrets.toml`. Keep the existing Streamlit Cloud secrets and the main file
 path `app.py`; the app redeploys automatically after each commit.
@@ -157,7 +161,23 @@ accounts). After uploading:
    `records` entry next to `points`, `rounds_finished` and `stats`. Older rows without it keep working.
 5. If the footer says "Saved profile not reachable yet", nothing is written until the profile has loaded.
 
-## Changes in this update (shorter Learn page)
+## Changes in this update (automatic light/dark appearance)
+
+- **Cause of the tester's issue:** without `.streamlit/config.toml` on the server, Streamlit followed the phone's
+  dark mode for its own widgets (segmented buttons, expander headers) while our stylesheet kept a light page with
+  navy text — dark text on dark controls.
+- **Now:** `config.toml` defines a light and a dark theme, so Streamlit follows the device setting ("System"),
+  reacts to changes while the app is open, and lets visitors choose Light or Dark in the ⋮ menu (toolbar mode
+  `viewer`: appearance and print only, no developer tools). A small script mirrors Streamlit's *active* theme onto
+  the page (`<html data-we-theme>`), and `assets/styles.css` switches its colour tokens with it, so custom cards
+  and native widgets always match, including an explicit Light/Dark choice.
+- **Dark palette:** deep navy page, lighter navy cards and inputs, off-white text, lighter muted captions, teal
+  accents, restrained gold highlights, stronger borders and gold focus rings. Flags, photos, medals and illustrations
+  keep their colours (no inversion). Correct/wrong answers keep their ✓/✕ symbols and words.
+- **Contrast:** every visible text element measured ≥ 4.9:1 in both modes; input borders, focus rings, switches and
+  progress bars ≥ 3:1. Light-mode input borders and focus rings were darkened to reach 3:1.
+
+## Earlier: shorter Learn page
 
 - **Removed** the three "Test yourself" cards (they repeated the facts below). "Quiz me on this country" is unchanged.
 - **Phones and tablets (up to 1024 px):** a small flag beside the country name and one continent/region line; the

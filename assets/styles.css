@@ -7,11 +7,21 @@
   --slate:#586575; --line:#DAD5C8; --line-cool:#D3DDE0;
   --ok:#1F6B45; --ok-bg:#E4F2EA; --bad:#9B2F25; --bad-bg:#F9E6E3; --warn-bg:#FBF1DD;
   --radius:16px; --shadow:0 8px 24px rgba(23,40,59,.07);
+  /* Semantic surfaces (redefined for dark mode below). --navy/--slate are text colours; --ink is the dark
+     navy surface used for hero banners and selected navigation in both modes. */
+  --surface-2:#FBFAF6; --surface-3:#EFEDE6; --surface-4:#F4F2EC; --input-border:#8A857A; --teal-bright:#247C80; --disabled-border:#B9B4A7;
+  --track:#E7E2D6; --track-2:#EEEAE0; --scrim:rgba(247,244,237,.97); --focus-halo:rgba(23,40,59,.18);
+  --ink:#17283B; --ink-2:#22384F; --ink-3:#24505A;
+  --teal-deep:#1C6467; --ok-solid:#1F6B45; --bad-solid:#9B2F25; --gold-solid:#8A6420; --slate-solid:#586575;
+  --gold-deep:#76551A; --chip-gold-border:#E2CFA6; --chip-teal-border:#BCD7D5;
+  --ok-border:#BFDCCB; --bad-border:#EBC9C3; --warn-border:#E8D6AE; --neutral-done:#F4F2EC; --neutral-done-border:#CFCABD;
   --font:"Segoe UI","Inter",system-ui,-apple-system,Arial,sans-serif;
 }
 
 /* ---------- base ---------- */
-.stApp { background:var(--ivory); color:var(--navy); }
+/* The page background comes from Streamlit's theme (config.toml: ivory in light, deep navy in dark); the theme
+   script reads it, so it is deliberately not overridden here. */
+.stApp { color:var(--navy); }
 /* Streamlit's fixed top toolbar (stHeader) is 3.75rem tall at every width and zoom level; clear it plus breathing room. */
 :root { --toolbar-h:3.75rem; }
 .stApp .block-container { max-width:1240px !important; padding:calc(var(--toolbar-h) + 1.25rem) 2rem 3rem !important; }
@@ -35,37 +45,48 @@
 .stApp button p { font-size:.95rem !important; font-weight:600 !important; }
 .stApp .stButton button, .stApp [data-testid="stBaseButton-secondary"] { background:var(--paper); border:1px solid var(--line-cool); color:var(--navy); }
 .stApp .stButton button:hover { border-color:var(--teal); background:var(--teal-soft); }
-.stApp button[kind="primary"], [data-testid="stDialog"] button[kind="primary"] { background:var(--teal) !important; border:1px solid var(--teal-dark) !important; color:#fff !important; }
-.stApp button[kind="primary"]:hover { background:var(--teal-dark) !important; }
+.stApp button[kind="primary"], [data-testid="stDialog"] button[kind="primary"] { background:var(--teal) !important; border:1px solid var(--teal-deep) !important; color:#fff !important; }
+.stApp button[kind="primary"]:hover { background:var(--teal-deep) !important; }
 .stApp button[kind="primary"] p { color:#fff !important; }
 /* Disabled controls stay readable: no washed-out opacity, a dashed edge marks them as unavailable. */
-.stApp button:disabled, [data-testid="stDialog"] button:disabled { opacity:1 !important; background:#EFEDE6 !important; color:var(--slate) !important;
-  border:1px dashed #B9B4A7 !important; cursor:not-allowed; }
+.stApp button:disabled, [data-testid="stDialog"] button:disabled { opacity:1 !important; background:var(--surface-3) !important; color:var(--slate) !important;
+  border:1px dashed var(--disabled-border) !important; cursor:not-allowed; }
 .stApp button:disabled p { color:var(--slate) !important; }
 /* Visible keyboard focus everywhere. */
 .stApp button:focus-visible, .stApp a:focus-visible, .stApp input:focus-visible, .stApp [role="combobox"]:focus-visible,
 .stApp [role="slider"]:focus-visible, .stApp [role="switch"]:focus-visible, [data-testid="stDialog"] button:focus-visible {
-  outline:3px solid var(--gold) !important; outline-offset:2px !important; box-shadow:0 0 0 5px rgba(23,40,59,.18) !important; }
+  outline:3px solid var(--gold-text) !important; outline-offset:2px !important; box-shadow:0 0 0 5px var(--focus-halo) !important; }
 /* Text inputs and dropdowns (Streamlit 1.65 / react-aria markup): white fill, warm border, navy text. */
 :is(.stApp, [data-testid="stDialog"]) [data-testid="stTextInputRootElement"],
 :is(.stApp, [data-testid="stDialog"]) [data-testid="stSelectbox"] [role="group"] {
-  background:var(--paper) !important; border:1px solid #CFC9BB !important; border-radius:10px !important; min-height:44px; }
+  background:var(--paper) !important; border:1px solid var(--input-border) !important; border-radius:10px !important; min-height:44px; }
 :is(.stApp, [data-testid="stDialog"]) [data-testid="stTextInputRootElement"]:focus-within,
 :is(.stApp, [data-testid="stDialog"]) [data-testid="stSelectbox"] [role="group"]:focus-within {
   border-color:var(--teal) !important; box-shadow:0 0 0 3px rgba(36,124,128,.18) !important; }
 :is(.stApp, [data-testid="stDialog"]) :is([data-testid="stTextInputRootElement"] input, [data-testid="stSelectbox"] input) { color:var(--navy) !important; -webkit-text-fill-color:var(--navy); }
 :is(.stApp, [data-testid="stDialog"]) [data-testid="stSelectbox"] [role="group"] button { color:var(--slate) !important; }
 /* Switches and sliders follow the teal palette even if .streamlit/config.toml is missing on the server. */
-:is(.stApp, [data-testid="stDialog"]) [data-testid="stCheckbox"] label[data-selected="true"] > div:not([data-testid]) { background-color:var(--teal) !important; }
-:is(.stApp, [data-testid="stDialog"]) [data-testid="stCheckbox"] label[data-focus-visible="true"] > div:not([data-testid]) { outline:3px solid var(--gold); outline-offset:2px; }
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stCheckbox"] label[data-selected="true"] > div:not([data-testid]) { background-color:var(--teal-bright) !important; }
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stCheckbox"] label[data-focus-visible="true"] > div:not([data-testid]) { outline:3px solid var(--gold-text); outline-offset:2px; }
 :is(.stApp, [data-testid="stDialog"]) [data-testid="stCheckbox"] label[data-disabled="true"] { opacity:.75; }
-:is(.stApp, [data-testid="stDialog"]) [data-testid="stSlider"] [role="group"]:not([data-disabled]) > div > div:nth-child(2) { background-color:var(--teal) !important; }
-:is(.stApp, [data-testid="stDialog"]) [data-testid="stSlider"] [role="group"] > div > div:nth-child(2)[data-focus-visible="true"] { outline:3px solid var(--gold); outline-offset:3px; }
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stSlider"] [role="group"]:not([data-disabled]) > div > div:nth-child(2) { background-color:var(--teal-bright) !important; }
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stSlider"] [role="group"] > div > div:nth-child(2)[data-focus-visible="true"] { outline:3px solid var(--gold-text); outline-offset:3px; }
 /* Segmented controls (answer review "Missed only / All answers"), 1.65 react-aria markup. */
 .stApp button[data-variant="segmented_control"][data-selected="true"] { background:var(--teal-soft) !important; border-color:var(--teal) !important; color:var(--teal-dark) !important; }
 .stApp button[data-variant="segmented_control"][data-selected="true"] :is(p, span, div) { color:var(--teal-dark) !important; }
 .stApp button[data-variant="segmented_control"]:not([data-selected="true"]):hover { border-color:var(--teal) !important; color:var(--teal-dark) !important; }
-.stApp button[data-variant="segmented_control"][data-focus-visible="true"] { outline:3px solid var(--gold) !important; outline-offset:2px; }
+.stApp button[data-variant="segmented_control"][data-focus-visible="true"] { outline:3px solid var(--gold-text) !important; outline-offset:2px; }
+/* Unselected segmented buttons and expander headers use our tokens too, so they can never mix a dark
+   Streamlit surface with our navy text (the "All answers" / missed-answer header problem). */
+.stApp button[data-variant="segmented_control"]:not([data-selected="true"]) { background:var(--paper) !important; border-color:var(--line-cool) !important; color:var(--navy) !important; }
+.stApp button[data-variant="segmented_control"]:not([data-selected="true"]) :is(p, span, div) { color:var(--navy) !important; }
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stExpander"] details { background:var(--paper); border-color:var(--line) !important; }
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stExpander"] summary { background:var(--paper) !important; color:var(--navy) !important; }
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stExpander"] summary:hover { background:var(--surface-2) !important; }
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stExpander"] summary :is(p, span, div) { color:var(--navy) !important; }
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stExpander"] summary [data-testid="stIconMaterial"] { color:var(--slate) !important; }
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stExpander"] [data-testid="stExpanderDetails"] { border-color:var(--line) !important; }
+:is(.stApp, [data-testid="stDialog"]) [data-testid="stExpander"] summary:focus-visible { outline:3px solid var(--gold-text) !important; outline-offset:2px; }
 /* The filled part of the slider is an inline gradient in the theme colour; this filter turns Streamlit's default red into the teal. */
 :is(.stApp, [data-testid="stDialog"]) [data-testid="stSlider"] [role="group"]:not([data-disabled]) > div > div:first-child { filter:hue-rotate(184deg) saturate(.62) brightness(.78); }
 
@@ -75,13 +96,13 @@
 
 /* ---------- header ---------- */
 .brand { display:flex; align-items:center; gap:12px; min-height:52px; }
-.brand-symbol { width:44px; height:44px; border-radius:13px; display:grid; place-items:center; background:var(--navy); color:#E7CF9C; border:1px solid rgba(181,138,58,.5); flex-shrink:0; }
+.brand-symbol { width:44px; height:44px; border-radius:13px; display:grid; place-items:center; background:var(--ink); color:#E7CF9C; border:1px solid rgba(181,138,58,.5); flex-shrink:0; }
 .brand-name { font-size:1.4rem; font-weight:750; letter-spacing:-.03em; color:var(--navy); }
 .brand-note { font-size:.8rem; color:var(--slate); margin-top:2px; }
 .st-key-navigation button { background:transparent !important; border:1px solid transparent !important; }
-.st-key-navigation button[kind="primary"] { background:var(--navy) !important; border-color:var(--navy) !important; box-shadow:inset 0 -3px 0 var(--gold) !important; }
+.st-key-navigation button[kind="primary"] { background:var(--ink) !important; border-color:var(--ink) !important; box-shadow:inset 0 -3px 0 var(--gold) !important; }
 .st-key-navigation button[kind="primary"] p { color:#fff !important; }
-.st-key-navigation button[kind="primary"]:hover { background:var(--navy-2) !important; }
+.st-key-navigation button[kind="primary"]:hover { background:var(--ink-2) !important; }
 .st-key-navigation button[kind="secondary"]:hover { background:var(--teal-soft) !important; }
 .st-key-settings_menu button p { font-size:1.35rem !important; }
 .profile-note { display:flex; align-items:center; gap:8px; margin:4px 0 2px; font-size:.82rem; color:var(--slate); }
@@ -91,7 +112,7 @@
 
 /* ---------- hero ---------- */
 .hero { position:relative; overflow:hidden; border-radius:22px; padding:34px 38px; min-height:210px; display:flex; align-items:center; gap:20px;
-  background:linear-gradient(120deg,var(--navy) 0%,var(--navy-2) 70%,#24505A 100%); color:#fff; margin-bottom:20px; box-shadow:var(--shadow); }
+  background:linear-gradient(120deg,var(--ink) 0%,var(--ink-2) 70%,var(--ink-3) 100%); color:#fff; margin-bottom:20px; box-shadow:var(--shadow); }
 .hero-copy { flex:1; position:relative; z-index:1; }
 .hero-kicker { color:#E7CF9C; font-size:.74rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin-bottom:12px; }
 .stApp .hero-title, .hero-title { font-size:clamp(1.9rem,3.3vw,3rem) !important; font-weight:750 !important; line-height:1.08; letter-spacing:-.035em; color:#fff !important; max-width:600px; margin:0; padding:0; }
@@ -116,12 +137,12 @@
 .eyebrow, .round-label { font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--gold-text); }
 .round-summary { font-size:1.08rem; font-weight:650; margin-top:3px; color:var(--navy); }
 .status-chip { display:inline-block; margin-left:8px; padding:2px 9px; border-radius:20px; font-size:.68rem; font-weight:650; letter-spacing:.02em;
-  text-transform:none; background:var(--gold-soft); color:var(--gold-text); border:1px solid #E2CFA6; vertical-align:middle; }
-.status-chip.status-un_observer { background:var(--teal-soft); color:var(--teal-dark); border-color:#BCD7D5; }
+  text-transform:none; background:var(--gold-soft); color:var(--gold-text); border:1px solid var(--chip-gold-border); vertical-align:middle; }
+.status-chip.status-un_observer { background:var(--teal-soft); color:var(--teal-dark); border-color:var(--chip-teal-border); }
 
 /* ---------- explore ---------- */
-.st-key-atlas_feature { position:relative; overflow:hidden; background:var(--navy); border-radius:20px; padding:0 32px 26px !important; box-shadow:var(--shadow); }
-.feature-scene { position:absolute; inset:0; background-color:var(--navy-2); background-size:cover; background-position:center 52%; pointer-events:none; }
+.st-key-atlas_feature { position:relative; overflow:hidden; background:var(--ink); border-radius:20px; padding:0 32px 26px !important; box-shadow:var(--shadow); }
+.feature-scene { position:absolute; inset:0; background-color:var(--ink-2); background-size:cover; background-position:center 52%; pointer-events:none; }
 .feature-scene::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(17,29,43,.95) 0%,rgba(17,29,43,.75) 45%,rgba(17,29,43,.15) 100%); }
 .feature-copy { position:relative; z-index:1; max-width:620px; padding-top:30px; }
 .feature-kicker { color:#E7CF9C; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; font-weight:700; margin-bottom:12px; }
@@ -139,7 +160,7 @@
 .destination-capital { color:var(--slate); font-size:.85rem; margin-top:3px; min-height:20px; }
 [class*="st-key-country_card_"] .stButton button { border:0 !important; background:transparent !important; color:var(--teal-dark) !important; min-height:36px; justify-content:flex-start; padding-left:0; }
 [class*="st-key-country_card_"] .stButton button p { color:var(--teal-dark) !important; }
-.st-key-atlas_quiz { background:var(--navy); border-radius:var(--radius); padding:18px !important; box-shadow:var(--shadow); justify-content:space-between; }
+.st-key-atlas_quiz { background:var(--ink); border-radius:var(--radius); padding:18px !important; box-shadow:var(--shadow); justify-content:space-between; }
 .st-key-atlas_quiz .feature-kicker { margin-bottom:8px; }
 .challenge-title { color:#fff; font-size:1.35rem; line-height:1.2; font-weight:750; letter-spacing:-.02em; margin:0 0 6px; }
 .challenge-note { color:#DDE5E9; font-size:.9rem; line-height:1.5; }
@@ -159,7 +180,7 @@
 .official-name { color:var(--slate); font-size:.95rem; margin-top:2px; }
 .st-key-learn_card img { border-radius:8px; border:1px solid var(--line); }
 .fact-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
-.fact-tile { border:1px solid var(--line); border-radius:12px; background:#FBFAF6; padding:10px 16px; }
+.fact-tile { border:1px solid var(--line); border-radius:12px; background:var(--surface-2); padding:10px 16px; }
 .fact-label { font-size:.72rem; text-transform:uppercase; letter-spacing:.07em; color:var(--slate); }
 .fact-value { font-size:1.05rem; font-weight:600; color:var(--navy); line-height:1.45; margin-top:4px; overflow-wrap:anywhere; }
 
@@ -168,11 +189,11 @@
   text-transform:uppercase; color:var(--slate); margin:.1rem 0 .15rem; }
 .where-summary { text-transform:none; letter-spacing:0; font-weight:600; font-size:.88rem; color:var(--teal-dark);
   background:var(--teal-soft); border-radius:20px; padding:2px 10px; }
-.st-key-what_box, .st-key-where_box { border:1px solid var(--line); border-radius:14px; padding:14px 16px 6px !important; background:#FBFAF6; }
-.st-key-where_box { background:#F6F8F7; }
+.st-key-what_box, .st-key-where_box { border:1px solid var(--line); border-radius:14px; padding:14px 16px 6px !important; background:var(--surface-2); }
+.st-key-where_box { background:var(--surface-2); }
 .st-key-start_box button[kind="primary"] { min-height:52px; font-size:1.05rem; }
 /* ---------- learn media (stage 3) ---------- */
-.learn-photo { width:100%; aspect-ratio:4 / 3; border-radius:14px; background-size:cover; background-position:center; background-color:var(--navy-2);
+.learn-photo { width:100%; aspect-ratio:4 / 3; border-radius:14px; background-size:cover; background-position:center; background-color:var(--ink-2);
   border:1px solid var(--line); }
 .st-key-learn_flag_small img { margin-top:4px; }
 [class*="st-key-learn_flag_panel_"] { border-radius:14px; padding:22px !important; align-items:center; justify-content:center; min-height:180px;
@@ -189,7 +210,7 @@
 /* ---------- quiz ---------- */
 .score-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:6px 0 10px; }
 .score-item { background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:14px 18px; }
-.score-item:first-child { background:var(--navy); border-color:var(--navy); }
+.score-item:first-child { background:var(--ink); border-color:var(--ink); }
 .score-label { font-size:.74rem; color:var(--slate); text-transform:uppercase; letter-spacing:.06em; }
 .score-value { font-size:1.75rem; font-weight:750; color:var(--navy); font-variant-numeric:tabular-nums; }
 .score-item:first-child .score-label { color:#C9D3DA; }
@@ -197,14 +218,14 @@
 .st-key-question_card { border-top:4px solid var(--gold) !important; }
 .st-key-question_card h3 { font-size:1.6rem !important; line-height:1.32; }
 .st-key-quiz_flag img { border:1px solid var(--line); border-radius:8px; box-shadow:0 4px 14px rgba(23,40,59,.1); background:#fff; }
-.st-key-question_card .stButton button { min-height:62px; background:#FBFAF6; text-align:left; justify-content:flex-start; border:1px solid var(--line-cool); }
+.st-key-question_card .stButton button { min-height:62px; background:var(--surface-2); text-align:left; justify-content:flex-start; border:1px solid var(--line-cool); }
 .st-key-question_card .stButton button p { white-space:normal; overflow-wrap:anywhere; }
 /* Results are marked by symbol + words, with colour as a secondary cue. */
 [class*="st-key-correct_answer_"] button:disabled { background:var(--ok-bg) !important; border:2px solid var(--ok) !important; }
 [class*="st-key-correct_answer_"] button:disabled p { color:var(--ok) !important; font-weight:700 !important; }
 [class*="st-key-wrong_answer_"] button:disabled { background:var(--bad-bg) !important; border:2px solid var(--bad) !important; }
 [class*="st-key-wrong_answer_"] button:disabled p { color:var(--bad) !important; font-weight:700 !important; }
-[class*="st-key-neutral_answer_"] button:disabled { background:#F4F2EC !important; border:1px solid #CFCABD !important; }
+[class*="st-key-neutral_answer_"] button:disabled { background:var(--neutral-done) !important; border:1px solid var(--neutral-done-border) !important; }
 [class*="st-key-neutral_answer_"] button:disabled p { color:var(--slate) !important; }
 .st-key-quiz_next_action button { min-height:52px; }
 .st-key-result_card { border-top:4px solid var(--teal) !important; }
@@ -238,13 +259,13 @@
 .award-medal { width:72px; height:72px; border:1px solid #D9BE86; border-radius:50%; display:grid; place-items:center;
   background:radial-gradient(circle,#FFF9EA,var(--gold-soft)); font-size:1.9rem; color:var(--gold-text); margin-bottom:14px; }
 .award-medal.locked { filter:grayscale(1); opacity:.7; }
-.award-state { display:inline-block; border-radius:30px; padding:4px 12px; background:#EFEDE6; color:var(--slate); font-size:.8rem; font-weight:600; }
+.award-state { display:inline-block; border-radius:30px; padding:4px 12px; background:var(--surface-3); color:var(--slate); font-size:.8rem; font-weight:600; }
 .award-state.earned { background:var(--ok-bg); color:var(--ok); }
 .award-state.earned::before { content:"✓ "; }
 
 /* Progress bars: teal fill on a warm track even without .streamlit/config.toml. */
-.stApp [data-testid="stProgressBarTrack"] { background-color:#E7E2D6 !important; }
-.stApp [data-testid="stProgressBarTrack"] > div { background-color:var(--teal) !important; }
+.stApp [data-testid="stProgressBarTrack"] { background-color:var(--track) !important; }
+.stApp [data-testid="stProgressBarTrack"] > div { background-color:var(--teal-bright) !important; }
 
 /* ---------- settings drawer ---------- */
 /* Centred by Streamlit; we only bound its height so long settings scroll inside the dialog. */
@@ -252,21 +273,21 @@
 /* The close button stays readable when it floats over scrolled content. */
 [data-testid="stDialog"] [role="dialog"] > button[aria-label="Close"] { color:var(--navy); background:var(--paper); border:1px solid var(--line);
   border-radius:10px; width:2.25rem; height:2.25rem; display:grid; place-items:center; box-shadow:0 2px 8px rgba(23,40,59,.12); z-index:3; }
-[data-testid="stDialog"] [role="dialog"] > button[aria-label="Close"]:focus-visible { outline:3px solid var(--gold); outline-offset:2px; }
+[data-testid="stDialog"] [role="dialog"] > button[aria-label="Close"]:focus-visible { outline:3px solid var(--gold-text); outline-offset:2px; }
 [data-testid="stDialog"] :is(h2,h3,p,label,li) { color:var(--navy); }
 [data-testid="stDialog"] [data-testid="stCaptionContainer"] p { color:var(--slate); }
-[data-testid="stDialog"] .stButton button { min-height:44px; border-radius:10px; background:#fff; border:1px solid var(--line-cool); color:var(--navy); }
+[data-testid="stDialog"] .stButton button { min-height:44px; border-radius:10px; background:var(--paper); border:1px solid var(--line-cool); color:var(--navy); }
 [data-testid="stDialog"] .stButton button:hover { border-color:var(--teal); background:var(--teal-soft); }
 /* Primary buttons: white text on teal (4.9:1). */
-[data-testid="stDialog"] button[kind="primary"], [data-testid="stDialog"] .stButton button[kind="primary"] { background:var(--teal) !important; border:1px solid var(--teal-dark) !important; }
-[data-testid="stDialog"] button[kind="primary"]:hover { background:var(--teal-dark) !important; }
+[data-testid="stDialog"] button[kind="primary"], [data-testid="stDialog"] .stButton button[kind="primary"] { background:var(--teal) !important; border:1px solid var(--teal-deep) !important; }
+[data-testid="stDialog"] button[kind="primary"]:hover { background:var(--teal-deep) !important; }
 [data-testid="stDialog"] button[kind="primary"] :is(p,span,div) { color:#fff !important; }
 [data-testid="stDialog"] button:disabled :is(p,span) { color:var(--slate) !important; }
 /* File uploader, expanders and sliders: keep Streamlit's own layout; just make them legible. */
-[data-testid="stDialog"] [data-testid="stFileUploaderDropzone"] { background:#fff; border:1px dashed #B9B4A7; border-radius:12px; align-items:center; gap:.75rem; }
+[data-testid="stDialog"] [data-testid="stFileUploaderDropzone"] { background:var(--paper); border:1px dashed var(--disabled-border); border-radius:12px; align-items:center; gap:.75rem; }
 [data-testid="stDialog"] [data-testid="stFileUploaderDropzone"] button { white-space:nowrap; }
 [data-testid="stDialog"] [data-testid="stFileUploaderDropzoneInstructions"] :is(span,small) { color:var(--slate); }
-[data-testid="stDialog"] [data-testid="stExpander"] details { background:#fff; border:1px solid var(--line); border-radius:12px; }
+[data-testid="stDialog"] [data-testid="stExpander"] details { background:var(--paper); border:1px solid var(--line); border-radius:12px; }
 [data-testid="stDialog"] [data-testid="stExpander"] summary { color:var(--navy); }
 [data-testid="stDialog"] [data-testid="stSlider"] { padding:0 .35rem; }
 [data-testid="stDialog"] [data-testid="stSliderThumbValue"] { color:var(--navy); }
@@ -299,7 +320,7 @@
   .st-key-quiz_flag img { max-width:100% !important; height:auto !important; }
   /* Keep Next reachable with long questions: pinned to the bottom of the screen on phones. */
   .st-key-quiz_next_action { position:fixed !important; bottom:0; left:0; right:0; z-index:100; margin:0 !important;
-    padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px)); background:rgba(247,244,237,.97); border-top:1px solid var(--line); }
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px)); background:var(--scrim); border-top:1px solid var(--line); }
   .st-key-explore_scope [data-testid="stHorizontalBlock"], .st-key-explore_pagination [data-testid="stHorizontalBlock"],
   .st-key-round_bar [data-testid="stHorizontalBlock"] { flex-wrap:nowrap !important; gap:8px !important; }
   .st-key-explore_scope [data-testid="stColumn"], .st-key-explore_pagination [data-testid="stColumn"],
@@ -461,19 +482,19 @@
 .stApp [class*="st-key-quizcat_"] [data-testid="stProgressBarTrack"] > div { background-color:var(--cat) !important; }
 .cat-chip { display:inline-flex; align-items:center; gap:6px; color:var(--cat); background:var(--cat-soft); border-radius:20px;
   padding:3px 12px; font-size:.8rem; font-weight:700; letter-spacing:.02em; }
-.mult-chip { display:inline-block; margin-left:6px; padding:1px 8px; border-radius:20px; background:var(--gold-soft); color:#76551A;
-  border:1px solid #E2CFA6; font-size:.78rem; font-weight:750; vertical-align:middle; }
+.mult-chip { display:inline-block; margin-left:6px; padding:1px 8px; border-radius:20px; background:var(--gold-soft); color:var(--gold-deep);
+  border:1px solid var(--chip-gold-border); font-size:.78rem; font-weight:750; vertical-align:middle; }
 .score-item:first-child .mult-chip { background:#2E4A63; color:#F3E2B8; border-color:#4C6782; }
-.points-chip { display:inline-block; margin-left:auto; padding:2px 10px; border-radius:20px; background:var(--ok); color:#fff; font-weight:750; font-size:.9rem; }
+.points-chip { display:inline-block; margin-left:auto; padding:2px 10px; border-radius:20px; background:var(--ok-solid); color:#fff; font-weight:750; font-size:.9rem; }
 /* Flags: large but never cropped or stretched; the answers stay within reach. */
 .st-key-quiz_flag { align-items:center; }
 .st-key-question_card [data-testid="stHeaderActionElements"] { display:none !important; }
 .st-key-quiz_flag img { width:auto !important; max-width:100% !important; height:auto !important; max-height:220px; object-fit:contain; }
 /* Feedback after an answer. */
-.feedback { border-radius:14px; padding:12px 16px; border:1px solid var(--line); border-left:5px solid var(--slate); background:#FBFAF6; }
-.feedback-correct { background:var(--ok-bg); border-color:#BFDCCB; border-left-color:var(--ok); }
-.feedback-wrong { background:var(--bad-bg); border-color:#EBC9C3; border-left-color:var(--bad); }
-.feedback-timeout { background:var(--warn-bg); border-color:#E8D6AE; border-left-color:var(--gold-text); }
+.feedback { border-radius:14px; padding:12px 16px; border:1px solid var(--line); border-left:5px solid var(--slate); background:var(--surface-2); }
+.feedback-correct { background:var(--ok-bg); border-color:var(--ok-border); border-left-color:var(--ok); }
+.feedback-wrong { background:var(--bad-bg); border-color:var(--bad-border); border-left-color:var(--bad); }
+.feedback-timeout { background:var(--warn-bg); border-color:var(--warn-border); border-left-color:var(--gold-text); }
 .feedback-head { display:flex; flex-wrap:wrap; align-items:flex-start; gap:6px 8px; font-weight:700; color:var(--navy); font-size:1.02rem; }
 .feedback-head > span:nth-child(2) { flex:1 1 9rem; min-width:0; padding-top:1px; }
 /* Points and multiplier move together: beside the label on wide cards, on their own row (aligned with the
@@ -482,9 +503,9 @@
 .feedback-chips { display:inline-flex; flex-wrap:nowrap; align-items:center; gap:6px; margin-left:auto; flex-shrink:0; }
 .feedback-head .points-chip, .feedback-head .mult-chip { flex-shrink:0; margin-left:0; white-space:nowrap; }
 @container (max-width:420px) { .feedback-chips { flex-basis:100%; margin-left:0; padding-left:34px; } }
-.feedback-icon { display:grid; place-items:center; width:26px; height:26px; border-radius:50%; color:#fff; font-size:.9rem; background:var(--slate); flex-shrink:0; }
-.feedback-correct .feedback-icon { background:var(--ok); } .feedback-wrong .feedback-icon { background:var(--bad); }
-.feedback-timeout .feedback-icon { background:var(--gold-text); }
+.feedback-icon { display:grid; place-items:center; width:26px; height:26px; border-radius:50%; color:#fff; font-size:.9rem; background:var(--slate-solid); flex-shrink:0; }
+.feedback-correct .feedback-icon { background:var(--ok-solid); } .feedback-wrong .feedback-icon { background:var(--bad-solid); }
+.feedback-timeout .feedback-icon { background:var(--gold-solid); }
 .stApp .feedback p { margin:6px 0 0; font-size:.93rem; line-height:1.5; }
 .stApp .feedback .fact-line { padding-top:6px; border-top:1px dashed rgba(23,40,59,.18); }
 .stApp .feedback .feedback-note { color:var(--slate); font-size:.84rem; margin-top:4px; }
@@ -502,14 +523,14 @@
 .result-stat { display:flex; flex-direction:column; min-width:0; }
 .result-stat b { font-size:2.4rem; line-height:1.05; letter-spacing:-.03em; color:var(--teal-dark); font-variant-numeric:tabular-nums; }
 .result-stat span { color:var(--slate); font-size:.85rem; }
-.perfect-banner { display:flex; align-items:center; gap:10px; background:linear-gradient(90deg,#FFF6DF,#F3E9D4); border:1px solid #E2CFA6;
-  color:#76551A; font-weight:700; border-radius:12px; padding:10px 14px; margin-top:6px; }
+.perfect-banner { display:flex; align-items:center; gap:10px; background:linear-gradient(90deg,#FFF6DF,#F3E9D4); border:1px solid var(--chip-gold-border);
+  color:var(--gold-deep); font-weight:700; border-radius:12px; padding:10px 14px; margin-top:6px; }
 .sparkles { color:var(--gold); letter-spacing:.2em; white-space:nowrap; flex-shrink:0; }
 .record-row { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 2px; }
-.record-row span { border-radius:20px; padding:4px 12px; font-size:.84rem; font-weight:600; background:#F1EFE8; color:var(--navy); }
-.record-row .new { background:var(--gold-soft); color:#76551A; border:1px solid #E2CFA6; }
+.record-row span { border-radius:20px; padding:4px 12px; font-size:.84rem; font-weight:600; background:var(--surface-3); color:var(--navy); }
+.record-row .new { background:var(--gold-soft); color:var(--gold-deep); border:1px solid var(--chip-gold-border); }
 .record-row .new::before { content:"★ "; }
-.st-key-next_badge { background:#FBFAF6; border:1px solid var(--line); border-radius:14px; padding:10px 14px !important; gap:.5rem !important; }
+.st-key-next_badge { background:var(--surface-2); border:1px solid var(--line); border-radius:14px; padding:10px 14px !important; gap:.5rem !important; }
 .st-key-next_badge [data-testid="stMarkdownContainer"], .st-key-result_card .result-hero { margin-bottom:0 !important; }
 .next-badge { display:flex; gap:12px; align-items:center; color:var(--navy); font-size:.92rem; line-height:1.45; }
 .next-badge span:not(.award-medal) { color:var(--slate); }
@@ -576,9 +597,9 @@
 .size-row { display:flex; flex-direction:column; gap:4px; }
 .size-label { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; color:var(--navy); font-size:.92rem; }
 .size-label span { color:var(--slate); font-variant-numeric:tabular-nums; }
-.size-track { height:14px; background:#EEEAE0; border-radius:8px; overflow:hidden; }
-.size-bar { height:100%; background:var(--teal); border-radius:8px; }
-.size-bar.tiny { width:3px !important; background:var(--gold-text); border-radius:2px; }
+.size-track { height:14px; background:var(--track-2); border-radius:8px; overflow:hidden; }
+.size-bar { height:100%; background:var(--teal-bright); border-radius:8px; }
+.size-bar.tiny { width:3px !important; background:var(--gold-solid); border-radius:2px; }
 .stApp .size-sentence { margin:8px 0 0; font-size:.93rem; line-height:1.5; }
 @media (max-width:700px) {
   .st-key-view_learn .hero-compact { display:none; }
@@ -600,7 +621,7 @@
 .more-details span { color:var(--slate); font-size:.85rem; } .more-details b { color:var(--navy); font-weight:600; overflow-wrap:anywhere; }
 .st-key-learn_more, [data-testid="stLayoutWrapper"]:has(> .st-key-learn_more) { display:none !important; }
 .st-key-learn_picker [data-testid="stHorizontalBlock"] { gap:12px !important; }
-[data-testid="stElementContainer"]:has(script[data-country]) { display:none !important; }
+[data-testid="stElementContainer"]:has(script[data-country]), [data-testid="stElementContainer"]:has(script[data-we-theme-sync]) { display:none !important; }
 /* Desktop: Neighbours and Landmarks are opened once by a small script and read as plain sections (summary hidden
    while open). Without JavaScript they remain normal collapsible sections. */
 @media (min-width:1025px) {
@@ -642,3 +663,57 @@
 }
 @media (prefers-reduced-motion:reduce) { *, *::before, *::after { animation:none !important; } }
 @media (prefers-reduced-motion:reduce) { * { transition:none !important; } [class*="st-key-country_card_"]:hover { transform:none; } }
+
+/* ---------- dark appearance ----------
+   The effective theme comes from Streamlit itself: a small script (ui/components.py) reads the background
+   colour Streamlit gives its header and sets <html data-we-theme="light|dark">. That covers "Use system
+   setting" (including live changes) and an explicit Light or Dark choice in Streamlit's settings, so custom
+   styling and native widgets always agree. Until the script has run, the system preference is used. */
+html[data-we-theme="dark"] {
+  --navy:#E8EDF2; --slate:#A9B7C4; --ivory:#0E1A26; --paper:#16263A;
+  --surface-2:#1B2D42; --surface-3:#24384E; --surface-4:#1E3045; --line:#3E5670; --line-cool:#52708C;
+  --input-border:#7F97B0; --teal-bright:#3FAEB0; --disabled-border:#64798E; --track:#2B3F55; --track-2:#2B3F55;
+  --scrim:rgba(14,26,38,.96); --focus-halo:rgba(231,207,156,.28);
+  --ink:#1A3049; --ink-2:#1F3D58; --ink-3:#1F5058;
+  --teal-dark:#7FD0CC; --teal-soft:#173C42; --gold:#C9A052; --gold-text:#E3C27F; --gold-soft:#3A3020; --gold-deep:#EBCF94;
+  --chip-gold-border:#6B5630; --chip-teal-border:#2F6064;
+  --ok:#7DD8A4; --ok-bg:#133325; --ok-border:#2F6A4B; --bad:#FF9E92; --bad-bg:#3A1C1A; --bad-border:#7A3A33;
+  --warn-bg:#352B17; --warn-border:#6E5A2E; --neutral-done:#1E3045; --neutral-done-border:#566E86;
+  --shadow:0 8px 24px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:dark) {
+  html:not([data-we-theme]) {
+    --navy:#E8EDF2; --slate:#A9B7C4; --ivory:#0E1A26; --paper:#16263A;
+    --surface-2:#1B2D42; --surface-3:#24384E; --surface-4:#1E3045; --line:#3E5670; --line-cool:#52708C;
+    --input-border:#7F97B0; --teal-bright:#3FAEB0; --disabled-border:#64798E; --track:#2B3F55; --track-2:#2B3F55;
+    --scrim:rgba(14,26,38,.96); --focus-halo:rgba(231,207,156,.28);
+    --ink:#1A3049; --ink-2:#1F3D58; --ink-3:#1F5058;
+    --teal-dark:#7FD0CC; --teal-soft:#173C42; --gold:#C9A052; --gold-text:#E3C27F; --gold-soft:#3A3020; --gold-deep:#EBCF94;
+    --chip-gold-border:#6B5630; --chip-teal-border:#2F6064;
+    --ok:#7DD8A4; --ok-bg:#133325; --ok-border:#2F6A4B; --bad:#FF9E92; --bad-bg:#3A1C1A; --bad-border:#7A3A33;
+    --warn-bg:#352B17; --warn-border:#6E5A2E; --neutral-done:#1E3045; --neutral-done-border:#566E86;
+    --shadow:0 8px 24px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }
+}
+html[data-we-theme="dark"] .st-key-quizcat_capitals { --cat:#7FD0CC; --cat-soft:#173C42; }
+html[data-we-theme="dark"] .st-key-quizcat_flags { --cat:#E3C27F; --cat-soft:#3A3020; }
+html[data-we-theme="dark"] .st-key-quizcat_currency { --cat:#8FD6A0; --cat-soft:#183424; }
+html[data-we-theme="dark"] .st-key-quizcat_languages { --cat:#F2A48F; --cat-soft:#3D2019; }
+html[data-we-theme="dark"] .st-key-quizcat_landmarks { --cat:#C3A9F0; --cat-soft:#2E2443; }
+html[data-we-theme="dark"] .st-key-quizcat_identification { --cat:#9DC2EE; --cat-soft:#1C2F47; }
+html[data-we-theme="dark"] .st-key-quizcat_geography { --cat:#9FC6D6; --cat-soft:#1B3340; }
+html[data-we-theme="dark"] .st-key-quizcat_continents { --cat:#C5D486; --cat-soft:#2A3218; }
+html[data-we-theme="dark"] .st-key-quizcat_truefalse { --cat:#EDA3C9; --cat-soft:#3A1F2E; }
+html[data-we-theme="dark"] .st-key-quizcat_leaders { --cat:#F0A3A3; --cat-soft:#3A1E1E; }
+/* Light-only decorative tints get dark equivalents; flags, photos, medals and illustrations keep their colours. */
+html[data-we-theme="dark"] [class*="st-key-learn_flag_panel_"] { background:linear-gradient(135deg,#1B2D42,#22374E) !important; border-color:var(--line); }
+html[data-we-theme="dark"] .perfect-banner { background:linear-gradient(90deg,#3A3020,#2C2617); border-color:var(--chip-gold-border); color:var(--gold-deep); }
+html[data-we-theme="dark"] .award-medal { border-color:#7A6233; }
+html[data-we-theme="dark"] .award-medal.locked { opacity:.85; }
+html[data-we-theme="dark"] .st-key-quiz_flag img, html[data-we-theme="dark"] [class*="st-key-country_card_"] img { border-color:#4C647C; }
+/* Native widgets on the dark theme: surfaces and text from our tokens so they match custom cards. */
+html[data-we-theme="dark"] :is(.stApp, [data-testid="stDialog"]) :is([data-testid="stTextInputRootElement"], [data-testid="stSelectbox"] [role="group"]) { background:var(--surface-2) !important; }
+html[data-we-theme="dark"] [data-testid="stDialog"] [role="dialog"] { background:var(--ivory); }
+html[data-we-theme="dark"] .stApp :is(button:focus-visible, a:focus-visible, input:focus-visible) { outline-color:var(--gold-text) !important; }

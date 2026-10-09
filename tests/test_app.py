@@ -255,6 +255,113 @@ class RefinementTests(unittest.TestCase):
         at.run(); at.run()
         self.assertEqual((dict(at.session_state["stats"]), at.session_state["points"], at.session_state["rounds_finished"]), before)
 
+    # ---------------------------------------------------------------- quiz experience (streaks, facts, records)
+
+    def test_stale_double_clicks_never_count_twice(self):
+        """A double click can deliver a second, stale callback before the page redraws: it must change nothing."""
+        from ui import state as ui_state
+        fake = fake_streamlit(logged_in=False)
+        with mock.patch.object(ui_state, "st", fake):
+            ui_state.init()
+            settings = {"continent": "World", "country_id": "all", "category": "Capitals", "difficulty": "Medium",
+                        "count": 5, "timer": False, "flags": True}
+            self.assertTrue(ui_state.start_round(settings))
+            ss = fake.session_state
+            serial = ss.quiz["serial"]
+            for i in range(5):
+                answer = ss.quiz["questions"][i]["answer"]
+                ui_state.answer(answer, serial, i)
+                ui_state.answer(answer, serial, i)                  # stale second click on the answer
+                ui_state.next_question(serial, i)
+                ui_state.next_question(serial, i)                   # stale second click on Next / View results
+            self.assertEqual(len(ss.quiz["history"]), 5)
+            self.assertEqual((ss.rounds_finished, ss.stats["answered"], ss.stats["correct"]), (1, 5, 5))
+            self.assertEqual(ss.points, ss.quiz["score"])
+            self.assertEqual((ss.records["best_streak"], len(ss.records["scores"])), (5, 1))
+            self.assertEqual(ss.stats["perfect_rounds"], 1)
+
+    def _answer_all(self, at, correct=True, double=False):
+        quiz = at.session_state["quiz"]
+        for i in range(len(quiz["questions"])):
+            quiz = at.session_state["quiz"]
+            qn = quiz["questions"][i]
+            pick = qn["answer"] if correct else next(c for c in qn["choices"] if c != qn["answer"])
+            key = f"answer_{quiz['serial']}_{i}_{qn['choices'].index(pick)}"
+            at.button(key=key).click().run()
+            if double:
+                at.run()                                            # unrelated reruns record nothing
+                at.run()
+            at.button(key=f"next_{quiz['serial']}_{i}").click().run()
+            if double and i + 1 < len(quiz["questions"]):
+                self.assertEqual(at.session_state["quiz"]["index"], i + 1)
+        return at
+
+    def test_streak_multiplier_records_and_no_double_counting(self):
+        at = self.new(page="Quiz")
+        at.selectbox(key="filter_count").select(5).run()
+        at.button(key="start_quiz").click().run()
+        self._answer_all(at, correct=True, double=True)
+        quiz = at.session_state["quiz"]
+        self.assertTrue(quiz["finished"])
+        self.assertEqual([h["points"]["multiplier"] for h in quiz["history"]], [1, 1, 2, 2, 3])
+        self.assertEqual(len(quiz["history"]), 5)
+        self.assertEqual(at.session_state["points"], quiz["score"])  # totals match the round exactly once
+        self.assertEqual(at.session_state["rounds_finished"], 1)
+        self.assertEqual(at.session_state["stats"]["correct"], 5)
+        records = at.session_state["records"]
+        self.assertEqual((records["best_streak"], len(records["scores"])), (5, 1))
+        markup = " ".join(m.value for m in at.markdown)
+        self.assertIn("First score for these settings", markup)
+        self.assertIn("Gold medal", markup)
+        self.assertIn("Perfect round", markup)
+        for _ in range(3):
+            at.run()
+        self.assertEqual((at.session_state["rounds_finished"], at.session_state["records"]["best_streak"]), (1, 5))
+        at.button(key="play_again").click().run()
+        self.assertEqual(at.session_state["quiz"]["streak"], 0)        # a new round starts without a streak
+        self._answer_all(at, correct=False)
+        markup = " ".join(m.value for m in at.markdown)
+        self.assertIn("Your best for these settings", markup)
+        self.assertIn("Keep practising", markup)
+        self.assertEqual(len(at.session_state["records"]["scores"]), 1)
+        self.assertEqual(at.session_state["rounds_finished"], 2)
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_feedback_shows_points_multiplier_and_a_fact(self):
+        at = self.new(page="Quiz")
+        at.button(key="start_quiz").click().run()
+        quiz = at.session_state["quiz"]
+        page = " ".join(m.value for m in at.markdown)
+        self.assertNotIn("Did you know?", page)                       # nothing revealed before submission
+        qn = quiz["questions"][0]
+        at.button(key=f"answer_{quiz['serial']}_0_{qn['choices'].index(qn['answer'])}").click().run()
+        page = " ".join(m.value for m in at.markdown)
+        self.assertIn("Base 125 × 1 = 125", page)
+        record = at.session_state["quiz"]["history"][0]
+        if record["fact"]:
+            self.assertIn("Did you know?", page)
+
+    def test_active_round_survives_other_pages(self):
+        at = self.new(page="Quiz")
+        at.button(key="start_quiz").click().run()
+        quiz = at.session_state["quiz"]
+        qn = quiz["questions"][0]
+        at.button(key=f"answer_{quiz['serial']}_0_{qn['choices'].index(qn['answer'])}").click().run()
+        before = (quiz["serial"], quiz["index"], quiz["score"], quiz["streak"], len(quiz["history"]), at.session_state["points"])
+        for page in ("Explore", "Learn", "Badges", "Quiz"):
+            at.button(key=f"nav_{page}").click().run()
+        quiz = at.session_state["quiz"]
+        self.assertEqual((quiz["serial"], quiz["index"], quiz["score"], quiz["streak"], len(quiz["history"]), at.session_state["points"]), before)
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_results_in_every_language(self):
+        for lang in LANGS:
+            at = self.new(page="Quiz", app_language=lang)
+            at.selectbox(key="filter_count").select(5).run()
+            at.button(key="start_quiz").click().run()
+            self._answer_all(at, correct=True)
+            self.assertEqual([e.value for e in at.exception], [], lang)
+
     def test_flag_questions_label_in_every_language(self):
         from core.i18n import translate
         for lang in LANGS:
@@ -302,6 +409,11 @@ class AccountTests(unittest.TestCase):
         self.assertEqual(bad, {})
         self.assertEqual(self.accounts.sanitize_profile({"sound_enabled": True, "sound_volume": 30}),
                          {"sound_enabled": True, "sound_volume": 30})
+        self.assertNotIn("records", clean)        # older profiles have no records: empty records, totals unchanged
+        saved = {"records": {"best_streak": 7, "scores": {"x": 900}}, "points": 50}
+        self.assertEqual(self.accounts.sanitize_profile(saved), saved)
+        self.assertNotIn("records", self.accounts.sanitize_profile({"records": ["corrupt"]}))
+        self.assertIn("records", self.accounts.PROFILE_KEYS)
 
     def test_connection_failure_never_overwrites(self):
         st = fake_streamlit(secrets=self.storage)

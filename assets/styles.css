@@ -444,4 +444,121 @@
   :is(.st-key-what_box, .st-key-where_box) [data-testid="stHorizontalBlock"]:not(.st-key-setup_toggles) > [data-testid="stColumn"] { flex:0 0 100% !important; }
   .fact-grid { grid-template-columns:1fr; }
 }
+/* ---------- quiz experience: category accents, feedback, results ---------- */
+/* Category accents are restrained and always paired with an icon and the category name. Each colour
+   gives >= 4.5:1 as text on white and on its own soft tint. */
+[class*="st-key-quizcat_"] { --cat:var(--teal-dark); --cat-soft:var(--teal-soft); }
+.st-key-quizcat_capitals { --cat:#1C6467; --cat-soft:#E3EFEE; }
+.st-key-quizcat_flags { --cat:#83601F; --cat-soft:#F5ECDA; }
+.st-key-quizcat_currency { --cat:#2C6A3D; --cat-soft:#E5F1E7; }
+.st-key-quizcat_languages { --cat:#9C4330; --cat-soft:#F8E9E4; }
+.st-key-quizcat_landmarks { --cat:#65479A; --cat-soft:#EFEAF7; }
+.st-key-quizcat_identification { --cat:#2C5987; --cat-soft:#E6EEF6; }
+.st-key-quizcat_geography { --cat:#3A6273; --cat-soft:#E5EEF1; }
+.st-key-quizcat_continents { --cat:#56651F; --cat-soft:#EEF1E1; }
+.st-key-quizcat_truefalse { --cat:#86395F; --cat-soft:#F6E8EF; }
+.st-key-quizcat_leaders { --cat:#8A3838; --cat-soft:#F7E7E7; }
+[class*="st-key-quizcat_"] .st-key-question_card { border-top:4px solid var(--cat) !important; }
+.stApp [class*="st-key-quizcat_"] [data-testid="stProgressBarTrack"] > div { background-color:var(--cat) !important; }
+.cat-chip { display:inline-flex; align-items:center; gap:6px; color:var(--cat); background:var(--cat-soft); border-radius:20px;
+  padding:3px 12px; font-size:.8rem; font-weight:700; letter-spacing:.02em; }
+.mult-chip { display:inline-block; margin-left:6px; padding:1px 8px; border-radius:20px; background:var(--gold-soft); color:#76551A;
+  border:1px solid #E2CFA6; font-size:.78rem; font-weight:750; vertical-align:middle; }
+.score-item:first-child .mult-chip { background:#2E4A63; color:#F3E2B8; border-color:#4C6782; }
+.points-chip { display:inline-block; margin-left:auto; padding:2px 10px; border-radius:20px; background:var(--ok); color:#fff; font-weight:750; font-size:.9rem; }
+/* Flags: large but never cropped or stretched; the answers stay within reach. */
+.st-key-quiz_flag { align-items:center; }
+.st-key-question_card [data-testid="stHeaderActionElements"] { display:none !important; }
+.st-key-quiz_flag img { width:auto !important; max-width:100% !important; height:auto !important; max-height:220px; object-fit:contain; }
+/* Feedback after an answer. */
+.feedback { border-radius:14px; padding:12px 16px; border:1px solid var(--line); border-left:5px solid var(--slate); background:#FBFAF6; }
+.feedback-correct { background:var(--ok-bg); border-color:#BFDCCB; border-left-color:var(--ok); }
+.feedback-wrong { background:var(--bad-bg); border-color:#EBC9C3; border-left-color:var(--bad); }
+.feedback-timeout { background:var(--warn-bg); border-color:#E8D6AE; border-left-color:var(--gold-text); }
+.feedback-head { display:flex; flex-wrap:wrap; align-items:flex-start; gap:6px 8px; font-weight:700; color:var(--navy); font-size:1.02rem; }
+.feedback-head > span:nth-child(2) { flex:1 1 9rem; min-width:0; padding-top:1px; }
+/* Points and multiplier move together: beside the label on wide cards, on their own row (aligned with the
+   label text) on narrow ones, so the label is never squeezed. */
+.feedback { container-type:inline-size; }
+.feedback-chips { display:inline-flex; flex-wrap:nowrap; align-items:center; gap:6px; margin-left:auto; flex-shrink:0; }
+.feedback-head .points-chip, .feedback-head .mult-chip { flex-shrink:0; margin-left:0; white-space:nowrap; }
+@container (max-width:420px) { .feedback-chips { flex-basis:100%; margin-left:0; padding-left:34px; } }
+.feedback-icon { display:grid; place-items:center; width:26px; height:26px; border-radius:50%; color:#fff; font-size:.9rem; background:var(--slate); flex-shrink:0; }
+.feedback-correct .feedback-icon { background:var(--ok); } .feedback-wrong .feedback-icon { background:var(--bad); }
+.feedback-timeout .feedback-icon { background:var(--gold-text); }
+.stApp .feedback p { margin:6px 0 0; font-size:.93rem; line-height:1.5; }
+.stApp .feedback .fact-line { padding-top:6px; border-top:1px dashed rgba(23,40,59,.18); }
+.stApp .feedback .feedback-note { color:var(--slate); font-size:.84rem; margin-top:4px; }
+.feedback a { color:var(--teal-dark); font-weight:600; white-space:nowrap; }
+/* Results. */
+.result-hero { display:grid; grid-template-columns:auto minmax(0,max-content) minmax(0,max-content); justify-content:start; gap:14px 48px; align-items:center; margin:8px 0 4px; }
+.medal { display:flex; flex-direction:column; align-items:center; gap:4px; min-width:84px; }
+.medal span { display:grid; place-items:center; width:58px; height:58px; border-radius:50%; font-size:1.6rem; color:#fff;
+  box-shadow:inset 0 -4px 0 rgba(0,0,0,.15), 0 4px 12px rgba(23,40,59,.15); }
+.medal small { font-size:.78rem; font-weight:700; color:var(--navy); text-align:center; line-height:1.2; }
+.medal-gold span { background:radial-gradient(circle at 35% 30%,#E9C877,#B58A3A 70%); }
+.medal-silver span { background:radial-gradient(circle at 35% 30%,#E3E8EC,#8E9AA5 70%); }
+.medal-bronze span { background:radial-gradient(circle at 35% 30%,#E2AE84,#A3653A 70%); }
+.medal-none small { color:var(--slate); border:1px dashed var(--line); border-radius:12px; padding:10px 8px; }
+.result-stat { display:flex; flex-direction:column; min-width:0; }
+.result-stat b { font-size:2.4rem; line-height:1.05; letter-spacing:-.03em; color:var(--teal-dark); font-variant-numeric:tabular-nums; }
+.result-stat span { color:var(--slate); font-size:.85rem; }
+.perfect-banner { display:flex; align-items:center; gap:10px; background:linear-gradient(90deg,#FFF6DF,#F3E9D4); border:1px solid #E2CFA6;
+  color:#76551A; font-weight:700; border-radius:12px; padding:10px 14px; margin-top:6px; }
+.sparkles { color:var(--gold); letter-spacing:.2em; white-space:nowrap; flex-shrink:0; }
+.record-row { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 2px; }
+.record-row span { border-radius:20px; padding:4px 12px; font-size:.84rem; font-weight:600; background:#F1EFE8; color:var(--navy); }
+.record-row .new { background:var(--gold-soft); color:#76551A; border:1px solid #E2CFA6; }
+.record-row .new::before { content:"★ "; }
+.st-key-next_badge { background:#FBFAF6; border:1px solid var(--line); border-radius:14px; padding:10px 14px !important; gap:.5rem !important; }
+.st-key-next_badge [data-testid="stMarkdownContainer"], .st-key-result_card .result-hero { margin-bottom:0 !important; }
+.next-badge { display:flex; gap:12px; align-items:center; color:var(--navy); font-size:.92rem; line-height:1.45; }
+.next-badge span:not(.award-medal) { color:var(--slate); }
+.next-badge .award-medal { width:40px; height:40px; font-size:1.1rem; margin:0; flex-shrink:0; }
+.st-key-practise_badge button { min-height:44px; }
+/* One-off motion: only drawn on the first render after the event, so reruns never replay it. */
+@keyframes we-pop { 0% { transform:scale(.97); } 55% { transform:scale(1.025); } 100% { transform:scale(1); } }
+@keyframes we-glow { 0% { box-shadow:0 0 0 0 rgba(31,107,69,.45); } 100% { box-shadow:0 0 0 10px rgba(31,107,69,0); } }
+@keyframes we-nudge { 0%,100% { transform:translateX(0); } 25% { transform:translateX(-4px); } 75% { transform:translateX(4px); } }
+@keyframes we-rise { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+@keyframes we-twinkle { 0%,100% { opacity:.35; } 50% { opacity:1; } }
+[class*="st-key-correct_answer_fx_"] button { animation:we-pop .45s ease-out, we-glow .8s ease-out; }
+[class*="st-key-wrong_answer_fx_"] button { animation:we-nudge .3s ease-in-out 1; }
+.feedback.fx { animation:we-rise .3s ease-out; }
+.result-hero.fx .medal span { animation:we-pop .6s ease-out; }
+.perfect-banner.fx .sparkles { animation:we-twinkle .8s ease-in-out 3; }
+@media (max-width:1100px) { .result-stat b { font-size:2rem; } }
+@media (max-width:700px) {
+  /* The decorative banner is hidden during quizzes on phones; the round bar keeps the context. */
+  .st-key-view_quiz .hero-compact { display:none; }
+  .cat-chip { font-size:.74rem; padding:2px 10px; }
+  /* Less chrome above the question so the question, choices and feedback fit on one screen. */
+  .st-key-view_quiz { gap:.55rem !important; }
+  .st-key-view_quiz > div > [data-testid="stVerticalBlock"], [class*="st-key-quizcat_"] { gap:.5rem !important; }
+  .st-key-round_bar { padding:8px 10px 8px 14px !important; }
+  .st-key-round_bar .round-label { font-size:.6rem; } .st-key-round_bar .round-summary { font-size:.92rem; margin-top:0; line-height:1.3; }
+  .st-key-round_bar button { min-height:40px; }
+  .score-strip { margin:0 0 16px; } .score-item { padding:6px 10px; border-radius:12px; }
+  .score-item .score-value { font-size:1.15rem; line-height:1.25; }
+  [class*="st-key-quizcat_"] [data-testid="stCaptionContainer"] p { font-size:.8rem !important; }
+  .st-key-question_card { gap:.6rem !important; }
+  .st-key-quiz_flag img { max-height:150px; }
+  /* Short answers: two per row on phones too (choices keep their full text and wrap if needed). */
+  .st-key-answers_grid [data-testid="stHorizontalBlock"] { flex-wrap:nowrap !important; gap:8px !important; }
+  .st-key-answers_grid [data-testid="stColumn"] { flex:1 1 0 !important; min-width:0 !important; width:auto !important; }
+  .st-key-answers_grid button { justify-content:center !important; text-align:center !important; padding:6px 8px !important; }
+  .st-key-answers_list [data-testid="stHorizontalBlock"] { gap:8px !important; }
+  .st-key-question_card :is(.st-key-answers_grid, .st-key-answers_list) { gap:8px !important; }
+  .feedback { padding:10px 12px; } .feedback-head { font-size:.96rem; }
+  .stApp .feedback p { font-size:.88rem; }
+  .result-hero { grid-template-columns:auto minmax(0,1fr); gap:6px 14px; }
+  .result-hero .medal { grid-row:span 2; } .result-hero .result-stat:last-child { grid-column:2; }
+  .medal { min-width:68px; } .medal span { width:48px; height:48px; font-size:1.3rem; }
+  .result-stat b { font-size:1.7rem; }
+  .record-row span { font-size:.78rem; padding:3px 10px; }
+  .st-key-result_card [data-testid="stHorizontalBlock"]:has(.st-key-play_again) { flex-wrap:nowrap !important; gap:8px !important; }
+  .st-key-result_card [data-testid="stHorizontalBlock"]:has(.st-key-play_again) > [data-testid="stColumn"] { flex:1 1 0 !important; min-width:0 !important; }
+  .st-key-result_card :is(.st-key-play_again, .st-key-change_settings) button p { white-space:normal; line-height:1.2; }
+}
+@media (prefers-reduced-motion:reduce) { *, *::before, *::after { animation:none !important; } }
 @media (prefers-reduced-motion:reduce) { * { transition:none !important; } [class*="st-key-country_card_"]:hover { transform:none; } }

@@ -536,14 +536,32 @@ def generate_quiz(settings, recent=(), recent_facts=(), seed=None, leaders=None)
 
 # --------------------------------------------------------------------------- scoring & round state
 
+# Streak multiplier: the n-th consecutive correct answer in a round multiplies the question's base points.
+# (minimum streak, multiplier), checked from the top. A wrong answer or a timeout resets the streak to 0.
+STREAK_MULTIPLIERS = ((5, 3), (3, 2), (1, 1))
+
+
+def streak_multiplier(streak: int) -> int:
+    """1 for the 1st-2nd correct answer in a row, 2 for the 3rd-4th, 3 from the 5th on."""
+    return next((m for minimum, m in STREAK_MULTIPLIERS if streak >= minimum), 1)
+
+
 def score_answer(correct, difficulty, elapsed, streak, used_hint=False, time_limit=None) -> dict:
+    """Points for one answer. `streak` already includes this answer when it is correct.
+
+    total = max(0, base x multiplier + speed bonus - hint penalty)
+    Only the base is multiplied; the speed bonus and the hint penalty are flat, and the
+    perfect-round bonus (added in advance()) is never multiplied.
+    """
     if not correct:
-        return {"base": 0, "speed": 0, "streak": 0, "hint": 0, "total": 0}
+        return {"base": 0, "multiplier": 1, "streak": 0, "speed": 0, "hint": 0, "total": 0}
     base = round(100 * DIFFICULTY_MULTIPLIERS[difficulty])
+    multiplier = streak_multiplier(streak)
     speed = SPEED_BONUS if elapsed <= (time_limit / 3 if time_limit else 7) else 0
-    bonus = (50 if streak % 3 == 0 else 0) + (100 if streak % 5 == 0 else 0)
     hint = HINT_PENALTY if used_hint else 0
-    return {"base": base, "speed": speed, "streak": bonus, "hint": hint, "total": max(0, base + speed + bonus - hint)}
+    boosted = base * multiplier
+    return {"base": base, "multiplier": multiplier, "streak": boosted - base, "speed": speed, "hint": hint,
+            "total": max(0, boosted + speed - hint)}
 
 
 def new_round(settings, questions, available, serial) -> dict:
@@ -598,8 +616,10 @@ def resolve(quiz, choice, now=None) -> int:
     quiz["correct"] += correct
     points = score_answer(correct, quiz["settings"]["difficulty"], taken, quiz["streak"], quiz["hint_used"], limit)
     quiz.update(selected=choice, resolved=True, last_points=points, score=quiz["score"] + points["total"])
+    from .facts import pick  # local import: facts uses this module's helpers
     quiz["history"].append({"question": q, "answer": choice, "correct": correct, "elapsed": taken,
-                            "hint": quiz["hint_used"], "timed_out": timed_out, "points": points})
+                            "hint": quiz["hint_used"], "timed_out": timed_out, "points": points,
+                            "streak": quiz["streak"], "fact": pick(quiz["questions"], quiz["index"])})
     _event(quiz, "correct" if correct else "incorrect")
     return points["total"]
 
@@ -638,7 +658,7 @@ def advance(quiz) -> int:
     if quiz["correct"] == len(quiz["questions"]) and not any(h["hint"] for h in quiz["history"]):
         quiz["perfect_bonus"] = round(PERFECT_ROUND_BONUS * DIFFICULTY_MULTIPLIERS[quiz["settings"]["difficulty"]])
         quiz["score"] += quiz["perfect_bonus"]
-    _event(quiz, "complete")
+    _event(quiz, "perfect" if quiz["perfect_bonus"] else "complete")
     return quiz["perfect_bonus"]
 
 

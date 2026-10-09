@@ -54,6 +54,8 @@ core/
   quiz.py                  question generation, deduplication, scoring, round state (pure Python)
   accounts.py              optional sign-in diagnostics and Supabase profile storage
   badges.py                badge rules and the quiz statistics they are earned from
+  records.py               medals and personal records (per round settings)
+  facts.py                 the sourced "Did you know?" fact after each answer
 ui/
   state.py                 session state and round callbacks
   components.py            header, hero, settings drawer (profile, sign-in help, places, sound)
@@ -121,7 +123,56 @@ database in `data/` is distributed under the same licence. Flags come from the s
 but are not covered by the ODbL (see `COVERAGE.md`). Photo credits are listed in the app and in
 `data/photos.json`. Landmarks link to the UNESCO World Heritage List.
 
-## Changes in this update (compact layout)
+## Scoring rules
+
+| Part | Rule |
+|---|---|
+| Base points | 100 × difficulty (Easy ×1, Medium ×1.25, Difficult ×1.5, Expert ×2), for a correct answer |
+| Streak multiplier | Consecutive correct answers in the current round: 1st–2nd ×1, 3rd–4th ×2, 5th onward ×3. Only the base points are multiplied |
+| Streak reset | A wrong answer or a timeout resets the streak to 0. Every new round starts at 0. (There is no skip button; leaving the page keeps the round and the streak.) |
+| Speed bonus | +25 (flat, not multiplied) for answering within 7 s, or within a third of the time limit in timed rounds |
+| Hint | −25 (flat) from that answer, applied after multiplying. A hinted correct answer still continues the streak |
+| Question total | `max(0, base × multiplier + speed − hint)`; wrong and timed-out answers score 0 |
+| Perfect round | +250 × difficulty when every answer is correct and no hint was used. Never multiplied by the streak |
+| Medals | Accuracy only: gold ≥ 90 %, silver ≥ 70 %, bronze ≥ 50 %, otherwise "Keep practising" |
+| Score records | Compared only with rounds of identical settings: places, area, category, difficulty, question count, timed or not, and (for Mixed) flag questions on/off |
+| Streak record | Best answer streak in any round |
+
+Each answer, timeout and finished round is recorded once: answer, Next and timer callbacks check the round
+serial and question number, and a finished round is marked so totals, badge statistics and records never
+change twice (double clicks, reruns, navigation). A browser refresh starts a new session: guests start
+fresh, signed-in players reload their saved profile.
+
+## Checking sign-in and saved records yourself
+
+Google sign-in and Supabase saving cannot be tested from the development environment (no access to your
+accounts). After uploading:
+1. Open the app, sign in with Google (☰ → Continue with Google). The footer should say "Saved to your account".
+2. Play one 5-question round. Note the score, the streak record and the "First score for these settings" line.
+3. Reload the page (or open it on another device) and sign in again. Play a round with the same settings:
+   the results should now say "Your best for these settings" (or "New best…") with your earlier score, and
+   Badges should show the same points and rounds as before.
+4. In Supabase (Table editor → `world_explorer_profiles`) your row's `profile` JSON should now contain a
+   `records` entry next to `points`, `rounds_finished` and `stats`. Older rows without it keep working.
+5. If the footer says "Saved profile not reachable yet", nothing is written until the profile has loaded.
+
+## Changes in this update (quiz experience)
+
+- **Category colours:** each question category has a restrained accent (chip, card edge, progress bar) with an icon
+  and its name; text contrast is at least 4.5:1.
+- **Answer feedback:** a short pop for the correct answer and a small nudge for a wrong one, shown once per answer
+  (never on reruns) and switched off when the device asks for reduced motion. The correct answer is only shown
+  after submitting. Flags are larger (up to 220 px tall on desktop, 150 px on phones) without cropping.
+- **Streaks:** see *Scoring rules*. The points, multiplier and breakdown appear after each answer.
+- **Did you know?** One extra sourced fact from the bundled data after each answer. It never repeats the fact just
+  tested or any fact a later question in the round asks about.
+- **Results:** accuracy with a medal, best streak, score record for the same settings, streak record, a short
+  perfect-round celebration (and tone, if sound is on), and the closest unearned badge with a practice button.
+- **Phones:** short answers sit two per row, the quiz banner is hidden during rounds, and the round bar and score
+  strip are slimmer, so an answered question is shorter than before even with the new feedback.
+- Records are saved with signed-in profiles (new `records` field, older profiles load with empty records).
+
+## Earlier: compact layout
 
 - **Explore, desktop:** 7 countries per page. Row 1 shows three countries and the "Your next challenge" card;
   row 2 shows countries four to seven, so the seventh sits directly under the challenge card. All cards share one

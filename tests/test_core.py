@@ -19,6 +19,9 @@ from core.i18n import LANGUAGES, STRINGS, missing_translations, render_parts, tr
 BASE = {"continent": "World", "country_id": "all", "category": "Mixed", "difficulty": "Medium", "count": 50,
         "timer": False, "collection": DEFAULT_COLLECTION, "flags": True}
 LEADERS = load_political_records(date(2026, 10, 8))
+AREAS_LIST = ["World", "Africa", "Asia", "Europe", "Oceania"]
+DIFFICULTIES_LIST = list(q.DIFFICULTIES)
+QUESTION_COUNTS = q.QUESTION_COUNTS
 REF = json.loads((ROOT / "data" / "reference" / "un_membership.json").read_text(encoding="utf-8"))
 CURATION = json.loads((ROOT / "data" / "reference" / "curation.json").read_text(encoding="utf-8"))
 RAW = json.loads((ROOT / "data" / "countries.json").read_text(encoding="utf-8"))
@@ -303,7 +306,7 @@ class ScoringTests(unittest.TestCase):
             q.advance(quiz)
         self.assertTrue(quiz["finished"])
         self.assertEqual(quiz["perfect_bonus"], round(250 * 1.25))
-        self.assertEqual(quiz["event"]["kind"], "complete")
+        self.assertEqual(quiz["event"]["kind"], "perfect")  # a perfect round has its own celebration event
 
     def test_answers_are_recorded_once_and_events_unique(self):
         quiz = self.make()
@@ -339,7 +342,171 @@ class ScoringTests(unittest.TestCase):
     def test_scoring(self):
         self.assertEqual(q.score_answer(False, "Expert", 1, 5)["total"], 0)
         self.assertEqual(q.score_answer(True, "Easy", 1, 1)["total"], 125)
-        self.assertEqual(q.score_answer(True, "Expert", 20, 15, used_hint=True)["total"], 200 + 150 - 25)
+        self.assertEqual(q.score_answer(True, "Expert", 20, 15, used_hint=True)["total"], 200 * 3 - 25)
+
+
+class StreakScoringTests(unittest.TestCase):
+    """Streak multiplier, resets, hints and duplicate events (quiz experience update)."""
+
+    def make(self, n=6, timer=False, category="Capitals"):
+        questions, available = q.generate_quiz(dict(BASE, count=10, timer=timer, category=category), seed=1, leaders={})
+        return q.new_round(dict(BASE, timer=timer, category=category), questions[:n], available, serial=7)
+
+    def play(self, quiz, outcome, hint=False, now=100):
+        """Answer the current question right (True), wrong (False) or let it time out (None); 12 s keeps speed bonuses out."""
+        question = q.current_question(quiz)
+        if hint:
+            q.use_hint(quiz, random.Random(0), now=now)
+        q.elapsed(quiz, now=now)
+        if outcome is None:
+            points = q.expire_if_due(quiz, now=now + 60)
+        else:
+            choice = question["answer"] if outcome else next(c for c in question["choices"]
+                                                             if c != question["answer"] and c not in quiz["hidden_options"])
+            points = q.resolve(quiz, choice, now=now + 12)
+        q.advance(quiz)
+        return points
+
+    def test_multiplier_boundaries(self):
+        self.assertEqual([q.streak_multiplier(n) for n in range(9)], [1, 1, 1, 2, 2, 3, 3, 3, 3])
+        base = round(100 * q.DIFFICULTY_MULTIPLIERS["Medium"])
+        self.assertEqual([q.score_answer(True, "Medium", 20, n)["total"] for n in range(1, 8)],
+                         [base, base, 2 * base, 2 * base, 3 * base, 3 * base, 3 * base])
+        p = q.score_answer(True, "Expert", 1, 3)                     # fast answer: the speed bonus is flat
+        self.assertEqual((p["base"], p["multiplier"], p["speed"], p["total"]), (200, 2, 25, 425))
+        self.assertEqual(q.score_answer(False, "Expert", 1, 0)["total"], 0)
+
+    def test_round_points_follow_the_streak(self):
+        quiz = self.make()
+        points = [self.play(quiz, ok) for ok in (True, True, True, True, True, True)]
+        self.assertEqual(points, [125, 125, 250, 250, 375, 375])
+        self.assertEqual([h["streak"] for h in quiz["history"]], [1, 2, 3, 4, 5, 6])
+        self.assertEqual(quiz["perfect_bonus"], round(250 * 1.25))  # round bonus is never multiplied
+        self.assertEqual(quiz["score"], sum(points) + quiz["perfect_bonus"])
+
+    def test_wrong_answer_and_timeout_reset_the_streak(self):
+        quiz = self.make()
+        points = [self.play(quiz, ok) for ok in (True, True, True, False, True, True)]
+        self.assertEqual(points, [125, 125, 250, 0, 125, 125])
+        quiz = self.make(timer=True)
+        points = [self.play(quiz, ok) for ok in (True, True, True, None, True, True)]
+        self.assertEqual(points, [125, 125, 250, 0, 125, 125])
+        self.assertTrue(quiz["history"][3]["timed_out"])
+        self.assertEqual(quiz["best_streak"], 3)
+
+    def test_new_round_starts_without_a_streak(self):
+        quiz = self.make()
+        for _ in range(4):
+            self.play(quiz, True)
+        fresh = q.new_round(quiz["settings"], quiz["questions"], quiz["available"], serial=8)
+        self.assertEqual((fresh["streak"], fresh["best_streak"], fresh["score"]), (0, 0, 0))
+
+    def test_hints_keep_the_streak_and_cost_25_after_multiplying(self):
+        quiz = self.make()
+        points = [self.play(quiz, True), self.play(quiz, True), self.play(quiz, True, hint=True), self.play(quiz, True)]
+        self.assertEqual(points, [125, 125, 2 * 125 - 25, 2 * 125])
+        self.assertEqual(quiz["history"][2]["points"]["hint"], 25)
+        for _ in range(2):
+            self.play(quiz, True)
+        self.assertEqual(quiz["perfect_bonus"], 0)                  # a hint rules out the perfect-round bonus
+
+    def test_duplicate_events_change_nothing(self):
+        quiz = self.make(n=2)
+        answer = q.current_question(quiz)["answer"]
+        q.resolve(quiz, answer, now=1)
+        snapshot = (quiz["score"], quiz["streak"], len(quiz["history"]))
+        self.assertEqual(q.resolve(quiz, answer, now=1), 0)          # double click
+        self.assertEqual(q.expire_if_due(quiz, now=999), 0)          # late timer tick
+        self.assertEqual((quiz["score"], quiz["streak"], len(quiz["history"])), snapshot)
+        q.advance(quiz)
+        q.resolve(quiz, q.current_question(quiz)["answer"], now=1)
+        self.assertEqual(q.advance(quiz), quiz["perfect_bonus"])
+        score = quiz["score"]
+        self.assertEqual(q.advance(quiz), 0)                         # finishing twice adds nothing
+        self.assertEqual(quiz["score"], score)
+
+
+class RecordTests(unittest.TestCase):
+    def setUp(self):
+        from core import records
+        self.r = records
+
+    def finished(self, score, streak, **settings):
+        return {"settings": dict(BASE, **settings), "score": score, "best_streak": streak}
+
+    def test_medal_thresholds_use_accuracy_only(self):
+        cases = {0: None, 49.9: None, 50: "bronze", 69.9: "bronze", 70: "silver", 89.9: "silver", 90: "gold", 100: "gold"}
+        for accuracy, expected in cases.items():
+            self.assertEqual(self.r.medal(accuracy), expected, accuracy)
+
+    def test_scores_compare_only_equivalent_settings(self):
+        rec = self.r.empty_records()
+        first = self.r.update(rec, self.finished(800, 3))
+        self.assertTrue(first["first_score"])
+        self.assertFalse(first["new_score"])
+        lower = self.r.update(rec, self.finished(600, 2))
+        self.assertEqual((lower["new_score"], lower["best_score"]), (False, 800))
+        higher = self.r.update(rec, self.finished(900, 1))
+        self.assertEqual((higher["new_score"], higher["previous_score"]), (True, 800))
+        other = self.r.update(rec, self.finished(100, 1, count=5))   # different question count: its own record
+        self.assertTrue(other["first_score"])
+        timed = self.r.update(rec, self.finished(100, 1, timer=True))
+        self.assertTrue(timed["first_score"])
+        self.assertEqual(self.r.settings_key(dict(BASE, category="Capitals", flags=True)),
+                         self.r.settings_key(dict(BASE, category="Capitals", flags=False)))  # flags only matter for Mixed
+        self.assertNotEqual(self.r.settings_key(dict(BASE, category="Mixed", flags=True)),
+                            self.r.settings_key(dict(BASE, category="Mixed", flags=False)))
+
+    def test_streak_record_and_single_update_per_round(self):
+        rec = self.r.empty_records()
+        quiz = self.finished(500, 6)
+        outcome = self.r.update(rec, quiz)
+        self.assertTrue(outcome["new_streak"])
+        self.assertIs(self.r.update(rec, quiz), outcome)             # a second call (rerun, double click) is ignored
+        self.assertEqual((rec["best_streak"], len(rec["scores"])), (6, 1))
+        self.assertFalse(self.r.update(rec, self.finished(10, 4))["new_streak"])
+        self.assertEqual(rec["best_streak"], 6)
+
+    def test_sanitize_keeps_old_and_rejects_corrupt_records(self):
+        self.assertIsNone(self.r.sanitize_records("corrupt"))
+        self.assertEqual(self.r.sanitize_records({}), self.r.empty_records())
+        clean = self.r.sanitize_records({"best_streak": -3, "scores": {"a": 5, "b": "x", "c": True}})
+        self.assertEqual(clean, {"best_streak": 0, "scores": {"a": 5}})
+        many = self.r.empty_records()
+        for i in range(self.r.MAX_SCORE_RECORDS + 5):
+            self.r.update(many, self.finished(i, 0, count=QUESTION_COUNTS[i % 6], continent=AREAS_LIST[i % len(AREAS_LIST)],
+                                              difficulty=DIFFICULTIES_LIST[i // 42 % 4]))
+        self.assertLessEqual(len(many["scores"]), self.r.MAX_SCORE_RECORDS)
+
+
+class FactTests(unittest.TestCase):
+    def test_facts_never_repeat_the_tested_fact_or_reveal_later_answers(self):
+        from core import facts
+        from core.i18n import LANGUAGES, render_parts
+        checked = 0
+        for seed in range(25):
+            for category in ("Mixed", "Capitals", "Geography / General Facts", "Country Identification"):
+                questions, _ = q.generate_quiz(dict(BASE, category=category, count=10), seed=seed)
+                for i, question in enumerate(questions):
+                    fact = facts.pick(questions, i)
+                    if fact is None:
+                        continue
+                    later = set().union(*(set(x["facts"]) for x in questions[i + 1:]))
+                    self.assertFalse(set(fact["keys"]) & (set(question["facts"]) | later), (seed, category, i))
+                    self.assertTrue(fact["source"].startswith("https://"))
+                    for lang in LANGUAGES:
+                        self.assertNotIn("{", render_parts(fact["parts"], lang))
+                    checked += 1
+        self.assertGreater(checked, 500)
+
+    def test_fact_templates_are_translated_and_stable(self):
+        from core import facts
+        from core.i18n import STRINGS
+        from core.data import COUNTRIES
+        templates = {tpl for c in COUNTRIES for f in facts.candidates(c) for tpl, _ in f[1]}
+        self.assertEqual([x for x in templates if x not in STRINGS], [])
+        questions, _ = q.generate_quiz(dict(BASE, count=10), seed=3)
+        self.assertEqual([facts.pick(questions, i) for i in range(10)], [facts.pick(questions, i) for i in range(10)])
 
 
 class TranslationTests(unittest.TestCase):

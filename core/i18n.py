@@ -26,7 +26,7 @@ STRINGS: dict[str, list[str]] = _DATA["strings"]
 TRANSLATED_FIELDS = frozenset({"role", "continent", "title", "kind", "difficulty", "category", "area", "hint",
                                "region", "status"})
 # Template fields that hold country names.
-NAME_FIELDS = frozenset({"name", "other", "first", "second", "country"})
+NAME_FIELDS = frozenset({"name", "other", "first", "second", "third", "country"})
 PLACE_NAMES: dict[str, dict[str, str]] = {
     lang: {c["name"]: c["names"].get(lang, c["name"]) for c in COUNTRIES} for lang in LANGUAGES[1:]}
 

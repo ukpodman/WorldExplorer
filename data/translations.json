@@ -1770,6 +1770,191 @@
    "Noch keine Abzeichen. Beantworte Quizfragen, um dein erstes zu erhalten.",
    "Aún no tienes insignias. Responde preguntas del quiz para conseguir la primera.",
    "还没有徽章。回答测验题即可获得第一枚。"
+  ],
+  "A perfect round without hints adds 250 points × difficulty (never multiplied by the streak). Wrong and timed-out answers earn zero.": [
+   "Eine perfekte Runde ohne Hinweise bringt 250 Punkte × Schwierigkeit (nie mit der Serie multipliziert). Falsche und abgelaufene Antworten bringen null Punkte.",
+   "Una ronda perfecta sin pistas suma 250 puntos × dificultad (nunca se multiplica por la racha). Las respuestas incorrectas o sin tiempo valen cero.",
+   "无提示的满分轮次额外获得 250 分 × 难度系数（不受连对倍数影响）。答错或超时得零分。"
+  ],
+  "Answer streak: the 1st and 2nd correct answers in a row earn the base points, the 3rd and 4th earn double, and from the 5th on they earn triple. A wrong answer or a timeout resets the streak, and every round starts at 0.": [
+   "Antwortserie: Die 1. und 2. richtige Antwort in Folge bringen die Grundpunkte, die 3. und 4. das Doppelte und ab der 5. das Dreifache. Eine falsche Antwort oder ein Zeitablauf setzt die Serie zurück; jede Runde beginnt bei 0.",
+   "Racha de respuestas: la 1.ª y 2.ª respuesta correcta seguida dan los puntos base, la 3.ª y 4.ª el doble y desde la 5.ª el triple. Una respuesta incorrecta o sin tiempo reinicia la racha, y cada ronda empieza en 0.",
+   "连对：连续答对的第 1、2 题获得基础分，第 3、4 题获得双倍，第 5 题起获得三倍。答错或超时会重置连对，每轮从 0 开始。"
+  ],
+  "Base {base} × {multiplier} = {boosted}": [
+   "Grundpunkte {base} × {multiplier} = {boosted}",
+   "Base {base} × {multiplier} = {boosted}",
+   "基础分 {base} × {multiplier} = {boosted}"
+  ],
+  "Closest badge: {name}": [
+   "Nächster Erfolg: {name}",
+   "Logro más cercano: {name}",
+   "最接近的徽章：{name}"
+  ],
+  "Did you know?": [
+   "Schon gewusst?",
+   "¿Sabías que…?",
+   "你知道吗？"
+  ],
+  "Fast answers add 25 points. A hint removes one wrong option and deducts 25 from that answer; a hinted answer still counts for the streak. Only the base points are multiplied. Each round has three hints.": [
+   "Schnelle Antworten bringen 25 Punkte extra. Ein Hinweis entfernt eine falsche Option und zieht 25 Punkte von dieser Antwort ab; eine Antwort mit Hinweis zählt trotzdem für die Serie. Nur die Grundpunkte werden multipliziert. Jede Runde hat drei Hinweise.",
+   "Las respuestas rápidas suman 25 puntos. Una pista elimina una opción incorrecta y resta 25 a esa respuesta; una respuesta con pista sigue contando para la racha. Solo se multiplican los puntos base. Cada ronda tiene tres pistas.",
+   "快速作答额外加 25 分。提示会移除一个错误选项，并从该题得分中扣除 25 分；使用提示的答案仍计入连对。只有基础分会被加倍。每轮有三次提示。"
+  ],
+  "First score for these settings: {score}": [
+   "Erstes Ergebnis mit diesen Einstellungen: {score}",
+   "Primera puntuación con estos ajustes: {score}",
+   "此设置下的首个成绩：{score}"
+  ],
+  "Guest records last for this browser session.": [
+   "Gast-Rekorde gelten nur für diese Browsersitzung.",
+   "Los récords de invitado duran solo esta sesión del navegador.",
+   "访客记录仅在本次浏览器会话中保留。"
+  ],
+  "Hint −{hint}": [
+   "Hinweis −{hint}",
+   "Pista −{hint}",
+   "提示 −{hint}"
+  ],
+  "Keep practising": [
+   "Weiter üben",
+   "Sigue practicando",
+   "继续练习"
+  ],
+  "Languages with official status or wide use in {name}: {languages}.": [
+   "Sprachen mit offiziellem Status oder weiter Verbreitung in {name}: {languages}.",
+   "Idiomas con estatus oficial o uso extendido en {name}: {languages}.",
+   "{name}的官方或通用语言：{languages}。"
+  ],
+  "Medals depend on accuracy only: gold from 90%, silver from 70%, bronze from 50%.": [
+   "Medaillen hängen nur von der Genauigkeit ab: Gold ab 90 %, Silber ab 70 %, Bronze ab 50 %.",
+   "Las medallas dependen solo de la precisión: oro desde el 90 %, plata desde el 70 %, bronce desde el 50 %.",
+   "奖牌只取决于正确率：90% 起为金牌，70% 起为银牌，50% 起为铜牌。"
+  ],
+  "New best for these settings! Previous best: {score}": [
+   "Neuer Bestwert mit diesen Einstellungen! Bisher: {score}",
+   "¡Nuevo récord con estos ajustes! Anterior: {score}",
+   "此设置下的新纪录！之前最佳：{score}"
+  ],
+  "New streak record: {n} in a row": [
+   "Neuer Serienrekord: {n} in Folge",
+   "Nuevo récord de racha: {n} seguidas",
+   "连对新纪录：连续 {n} 题"
+  ],
+  "Next correct answer: ×{m}": [
+   "Nächste richtige Antwort: ×{m}",
+   "Próxima respuesta correcta: ×{m}",
+   "下一题答对：×{m}"
+  ],
+  "No flag questions": [
+   "Ohne Flaggenfragen",
+   "Sin preguntas de banderas",
+   "不含国旗题"
+  ],
+  "Practise flags": [
+   "Flaggen üben",
+   "Practicar banderas",
+   "练习国旗"
+  ],
+  "Practise {continent}": [
+   "{continent} üben",
+   "Practicar {continent}",
+   "练习{continent}"
+  ],
+  "Question {n} of {total} · {difficulty}": [
+   "Frage {n} von {total} · {difficulty}",
+   "Pregunta {n} de {total} · {difficulty}",
+   "第 {n}/{total} 题 · {difficulty}"
+  ],
+  "Records compare rounds with the same settings: {settings}": [
+   "Rekorde vergleichen nur Runden mit denselben Einstellungen: {settings}",
+   "Los récords solo comparan rondas con los mismos ajustes: {settings}",
+   "纪录只比较相同设置的轮次：{settings}"
+  ],
+  "Speed +{speed}": [
+   "Tempo +{speed}",
+   "Rapidez +{speed}",
+   "速度 +{speed}"
+  ],
+  "Streak record (any round): {n}": [
+   "Serienrekord (alle Runden): {n}",
+   "Récord de racha (cualquier ronda): {n}",
+   "连对纪录（所有轮次）：{n}"
+  ],
+  "Streak reset (was {n}). The next correct answer starts again at ×1.": [
+   "Serie zurückgesetzt (war {n}). Die nächste richtige Antwort beginnt wieder bei ×1.",
+   "Racha reiniciada (era {n}). La próxima respuesta correcta vuelve a empezar en ×1.",
+   "连对已重置（原为 {n}）。下一题答对将从 ×1 重新开始。"
+  ],
+  "Streak ×{m}": [
+   "Serie ×{m}",
+   "Racha ×{m}",
+   "连对 ×{m}"
+  ],
+  "Streak": [
+   "Serie",
+   "Racha",
+   "连对"
+  ],
+  "Timed": [
+   "Mit Zeitlimit",
+   "Con tiempo",
+   "限时"
+  ],
+  "Untimed": [
+   "Ohne Zeitlimit",
+   "Sin tiempo",
+   "不限时"
+  ],
+  "Your best for these settings: {score}": [
+   "Dein Bestwert mit diesen Einstellungen: {score}",
+   "Tu mejor puntuación con estos ajustes: {score}",
+   "你在此设置下的最佳成绩：{score}"
+  ],
+  "{correct} of {total} correct": [
+   "{correct} von {total} richtig",
+   "{correct} de {total} correctas",
+   "答对 {correct}/{total}"
+  ],
+  "{name} has a total area of about {size} km².": [
+   "{name} hat eine Gesamtfläche von etwa {size} km².",
+   "{name} tiene una superficie total de unos {size} km².",
+   "{name}的总面积约为 {size} 平方公里。"
+  ],
+  "{name} has no land borders with other places in this dataset.": [
+   "{name} hat in diesem Datensatz keine Landgrenzen zu anderen Orten.",
+   "En este conjunto de datos, {name} no tiene fronteras terrestres con otros lugares.",
+   "在本数据集中，{name}与其他地方没有陆地边界。"
+  ],
+  "{name} has {n} land neighbours, including {first}, {second} and {third}.": [
+   "{name} hat {n} Landnachbarn, darunter {first}, {second} und {third}.",
+   "{name} tiene {n} vecinos terrestres, entre ellos {first}, {second} y {third}.",
+   "{name}有 {n} 个陆地邻国或地区，包括{first}、{second}和{third}。"
+  ],
+  "{name} shares a land border with one place: {first}.": [
+   "{name} hat eine Landgrenze mit genau einem Ort: {first}.",
+   "{name} comparte frontera terrestre con un solo lugar: {first}.",
+   "{name}只与一个地方接壤：{first}。"
+  ],
+  "{site} in {name} is on the UNESCO World Heritage List.": [
+   "{site} in {name} steht auf der UNESCO-Welterbeliste.",
+   "{site}, en {name}, figura en la Lista del Patrimonio Mundial de la UNESCO.",
+   "{name}的{site}已列入联合国教科文组织《世界遗产名录》。"
+  ],
+  "Gold medal": [
+   "Goldmedaille",
+   "Medalla de oro",
+   "金牌"
+  ],
+  "Silver medal": [
+   "Silbermedaille",
+   "Medalla de plata",
+   "银牌"
+  ],
+  "Bronze medal": [
+   "Bronzemedaille",
+   "Medalla de bronce",
+   "铜牌"
   ]
  }
 }

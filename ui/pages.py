@@ -6,9 +6,10 @@ from html import escape
 
 import streamlit as st
 
+from core import accounts, records
 from core import badges as badge_engine
 from core import quiz as engine
-from core.data import (AREAS, COLLECTIONS, PHOTOS, STATUS_LABELS, STATUSES, flag_image, get_countries,
+from core.data import (AREAS, COLLECTIONS, DEFAULT_COLLECTION, PHOTOS, STATUS_LABELS, STATUSES, flag_image, get_countries,
                        get_country, load_political_records, neighbours)
 from core.quiz import CATEGORIES, DIFFICULTIES, QUESTION_COUNTS, currency_label
 
@@ -279,17 +280,78 @@ def _setup() -> None:
                 st.button(t("Return to current round"), width="stretch", on_click=state.close_setup)
         with st.expander(t("Scoring and hints")):
             st.write(t("Correct answers earn 100 base points, multiplied by difficulty: Easy ×1, Medium ×1.25, Difficult ×1.5, Expert ×2."))
-            st.write(t("Fast answers earn 25 extra points. Every third correct answer in a streak adds 50; every fifth adds 100. "
-                       "A hint removes one wrong option and deducts 25 from a correct answer's award. Each round has three hints."))
-            st.write(t("A perfect round without hints adds 250 points × difficulty. Wrong and timed-out answers earn zero. "
-                       "You can always use Next to read the explanation at your own pace."))
+            st.write(t("Answer streak: the 1st and 2nd correct answers in a row earn the base points, the 3rd and 4th earn double, "
+                       "and from the 5th on they earn triple. A wrong answer or a timeout resets the streak, and every round starts at 0."))
+            st.write(t("Fast answers add 25 points. A hint removes one wrong option and deducts 25 from that answer; a hinted "
+                       "answer still counts for the streak. Only the base points are multiplied. Each round has three hints."))
+            st.write(t("A perfect round without hints adds 250 points × difficulty (never multiplied by the streak). Wrong and "
+                       "timed-out answers earn zero."))
+            st.write(t("Medals depend on accuracy only: gold from 90%, silver from 70%, bronze from 50%."))
+
+
+# Restrained accent per question category (text contrast >= 4.5:1 on white), always shown with an icon and words.
+CATEGORY_STYLES = {"Capitals": ("capitals", "🏛"), "Flags": ("flags", "⚑"), "Currency": ("currency", "¤"),
+                   "Languages": ("languages", "💬"), "Landmarks": ("landmarks", "⛰"),
+                   "Country Identification": ("identification", "🔎"), "Geography / General Facts": ("geography", "🧭"),
+                   "Continents": ("continents", "🌍"), "True or False": ("truefalse", "⚖"), "Heads of State": ("leaders", "👤")}
+
+
+def _fresh(event_id: str) -> bool:
+    """True the first time an event is drawn, so animations play once and never on later reruns."""
+    shown = st.session_state.setdefault("effects_shown", [])
+    if event_id in shown:
+        return False
+    shown.append(event_id)
+    del shown[:-50]
+    return True
 
 
 def _score_strip(quiz) -> None:
-    items = (("Round score", f"{quiz['score']:,}"), ("Current streak", quiz["streak"]), ("Hints remaining", quiz["hints_remaining"]))
+    streak = quiz["streak"]
+    multiplier = engine.streak_multiplier(streak) if streak else 1
+    chip = f'<span class="mult-chip">×{multiplier}</span>' if multiplier > 1 else ""
+    items = (("Round score", f"{quiz['score']:,}"), ("Streak", f"{streak}{chip}"), ("Hints remaining", quiz["hints_remaining"]))
     html('<div class="score-strip">' + "".join(
         f'<div class="score-item"><div class="score-label">{e(label)}</div><div class="score-value">{value}</div></div>'
         for label, value in items) + "</div>")
+
+
+def _feedback(quiz, q, record, fresh: bool) -> None:
+    """Outcome, points with the streak multiplier, the explanation and one sourced fact."""
+    p, final = record["points"], quiz["index"] + 1 == len(quiz["questions"])
+    previous = quiz["history"][-2]["streak"] if len(quiz["history"]) > 1 else 0
+    if record["correct"]:
+        tone, icon, head = "correct", "✓", e("Correct!")
+    elif record["timed_out"]:
+        tone, icon, head = "timeout", "⏱", e("Time is up.") + " " + e("Correct answer") + f": <b>{escape(t(q['answer']))}</b>"
+    else:
+        tone, icon, head = "wrong", "✕", e("Not quite.") + " " + e("Correct answer") + f": <b>{escape(t(q['answer']))}</b>"
+    badge = f'<span class="points-chip">+{p["total"]:,}</span>' if record["correct"] else ""
+    if record["correct"] and p["multiplier"] > 1:
+        badge += f'<span class="mult-chip">{e("Streak ×{m}", m=p["multiplier"])}</span>'
+    notes = []
+    if record["correct"]:
+        line = [e("Base {base} × {multiplier} = {boosted}", base=p["base"], multiplier=p["multiplier"], boosted=p["base"] * p["multiplier"])]
+        if p["speed"]:
+            line.append(e("Speed +{speed}", speed=p["speed"]))
+        if p["hint"]:
+            line.append(e("Hint −{hint}", hint=p["hint"]))
+        notes.append(" · ".join(line))
+        if not final:
+            notes.append(e("Next correct answer: ×{m}", m=engine.streak_multiplier(record["streak"] + 1)))
+    elif previous:
+        notes.append(e("Streak reset (was {n}). The next correct answer starts again at ×1.", n=previous))
+    fact = record.get("fact")
+    fact_html = ""
+    if fact:
+        link = f' <a href="{escape(fact["source"], quote=True)}" target="_blank" rel="noopener">{e("Source")}</a>' if fact.get("source") else ""
+        fact_html = f'<p class="fact-line"><b>{e("Did you know?")}</b> {escape(parts(fact["parts"]))}{link}</p>'
+    source = f'<a href="{escape(q["source"], quote=True)}" target="_blank" rel="noopener">{e("Source")}</a>'
+    html(f'<div class="feedback feedback-{tone}{" fx" if fresh else ""}" role="status">'
+         f'<div class="feedback-head"><span class="feedback-icon" aria-hidden="true">{icon}</span><span>{head}</span>'
+         + (f'<span class="feedback-chips">{badge}</span>' if badge else "") + '</div>'
+         f'<p class="feedback-explain">{escape(parts(q["explanation"]))} {source}</p>{fact_html}'
+         + "".join(f'<p class="feedback-note">{n}</p>' for n in notes) + "</div>")
 
 
 def _active_round() -> None:
@@ -299,59 +361,57 @@ def _active_round() -> None:
     state.expire_if_due()
     q, index, serial = engine.current_question(quiz), quiz["index"], quiz["serial"]
     total, limit = len(quiz["questions"]), engine.time_limit(quiz)
-    _score_strip(quiz)
-    st.caption(t("Question {n} of {total} · {kind} · {difficulty}", n=index + 1, total=total,
-                 kind=q["kind"], difficulty=quiz["settings"]["difficulty"]))
-    st.progress((index + quiz["resolved"]) / total)
-    with st.container(key="question_card"):
-        if limit is not None:
+    slug, icon = CATEGORY_STYLES.get(q["kind"], ("geography", "🧭"))
+    fresh = quiz["resolved"] and _fresh(quiz["event"]["id"])
+    with st.container(key=f"quizcat_{slug}"):
+        _score_strip(quiz)
+        st.caption(t("Question {n} of {total} · {difficulty}", n=index + 1, total=total, difficulty=quiz["settings"]["difficulty"]))
+        st.progress((index + quiz["resolved"]) / total)
+        with st.container(key="question_card"):
+            html(f'<div class="cat-chip"><span aria-hidden="true">{icon}</span> {e(q["kind"])}</div>')
+            if limit is not None:
+                if quiz["resolved"]:
+                    st.caption(t("Answer recorded"))
+                else:
+                    remaining = max(0, math.ceil(limit - engine.elapsed(quiz)))
+                    st.caption(t("Time remaining: {n} seconds", n=remaining))
+                    st.progress(remaining / limit)
+            st.subheader(parts(q["prompt"]))
+            if q.get("flag"):
+                with st.container(key="quiz_flag"):
+                    _flag(get_country(q["flag"]), 360, t("Flag to identify. No text description is available for flag images."))
+            # Short answers sit two per row on phones too, so the question and all choices fit on one screen.
+            compact = all(len(t(c)) <= 22 for c in q["choices"])
+            with st.container(key="answers_grid" if compact else "answers_list"):
+                for row in range(0, len(q["choices"]), 2):
+                    for column, choice in zip(st.columns(2), q["choices"][row:row + 2]):
+                        pos = q["choices"].index(choice)
+                        style, label = "neutral_answer", t(choice)
+                        if quiz["resolved"] and choice == q["answer"]:
+                            style, label = "correct_answer", f"✓ {t(choice)} — {t('Correct answer')}"
+                        elif quiz["resolved"] and choice == quiz["selected"]:
+                            style, label = "wrong_answer", f"✕ {t(choice)} — {t('Your answer')}"
+                        elif choice in quiz["hidden_options"]:
+                            label = t("Removed by hint")
+                        if fresh and style != "neutral_answer":
+                            style += "_fx"  # one-off emphasis; the key changes back on the next rerun
+                        with column, st.container(key=f"{style}_{pos}"):
+                            st.button(label, key=f"answer_{serial}_{index}_{pos}", width="stretch",
+                                      disabled=quiz["resolved"] or choice in quiz["hidden_options"],
+                                      on_click=state.answer, args=(choice, serial, index))
+            if not quiz["resolved"] and len(q["choices"]) == 4:
+                st.button(t("Use hint · −25 if correct"), key=f"hint_{serial}_{index}",
+                          disabled=quiz["hint_used"] or quiz["hints_remaining"] == 0,
+                          on_click=state.hint, args=(serial, index))
             if quiz["resolved"]:
-                st.caption(t("Answer recorded"))
-            else:
-                remaining = max(0, math.ceil(limit - engine.elapsed(quiz)))
-                st.caption(t("Time remaining: {n} seconds", n=remaining))
-                st.progress(remaining / limit)
-        st.subheader(parts(q["prompt"]))
-        if q.get("flag"):
-            with st.container(key="quiz_flag"):
-                _flag(get_country(q["flag"]), 260, t("Flag to identify. No text description is available for flag images."))
-        for row in range(0, len(q["choices"]), 2):
-            for column, choice in zip(st.columns(2), q["choices"][row:row + 2]):
-                pos = q["choices"].index(choice)
-                style, label = "neutral_answer", t(choice)
-                if quiz["resolved"] and choice == q["answer"]:
-                    style, label = "correct_answer", f"✓ {t(choice)} — {t('Correct answer')}"
-                elif quiz["resolved"] and choice == quiz["selected"]:
-                    style, label = "wrong_answer", f"✕ {t(choice)} — {t('Your answer')}"
-                elif choice in quiz["hidden_options"]:
-                    label = t("Removed by hint")
-                with column, st.container(key=f"{style}_{pos}"):
-                    st.button(label, key=f"answer_{serial}_{index}_{pos}", width="stretch",
-                              disabled=quiz["resolved"] or choice in quiz["hidden_options"],
-                              on_click=state.answer, args=(choice, serial, index))
-        if not quiz["resolved"] and len(q["choices"]) == 4:
-            st.button(t("Use hint · −25 if correct"), key=f"hint_{serial}_{index}",
-                      disabled=quiz["hint_used"] or quiz["hints_remaining"] == 0,
-                      on_click=state.hint, args=(serial, index))
-        if quiz["resolved"]:
-            record, explanation = quiz["history"][-1], parts(q["explanation"])
-            if record["correct"]:
-                st.success(f"{t('Correct!')} {explanation}", icon="✅")
-            elif record["timed_out"]:
-                st.warning(f"{t('Time is up.')} {t('Correct answer')}: {t(q['answer'])}. {explanation}", icon="⏱️")
-            else:
-                st.error(f"{t('Not quite.')} {t('Correct answer')}: {t(q['answer'])}. {explanation}", icon="❌")
-            sound.play_event(quiz["event"])
-            p = quiz["last_points"]
-            st.caption(t("+{points} points · Base {base} · Speed +{speed} · Streak +{streak} · Hint −{hint}",
-                         points=p["total"], base=p["base"], speed=p["speed"], streak=p["streak"], hint=p["hint"]))
-            st.markdown(f"[{t('Source')}]({q['source']})")
-            final = index + 1 == total
-            with st.container(key="quiz_next_action"):
-                if st.button(t("View results" if final else "Next question →"), type="primary",
-                             width="stretch", key=f"next_{serial}_{index}"):
-                    state.next_question(serial, index)
-                    st.rerun()  # full rerun: results and the timer schedule live outside this fragment
+                _feedback(quiz, q, quiz["history"][-1], fresh)
+                sound.play_event(quiz["event"])
+                final = index + 1 == total
+                with st.container(key="quiz_next_action"):
+                    if st.button(t("View results" if final else "Next question →"), type="primary",
+                                 width="stretch", key=f"next_{serial}_{index}"):
+                        state.next_question(serial, index)
+                        st.rerun()  # full rerun: results and the timer schedule live outside this fragment
 
 
 def _review_entry(i: int, record: dict) -> None:
@@ -376,34 +436,86 @@ def _review_entry(i: int, record: dict) -> None:
                   args=(country["id"],))
 
 
+MEDAL_LABELS = {"gold": "Gold medal", "silver": "Silver medal", "bronze": "Bronze medal"}
+
+
+def _practise_for(badge_id: str) -> None:
+    """Open quiz setup aimed at the nearest badge (a continent or flags)."""
+    if badge_id.startswith("continent_"):
+        continent = next(c for c in AREAS if "continent_" + c.lower().replace(" ", "_") == badge_id)
+        st.session_state.update(filter_continent=continent, filter_country="all", filter_category="Mixed")
+    elif badge_id == "flag_spotter":
+        st.session_state.update(filter_category="Flags")
+    state.remember_quiz_filters()
+    state.open_setup()
+
+
+def _settings_label(settings: dict, total: int) -> str:
+    country = get_country(settings["country_id"])
+    items = [t(settings["continent"]), country_label(country["id"]) if country else t("All Countries"),
+             t(settings["category"]), t(settings["difficulty"]), t("{n} questions", n=total),
+             t("Timed") if settings["timer"] else t("Untimed")]
+    if settings["category"] == "Mixed":
+        items.append(t("Flag questions") if settings.get("flags", True) else t("No flag questions"))
+    if settings.get("collection", DEFAULT_COLLECTION) != DEFAULT_COLLECTION:
+        items.append(t("incl. territories"))
+    return " · ".join(items)
+
+
 def _results(quiz) -> None:
     stats, settings = engine.statistics(quiz), quiz["settings"]
     sound.play_event(quiz["event"])
+    outcome = quiz.get("records_outcome") or records.update(st.session_state.records, quiz)
+    won = records.medal(stats["accuracy"])
+    fresh = _fresh(quiz["event"]["id"] + ":results")
     with st.container(key="result_card"):
-        html(f'<div class="eyebrow">{e("Challenge complete")}</div>')
-        st.subheader("🏁 " + t("Your results"))
-        html(f'<div class="result-number">{stats["score"]:,}<span class="result-unit"> {e("points")}</span></div>')
-        first, second, third = st.columns(3)
-        first.metric(t("Accuracy"), f"{stats['accuracy']:.0f}%")
-        second.metric(t("Correct answers"), f"{stats['correct']} / {stats['total']}")
-        third.metric(t("Best streak"), stats["best_streak"])
+        medal = (f'<div class="medal medal-{won}" role="img" aria-label="{e(MEDAL_LABELS[won])}"><span aria-hidden="true">★</span>'
+                 f'<small>{e(MEDAL_LABELS[won])}</small></div>') if won else \
+                f'<div class="medal medal-none"><small>{e("Keep practising")}</small></div>'
+        html(f'<div class="eyebrow">{e("Challenge complete")}</div>'
+             f'<div class="result-hero{" fx" if fresh else ""}">{medal}'
+             f'<div class="result-stat"><b>{stats["accuracy"]:.0f}%</b><span>{e("Accuracy")} · {e("{correct} of {total} correct", correct=stats["correct"], total=stats["total"])}</span></div>'
+             f'<div class="result-stat"><b>{stats["score"]:,}</b><span>{e("points")} · {e("Best streak")} {stats["best_streak"]}</span></div></div>')
+        if quiz["perfect_bonus"]:
+            html(f'<div class="perfect-banner{" fx" if fresh else ""}" role="status"><span class="sparkles" aria-hidden="true">✦ ✧ ✦</span>'
+                 f'{e("Perfect round without hints: +{points} bonus points.", points=quiz["perfect_bonus"])}</div>')
+        chips = []
+        if outcome["first_score"]:
+            chips.append(("record", e("First score for these settings: {score}", score=f"{stats['score']:,}")))
+        elif outcome["new_score"]:
+            chips.append(("record new", e("New best for these settings! Previous best: {score}", score=f"{outcome['previous_score']:,}")))
+        else:
+            chips.append(("record", e("Your best for these settings: {score}", score=f"{outcome['best_score']:,}")))
+        if outcome["new_streak"]:
+            chips.append(("record new", e("New streak record: {n} in a row", n=outcome["best_streak"])))
+        else:
+            chips.append(("record", e("Streak record (any round): {n}", n=outcome["best_streak"])))
+        html('<div class="record-row">' + "".join(f'<span class="{cls}">{text}</span>' for cls, text in chips) + "</div>")
+        st.caption(t("Records compare rounds with the same settings: {settings}", settings=_settings_label(settings, stats["total"])))
+        if accounts.connection_state() == "guest":
+            st.caption(t("Guest records last for this browser session."))
         st.caption(t("Incorrect / unanswered: {wrong} · Timed out: {timeout} · Average response time: {seconds} seconds",
                      wrong=stats["incorrect"], timeout=stats["timed_out"], seconds=f"{stats['average_time']:.1f}"))
-        country = get_country(settings["country_id"])
-        st.caption(" · ".join([t(settings["continent"]), country_label(country["id"]) if country else t("All Countries"),
-                               t(settings["category"]), t(settings["difficulty"]), t("{n} questions", n=stats["total"])]))
-        if quiz["perfect_bonus"]:
-            st.success(t("Perfect round without hints: +{points} bonus points.", points=quiz["perfect_bonus"]), icon="🌟")
+        status = badge_engine.evaluate(st.session_state.stats, st.session_state.points, st.session_state.rounds_finished)
         before = set(quiz.get("badges_before", []))
-        new = [b for b in badge_engine.evaluate(st.session_state.stats, st.session_state.points, st.session_state.rounds_finished)
-               if b["earned"] and b["id"] not in before]
+        new = [b for b in status if b["earned"] and b["id"] not in before]
         if new and "badges_before" in quiz:
             st.success(t("New badge earned: {names}", names=", ".join(_badge_name(b) for b in new)), icon="🏅")
+        upcoming = badge_engine.arrange(status, upcoming=1)[1]
+        if upcoming:
+            b = upcoming[0]
+            with st.container(key="next_badge"):
+                html(f'<div class="next-badge"><span class="award-medal locked" aria-hidden="true">{b["symbol"]}</span><div>'
+                     f'<b>{e("Closest badge: {name}", name=_badge_name(b))}</b> · {e("{value} of {target}", value=b["value"], target=b["target"])}'
+                     f'<br><span>{escape(t(b["description"], **b["fields"]))}</span></div></div>')
+                if b["id"].startswith("continent_") or b["id"] == "flag_spotter":
+                    label = (t("Practise {continent}", continent=b["fields"]["continent"]) if b["fields"] else t("Practise flags"))
+                    st.button(label, key="practise_badge", on_click=_practise_for, args=(b["id"],))
         one, two = st.columns(2)
-        if one.button(t("Play again"), type="primary", width="stretch"):
+        if one.button(t("Play again"), type="primary", width="stretch", key="play_again"):
             state.start_round(settings)
             st.rerun()
-        two.button(t("Change settings"), width="stretch", on_click=state.open_setup)
+        two.button(t("Change settings"), width="stretch", on_click=state.open_setup, key="change_settings")
     missed = engine.missed(quiz)
     with st.container(key="review_card"):
         st.subheader(t("Review missed answers") if missed else t("Answer review"))
@@ -412,9 +524,9 @@ def _results(quiz) -> None:
         labels = {"missed": t("Missed only"), "all": t("All answers")}
         mode = st.segmented_control(t("Show"), ["missed", "all"], key="review_mode", required=True,
                                     format_func=labels.get) or "missed"
-        records = quiz["history"] if mode == "all" else [h for h in quiz["history"] if not h["correct"]]
+        records_shown = quiz["history"] if mode == "all" else [h for h in quiz["history"] if not h["correct"]]
         for i, record in enumerate(quiz["history"], 1):
-            if record in records:
+            if record in records_shown:
                 _review_entry(i, record)
 
 

@@ -21,12 +21,13 @@ import urllib.request
 import streamlit as st
 
 from .badges import sanitize_stats
+from .records import sanitize_records
 from .data import AREAS, COLLECTIONS, get_country
 from .i18n import LANGUAGES
 
 PROFILE_KEYS = ("profile_name", "profile_photo", "app_language", "scope_mode", "scope_continent",
                 "scope_country", "scope_collection", "points", "rounds_finished", "recent", "recent_facts",
-                "sound_enabled", "sound_volume", "stats")
+                "sound_enabled", "sound_volume", "stats", "records")
 SCOPE_MODES = ("All countries", "One continent", "One country")
 PHOTO_PREFIX = "data:image/jpeg;base64,"
 MAX_PHOTO_CHARS = 500_000
@@ -69,6 +70,9 @@ def sanitize_profile(values) -> dict:
             ok = isinstance(v, int) and not isinstance(v, bool) and 0 <= v <= 100
         elif key == "stats":
             v = sanitize_stats(v)
+            ok = v is not None
+        elif key == "records":
+            v = sanitize_records(v)
             ok = v is not None
         else:  # scope_country
             ok = v == "all" or get_country(v) is not None

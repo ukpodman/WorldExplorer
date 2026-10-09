@@ -6,7 +6,7 @@ from datetime import date
 
 import streamlit as st
 
-from core import badges
+from core import badges, records
 from core import quiz as engine
 from core.data import COLLECTIONS, DEFAULT_COLLECTION, get_countries, get_country
 from core.i18n import DEFAULT_LANGUAGE, render_parts, translate
@@ -31,6 +31,8 @@ def init() -> None:
         st.session_state.setdefault(key, list(value) if isinstance(value, list) else value)
     if badges.sanitize_stats(st.session_state.get("stats")) is None:
         st.session_state.stats = badges.empty_stats()
+    if records.sanitize_records(st.session_state.get("records")) is None:
+        st.session_state.records = records.empty_records()
 
 
 # --------------------------------------------------------------------------- language
@@ -195,9 +197,11 @@ def next_question(serial: int, index: int) -> None:
     if not engine.is_current(quiz, serial, index):
         return
     st.session_state.points += engine.advance(quiz)
-    if quiz["finished"]:
+    if quiz["finished"] and not quiz.get("round_recorded"):
+        quiz["round_recorded"] = True  # totals, badge statistics and records change once per round
         st.session_state.rounds_finished += 1
         badges.record_round(st.session_state.stats, quiz)
+        records.update(st.session_state.records, quiz)
 
 
 QUIZ_FILTER_DEFAULTS = {"filter_category": "Mixed", "filter_difficulty": "Medium", "filter_count": 10,

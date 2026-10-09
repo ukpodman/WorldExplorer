@@ -56,6 +56,7 @@ core/
   badges.py                badge rules and the quiz statistics they are earned from
   records.py               medals and personal records (per round settings)
   facts.py                 the sourced "Did you know?" fact after each answer
+  learn.py                 Learn helpers: country stepping, neighbours by collection, recall cards, size comparison
 ui/
   state.py                 session state and round callbacks
   components.py            header, hero, settings drawer (profile, sign-in help, places, sound)
@@ -156,7 +157,25 @@ accounts). After uploading:
    `records` entry next to `points`, `rounds_finished` and `stats`. Older rows without it keep working.
 5. If the footer says "Saved profile not reachable yet", nothing is written until the profile has loaded.
 
-## Changes in this update (quiz experience)
+## Changes in this update (Learn)
+
+- **Navigation:** Previous, Next and Surprise me under the country menu (Previous and Next also at the bottom). They
+  follow the dropdown order (alphabetical) within your exploration area and wrap round at the ends; a country opened
+  from outside the area returns to it. Surprise me always picks a different country. With only one country in the
+  area the buttons are disabled and a note says why. Changing country never touches an unfinished quiz round.
+- **Neighbours:** flag buttons with translated names replace the sentence; tapping one opens it and the menu follows.
+  Neighbours left out by your *Places to include* setting (for example Gibraltar for Spain) are named with a note on
+  how to include them — the setting is never changed for you. Places without land borders say so.
+- **Test yourself:** capital, currency and languages cards with Reveal answer, then I knew it / Practise again.
+  Practice only: no points, badges or statistics. Cards reset when you change country. Several capitals or currencies
+  are listed with their roles; disputed capitals and unreliable currency records are left out with a short reason.
+- **Compare country size** (collapsed): choose a reference country to see both total areas, two proportional bars
+  and the ratio in words. Same country, a missing area and very small areas are handled explicitly. The choice is
+  remembered for the session and saved with signed-in profiles (new `size_reference` field; older profiles start
+  with none).
+- On phones the Learn banner is hidden and the flag sits above the name; on tablets the fact tiles stay in two columns.
+
+## Earlier: quiz experience
 
 - **Category colours:** each question category has a restrained accent (chip, card edge, progress bar) with an icon
   and its name; text contrast is at least 4.5:1.

@@ -275,7 +275,6 @@
 @media (max-width:900px) {
   .brand-note { display:none; }
   .hero-art { flex-basis:150px; }
-  .fact-grid { grid-template-columns:1fr; }
 }
 @media (max-width:700px) {
   .stApp .block-container { padding:calc(var(--toolbar-h) + .75rem) .9rem calc(96px + env(safe-area-inset-bottom,0px)) !important; }
@@ -559,6 +558,63 @@
   .st-key-result_card [data-testid="stHorizontalBlock"]:has(.st-key-play_again) { flex-wrap:nowrap !important; gap:8px !important; }
   .st-key-result_card [data-testid="stHorizontalBlock"]:has(.st-key-play_again) > [data-testid="stColumn"] { flex:1 1 0 !important; min-width:0 !important; }
   .st-key-result_card :is(.st-key-play_again, .st-key-change_settings) button p { white-space:normal; line-height:1.2; }
+}
+/* ---------- Learn: navigation, recall cards, size comparison ---------- */
+.st-key-learn_nav_top, .st-key-learn_nav_bottom { flex-wrap:wrap !important; gap:8px !important; }
+:is(.st-key-learn_nav_top, .st-key-learn_nav_bottom) > * { flex:1 1 0 !important; min-width:max-content !important; }
+:is(.st-key-learn_nav_top, .st-key-learn_nav_bottom) button { width:100%; min-height:44px; white-space:nowrap; }
+.st-key-learn_nav_bottom { margin-top:.25rem; }
+.learn-section { font-size:1.02rem; font-weight:700; color:var(--navy); margin:.35rem 0 0; }
+.stApp .learn-hint { color:var(--slate); font-size:.86rem; margin:2px 0 0; }
+.st-key-recall_cards { gap:.6rem !important; }
+.st-key-recall_cards [data-testid="stMarkdownContainer"] { margin-bottom:0 !important; }
+.st-key-recall_cards [data-testid="stHorizontalBlock"] { align-items:stretch; gap:12px !important; }
+.st-key-recall_cards [data-testid="stColumn"] > [data-testid="stVerticalBlock"] { height:100%; }
+.st-key-recall_cards [data-testid="stColumn"] > [data-testid="stVerticalBlock"] > [data-testid="stLayoutWrapper"] { flex:1 1 auto; }
+[class*="st-key-recall_card_"] { height:100%; background:#FBFAF6; border:1px solid var(--line); border-radius:14px; padding:12px 14px !important; gap:.45rem !important; }
+[class*="st-key-recall_card_"] [data-testid="stMarkdownContainer"] { margin-bottom:0 !important; }
+[class*="st-key-recall_card_"] > :last-child { margin-top:auto; }
+.recall-title { display:inline-block; font-size:.68rem; font-weight:750; letter-spacing:.06em; text-transform:uppercase; color:var(--teal-dark);
+  background:var(--teal-soft); border-radius:20px; padding:1px 9px; margin-right:4px; vertical-align:1px; }
+.recall-note { color:var(--slate); font-size:.86rem; }
+.stApp .recall-question { font-size:.95rem; line-height:1.45; margin:0; color:var(--navy); }
+.stApp .recall-answer { font-weight:700; color:var(--teal-dark); margin:0; overflow-wrap:anywhere; }
+.stApp .recall-knew { color:var(--ok); font-size:.86rem; font-weight:650; margin:2px 0 0; }
+[class*="st-key-recall_card_"] button { min-height:42px; }
+[class*="st-key-recall_actions_"] { flex-wrap:wrap !important; gap:8px !important; }
+[class*="st-key-recall_actions_"] > * { flex:0 0 auto !important; }
+/* Neighbour chips: the bundled flag is the button's background image, so flag and name are one tap target. */
+.st-key-learn_neighbours { flex-wrap:wrap !important; gap:8px !important; }
+.stApp .st-key-learn_neighbours button { min-height:42px; border-radius:30px; padding:4px 14px 4px 44px !important; background-color:var(--paper) !important;
+  background-repeat:no-repeat !important; background-position:12px center !important; background-size:24px auto !important; border:1px solid var(--line-cool) !important; }
+.stApp .st-key-learn_neighbours button:hover { border-color:var(--teal) !important; background-color:var(--teal-soft) !important; }
+.st-key-compare_size details { background:var(--paper); border:1px solid var(--line); border-radius:12px; }
+.size-compare { display:flex; flex-direction:column; gap:10px; margin-top:4px; }
+.size-title { font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--slate); }
+.size-row { display:flex; flex-direction:column; gap:4px; }
+.size-label { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; color:var(--navy); font-size:.92rem; }
+.size-label span { color:var(--slate); font-variant-numeric:tabular-nums; }
+.size-track { height:14px; background:#EEEAE0; border-radius:8px; overflow:hidden; }
+.size-bar { height:100%; background:var(--teal); border-radius:8px; }
+.size-bar.tiny { width:3px !important; background:var(--gold-text); border-radius:2px; }
+.stApp .size-sentence { margin:8px 0 0; font-size:.93rem; line-height:1.5; }
+@media (max-width:820px) {
+  /* Tablet portrait and phones: the three recall cards stack instead of squeezing into narrow columns. */
+  .st-key-recall_cards [data-testid="stHorizontalBlock"] { flex-wrap:wrap !important; gap:8px !important; }
+  .st-key-recall_cards [data-testid="stColumn"] { flex:1 1 100% !important; width:100% !important; min-width:0 !important; }
+}
+@media (max-width:700px) {
+  .st-key-view_learn .hero-compact { display:none; }
+  /* Flag and name first and compact. */
+  .st-key-learn_card [data-testid="stHorizontalBlock"]:has(.st-key-learn_quiz_action) > [data-testid="stColumn"]:last-child { order:-1; }
+  [class*="st-key-learn_flag_panel_"] { padding:8px !important; }
+  [class*="st-key-learn_flag_panel_"] img { max-height:72px; }
+  .learn-photo { aspect-ratio:21 / 9; }
+  .st-key-learn_quiz_action button { width:100%; }
+  [class*="st-key-recall_card_"] { padding:10px 12px !important; gap:.4rem !important; }
+  [class*="st-key-recall_card_"] button { min-height:40px; }
+  .st-key-learn_card { gap:.75rem !important; }
+  :is(.st-key-learn_nav_top, .st-key-learn_nav_bottom) button { padding:0 .6rem !important; }
 }
 @media (prefers-reduced-motion:reduce) { *, *::before, *::after { animation:none !important; } }
 @media (prefers-reduced-motion:reduce) { * { transition:none !important; } [class*="st-key-country_card_"]:hover { transform:none; } }

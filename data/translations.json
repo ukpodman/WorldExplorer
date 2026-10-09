@@ -1955,6 +1955,181 @@
    "Bronzemedaille",
    "Medalla de bronce",
    "铜牌"
+  ],
+  "At this scale the bar for {name} is too small to show, so it appears as a thin marker.": [
+   "In diesem Maßstab ist der Balken für {name} zu klein und erscheint nur als schmale Markierung.",
+   "A esta escala, la barra de {name} es demasiado pequeña y se muestra como una marca fina.",
+   "按此比例，{name}的条形过小，仅显示为一条细线。"
+  ],
+  "Choose a country to compare total areas.": [
+   "Wähle ein Land, um die Gesamtflächen zu vergleichen.",
+   "Elige un país para comparar las superficies totales.",
+   "选择一个国家来比较总面积。"
+  ],
+  "Choose a different country to compare.": [
+   "Wähle zum Vergleich ein anderes Land.",
+   "Elige otro país para comparar.",
+   "请选择另一个国家进行比较。"
+  ],
+  "Compare country size": [
+   "Ländergröße vergleichen",
+   "Comparar el tamaño del país",
+   "比较国家面积"
+  ],
+  "Compare with": [
+   "Vergleichen mit",
+   "Comparar con",
+   "与之比较"
+  ],
+  "I knew it": [
+   "Wusste ich",
+   "Lo sabía",
+   "我知道"
+  ],
+  "Neighbours": [
+   "Nachbarn",
+   "Vecinos",
+   "邻国和地区"
+  ],
+  "Next →": [
+   "Weiter →",
+   "Siguiente →",
+   "下一个 →"
+  ],
+  "← Previous": [
+   "← Zurück",
+   "← Anterior",
+   "← 上一个"
+  ],
+  "Not shown with your current places setting: {names}. To include territories, choose them in ☰ Settings → Places to include.": [
+   "Mit deiner aktuellen Orte-Einstellung nicht angezeigt: {names}. Um Gebiete einzubeziehen, wähle sie unter ☰ Einstellungen → Einbezogene Orte.",
+   "No se muestran con tu ajuste de lugares actual: {names}. Para incluir territorios, elígelos en ☰ Ajustes → Lugares incluidos.",
+   "按当前地点设置未显示：{names}。如需包含领地，请在 ☰ 设置 → 包含的地方 中选择。"
+  ],
+  "Only one country is in your exploration area ({scope}).": [
+   "In deinem Entdeckungsbereich ({scope}) gibt es nur ein Land.",
+   "Solo hay un país en tu zona de exploración ({scope}).",
+   "你的探索范围（{scope}）中只有一个国家。"
+  ],
+  "Outside your exploration area ({scope}). Next and Previous return to it.": [
+   "Außerhalb deines Entdeckungsbereichs ({scope}). Weiter und Zurück führen dorthin zurück.",
+   "Fuera de tu zona de exploración ({scope}). Siguiente y Anterior vuelven a ella.",
+   "不在你的探索范围（{scope}）内。点击“上一个”或“下一个”会回到该范围。"
+  ],
+  "Practice only: no points or badges. Try before reading the facts below.": [
+   "Nur zum Üben: keine Punkte oder Erfolge. Versuch es, bevor du die Fakten unten liest.",
+   "Solo práctica: sin puntos ni logros. Inténtalo antes de leer los datos de abajo.",
+   "仅供练习：不计分、不获得徽章。请在阅读下方信息前先试一试。"
+  ],
+  "Practise again": [
+   "Nochmal üben",
+   "Practicar de nuevo",
+   "再练一次"
+  ],
+  "Reveal answer": [
+   "Antwort zeigen",
+   "Mostrar respuesta",
+   "显示答案"
+  ],
+  "Surprise me": [
+   "Überrasch mich",
+   "Sorpréndeme",
+   "随机一个"
+  ],
+  "Test yourself": [
+   "Teste dich selbst",
+   "Ponte a prueba",
+   "自我测试"
+  ],
+  "Total area": [
+   "Gesamtfläche",
+   "Superficie total",
+   "总面积"
+  ],
+  "Total area is not recorded for {name} in this dataset.": [
+   "Für {name} ist in diesem Datensatz keine Gesamtfläche erfasst.",
+   "En este conjunto de datos no consta la superficie total de {name}.",
+   "本数据集中未记录{name}的总面积。"
+  ],
+  "Which languages have official status or wide use in {name}?": [
+   "Welche Sprachen haben in {name} offiziellen Status oder sind weit verbreitet?",
+   "¿Qué idiomas tienen estatus oficial o uso extendido en {name}?",
+   "{name}有哪些官方或通用语言？"
+  ],
+  "You knew it": [
+   "Gewusst",
+   "Lo sabías",
+   "你答对了"
+  ],
+  "less than 1": [
+   "weniger als 1",
+   "menos del 1",
+   "不到 1"
+  ],
+  "{name} and {other} are about the same size.": [
+   "{name} und {other} sind etwa gleich groß.",
+   "{name} y {other} tienen aproximadamente el mismo tamaño.",
+   "{name}和{other}的面积大致相同。"
+  ],
+  "{name} is about {ratio} times the size of {other}.": [
+   "{name} ist etwa {ratio}-mal so groß wie {other}.",
+   "{name} es unas {ratio} veces más grande que {other}.",
+   "{name}的面积约为{other}的 {ratio} 倍。"
+  ],
+  "{n} of {total} · {scope}": [
+   "{n} von {total} · {scope}",
+   "{n} de {total} · {scope}",
+   "第 {n}/{total} 个 · {scope}"
+  ],
+  "{other} covers about {share}% of the total area of {name}.": [
+   "{other} hat etwa {share} % der Gesamtfläche von {name}.",
+   "{other} ocupa aproximadamente el {share} % de la superficie total de {name}.",
+   "{other}的面积约为{name}总面积的 {share}%。"
+  ],
+  "What is the capital of {name}?": [
+   "Was ist die Hauptstadt von {name}?",
+   "¿Cuál es la capital de {name}?",
+   "{name}的首都是哪里？"
+  ],
+  "Which places serve as the capitals of {name}?": [
+   "Welche Orte dienen als Hauptstädte von {name}?",
+   "¿Qué lugares son las capitales de {name}?",
+   "哪些城市是{name}的首都？"
+  ],
+  "Which currencies are used in {name}?": [
+   "Welche Währungen werden in {name} verwendet?",
+   "¿Qué monedas se usan en {name}?",
+   "{name}使用哪些货币？"
+  ],
+  "Which currency is used in {name}?": [
+   "Welche Währung wird in {name} verwendet?",
+   "¿Qué moneda se usa en {name}?",
+   "{name}使用哪种货币？"
+  ],
+  "No settled capital is recorded for this place, so it is not tested here.": [
+   "Für diesen Ort ist keine eindeutige Hauptstadt erfasst, daher wird sie hier nicht abgefragt.",
+   "No consta una capital establecida para este lugar, por eso no se pregunta aquí.",
+   "此地没有公认的首都记录，因此这里不作测试。"
+  ],
+  "The currency record for this place is not reliable enough to test here.": [
+   "Die Währungsangaben für diesen Ort sind nicht zuverlässig genug, um sie hier abzufragen.",
+   "Los datos de moneda de este lugar no son lo bastante fiables para preguntarlos aquí.",
+   "此地的货币记录不够可靠，因此这里不作测试。"
+  ],
+  "No languages are recorded for this place.": [
+   "Für diesen Ort sind keine Sprachen erfasst.",
+   "No constan idiomas para este lugar.",
+   "此地没有语言记录。"
+  ],
+  "Languages with official status or wide use": [
+   "Sprachen mit offiziellem Status oder weiter Verbreitung",
+   "Idiomas con estatus oficial o uso extendido",
+   "官方或通用语言"
+  ],
+  "Calling codes and internet domains": [
+   "Vorwahlen und Internet-Domains",
+   "Prefijos telefónicos y dominios de internet",
+   "国际电话区号和互联网域名"
   ]
  }
 }

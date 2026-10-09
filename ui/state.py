@@ -22,7 +22,7 @@ DEFAULTS = {
     "points": 0, "rounds_finished": 0, "recent": [], "recent_facts": [],
     "sound_enabled": False, "sound_volume": 40,
     "quiz": None, "quiz_serial": 0, "show_setup": False, "review_mode": "missed",
-    "explore_page": 0, "profile_save_error": False,
+    "explore_page": 0, "profile_save_error": False, "size_reference": "",
 }
 
 
@@ -82,6 +82,35 @@ def navigate(page: str) -> None:
 def learn(country_id: str) -> None:
     st.session_state.learn_country = country_id
     navigate("Learn")
+
+
+def learn_ids() -> list[str]:
+    """Country order for Learn: the exploration scope, in the same order as the dropdown."""
+    return [c["id"] for c in scoped_countries()]
+
+
+def learn_step(delta: int) -> None:
+    """Previous / Next. Only the Learn selection changes; an unfinished quiz round is untouched."""
+    target = learn_step_target(delta)
+    if target:
+        st.session_state.learn_country = target
+
+
+def learn_step_target(delta: int):
+    from core.learn import step
+    return step(learn_ids(), st.session_state.get("learn_country"), delta)
+
+
+def learn_surprise() -> None:
+    from core.learn import surprise
+    target = surprise(learn_ids(), st.session_state.get("learn_country"))
+    if target:
+        st.session_state.learn_country = target
+
+
+def remember_size_reference() -> None:
+    """Copy the comparison choice out of the widget so it survives leaving Learn (and is saved with profiles)."""
+    st.session_state.size_reference = st.session_state.get("size_reference_select") or ""
 
 
 def open_settings() -> None:

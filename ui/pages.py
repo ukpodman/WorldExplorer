@@ -1,16 +1,18 @@
 """The four pages: Explore, Learn, Quiz and Badges."""
 from __future__ import annotations
 
+import base64
 import math
 from html import escape
 
 import streamlit as st
 
 from core import accounts, records
+from core import learn as learn_engine
 from core import badges as badge_engine
 from core import quiz as engine
-from core.data import (AREAS, COLLECTIONS, DEFAULT_COLLECTION, PHOTOS, STATUS_LABELS, STATUSES, flag_image, get_countries,
-                       get_country, load_political_records, neighbours)
+from core.data import (AREAS, COLLECTIONS, COUNTRIES, DEFAULT_COLLECTION, PHOTOS, STATUS_LABELS, STATUSES, flag_image, get_countries,
+                       get_country, load_political_records)
 from core.quiz import CATEGORIES, DIFFICULTIES, QUESTION_COUNTS, currency_label
 
 from . import sound, state
@@ -155,16 +157,145 @@ def _learn_media(c: dict) -> None:
             _flag(c, 200, t("Flag of {name}", name=c["name"]))
 
 
+def _learn_nav(current: str, where: str) -> None:
+    """Previous / (Surprise me) / Next. They only change the Learn selection, never a quiz round."""
+    scope = state.learn_ids()
+    movable = state.learn_step_target(1) is not None
+    with st.container(key=f"learn_nav_{where}", horizontal=True):
+        st.button(t("← Previous"), key=f"learn_prev_{where}", disabled=not movable, on_click=state.learn_step, args=(-1,))
+        st.button(t("Next →"), key=f"learn_next_{where}", disabled=not movable, on_click=state.learn_step, args=(1,))
+        if where == "top":  # last, so on narrow phones it wraps below while Previous and Next stay side by side
+            st.button(t("Surprise me"), key="learn_surprise", disabled=len([i for i in scope if i != current]) == 0,
+                      on_click=state.learn_surprise)
+    if where == "top":
+        if current in scope and len(scope) == 1:
+            st.caption(t("Only one country is in your exploration area ({scope}).", scope=state.scope_label()))
+        elif current in scope:
+            st.caption(t("{n} of {total} · {scope}", n=scope.index(current) + 1, total=len(scope), scope=state.scope_label()))
+        else:
+            st.caption(t("Outside your exploration area ({scope}). Next and Previous return to it.", scope=state.scope_label()))
+
+
+def _recall_mark(country_id: str, kind: str, action: str) -> None:
+    """Informal practice only: changes what the card shows, never points, badges or statistics."""
+    rs = st.session_state.get("recall")
+    if not rs or rs.get("country") != country_id:
+        return  # a stale click from a previous country
+    if action == "reveal" and kind not in rs["shown"]:
+        rs["shown"].append(kind)
+    elif action == "knew" and kind in rs["shown"] and kind not in rs["knew"]:
+        rs["knew"].append(kind)
+    elif action == "again":
+        rs["shown"] = [k for k in rs["shown"] if k != kind]
+        rs["knew"] = [k for k in rs["knew"] if k != kind]
+
+
+def _recall_answer(item: dict) -> str:
+    if item["kind"] == "capital" and len(item["answer"]) > 1:
+        return "; ".join(f"{place} ({t(role)})" for place, role in item["answer"])
+    return ", ".join(value for value, _ in item["answer"])
+
+
+def _recall(c: dict) -> None:
+    rs = st.session_state.get("recall")
+    if not rs or rs.get("country") != c["id"]:
+        rs = st.session_state.recall = {"country": c["id"], "shown": [], "knew": []}  # new country: all hidden again
+    with st.container(key="recall_cards"):
+        html(f'<div class="learn-section">{e("Test yourself")}</div>'
+             f'<p class="learn-hint">{e("Practice only: no points or badges. Try before reading the facts below.")}</p>')
+        for column, item in zip(st.columns(3), learn_engine.recall_items(c)):
+            kind, cid = item["kind"], c["id"]
+            with column, st.container(key=f"recall_card_{kind}"):
+                if item["question"] is None:
+                    html(f'<p class="recall-question"><span class="recall-title">{e(item["title"])}</span> '
+                         f'<span class="recall-note">{e(item["note"])}</span></p>')
+                    continue
+                html(f'<p class="recall-question"><span class="recall-title">{e(item["title"])}</span> {escape(parts(item["question"]))}</p>')
+                if kind in rs["shown"]:
+                    knew = kind in rs["knew"]
+                    html(f'<p class="recall-answer">{escape(_recall_answer(item))}</p>'
+                         + (f'<p class="recall-knew">✓ {e("You knew it")}</p>' if knew else ""))
+                    with st.container(key=f"recall_actions_{kind}", horizontal=True):
+                        if not knew:
+                            st.button(t("I knew it"), key=f"recall_knew_{cid}_{kind}", on_click=_recall_mark, args=(cid, kind, "knew"))
+                        st.button(t("Practise again"), key=f"recall_again_{cid}_{kind}", on_click=_recall_mark, args=(cid, kind, "again"))
+                else:
+                    st.button(t("Reveal answer"), key=f"recall_reveal_{cid}_{kind}", on_click=_recall_mark, args=(cid, kind, "reveal"))
+
+
+def _neighbour_buttons(c: dict) -> None:
+    allowed = {x["id"] for x in get_countries(collection=st.session_state.scope_collection)}
+    shown, hidden = learn_engine.split_neighbours(c, allowed)
+    html(f'<div class="learn-section">{e("Neighbours")}</div>')
+    if not c["borders"]:
+        st.caption(t("{name} has no land borders with other places in this dataset.", name=c["name"]))
+    if shown:
+        # Each button carries its bundled flag as a small background image, so the whole chip is one tap target.
+        rules = "".join(f'.stApp .st-key-nb_{n["id"]} button{{background-image:url("data:image/webp;base64,'
+                        f'{base64.b64encode(flag_image(n)).decode()}") !important}}' for n in shown if flag_image(n))
+        html(f"<style>{rules}</style>")
+        with st.container(key="learn_neighbours", horizontal=True):
+            for n in shown:
+                st.button(t(n["name"]), key=f"nb_{n['id']}", on_click=state.learn, args=(n["id"],),
+                          help=t("Learn about {name}", name=n["name"]))
+    if hidden:
+        st.caption(t("Not shown with your current places setting: {names}. To include territories, choose them in ☰ Settings → Places to include.",
+                     names=", ".join(t(n["name"]) for n in hidden)))
+
+
+def _size_comparison(c: dict) -> None:
+    with st.expander(t("Compare country size"), key="compare_size"):
+        options = [x["id"] for x in COUNTRIES if x["area_km2"]]
+        if "size_reference_select" not in st.session_state:  # restore the remembered choice (session or profile)
+            saved = st.session_state.get("size_reference")
+            st.session_state.size_reference_select = saved if saved in options else None
+        ref_id = st.selectbox(t("Compare with"), options, format_func=country_formatter(), key="size_reference_select",
+                              placeholder=t("Choose a country"), on_change=state.remember_size_reference)
+        if not ref_id:
+            st.caption(t("Choose a country to compare total areas."))
+            return
+        result = learn_engine.compare_areas(c, get_country(ref_id))
+        if result["kind"] == "same":
+            st.caption(t("Choose a different country to compare."))
+        elif result["kind"] == "missing":
+            for m in result["missing"]:
+                st.caption(t("Total area is not recorded for {name} in this dataset.", name=m["name"]))
+        else:
+            big, small = result["larger"], result["smaller"]
+            rows = ""
+            for x in (c, get_country(ref_id)):
+                width = result["bars"][x["id"]]
+                rows += (f'<div class="size-row"><div class="size-label"><b>{e(x["name"])}</b>'
+                         f'<span>{x["area_km2"]:,.0f} km²</span></div>'
+                         f'<div class="size-track"><div class="size-bar{" tiny" if width < learn_engine.MIN_VISIBLE else ""}" '
+                         f'style="width:{max(width, 0.0):.2f}%"></div></div></div>')
+            if result["similar"]:
+                sentence = t("{name} and {other} are about the same size.", name=big["name"], other=small["name"])
+            else:
+                sentence = t("{name} is about {ratio} times the size of {other}.", name=big["name"],
+                             ratio=learn_engine.ratio_text(result["ratio"]), other=small["name"])
+            share = t("less than 1") if result["share"] < 1 else f"{result['share']:.0f}"
+            detail = t("{other} covers about {share}% of the total area of {name}.", other=small["name"], share=share, name=big["name"])
+            html(f'<div class="size-compare" role="img" aria-label="{escape(sentence, quote=True)}">'
+                 f'<div class="size-title">{e("Total area")}</div>{rows}</div>'
+                 f'<p class="size-sentence"><b>{escape(sentence)}</b> {escape(detail)}</p>')
+            if result["tiny"]:
+                st.caption(t("At this scale the bar for {name} is too small to show, so it appears as a thin marker.", name=small["name"]))
+        st.markdown(f"{t('Total area')}: [{t('Country data source')}]({c['source']}) · "
+                    + t("Dataset version {date}", date=c.get("data_date", "")))
+
+
 def learn() -> None:
     hero("The country collection", "Get to know the world.",
          "Build your knowledge, one country at a time. The details make all the difference.", variant="compact")
-    ids = [c["id"] for c in state.scoped_countries()]
+    ids = state.learn_ids()
     requested = st.session_state.get("learn_country")
     if get_country(requested) and requested not in ids:
-        ids = [requested] + ids  # opened from a quiz review or link outside the current area: still show it
+        ids = [requested] + ids  # opened from a neighbour, quiz review or link outside the current area: still show it
     elif requested not in ids:
         st.session_state.learn_country = ids[0]
     c = get_country(st.selectbox(t("Choose a country"), ids, format_func=country_formatter(), key="learn_country"))
+    _learn_nav(c["id"], "top")
     none = t("Not included yet")
     with st.container(key="learn_card"):
         top, art = st.columns([3, 2], vertical_alignment="center", gap="large")
@@ -181,6 +312,7 @@ def learn() -> None:
                           help=t("Opens the quiz setup with this country selected."))
         with art:
             _learn_media(c)
+        _recall(c)
         capitals = "; ".join(f"{x['name']} ({t(x['role'])})" for x in c["capitals"]) or t("No capital listed")
         facts = [("Continent / region", " · ".join([" / ".join(t(x) for x in c["continents"]), c["region"]]).strip(" ·")),
                  ("Capital roles", capitals),
@@ -192,9 +324,8 @@ def learn() -> None:
         for note in (c.get("capital_note"), c.get("currency_note")):
             if note:
                 st.caption("ⓘ " + t(note))
-        near = neighbours(c)
-        st.write(t("Neighbours in this collection: {names}", names=", ".join(t(n["name"]) for n in near))
-                 if near else t("No land borders with other places in this collection."))
+        _neighbour_buttons(c)
+        _size_comparison(c)
         if c["landmarks"]:
             st.write(t("Landmarks") + ": " + " · ".join(f"[{s['name']}]({s['source']})" for s in c["landmarks"]))
         leader = load_political_records().get(c["id"])
@@ -205,6 +336,7 @@ def learn() -> None:
         st.markdown(f"[{t('Country data source')}]({c['source']}) · " + t("Dataset version {date}", date=c.get("data_date", "")))
         if c.get("capital_source"):
             st.markdown(f"[{t('Capital-role source')}]({c['capital_source']})")
+    _learn_nav(c["id"], "bottom")
 
 
 # --------------------------------------------------------------------------- Quiz

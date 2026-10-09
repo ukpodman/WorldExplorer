@@ -62,7 +62,7 @@ class AppTests(unittest.TestCase):
         at = self.new(page="Learn", learn_country="LKA")
         self.assertClean(at)
         text = " ".join(m.value for m in at.markdown)
-        self.assertIn("No land borders with other places in this collection.", text)
+        self.assertTrue(any("has no land borders with other places in this dataset." in c.value for c in at.caption))
         self.assertGreaterEqual(len(at.get("image")), 1)
         at = self.new(page="Learn", learn_country="VAT")
         self.assertIn("UN observer state", " ".join(m.value for m in at.markdown))
@@ -362,6 +362,90 @@ class RefinementTests(unittest.TestCase):
             self._answer_all(at, correct=True)
             self.assertEqual([e.value for e in at.exception], [], lang)
 
+    # ---------------------------------------------------------------- Learn: navigation, recall, size comparison
+
+    def test_learn_navigation_and_dropdown_sync(self):
+        at = self.new(page="Learn", learn_country="FRA")
+        at.button(key="learn_next_top").click().run()
+        self.assertEqual(at.session_state["learn_country"], "GAB")             # alphabetical, as in the dropdown
+        self.assertEqual(at.selectbox(key="learn_country").value, "GAB")
+        at.button(key="learn_prev_bottom").click().run()
+        self.assertEqual(at.selectbox(key="learn_country").value, "FRA")
+        at.button(key="nb_DEU").click().run()                                    # neighbour button
+        self.assertEqual((at.session_state["learn_country"], at.selectbox(key="learn_country").value), ("DEU", "DEU"))
+        self.assertEqual(at.session_state["page"], "Learn")
+        for _ in range(5):
+            before = at.session_state["learn_country"]
+            at.button(key="learn_surprise").click().run()
+            self.assertNotEqual(at.session_state["learn_country"], before)
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_learn_respects_collection_and_one_country_scope(self):
+        at = self.new(page="Learn", learn_country="ESP")
+        self.assertNotIn("nb_GIB", [b.key for b in at.button])
+        self.assertTrue(any("Gibraltar" in c.value for c in at.caption))       # excluded neighbour explained
+        self.assertEqual(at.session_state["scope_collection"], "UN member and observer states")  # setting untouched
+        at = self.new(page="Learn", learn_country="ESP", scope_collection="All countries and territories")
+        self.assertIn("nb_GIB", [b.key for b in at.button])
+        at = self.new(page="Learn", scope_mode="One country", scope_country="NGA", learn_country="NGA")
+        for key in ("learn_prev_top", "learn_next_top", "learn_surprise", "learn_next_bottom"):
+            self.assertTrue(at.button(key=key).disabled, key)
+        self.assertTrue(any("Only one country" in c.value for c in at.caption))
+        at = self.new(page="Learn", learn_country="ISL")
+        self.assertTrue(any("no land borders" in c.value for c in at.caption))
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_recall_cards_reset_and_never_score(self):
+        at = self.new(page="Learn", learn_country="FRA")
+        before = (at.session_state["points"], dict(at.session_state["stats"]), at.session_state["rounds_finished"])
+        at.button(key="recall_reveal_FRA_capital").click().run()
+        self.assertIn('<p class="recall-answer">Paris</p>', " ".join(m.value for m in at.markdown))
+        at.button(key="recall_knew_FRA_capital").click().run()
+        self.assertIn("You knew it", " ".join(m.value for m in at.markdown))
+        at.button(key="recall_again_FRA_capital").click().run()               # hides the answer again
+        self.assertNotIn('<p class="recall-answer">', " ".join(m.value for m in at.markdown))
+        self.assertIn("recall_reveal_FRA_capital", [b.key for b in at.button])
+        at.button(key="recall_reveal_FRA_currency").click().run()
+        at.button(key="learn_next_top").click().run()                          # new country: all cards hidden
+        markup = " ".join(m.value for m in at.markdown)
+        self.assertNotIn('<p class="recall-answer">', markup)
+        self.assertFalse([b.key for b in at.button if b.key and "_FRA_" in b.key])  # no stale controls
+        self.assertEqual((at.session_state["points"], dict(at.session_state["stats"]), at.session_state["rounds_finished"]), before)
+        at = self.new(page="Learn", learn_country="ISR")
+        self.assertNotIn("recall_reveal_ISR_capital", [b.key for b in at.button])   # unsettled capital omitted
+        self.assertIn("recall_reveal_ISR_currency", [b.key for b in at.button])
+
+    def test_learn_navigation_keeps_an_unfinished_quiz(self):
+        at = self.new(page="Quiz")
+        at.button(key="start_quiz").click().run()
+        quiz = at.session_state["quiz"]
+        qn = quiz["questions"][0]
+        at.button(key=f"answer_{quiz['serial']}_0_{qn['choices'].index(qn['answer'])}").click().run()
+        snapshot = (quiz["serial"], quiz["index"], quiz["score"], len(quiz["history"]))
+        at.button(key="nav_Learn").click().run()
+        for key in ("learn_next_top", "learn_surprise", "learn_prev_bottom"):
+            at.button(key=key).click().run()
+        at.button(key=[b.key for b in at.button if b.key and b.key.startswith("nb_")][0]).click().run()
+        at.button(key="recall_reveal_" + at.session_state["learn_country"] + "_languages").click().run()
+        at.button(key="nav_Quiz").click().run()
+        quiz = at.session_state["quiz"]
+        self.assertEqual((quiz["serial"], quiz["index"], quiz["score"], len(quiz["history"])), snapshot)
+        self.assertFalse(quiz["finished"])
+
+    def test_size_reference_is_remembered(self):
+        at = self.new(page="Learn", learn_country="FRA")
+        at.selectbox(key="size_reference_select").select("DEU").run()
+        self.assertEqual(at.session_state["size_reference"], "DEU")
+        self.assertIn("France is about 1.5 times the size of Germany.", " ".join(m.value for m in at.markdown))
+        at.button(key="nav_Explore").click().run()
+        at.button(key="nav_Learn").click().run()
+        self.assertEqual(at.selectbox(key="size_reference_select").value, "DEU")
+        at.selectbox(key="size_reference_select").select("FRA").run()        # same country
+        self.assertTrue(any("different country" in c.value for c in at.caption))
+        at = self.new(page="Learn", learn_country="SJM", size_reference="FRA")  # SJM has no recorded area
+        self.assertEqual([e.value for e in at.exception], [])
+        self.assertTrue(any("not recorded" in c.value for c in at.caption))
+
     def test_flag_questions_label_in_every_language(self):
         from core.i18n import translate
         for lang in LANGS:
@@ -414,6 +498,11 @@ class AccountTests(unittest.TestCase):
         self.assertEqual(self.accounts.sanitize_profile(saved), saved)
         self.assertNotIn("records", self.accounts.sanitize_profile({"records": ["corrupt"]}))
         self.assertIn("records", self.accounts.PROFILE_KEYS)
+        self.assertNotIn("size_reference", clean)  # older profiles: no reference country until one is chosen
+        self.assertEqual(self.accounts.sanitize_profile({"size_reference": "DEU"}), {"size_reference": "DEU"})
+        self.assertEqual(self.accounts.sanitize_profile({"size_reference": ""}), {"size_reference": ""})
+        self.assertEqual(self.accounts.sanitize_profile({"size_reference": "XXX"}), {})
+        self.assertEqual(self.accounts.sanitize_profile({"size_reference": 5}), {})
 
     def test_connection_failure_never_overwrites(self):
         st = fake_streamlit(secrets=self.storage)

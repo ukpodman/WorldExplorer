@@ -6,9 +6,9 @@ from datetime import date
 
 import streamlit as st
 
-from core import badges, records
+from core import badges, daily, records
 from core import quiz as engine
-from core.data import COLLECTIONS, CONTINENTS, DEFAULT_COLLECTION, get_countries, get_country
+from core.data import COLLECTIONS, CONTINENTS, DEFAULT_COLLECTION, get_countries, get_country, load_political_records
 from core.i18n import DEFAULT_LANGUAGE, render_parts, translate
 
 PAGES = ("Explore", "Learn", "Quiz", "Badges")
@@ -33,6 +33,10 @@ def init() -> None:
         st.session_state.stats = badges.empty_stats()
     if records.sanitize_records(st.session_state.get("records")) is None:
         st.session_state.records = records.empty_records()
+    if daily.sanitize_daily(st.session_state.get("daily")) is None:
+        st.session_state.daily = daily.empty_daily()
+    if daily.sanitize_mistakes(st.session_state.get("mistakes")) is None:
+        st.session_state.mistakes = []
 
 
 # --------------------------------------------------------------------------- language
@@ -227,31 +231,101 @@ def preview(settings: dict) -> tuple[int, int]:
     return round_capacity(tuple(sorted(settings.items())), date.today().isoformat())
 
 
+# Round modes: "regular" (quiz setup), "daily" (first attempt of today's challenge), "daily_replay" (later attempts:
+# practice, change nothing), "practice" (mistakes). An unfinished round of another kind is kept aside ("parked"),
+# never discarded, and can be resumed.
+def _group(mode: str) -> str:
+    return "daily" if mode in ("daily", "daily_replay") else mode
+
+
+def _begin(settings: dict, questions: list[dict], available: int, mode: str, day: str | None = None) -> None:
+    ss = st.session_state
+    current = ss.quiz
+    parked = ss.setdefault("parked_rounds", {})
+    if current and not current["finished"] and _group(current.get("mode", "regular")) != _group(mode):
+        parked[_group(current.get("mode", "regular"))] = current
+    parked.pop(_group(mode), None)
+    ss.quiz_serial += 1
+    ss.quiz = engine.new_round(settings, questions, available, ss.quiz_serial)
+    ss.quiz.update(mode=mode, day=day)
+    # Badges held when the round began, so the results screen can name newly earned ones.
+    ss.quiz["badges_before"] = sorted(badges.earned_ids(ss.stats, ss.points, ss.rounds_finished))
+    ss.review_mode = "missed"
+    ss.show_setup = False
+    ss.page = "Quiz"
+
+
 def start_round(settings: dict) -> bool:
     questions, available = engine.generate_quiz(settings, st.session_state.recent, st.session_state.recent_facts)
     if not questions:
         return False
-    st.session_state.quiz_serial += 1
-    st.session_state.quiz = engine.new_round(settings, questions, available, st.session_state.quiz_serial)
-    # Badges held when the round began, so the results screen can name newly earned ones.
-    st.session_state.quiz["badges_before"] = sorted(badges.earned_ids(st.session_state.stats, st.session_state.points,
-                                                                      st.session_state.rounds_finished))
-    st.session_state.review_mode = "missed"
-    st.session_state.show_setup = False
+    _begin(settings, questions, available, "regular")
     return True
+
+
+def today():
+    return daily.utc_today()
+
+
+def daily_round_in_progress():
+    """Today's unfinished daily round (active or parked), if any."""
+    day = today().isoformat()
+    for q in (st.session_state.quiz, st.session_state.get("parked_rounds", {}).get("daily")):
+        if q and not q["finished"] and _group(q.get("mode", "regular")) == "daily" and q.get("day") == day:
+            return q
+    return None
+
+
+def start_daily() -> None:
+    """Start or continue today's challenge. After today's first completed attempt, further attempts are replays."""
+    if daily_round_in_progress():
+        resume_round("daily")
+        return
+    day = today()
+    questions = daily.daily_questions(day)
+    mode = "daily_replay" if daily.completed(st.session_state.daily, day) else "daily"
+    _begin(daily.DAILY_SETTINGS, questions, len(questions), mode, day.isoformat())
+
+
+def start_practice() -> bool:
+    questions = daily.practice_questions(st.session_state.mistakes, load_political_records(), limit=10)
+    if not questions:
+        return False
+    settings = dict(daily.DAILY_SETTINGS, count=10)
+    _begin(settings, questions, len(questions), "practice")
+    return True
+
+
+def resume_round(group: str) -> None:
+    ss = st.session_state
+    parked = ss.setdefault("parked_rounds", {})
+    target = parked.pop(group, None)
+    if target is None:  # already active
+        ss.show_setup, ss.page = False, "Quiz"
+        return
+    current = ss.quiz
+    if current and not current["finished"]:
+        parked[_group(current.get("mode", "regular"))] = current
+    ss.quiz = target
+    ss.show_setup, ss.page = False, "Quiz"
+
+
+def parked_rounds() -> dict:
+    return {g: q for g, q in st.session_state.get("parked_rounds", {}).items() if q and not q["finished"]}
 
 
 def _tracked(action) -> None:
     """Run a round action; if it recorded an answer, update session totals and
-    the recently-asked lists that keep the next round fresh."""
+    the recently-asked lists that keep the next round fresh. Daily replays change nothing."""
     quiz = st.session_state.quiz
     before = len(quiz["history"])
     points = action(quiz)
-    if len(quiz["history"]) > before:
+    if len(quiz["history"]) > before and quiz.get("mode") != "daily_replay":
         record = quiz["history"][-1]
         q = record["question"]
         st.session_state.points += points or 0
         badges.record_answer(st.session_state.stats, q, record["correct"])
+        daily.note_answer(st.session_state.mistakes, q, record["correct"], quiz["settings"]["difficulty"])
         st.session_state.recent = (st.session_state.recent + [q["country_id"]])[-RECENT_COUNTRIES:]
         st.session_state.recent_facts = (st.session_state.recent_facts + q["facts"])[-RECENT_FACTS:]
 
@@ -275,12 +349,21 @@ def next_question(serial: int, index: int) -> None:
     quiz = st.session_state.quiz
     if not engine.is_current(quiz, serial, index):
         return
-    st.session_state.points += engine.advance(quiz)
+    replay = quiz.get("mode") == "daily_replay"
+    bonus = engine.advance(quiz)
+    if not replay:
+        st.session_state.points += bonus
     if quiz["finished"] and not quiz.get("round_recorded"):
         quiz["round_recorded"] = True  # totals, badge statistics and records change once per round
+        if replay:
+            return  # practice replay of today's challenge: nothing is recorded
         st.session_state.rounds_finished += 1
         badges.record_round(st.session_state.stats, quiz)
         records.update(st.session_state.records, quiz)
+        if quiz.get("mode") == "daily":
+            from datetime import date as _date
+            daily.record_daily(st.session_state.daily, _date.fromisoformat(quiz["day"]), quiz["correct"],
+                               len(quiz["questions"]), quiz["score"])
 
 
 QUIZ_FILTER_DEFAULTS = {"filter_category": "Mixed", "filter_difficulty": "Medium", "filter_count": 10,

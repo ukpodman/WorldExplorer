@@ -2170,6 +2170,191 @@
    "Öffnet die Quiz-Einstellungen. Deine laufende Runde bleibt erhalten, bis du eine neue startest.",
    "Abre los ajustes del cuestionario. Tu ronda actual se conserva hasta que empieces una nueva.",
    "打开测验设置。在开始新一轮之前，当前轮次会保留。"
+  ],
+  "A round built from questions you missed. Correct answers clear them from the list.": [
+   "Eine Runde aus Fragen, die du verpasst hast. Richtige Antworten entfernen sie aus der Liste.",
+   "Una ronda con las preguntas que fallaste. Las respuestas correctas las quitan de la lista.",
+   "由你答错的题目组成的一轮。答对后会从列表中移除。"
+  ],
+  "Best day streak: {n} · Daily challenges completed: {count}": [
+   "Beste Tagesserie: {n} · Abgeschlossene Tages-Challenges: {count}",
+   "Mejor racha diaria: {n} · Retos diarios completados: {count}",
+   "最长连续天数：{n} · 已完成每日挑战：{count}"
+  ],
+  "Best: {n}": [
+   "Bestwert: {n}",
+   "Mejor: {n}",
+   "最佳：{n}"
+  ],
+  "Continue today's challenge": [
+   "Heutige Challenge fortsetzen",
+   "Continuar el reto de hoy",
+   "继续今日挑战"
+  ],
+  "Daily challenge": [
+   "Tages-Challenge",
+   "Reto diario",
+   "每日挑战"
+  ],
+  "Day streak": [
+   "Tagesserie",
+   "Racha diaria",
+   "连续天数"
+  ],
+  "Five questions a day, the same for everyone.": [
+   "Fünf Fragen pro Tag, für alle gleich.",
+   "Cinco preguntas al día, iguales para todos.",
+   "每天五道题，所有人相同。"
+  ],
+  "New challenge in {hours} h {minutes} min (00:00 UTC).": [
+   "Neue Challenge in {hours} Std. {minutes} Min. (00:00 UTC).",
+   "Nuevo reto en {hours} h {minutes} min (00:00 UTC).",
+   "新挑战将在 {hours} 小时 {minutes} 分钟后开始（UTC 00:00）。"
+  ],
+  "Play again (practice)": [
+   "Nochmal spielen (Übung)",
+   "Jugar de nuevo (práctica)",
+   "再玩一次（练习）"
+  ],
+  "Play today's challenge again": [
+   "Heutige Challenge nochmal spielen",
+   "Jugar de nuevo el reto de hoy",
+   "再玩一次今日挑战"
+  ],
+  "Practice replay": [
+   "Übungsrunde",
+   "Repetición de práctica",
+   "练习重玩"
+  ],
+  "practice replay": [
+   "Übungsrunde",
+   "repetición de práctica",
+   "练习重玩"
+  ],
+  "Practise mistakes ({n})": [
+   "Fehler üben ({n})",
+   "Practicar errores ({n})",
+   "练习错题（{n}）"
+  ],
+  "Practising mistakes": [
+   "Fehler üben",
+   "Practicando errores",
+   "练习错题"
+  ],
+  "Records compare your daily challenges.": [
+   "Rekorde vergleichen deine Tages-Challenges.",
+   "Los récords comparan tus retos diarios.",
+   "纪录比较你的每日挑战。"
+  ],
+  "Records compare your mistake-practice rounds.": [
+   "Rekorde vergleichen deine Fehler-Übungsrunden.",
+   "Los récords comparan tus rondas de práctica de errores.",
+   "纪录比较你的错题练习轮次。"
+  ],
+  "Replays today's questions. Points, badges and your day streak stay as they are.": [
+   "Spielt die heutigen Fragen erneut. Punkte, Erfolge und deine Tagesserie bleiben unverändert.",
+   "Repite las preguntas de hoy. Los puntos, logros y tu racha diaria no cambian.",
+   "重玩今天的题目。积分、徽章和连续天数保持不变。"
+  ],
+  "Share your result (no answers included):": [
+   "Teile dein Ergebnis (ohne Antworten):",
+   "Comparte tu resultado (sin respuestas):",
+   "分享你的成绩（不含答案）："
+  ],
+  "Today's challenge": [
+   "Heutige Challenge",
+   "Reto de hoy",
+   "今日挑战"
+  ],
+  "Today's challenge · {n} questions": [
+   "Heutige Challenge · {n} Fragen",
+   "Reto de hoy · {n} preguntas",
+   "今日挑战 · {n} 道题"
+  ],
+  "Today's result is saved. Come back tomorrow to keep your streak.": [
+   "Dein heutiges Ergebnis ist gespeichert. Komm morgen wieder, um deine Serie zu halten.",
+   "Tu resultado de hoy está guardado. Vuelve mañana para mantener tu racha.",
+   "今天的成绩已保存。明天再来，保持你的连续天数。"
+  ],
+  "Today: {correct}/{total} · 🔥 Day streak: {n}": [
+   "Heute: {correct}/{total} · 🔥 Tagesserie: {n}",
+   "Hoy: {correct}/{total} · 🔥 Racha diaria: {n}",
+   "今天：{correct}/{total} · 🔥 连续天数：{n}"
+  ],
+  "Your current round is kept if you start a new quiz; you can return to it from here.": [
+   "Deine aktuelle Runde bleibt erhalten, wenn du ein neues Quiz startest; du kannst hier zu ihr zurückkehren.",
+   "Tu ronda actual se conserva si empiezas un cuestionario nuevo; puedes volver a ella desde aquí.",
+   "开始新测验时，当前轮次会保留；你可以在这里返回。"
+  ],
+  "Day streak: {n}": [
+   "Tagesserie: {n}",
+   "Racha diaria: {n}",
+   "连续天数：{n}"
+  ],
+  "🔥 Day streak: {n} · play today to keep it": [
+   "🔥 Tagesserie: {n} · spiel heute, um sie zu halten",
+   "🔥 Racha diaria: {n} · juega hoy para mantenerla",
+   "🔥 连续天数：{n} · 今天也来玩以保持"
+  ],
+  "Return to today's challenge": [
+   "Zurück zur heutigen Challenge",
+   "Volver al reto de hoy",
+   "返回今日挑战"
+  ],
+  "Return to mistake practice": [
+   "Zurück zum Fehler-Üben",
+   "Volver a la práctica de errores",
+   "返回错题练习"
+  ],
+  "Return to your quiz round": [
+   "Zurück zu deiner Quizrunde",
+   "Volver a tu ronda del cuestionario",
+   "返回你的测验轮次"
+  ],
+  "Continue": [
+   "Fortsetzen",
+   "Continuar",
+   "继续"
+  ],
+  "Replay": [
+   "Nochmal",
+   "Repetir",
+   "重玩"
+  ],
+  "Start": [
+   "Starten",
+   "Empezar",
+   "开始"
+  ],
+  "Replay today's challenge": [
+   "Heutige Challenge nochmal",
+   "Repetir el reto de hoy",
+   "重玩今日挑战"
+  ],
+  "Points, badges and your day streak are unchanged. Saved result for {date}: {correct}/{total}.": [
+   "Punkte, Erfolge und deine Tagesserie bleiben unverändert. Gespeichertes Ergebnis für {date}: {correct}/{total}.",
+   "Los puntos, logros y tu racha diaria no cambian. Resultado guardado del {date}: {correct}/{total}.",
+   "积分、徽章和连续天数不变。{date} 的已保存成绩：{correct}/{total}。"
+  ],
+  "Points, badges and your day streak are unchanged. No saved result was found for {date}.": [
+   "Punkte, Erfolge und deine Tagesserie bleiben unverändert. Für {date} wurde kein gespeichertes Ergebnis gefunden.",
+   "Los puntos, logros y tu racha diaria no cambian. No se encontró ningún resultado guardado del {date}.",
+   "积分、徽章和连续天数不变。未找到 {date} 的已保存成绩。"
+  ],
+  "Your result for {date} is saved.": [
+   "Dein Ergebnis für {date} ist gespeichert.",
+   "Tu resultado del {date} está guardado.",
+   "{date} 的成绩已保存。"
+  ],
+  "Today's challenge is ready.": [
+   "Die heutige Challenge ist bereit.",
+   "El reto de hoy está listo.",
+   "今日挑战已就绪。"
+  ],
+  "Return to the daily challenge of {date}": [
+   "Zurück zur Tages-Challenge vom {date}",
+   "Volver al reto diario del {date}",
+   "返回 {date} 的每日挑战"
   ]
  }
 }

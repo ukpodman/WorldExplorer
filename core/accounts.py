@@ -22,12 +22,13 @@ import streamlit as st
 
 from .badges import sanitize_stats
 from .records import sanitize_records
+from .daily import sanitize_daily, sanitize_mistakes
 from .data import AREAS, COLLECTIONS, get_country
 from .i18n import LANGUAGES
 
 PROFILE_KEYS = ("profile_name", "profile_photo", "app_language", "scope_mode", "scope_continent",
                 "scope_country", "scope_collection", "points", "rounds_finished", "recent", "recent_facts",
-                "sound_enabled", "sound_volume", "stats", "records", "size_reference")
+                "sound_enabled", "sound_volume", "stats", "records", "size_reference", "daily", "mistakes")
 SCOPE_MODES = ("All countries", "One continent", "One country")
 PHOTO_PREFIX = "data:image/jpeg;base64,"
 MAX_PHOTO_CHARS = 500_000
@@ -70,6 +71,12 @@ def sanitize_profile(values) -> dict:
             ok = isinstance(v, int) and not isinstance(v, bool) and 0 <= v <= 100
         elif key == "stats":
             v = sanitize_stats(v)
+            ok = v is not None
+        elif key == "daily":
+            v = sanitize_daily(v)
+            ok = v is not None
+        elif key == "mistakes":
+            v = sanitize_mistakes(v)
             ok = v is not None
         elif key == "size_reference":
             ok = isinstance(v, str) and (v == "" or get_country(v) is not None)

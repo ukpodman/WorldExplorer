@@ -510,6 +510,191 @@ class RefinementTests(unittest.TestCase):
         self.assertFalse(quiz["finished"])
         self.assertEqual([e.value for e in at.exception], [])
 
+    # ---------------------------------------------------------------- Daily challenge, day streak, mistakes
+
+    def _finish(self, at, correct_pattern):
+        for i, ok in enumerate(correct_pattern):
+            q = at.session_state["quiz"]
+            qn = q["questions"][i]
+            pick = qn["answer"] if ok else next(c for c in qn["choices"] if c != qn["answer"])
+            at.button(key=f"answer_{q['serial']}_{i}_{qn['choices'].index(pick)}").click().run()
+            at.button(key=f"next_{q['serial']}_{i}").click().run()
+
+    def test_daily_first_attempt_counts_and_replays_change_nothing(self):
+        from datetime import date
+        with mock.patch("core.daily.utc_today", return_value=date(2026, 10, 10)):
+            at = self.new()
+            at.button(key="explore_daily").click().run()
+            self.assertEqual((at.session_state["quiz"]["mode"], at.session_state["page"]), ("daily", "Quiz"))
+            self._finish(at, [True, False, True, True, False])
+            ss = at.session_state
+            self.assertEqual(ss["daily"]["results"]["2026-10-10"]["correct"], 3)
+            self.assertEqual((ss["daily"]["streak"], ss["rounds_finished"]), (1, 1))
+            self.assertEqual(len(ss["mistakes"]), 2)
+            share = [c.value for c in at.code]
+            self.assertEqual(share, ["World Explorer · Daily 2026-10-10 · 3/5 🟩🟥🟩🟩🟥 · 🔥 1"])
+            before = (ss["points"], ss["rounds_finished"], dict(ss["stats"]), dict(ss["daily"]["results"]), list(map(str, ss["mistakes"])))
+            at.button(key="play_again").click().run()
+            self.assertEqual(at.session_state["quiz"]["mode"], "daily_replay")
+            self._finish(at, [True] * 5)
+            ss = at.session_state
+            self.assertEqual((ss["points"], ss["rounds_finished"], dict(ss["stats"]), dict(ss["daily"]["results"]),
+                              list(map(str, ss["mistakes"]))), before)
+            self.assertTrue(any("Practice replay" in m.value for m in at.markdown))
+        with mock.patch("core.daily.utc_today", return_value=date(2026, 10, 11)):   # next day continues the streak
+            at.button(key="nav_Explore").click().run()
+            at.button(key="explore_daily").click().run()
+            self.assertEqual(at.session_state["quiz"]["mode"], "daily")
+            self._finish(at, [True] * 5)
+            self.assertEqual(at.session_state["daily"]["streak"], 2)
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_daily_and_regular_rounds_never_discard_each_other(self):
+        from datetime import date
+        with mock.patch("core.daily.utc_today", return_value=date(2026, 10, 10)):
+            at = self.new(page="Quiz")
+            at.button(key="start_quiz").click().run()
+            q = at.session_state["quiz"]; qn = q["questions"][0]
+            at.button(key=f"answer_{q['serial']}_0_{qn['choices'].index(qn['answer'])}").click().run()
+            regular = (q["serial"], q["score"], len(q["history"]))
+            at.button(key="quiz_settings").click().run()
+            at.button(key="setup_daily").click().run()                                # daily starts, regular is kept aside
+            self.assertEqual(at.session_state["quiz"]["mode"], "daily")
+            self.assertEqual(at.session_state["parked_rounds"]["regular"]["serial"], regular[0])
+            q = at.session_state["quiz"]; qn = q["questions"][0]
+            at.button(key=f"answer_{q['serial']}_0_{qn['choices'].index(qn['answer'])}").click().run()
+            at.button(key="quiz_settings").click().run()
+            at.button(key="resume_regular").click().run()                             # back to the regular round
+            q = at.session_state["quiz"]
+            self.assertEqual((q["serial"], q["score"], len(q["history"])), regular)
+            self.assertEqual(at.session_state["parked_rounds"]["daily"]["mode"], "daily")   # daily kept in turn
+            at.button(key="nav_Explore").click().run()
+            self.assertEqual(at.button(key="explore_daily").label, "Continue today's challenge")
+            at.button(key="explore_daily").click().run()
+            self.assertEqual((at.session_state["quiz"]["mode"], len(at.session_state["quiz"]["history"])), ("daily", 1))
+        self.assertEqual([e.value for e in at.exception], [])
+
+    # ---------------------------------------------------------------- daily results across midnight UTC
+
+    def _progress(self, at):
+        ss = at.session_state
+        return (ss["points"], ss["rounds_finished"], repr(ss["stats"]), repr(ss["records"]), repr(ss["daily"]),
+                repr(ss["mistakes"]))
+
+    def _texts(self, at):
+        return " ".join(m.value for m in at.markdown) + " " + " ".join(c.value for c in at.caption)
+
+    def test_replay_completed_across_midnight_then_new_day_challenge(self):
+        from datetime import date
+        day1, day2 = date(2026, 10, 10), date(2026, 10, 11)
+        with mock.patch("core.daily.utc_today", return_value=day1):
+            at = self.new()
+            at.button(key="explore_daily").click().run()
+            self._finish(at, [True, False, True, True, False])                  # counted: 3/5 on 10 Oct
+            at.button(key="play_again").click().run()
+            self.assertEqual(at.session_state["quiz"]["mode"], "daily_replay")
+            self._finish(at, [True, True, True, True])                           # 4 of 5 answered before midnight
+            before = self._progress(at)
+        with mock.patch("core.daily.utc_today", return_value=day2):
+            q = at.session_state["quiz"]
+            qn = q["questions"][4]
+            at.button(key=f"answer_{q['serial']}_4_{qn['choices'].index(qn['answer'])}").click().run()
+            at.button(key=f"next_{q['serial']}_4").click().run()                 # replay finishes after midnight
+            self.assertEqual([x.value for x in at.exception], [])
+            self.assertEqual(self._progress(at), before)                         # the replay changed nothing
+            text = self._texts(at)
+            self.assertIn("Saved result for 2026-10-10: 3/5.", text)
+            self.assertNotIn("today", text.split("Practice replay")[1].split(".")[0].lower())
+            self.assertIn("Today's challenge is ready.", text)
+            self.assertEqual([c.value for c in at.code], ["World Explorer · Daily 2026-10-10 · 3/5 · 🔥 1"])
+            self.assertEqual(at.button(key="play_again").label, "Today's challenge · 5 questions")
+            at.button(key="play_again").click().run()                            # the new day's challenge counts
+            self.assertEqual((at.session_state["quiz"]["mode"], at.session_state["quiz"]["day"]), ("daily", "2026-10-11"))
+            self._finish(at, [True] * 5)
+            daily = at.session_state["daily"]
+            self.assertEqual((daily["streak"], daily["last"], daily["results"]["2026-10-11"]["correct"]), (2, "2026-10-11", 5))
+            self.assertEqual(daily["results"]["2026-10-10"]["correct"], 3)       # yesterday's saved result untouched
+            self.assertEqual(at.code[0].value, "World Explorer · Daily 2026-10-11 · 5/5 🟩🟩🟩🟩🟩 · 🔥 2")
+        self.assertEqual([x.value for x in at.exception], [])
+
+    def test_reopening_yesterdays_results_after_midnight(self):
+        from datetime import date
+        day1, day2 = date(2026, 10, 10), date(2026, 10, 11)
+        # 1) yesterday's practice replay results reopened after midnight (the reported crash)
+        with mock.patch("core.daily.utc_today", return_value=day1):
+            at = self.new()
+            at.button(key="explore_daily").click().run()
+            self._finish(at, [True, True, False, True, False])                   # counted: 3/5
+            at.button(key="play_again").click().run()
+            self._finish(at, [True] * 5)                                         # replay finished the same day
+            before = self._progress(at)
+        with mock.patch("core.daily.utc_today", return_value=day2):
+            at.run()
+            self.assertEqual([x.value for x in at.exception], [])
+            self.assertEqual(self._progress(at), before)
+            self.assertIn("Saved result for 2026-10-10: 3/5.", self._texts(at))
+            self.assertEqual([c.value for c in at.code], ["World Explorer · Daily 2026-10-10 · 3/5 · 🔥 1"])
+        # 2) yesterday's counted results reopened after midnight: labelled with their own date, never as today's
+        with mock.patch("core.daily.utc_today", return_value=day1):
+            at = self.new()
+            at.button(key="explore_daily").click().run()
+            self._finish(at, [True, True, False, True, False])
+            before = self._progress(at)
+        with mock.patch("core.daily.utc_today", return_value=day2):
+            at.run()
+            text = self._texts(at)
+            self.assertEqual([x.value for x in at.exception], [])
+            self.assertIn("Your result for 2026-10-10 is saved.", text)
+            self.assertNotIn("Today's result is saved", text)
+            self.assertEqual([c.value for c in at.code], ["World Explorer · Daily 2026-10-10 · 3/5 🟩🟩🟥🟩🟥 · 🔥 1"])
+            self.assertEqual(self._progress(at), before)                         # showing results records nothing
+            self.assertEqual(at.button(key="play_again").label, "Today's challenge · 5 questions")
+
+    def test_daily_results_without_a_saved_result(self):
+        from datetime import date
+        with mock.patch("core.daily.utc_today", return_value=date(2026, 10, 10)):
+            at = self.new()
+            at.button(key="explore_daily").click().run()
+            self._finish(at, [True] * 5)
+            at.button(key="play_again").click().run()
+            self._finish(at, [False] * 5)
+            daily = at.session_state["daily"]
+            daily["results"] = {}                                                 # e.g. history trimmed or not loaded
+            at.session_state["daily"] = daily
+        with mock.patch("core.daily.utc_today", return_value=date(2026, 10, 11)):
+            at.run()
+            self.assertEqual([x.value for x in at.exception], [])
+            self.assertIn("No saved result was found for 2026-10-10.", self._texts(at))
+            self.assertEqual(list(at.code), [])                                   # nothing to share
+            q = at.session_state["quiz"]
+            q["day"] = None                                                       # a round without a valid date
+            at.session_state["quiz"] = q
+            at.run()
+            self.assertEqual([x.value for x in at.exception], [])
+            self.assertIn("No saved result was found for –.", self._texts(at))
+            at.button(key="play_again").click().run()
+            self.assertEqual((at.session_state["quiz"]["mode"], at.session_state["quiz"]["day"]), ("daily", "2026-10-11"))
+
+    def test_quiz_setup_daily_entry_for_phones_and_wider_screens(self):
+        at = self.new(page="Quiz")   # one box per layout (CSS shows one); both start the same daily round
+        self.assertEqual(at.button(key="setup_daily").label, at.button(key="intro_daily").label)
+        at.button(key="intro_daily").click().run()
+        self.assertEqual(at.session_state["quiz"]["mode"], "daily")
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_practise_mistakes_round_clears_correct_answers(self):
+        at = self.new(page="Quiz")
+        at.selectbox(key="filter_count").select(5).run()
+        at.button(key="start_quiz").click().run()
+        self._finish(at, [False, False, True, True, True])
+        self.assertEqual(len(at.session_state["mistakes"]), 2)
+        at.button(key="results_practise").click().run()
+        self.assertEqual(at.session_state["quiz"]["mode"], "practice")
+        n = len(at.session_state["quiz"]["questions"])
+        self._finish(at, [True] * n)
+        self.assertEqual(at.session_state["mistakes"], [])
+        self.assertEqual([e.value for e in at.exception], [])
+
     def test_flag_questions_label_in_every_language(self):
         from core.i18n import translate
         for lang in LANGS:
@@ -563,6 +748,10 @@ class AccountTests(unittest.TestCase):
         self.assertNotIn("records", self.accounts.sanitize_profile({"records": ["corrupt"]}))
         self.assertIn("records", self.accounts.PROFILE_KEYS)
         self.assertNotIn("size_reference", clean)  # older profiles: no reference country until one is chosen
+        self.assertNotIn("daily", clean)           # older profiles: no daily history or mistakes yet
+        self.assertNotIn("mistakes", clean)
+        self.assertEqual(self.accounts.sanitize_profile({"daily": {"streak": 3, "best": 5, "last": "2026-10-09", "results": {}}})["daily"]["best"], 5)
+        self.assertNotIn("mistakes", self.accounts.sanitize_profile({"mistakes": "corrupt"}))
         self.assertEqual(self.accounts.sanitize_profile({"size_reference": "DEU"}), {"size_reference": "DEU"})
         self.assertEqual(self.accounts.sanitize_profile({"size_reference": ""}), {"size_reference": ""})
         self.assertEqual(self.accounts.sanitize_profile({"size_reference": "XXX"}), {})

@@ -3,11 +3,13 @@ from __future__ import annotations
 
 import base64
 import math
+from datetime import date
 from html import escape
 
 import streamlit as st
 
 from core import accounts, records
+from core import daily as daily_engine
 from core import learn as learn_engine
 from core import badges as badge_engine
 from core import quiz as engine
@@ -76,13 +78,56 @@ def _filtered(available: list[dict]) -> list[dict]:
     return out if needle else sorted(out, key=lambda c: (c["id"] not in PHOTOS, t(c["name"])))
 
 
+# --------------------------------------------------------------------------- Daily challenge & mistakes
+
+def _daily_status() -> dict:
+    day = state.today()
+    done = daily_engine.completed(st.session_state.daily, day)
+    secs = daily_engine.seconds_until_next()
+    return {"day": day, "done": done, "in_progress": state.daily_round_in_progress() is not None,
+            "streak": daily_engine.current_streak(st.session_state.daily, day), "best": st.session_state.daily["best"],
+            "next": t("New challenge in {hours} h {minutes} min (00:00 UTC).", hours=secs // 3600, minutes=secs % 3600 // 60)}
+
+
+def _daily_button_label(d: dict) -> str:
+    if d["in_progress"]:
+        return t("Continue today's challenge")
+    if d["done"]:
+        return t("Play today's challenge again")
+    return t("Today's challenge · {n} questions", n=daily_engine.DAILY_COUNT)
+
+
+def _daily_short_label(d: dict) -> str:
+    if d["in_progress"]:
+        return t("Continue today's challenge")
+    return t("Replay today's challenge") if d["done"] else t("Today's challenge")
+
+
+def _streak_text(d: dict) -> str:
+    if d["done"]:
+        return t("Today: {correct}/{total} · 🔥 Day streak: {n}", correct=d["done"]["correct"], total=d["done"]["total"], n=d["streak"])
+    if d["streak"]:
+        return t("🔥 Day streak: {n} · play today to keep it", n=d["streak"])
+    return t("Five questions a day, the same for everyone.")
+
+
+def _practise_button(key: str) -> None:
+    n = len(st.session_state.mistakes)
+    if n:
+        st.button(t("Practise mistakes ({n})", n=n), key=key, on_click=state.start_practice, width="stretch",
+                  help=t("A round built from questions you missed. Correct answers clear them from the list."))
+
+
 def _challenge() -> None:
+    d = _daily_status()
     with st.container(key="atlas_quiz"):
         html(f'<div class="feature-kicker">{e("Your next adventure")}</div>'
              f'<div class="challenge-title">{e("Your next challenge")}</div>'
-             f'<div class="challenge-note">{e("Capitals, flags, currencies, languages and more.")}</div>')
-        st.button(t("Take a quiz →"), key="atlas_take_quiz", type="primary", width="stretch",
-                  on_click=state.navigate, args=("Quiz",))
+             f'<div class="challenge-note daily-note">{escape(_streak_text(d))}</div>')
+        with st.container(key="challenge_actions", horizontal=True):
+            st.button(_daily_short_label(d), key="explore_daily", type="primary", on_click=state.start_daily,
+                      help=t("Five questions a day, the same for everyone."))
+            st.button(t("Take a quiz →"), key="atlas_take_quiz", on_click=state.navigate, args=("Quiz",))
 
 
 def _exploration_area() -> None:
@@ -389,13 +434,35 @@ def _where_summary(collection: str, continent: str, country_id: str) -> str:
     return " · ".join([place, t(collection)])
 
 
+def _daily_box(box_key: str, button_key: str) -> None:
+    """Compact Daily Challenge entry: title, status line and one Start / Continue / Replay button."""
+    d = _daily_status()
+    with st.container(key=box_key, horizontal=True, vertical_alignment="center"):
+        title = e("Today's challenge")  # kept outside the f-string (Python < 3.12 forbids backslashes there)
+        generic = "" if d["done"] or d["streak"] else " generic"  # the plain description is hidden on phones
+        later = f'<span class="daily-next">{escape(d["next"])}</span>' if d["done"] else ""  # hidden on phones too
+        html(f'<div class="daily-head"><span class="daily-icon" aria-hidden="true">📅</span><div><b>{title}</b>'
+             f'<span class="daily-status{generic}">{escape(_streak_text(d))}</span>{later}</div></div>')
+        st.button(t("Continue") if d["in_progress"] else t("Replay") if d["done"] else t("Start"), key=button_key,
+                  type="primary" if not d["done"] else "secondary", on_click=state.start_daily,
+                  help=_daily_button_label(d))
+
+
 def _setup() -> None:
     state.restore_quiz_filters()
     with st.container(key="settings_card"):
+        _daily_box("daily_box", "setup_daily")  # phones; tablets and desktops show it beside the setup (see quiz())
+        for group, kept in state.parked_rounds().items():
+            st.button(_return_label(group, kept) + f" ({kept['index'] + 1}/{len(kept['questions'])})", key=f"resume_{group}", width="stretch",
+                      on_click=state.resume_round, args=(group,))
         html(f'<div class="eyebrow">{e("Your next adventure")}</div>')
         st.subheader(t("Build your challenge"))
-        if st.session_state.quiz and not st.session_state.quiz["finished"]:
-            st.info(t("You have a round in progress. Starting a new quiz replaces it; use “Return to current round” to continue it."))
+        active = st.session_state.quiz
+        if active and not active["finished"]:
+            if active.get("mode", "regular") == "regular":
+                st.info(t("You have a round in progress. Starting a new quiz replaces it; use “Return to current round” to continue it."))
+            else:
+                st.info(t("Your current round is kept if you start a new quiz; you can return to it from here."))
 
         with st.container(key="what_box"):
             html(f'<div class="setup-section">{e("What to practise")}</div>')
@@ -633,10 +700,60 @@ def _settings_label(settings: dict, total: int) -> str:
     return " · ".join(items)
 
 
+def _round_day(quiz: dict) -> date | None:
+    """The date a daily round belongs to (its own "day"), or None if it is missing or invalid."""
+    try:
+        return date.fromisoformat(quiz.get("day") or "")
+    except (TypeError, ValueError):
+        return None
+
+
+def _daily_result(quiz, replay: bool) -> None:
+    """Daily status on the results card. The round's own date decides which saved result is shown and shared, so a
+    round from yesterday reopened after midnight UTC never shows (or crashes on) today's state. Today's challenge
+    (availability, streak, next start) comes from _daily_status() and is kept separate."""
+    d = _daily_status()
+    day = _round_day(quiz)
+    label = day.isoformat() if day else "–"
+    saved = daily_engine.completed(st.session_state.daily, day) if day else None
+    if replay:
+        if saved:
+            text = e("Points, badges and your day streak are unchanged. Saved result for {date}: {correct}/{total}.",
+                     date=label, correct=saved["correct"], total=saved["total"])
+        else:
+            text = e("Points, badges and your day streak are unchanged. No saved result was found for {date}.", date=label)
+        html(f'<div class="daily-result replay"><b>{e("Practice replay")}</b> · {text}</div>')
+    else:
+        if not saved:
+            note = ""
+        elif day == d["day"]:
+            note = e("Today's result is saved. Come back tomorrow to keep your streak.")
+        else:
+            note = e("Your result for {date} is saved.", date=label)
+        html(f'<div class="daily-result"><span class="daily-flame" aria-hidden="true">🔥</span><div><b>{e("Day streak: {n}", n=d["streak"])}</b> · '
+             f'{e("Best: {n}", n=d["best"])}' + (f'<br><span>{note}</span>' if note else "") + '</div></div>')
+    if saved:
+        grid = daily_engine.share_grid(quiz["history"]) if not replay else ""
+        # The streak is only known for the latest completed day; an older day is shared without one.
+        streak = st.session_state.daily["streak"] if st.session_state.daily["last"] == label else None
+        st.caption(t("Share your result (no answers included):"))
+        st.code(daily_engine.share_text(day, saved["correct"], saved["total"], streak, grid), language=None)
+    st.caption(d["next"] if d["done"] else t("Today's challenge is ready."))
+
+
+def _return_label(group: str, kept: dict) -> str:
+    """Button label for a kept (parked) round; a daily round from an earlier day names its date."""
+    if group == "daily" and kept.get("day") != state.today().isoformat():
+        return t("Return to the daily challenge of {date}", date=kept.get("day") or "–")
+    return t({"daily": "Return to today's challenge", "practice": "Return to mistake practice"}.get(group, "Return to your quiz round"))
+
+
 def _results(quiz) -> None:
     stats, settings = engine.statistics(quiz), quiz["settings"]
     sound.play_event(quiz["event"])
-    outcome = quiz.get("records_outcome") or records.update(st.session_state.records, quiz)
+    mode = quiz.get("mode", "regular")
+    replay = mode == "daily_replay"
+    outcome = None if replay else (quiz.get("records_outcome") or records.update(st.session_state.records, quiz))
     won = records.medal(stats["accuracy"])
     fresh = _fresh(quiz["event"]["id"] + ":results")
     with st.container(key="result_card"):
@@ -650,19 +767,31 @@ def _results(quiz) -> None:
         if quiz["perfect_bonus"]:
             html(f'<div class="perfect-banner{" fx" if fresh else ""}" role="status"><span class="sparkles" aria-hidden="true">✦ ✧ ✦</span>'
                  f'{e("Perfect round without hints: +{points} bonus points.", points=quiz["perfect_bonus"])}</div>')
+        if mode in ("daily", "daily_replay"):
+            _daily_result(quiz, replay)
         chips = []
-        if outcome["first_score"]:
+        if replay:
+            pass
+        elif outcome["first_score"]:
             chips.append(("record", e("First score for these settings: {score}", score=f"{stats['score']:,}")))
         elif outcome["new_score"]:
             chips.append(("record new", e("New best for these settings! Previous best: {score}", score=f"{outcome['previous_score']:,}")))
         else:
             chips.append(("record", e("Your best for these settings: {score}", score=f"{outcome['best_score']:,}")))
-        if outcome["new_streak"]:
+        if replay:
+            pass
+        elif outcome["new_streak"]:
             chips.append(("record new", e("New streak record: {n} in a row", n=outcome["best_streak"])))
         else:
             chips.append(("record", e("Streak record (any round): {n}", n=outcome["best_streak"])))
-        html('<div class="record-row">' + "".join(f'<span class="{cls}">{text}</span>' for cls, text in chips) + "</div>")
-        st.caption(t("Records compare rounds with the same settings: {settings}", settings=_settings_label(settings, stats["total"])))
+        if chips:
+            html('<div class="record-row">' + "".join(f'<span class="{cls}">{text}</span>' for cls, text in chips) + "</div>")
+        if mode == "daily":
+            st.caption(t("Records compare your daily challenges."))
+        elif mode == "practice":
+            st.caption(t("Records compare your mistake-practice rounds."))
+        elif not replay:
+            st.caption(t("Records compare rounds with the same settings: {settings}", settings=_settings_label(settings, stats["total"])))
         if accounts.connection_state() == "guest":
             st.caption(t("Guest records last for this browser session."))
         st.caption(t("Incorrect / unanswered: {wrong} · Timed out: {timeout} · Average response time: {seconds} seconds",
@@ -683,10 +812,27 @@ def _results(quiz) -> None:
                     label = (t("Practise {continent}", continent=b["fields"]["continent"]) if b["fields"] else t("Practise flags"))
                     st.button(label, key="practise_badge", on_click=_practise_for, args=(b["id"],))
         one, two = st.columns(2)
-        if one.button(t("Play again"), type="primary", width="stretch", key="play_again"):
+        if mode in ("daily", "daily_replay"):
+            d = _daily_status()
+            if _round_day(quiz) == d["day"] and d["done"] and not d["in_progress"]:
+                one.button(t("Play again (practice)"), type="primary", width="stretch", key="play_again", on_click=state.start_daily,
+                           help=t("Replays today's questions. Points, badges and your day streak stay as they are."))
+            else:  # the round is from an earlier day (after midnight UTC): offer today's challenge itself
+                one.button(_daily_button_label(d), type="primary", width="stretch", key="play_again", on_click=state.start_daily)
+        elif mode == "practice":
+            if st.session_state.mistakes:
+                one.button(t("Practise again"), type="primary", width="stretch", key="play_again", on_click=state.start_practice)
+            else:
+                one.button(t("Take a quiz →"), type="primary", width="stretch", key="play_again", on_click=state.open_setup)
+        elif one.button(t("Play again"), type="primary", width="stretch", key="play_again"):
             state.start_round(settings)
             st.rerun()
         two.button(t("Change settings"), width="stretch", on_click=state.open_setup, key="change_settings")
+        if mode != "practice":
+            _practise_button("results_practise")
+        for group, kept in state.parked_rounds().items():
+            st.button(_return_label(group, kept) + f" ({kept['index'] + 1}/{len(kept['questions'])})", key=f"results_resume_{group}",
+                      width="stretch", on_click=state.resume_round, args=(group,))
     missed = engine.missed(quiz)
     with st.container(key="review_card"):
         st.subheader(t("Review missed answers") if missed else t("Answer review"))
@@ -706,6 +852,7 @@ def quiz() -> None:
     if not current or st.session_state.show_setup:
         intro, setup = st.columns([1, 1.15], gap="large")
         with intro:
+            _daily_box("daily_box_wide", "intro_daily")  # tablets and desktops: above the banner, beside the setup
             hero("The world geography challenge", "How well do you know your world?",
                  "Go beyond the familiar. Challenge yourself on capitals, flags, currencies, languages and the places in between.",
                  variant="tall")
@@ -717,10 +864,17 @@ def quiz() -> None:
     with st.container(key="round_bar"):
         summary, action = st.columns([3, 1], vertical_alignment="center")
         s = current["settings"]
-        country = get_country(s["country_id"])
-        label = country_label(country["id"]) if country else t(s["continent"])
-        summary.markdown(f'<div class="round-label">{e("Current challenge")}</div>'
-                         f'<div class="round-summary">{escape(label)} · {e(s["difficulty"])} · {e(s["category"])}</div>',
+        mode = current.get("mode", "regular")
+        if mode in ("daily", "daily_replay"):
+            heading = e("Daily challenge") + (" · " + e("practice replay") if mode == "daily_replay" else "")
+            line = escape(current.get("day") or "") + " · " + e("{n} questions", n=len(current["questions"]))
+        elif mode == "practice":
+            heading, line = e("Practising mistakes"), e("{n} questions", n=len(current["questions"]))
+        else:
+            country = get_country(s["country_id"])
+            label = country_label(country["id"]) if country else t(s["continent"])
+            heading, line = e("Current challenge"), f'{escape(label)} · {e(s["difficulty"])} · {e(s["category"])}'
+        summary.markdown(f'<div class="round-label">{heading}</div><div class="round-summary">{line}</div>',
                          unsafe_allow_html=True)
         action.button(t("Quiz settings"), key="quiz_settings", width="stretch", on_click=state.open_setup,
                       help=t("Opens quiz setup. Your current round is kept until you start a new one."))
@@ -762,8 +916,12 @@ def badges() -> None:
     html('<div class="badge-stats">'
          f'<div><b>{points:,}</b><span>{e("Points")}</span></div>'
          f'<div><b>{rounds}</b><span>{e("Rounds")}</span></div>'
-         f'<div><b>{len(earned)}/{len(status)}</b><span>{e("Badges")}</span></div></div>'
+         f'<div><b>{len(earned)}/{len(status)}</b><span>{e("Badges")}</span></div>'
+         f'<div><b>🔥 {daily_engine.current_streak(st.session_state.daily, state.today())}</b><span>{e("Day streak")}</span></div></div>'
          f'<p class="badge-note">{e("Badges count answers and rounds you complete. Progress is saved with your account when you are signed in.")}</p>')
+    st.caption(t("Best day streak: {n} · Daily challenges completed: {count}", n=st.session_state.daily["best"],
+                 count=len(st.session_state.daily["results"])))
+    _practise_button("badges_practise")
     html(f'<h2 class="badge-section">{e("Earned badges")}</h2>')
     if earned:
         _award_grid(earned)

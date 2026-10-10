@@ -558,6 +558,83 @@ class LearnHelperTests(unittest.TestCase):
         self.assertTrue(self.l.compare_areas(COUNTRY_BY_ID["FRA"], dict(fra, id="X", area_km2=540000))["similar"])
 
 
+class DailyTests(unittest.TestCase):
+    def setUp(self):
+        from core import daily
+        self.d = daily
+
+    def test_daily_questions_are_the_same_for_a_date_and_differ_between_dates(self):
+        from datetime import date
+        a, b = self.d.daily_questions(date(2026, 10, 10)), self.d.daily_questions(date(2026, 10, 10))
+        self.assertEqual([(q["id"], q["choices"]) for q in a], [(q["id"], q["choices"]) for q in b])
+        self.assertEqual(len(a), 5)
+        self.assertNotEqual([q["id"] for q in a], [q["id"] for q in self.d.daily_questions(date(2026, 10, 11))])
+        self.assertFalse([q for q in a if q["kind"] == "Heads of State"])                 # no expiring records
+        self.assertEqual(len({f for q in a for f in q["facts"]}), sum(len(q["facts"]) for q in a))  # no repeated facts
+
+    def test_day_boundary_is_midnight_utc(self):
+        from datetime import datetime, timezone, timedelta
+        self.assertEqual(self.d.seconds_until_next(datetime(2026, 10, 10, 23, 59, 30, tzinfo=timezone.utc)), 30)
+        self.assertEqual(self.d.seconds_until_next(datetime(2026, 10, 10, 0, 0, 0, tzinfo=timezone.utc)), 86400)
+        berlin = timezone(timedelta(hours=2))  # 01:30 in Berlin is still the previous UTC day
+        self.assertEqual(datetime(2026, 10, 11, 1, 30, tzinfo=berlin).astimezone(timezone.utc).date().isoformat(), "2026-10-10")
+
+    def test_first_attempt_only_and_streak_rules(self):
+        from datetime import date, timedelta
+        rec, day = self.d.empty_daily(), date(2026, 10, 10)
+        self.assertTrue(self.d.record_daily(rec, day, 3, 5, 400))
+        self.assertFalse(self.d.record_daily(rec, day, 5, 5, 900))                      # a replay changes nothing
+        self.assertEqual(rec["results"]["2026-10-10"], {"correct": 3, "total": 5, "score": 400})
+        self.assertEqual((rec["streak"], rec["best"]), (1, 1))
+        self.d.record_daily(rec, day + timedelta(days=1), 4, 5, 500)
+        self.d.record_daily(rec, day + timedelta(days=2), 4, 5, 500)
+        self.assertEqual((rec["streak"], rec["best"]), (3, 3))
+        self.assertEqual(self.d.current_streak(rec, day + timedelta(days=3)), 3)         # still alive the next day
+        self.assertEqual(self.d.current_streak(rec, day + timedelta(days=4)), 0)         # a full day missed
+        self.d.record_daily(rec, day + timedelta(days=5), 1, 5, 100)
+        self.assertEqual((rec["streak"], rec["best"]), (1, 3))                          # restarts, best kept
+        line = self.d.share_text(day, 3, 5, 2, "🟩🟥🟩🟩🟥")
+        self.assertEqual(line, "World Explorer · Daily 2026-10-10 · 3/5 🟩🟥🟩🟩🟥 · 🔥 2")
+        self.assertEqual(self.d.share_text(day, 3, 5, None), "World Explorer · Daily 2026-10-10 · 3/5")  # streak unknown
+
+    def test_an_earlier_day_finished_late_never_moves_the_streak_back(self):
+        from datetime import date
+        rec = self.d.empty_daily()
+        self.d.record_daily(rec, date(2026, 10, 9), 2, 5, 200)
+        self.d.record_daily(rec, date(2026, 10, 11), 5, 5, 900)
+        self.assertTrue(self.d.record_daily(rec, date(2026, 10, 10), 4, 5, 600))      # 10 Oct finished after 11 Oct
+        self.assertEqual(rec["results"]["2026-10-10"]["correct"], 4)
+        self.assertEqual((rec["streak"], rec["last"], rec["best"]), (1, "2026-10-11", 1))
+        self.assertIsNone(self.d.completed(rec, date(2026, 10, 12)))                  # the new day is still open
+
+    def test_mistakes_add_clear_dedupe_and_regenerate(self):
+        from datetime import date
+        qs = self.d.daily_questions(date(2026, 10, 10))
+        mistakes = []
+        self.d.note_answer(mistakes, qs[0], False, "Medium")
+        self.d.note_answer(mistakes, qs[0], False, "Medium")                             # no duplicates
+        self.d.note_answer(mistakes, qs[1], False, "Medium")
+        self.assertEqual(len(mistakes), 2)
+        fresh = self.d.practice_questions(mistakes, {}, seed=1)
+        self.assertEqual({tuple(sorted(q["facts"])) for q in fresh}, {tuple(sorted(m["facts"])) for m in mistakes})
+        self.d.note_answer(mistakes, fresh[0], True, "Medium")                           # a correct answer clears it
+        self.assertEqual(len(mistakes), 1)
+        for i in range(self.d.MAX_MISTAKES + 5):
+            self.d.note_answer(mistakes, dict(qs[2], facts=[f"x:{i}"]), False, "Medium")
+        self.assertEqual(len(mistakes), self.d.MAX_MISTAKES)
+
+    def test_sanitizers_accept_old_and_reject_corrupt_data(self):
+        self.assertIsNone(self.d.sanitize_daily("corrupt"))
+        self.assertEqual(self.d.sanitize_daily({}), self.d.empty_daily())
+        clean = self.d.sanitize_daily({"streak": 2, "best": 1, "last": "2026-10-09",
+                                       "results": {"2026-10-09": {"correct": 4, "total": 5, "score": 300}, "bad": {}}})
+        self.assertEqual((clean["streak"], clean["best"], list(clean["results"])), (2, 2, ["2026-10-09"]))
+        self.assertEqual(self.d.sanitize_mistakes([{"facts": ["a"], "country_id": "FRA", "difficulty": "Medium"},
+                                                   {"facts": [], "country_id": "FRA", "difficulty": "Medium"},
+                                                   {"facts": ["b"], "country_id": "XXX", "difficulty": "Medium"}]),
+                         [{"facts": ["a"], "country_id": "FRA", "difficulty": "Medium", "kind": ""}])
+
+
 class TranslationTests(unittest.TestCase):
     def test_every_language_complete(self):
         self.assertEqual(missing_translations(), [])

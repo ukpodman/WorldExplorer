@@ -58,6 +58,8 @@ def update(records: dict, quiz: dict) -> dict:
     if quiz.get("records_outcome") is not None:
         return quiz["records_outcome"]
     key = settings_key(quiz["settings"])
+    if quiz.get("mode") in ("daily", "practice"):  # daily challenges and mistake practice keep their own records
+        key = quiz["mode"] + "|" + key
     previous_score = records["scores"].get(key)
     previous_streak = records["best_streak"]
     score, streak = quiz["score"], quiz["best_streak"]

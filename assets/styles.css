@@ -879,3 +879,15 @@ html[data-we-theme="dark"] .stApp :is(button:focus-visible, a:focus-visible, inp
   [class*="st-key-country_card_"] .stButton button p { font-size:.9rem !important; }
   [class*="st-key-country_card_"] .destination-name { font-size:.95rem; }
 }
+
+/* ---------- Explore controls on phones: summary, Exploration area panel, filters ----------
+   - The area summary is an HTML block, which Streamlit gives a -1rem bottom margin. When a long summary
+     ("All countries · incl. territories") wraps the Exploration area button onto its own line, the button
+     overlapped the summary by 8 px. The summary now takes its real height, so the wrapped row keeps its gap.
+   - The filter panel had no bottom padding on phones, so the Continent/Status dropdowns touched its border,
+     and the Exploration area panel ended 5 px below its note. Both now have the same inner spacing as above. */
+.st-key-explore_scope [data-testid="stMarkdownContainer"] { margin-bottom:0 !important; }
+@media (max-width:700px) {
+  .st-key-explore_filters { padding:8px 12px 12px !important; }
+  .st-key-explore_area_panel { padding:10px 12px 10px !important; }
+}

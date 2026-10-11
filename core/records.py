@@ -52,14 +52,34 @@ def settings_key(settings: dict) -> str:
     return "|".join(str(s.get(f)) for f in SETTING_FIELDS)
 
 
+UNTIMED_SCORING = "s2"  # untimed rounds no longer give speed points (2026-10): new records, old ones kept unchanged
+
+
+def record_key(quiz: dict) -> str:
+    """Records are compared only with rounds played under the same rules. Untimed rounds scored after the
+    2026-10 speed-points change get their own key, so a new score is never measured against an older score
+    that included speed points; the older records stay saved."""
+    key = settings_key(quiz["settings"])
+    if quiz.get("mode") in ("daily", "practice"):  # daily challenges and mistake practice keep their own records
+        key = quiz["mode"] + "|" + key
+    if not quiz["settings"].get("timer"):
+        key += "|" + UNTIMED_SCORING
+    return key
+
+
+def earlier_untimed_best(records: dict, quiz: dict) -> int | None:
+    """The saved best for the same untimed settings from before the speed-points change, if any."""
+    key = record_key(quiz)
+    suffix = "|" + UNTIMED_SCORING
+    return records["scores"].get(key[:-len(suffix)]) if key.endswith(suffix) else None
+
+
 def update(records: dict, quiz: dict) -> dict:
     """Apply a finished round to `records` once; returns (and stores on the quiz) the outcome
     shown on the results screen. Later calls return the stored outcome unchanged."""
     if quiz.get("records_outcome") is not None:
         return quiz["records_outcome"]
-    key = settings_key(quiz["settings"])
-    if quiz.get("mode") in ("daily", "practice"):  # daily challenges and mistake practice keep their own records
-        key = quiz["mode"] + "|" + key
+    key = record_key(quiz)
     previous_score = records["scores"].get(key)
     previous_streak = records["best_streak"]
     score, streak = quiz["score"], quiz["best_streak"]

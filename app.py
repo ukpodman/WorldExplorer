@@ -13,10 +13,10 @@ import streamlit as st
 
 st.set_page_config(page_title="World Explorer", page_icon="🌍", layout="wide")
 
-from core import accounts  # noqa: E402  (set_page_config must run first)
+from core import accounts, analytics, cookies  # noqa: E402  (set_page_config must run first)
 from core.data import COUNTRIES  # noqa: E402
 from ui import state  # noqa: E402
-from ui.components import header, inject_styles  # noqa: E402
+from ui.components import consent_bar, feedback_button, header, inject_styles  # noqa: E402
 from ui.pages import ROUTES  # noqa: E402
 
 FOOTER = {
@@ -30,16 +30,30 @@ FOOTER = {
 
 def main() -> None:
     state.init()
+    analytics.init_session()
     accounts.restore_profile()
+    analytics.log_visit()  # once per session; only with the visitor's permission
     state.apply_pending_preferences()
     inject_styles()
     header()
+    consent_bar()
+    notice = st.session_state.pop("handoff_notice", None)
+    if notice:  # shown once after "Save your progress with Google"
+        st.success(state.t("Your guest progress was added to your account: +{points} points.",
+                           points=f"{notice['points']:,}") if notice["existing"]
+                   else state.t("Your progress is now saved to your account."), icon="✅")
     page = st.session_state.page if st.session_state.page in ROUTES else "Explore"
     with st.container(key=f"view_{page.lower()}"):
         ROUTES[page]()
     st.divider()
     accounts.save_profile()
-    st.caption(f"{state.t('{n} places', n=len(COUNTRIES))} · {state.t(FOOTER[accounts.connection_state()])}.")
+    accounts.refresh_handoff()
+    with st.container(key="app_footer", horizontal=True, vertical_alignment="center"):
+        st.caption(f"{state.t('{n} places', n=len(COUNTRIES))} · {state.t(FOOTER[accounts.connection_state()])}.")
+        feedback_button()
+    script = cookies.script()
+    if script:
+        st.html(script, unsafe_allow_javascript=True)
 
 
 main()

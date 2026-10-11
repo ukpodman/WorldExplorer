@@ -557,7 +557,10 @@ def score_answer(correct, difficulty, elapsed, streak, used_hint=False, time_lim
         return {"base": 0, "multiplier": 1, "streak": 0, "speed": 0, "hint": 0, "total": 0}
     base = round(100 * DIFFICULTY_MULTIPLIERS[difficulty])
     multiplier = streak_multiplier(streak)
-    speed = SPEED_BONUS if elapsed <= (time_limit / 3 if time_limit else 7) else 0
+    # Speed points only in timed rounds (decision of the 2026-10 pilot update): untimed rounds are for reading and
+    # learning at one's own pace. Earlier untimed rounds were given +25 on every correct answer because the clock
+    # was never started (see elapsed()); their saved points are kept as they are.
+    speed = SPEED_BONUS if time_limit and elapsed <= time_limit / 3 else 0
     hint = HINT_PENALTY if used_hint else 0
     boosted = base * multiplier
     return {"base": base, "multiplier": multiplier, "streak": boosted - base, "speed": speed, "hint": hint,
@@ -583,11 +586,30 @@ def time_limit(quiz) -> int | None:
 
 
 def elapsed(quiz, now=None) -> float:
+    """Seconds since the current question was presented. The clock starts on the first call for a question
+    (mark_presented() when it is shown) and continues from where it was paused."""
     now = time.monotonic() if now is None else now
     if quiz["started_at"] is None and not quiz["resolved"] and not quiz["finished"]:
-        quiz["started_at"] = now
+        quiz["started_at"] = now - quiz.pop("paused_elapsed", 0.0)
     started = quiz["started_at"]
     return 0.0 if started is None else max(0.0, now - started)
+
+
+def mark_presented(quiz, now=None) -> None:
+    """Start the answer clock when a question is shown — in timed and untimed rounds alike.
+    (Before this, untimed rounds first read the clock when the answer arrived, so every answer took 0.0 s.)"""
+    if quiz and not quiz["resolved"] and not quiz["finished"]:
+        elapsed(quiz, now)
+
+
+def pause(quiz, now=None) -> None:
+    """Stop the clock of an untimed round while it is not on screen (another page, quiz setup, a kept round).
+    Timed rounds keep running, as before, so leaving the page cannot buy extra time."""
+    if (quiz and not quiz["settings"]["timer"] and quiz["started_at"] is not None
+            and not quiz["resolved"] and not quiz["finished"]):
+        now = time.monotonic() if now is None else now
+        quiz["paused_elapsed"] = max(0.0, now - quiz["started_at"])
+        quiz["started_at"] = None
 
 
 def is_current(quiz, serial, index) -> bool:
@@ -653,6 +675,7 @@ def advance(quiz) -> int:
     if quiz["index"] + 1 < len(quiz["questions"]):
         quiz.update(index=quiz["index"] + 1, selected=None, resolved=False, started_at=None,
                     hint_used=False, hidden_options=[], last_points=None)
+        quiz.pop("paused_elapsed", None)
         return 0
     quiz["finished"] = True
     if quiz["correct"] == len(quiz["questions"]) and not any(h["hint"] for h in quiz["history"]):

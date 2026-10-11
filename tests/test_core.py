@@ -330,6 +330,35 @@ class ScoringTests(unittest.TestCase):
         self.assertFalse(q.use_hint(quiz, now=30))
         self.assertEqual(quiz["hints_remaining"], 3)
 
+    def test_answer_clock_starts_when_the_question_is_shown(self):
+        quiz = self.make()                                       # untimed
+        q.mark_presented(quiz, now=100.0)
+        q.resolve(quiz, q.current_question(quiz)["answer"], now=106.5)
+        self.assertAlmostEqual(quiz["history"][-1]["elapsed"], 6.5)
+        self.assertEqual(quiz["history"][-1]["points"]["speed"], 0)  # untimed: no speed points
+        q.advance(quiz)
+        q.mark_presented(quiz, now=200.0)
+        q.mark_presented(quiz, now=203.0)                        # reruns do not restart the clock
+        q.resolve(quiz, q.current_question(quiz)["answer"], now=204.0)
+        self.assertAlmostEqual(quiz["history"][-1]["elapsed"], 4.0)
+        self.assertAlmostEqual(q.statistics(quiz)["average_time"], 5.25)
+
+    def test_untimed_clock_pauses_while_away_timed_clock_does_not(self):
+        quiz = self.make()
+        q.mark_presented(quiz, now=0.0)
+        q.pause(quiz, now=3.0)                                   # e.g. opened Learn
+        q.mark_presented(quiz, now=500.0)                        # back on the question
+        q.resolve(quiz, q.current_question(quiz)["answer"], now=504.0)
+        self.assertAlmostEqual(quiz["history"][-1]["elapsed"], 7.0)
+        timed = self.make(timer=True)
+        q.mark_presented(timed, now=0.0)
+        q.pause(timed, now=3.0)                                  # leaving the page does not stop a timed question
+        self.assertTrue(q.expire_if_due(timed, now=25.0) == 0 and timed["history"][-1]["timed_out"])
+        fast = self.make(timer=True)
+        q.mark_presented(fast, now=0.0)
+        q.resolve(fast, q.current_question(fast)["answer"], now=4.0)
+        self.assertEqual(fast["history"][-1]["points"]["speed"], 25)  # within a third of 20 s
+
     def test_hint_hides_a_wrong_option(self):
         quiz = self.make()
         self.assertTrue(q.use_hint(quiz, random.Random(0), now=0))
@@ -337,11 +366,13 @@ class ScoringTests(unittest.TestCase):
         self.assertNotIn(question["answer"], quiz["hidden_options"])
         self.assertEqual(q.resolve(quiz, quiz["hidden_options"][0], now=1), 0)
         self.assertFalse(quiz["resolved"])
-        self.assertEqual(q.resolve(quiz, question["answer"], now=1), 125 + 25 - 25)
+        self.assertEqual(q.resolve(quiz, question["answer"], now=1), 125 - 25)   # untimed: no speed points
 
     def test_scoring(self):
         self.assertEqual(q.score_answer(False, "Expert", 1, 5)["total"], 0)
-        self.assertEqual(q.score_answer(True, "Easy", 1, 1)["total"], 125)
+        self.assertEqual(q.score_answer(True, "Easy", 1, 1)["total"], 100)                    # untimed: no speed points
+        self.assertEqual(q.score_answer(True, "Easy", 1, 1, time_limit=20)["total"], 125)     # timed and fast: +25
+        self.assertEqual(q.score_answer(True, "Easy", 7, 1, time_limit=20)["total"], 100)     # timed, slower than a third
         self.assertEqual(q.score_answer(True, "Expert", 20, 15, used_hint=True)["total"], 200 * 3 - 25)
 
 
@@ -372,8 +403,10 @@ class StreakScoringTests(unittest.TestCase):
         base = round(100 * q.DIFFICULTY_MULTIPLIERS["Medium"])
         self.assertEqual([q.score_answer(True, "Medium", 20, n)["total"] for n in range(1, 8)],
                          [base, base, 2 * base, 2 * base, 3 * base, 3 * base, 3 * base])
-        p = q.score_answer(True, "Expert", 1, 3)                     # fast answer: the speed bonus is flat
+        p = q.score_answer(True, "Expert", 1, 3, time_limit=15)      # fast timed answer: the speed bonus is flat
         self.assertEqual((p["base"], p["multiplier"], p["speed"], p["total"]), (200, 2, 25, 425))
+        p = q.score_answer(True, "Expert", 1, 3)                     # untimed: no speed points however fast
+        self.assertEqual((p["speed"], p["total"]), (0, 400))
         self.assertEqual(q.score_answer(False, "Expert", 1, 0)["total"], 0)
 
     def test_round_points_follow_the_streak(self):
@@ -456,6 +489,19 @@ class RecordTests(unittest.TestCase):
                          self.r.settings_key(dict(BASE, category="Capitals", flags=False)))  # flags only matter for Mixed
         self.assertNotEqual(self.r.settings_key(dict(BASE, category="Mixed", flags=True)),
                             self.r.settings_key(dict(BASE, category="Mixed", flags=False)))
+
+    def test_untimed_records_restart_after_speed_points_change_and_old_ones_stay(self):
+        old_key = self.r.settings_key(dict(BASE))                   # how untimed records were keyed before
+        rec = {"best_streak": 5, "scores": {old_key: 1500}}           # an earlier score that included speed points
+        quiz = self.finished(1200, 3)
+        self.assertEqual(self.r.earlier_untimed_best(rec, quiz), 1500)
+        outcome = self.r.update(rec, quiz)
+        self.assertTrue(outcome["first_score"])                     # not measured against the old 1500
+        self.assertEqual(rec["scores"][old_key], 1500)              # the old record is kept unchanged
+        self.assertEqual(rec["scores"][old_key + "|s2"], 1200)
+        timed = self.finished(900, 1, timer=True)
+        self.assertEqual(self.r.record_key(timed), self.r.settings_key(dict(BASE, timer=True)))  # timed keys unchanged
+        self.assertIsNone(self.r.earlier_untimed_best(rec, timed))
 
     def test_streak_record_and_single_update_per_round(self):
         rec = self.r.empty_records()

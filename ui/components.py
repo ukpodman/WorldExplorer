@@ -4,13 +4,14 @@ from __future__ import annotations
 import base64
 import hashlib
 import io
+import time
 from html import escape
 from pathlib import Path
 
 import streamlit as st
 from PIL import Image, ImageOps, UnidentifiedImageError
 
-from core import accounts
+from core import accounts, analytics, cookies
 from core.data import COLLECTIONS, CONTINENTS, COUNTRIES, PHOTOS, STATES, STATUS_LABELS, get_countries, get_country
 from core.i18n import LANGUAGES
 from core.quiz import CATEGORIES
@@ -67,9 +68,29 @@ THEME_SYNC = """<script data-we-theme-sync="1">
 </script>"""
 
 
+# Global Privacy Control reported by the browser (navigator.globalPrivacyControl) is mirrored into the we_gpc
+# cookie so the server honours it as well as the Sec-GPC header. When it first appears, the page reloads once so
+# the new session starts with measurement off; the reload is skipped if cookies cannot be stored.
+GPC_SYNC = """<script data-we-gpc="1">
+(function () {
+  if (window.__weGpcDone) return; window.__weGpcDone = true;
+  var on = navigator.globalPrivacyControl === true, has = /(?:^|; )we_gpc=1/.test(document.cookie);
+  var secure = location.protocol === "https:" ? ";Secure" : "";
+  if (on && !has) {
+    document.cookie = "we_gpc=1;Path=/;Max-Age=31536000;SameSite=Lax" + secure;
+    var reloaded = false;
+    try { reloaded = sessionStorage.getItem("we_gpc_reloaded") === "1"; sessionStorage.setItem("we_gpc_reloaded", "1"); } catch (e) { reloaded = true; }
+    if (/(?:^|; )we_gpc=1/.test(document.cookie) && !reloaded) location.reload();
+  } else if (!on && has) {
+    document.cookie = "we_gpc=;Path=/;Max-Age=0;SameSite=Lax" + secure;
+  }
+})();
+</script>"""
+
+
 def inject_styles() -> None:
     html(f"<style>{_stylesheet()}</style>")
-    st.html(THEME_SYNC, unsafe_allow_javascript=True)
+    st.html(THEME_SYNC + GPC_SYNC, unsafe_allow_javascript=True)  # one element: no extra layout gap
 
 
 def e(text, **fields) -> str:
@@ -221,9 +242,7 @@ def _account_controls() -> None:
                                            ("account", "Email sign-in / Create account", email)):
             if diagnosis["problem"] == "not_configured" and provider == "account":
                 continue  # optional provider: hide it entirely when not set up
-            if st.button(t(label), key=f"profile_{provider}", disabled=not diagnosis["ok"], width="stretch"):
-                if not accounts.login(provider):
-                    st.error(t("Sign-in could not start. You can keep playing as a guest."))
+            sign_in_button(provider, label, f"profile_{provider}", disabled=not diagnosis["ok"])
         if not google["ok"]:
             st.info(t("Sign-in is not available right now. You can keep playing as a guest; progress lasts for this session."))
         if google["problem"]:
@@ -232,6 +251,123 @@ def _account_controls() -> None:
     if st.session_state.profile_photo:
         html(f'<img class="profile-preview" src="{escape(st.session_state.profile_photo, quote=True)}" alt="{e("Profile photo")}">')
         st.button(t("Remove photo"), key="profile_remove_photo", on_click=_remove_photo)
+
+
+def cookie_script() -> None:
+    """Apply queued cookie writes now (needed inside dialogs, which rerun on their own)."""
+    script = cookies.script()
+    if script:
+        st.html(script, unsafe_allow_javascript=True)
+
+
+def _begin_sign_in(provider: str) -> None:
+    if accounts.guest_has_progress():
+        accounts.prepare_handoff()  # keep the guest's progress for the account (two steps: the cookie must be set first)
+    st.session_state.signin_ready = provider
+
+
+def sign_in_button(provider: str, label: str, key: str, *, disabled: bool = False, primary: bool = False) -> None:
+    """Sign-in that keeps guest progress. With progress: first click prepares the hand-off and explains it,
+    the second ("Continue to Google") leaves for Google's page. Without progress: one click."""
+    kind = "primary" if primary else "secondary"
+    with st.container(key=key + "_box"):
+        _sign_in_body(provider, label, key, disabled, kind)
+
+
+def _sign_in_body(provider: str, label: str, key: str, disabled: bool, kind: str) -> None:
+    if st.session_state.get("signin_ready") == provider and accounts.guest_has_progress():
+        cookie_script()
+        st.caption(t("Your guest progress ({points} points) will be added to your account after you sign in. "
+                     "An existing saved profile is never replaced.", points=f"{st.session_state.points:,}"))
+        if st.button(t("Continue to Google") if provider == "google" else t("Continue to sign-in"), key=key + "_go",
+                     type="primary", width="stretch", disabled=disabled):
+            if not accounts.login(provider):
+                st.error(t("Sign-in could not start. You can keep playing as a guest."))
+        return
+    if accounts.guest_has_progress():
+        st.button(t(label), key=key, disabled=disabled, width="stretch", type=kind, on_click=_begin_sign_in, args=(provider,))
+    elif st.button(t(label), key=key, disabled=disabled, width="stretch", type=kind):
+        if not accounts.login(provider):
+            st.error(t("Sign-in could not start. You can keep playing as a guest."))
+
+
+# --------------------------------------------------------------------------- usage statistics (pilot)
+
+def consent_bar() -> None:
+    """One compact question, shown until the visitor answers (only when the owner switched measurement on)."""
+    if not analytics.needs_choice():
+        return
+    with st.container(key="consent_bar", horizontal=True, vertical_alignment="center"):
+        html(f'<div class="consent-text"><b>{e("Help improve World Explorer?")}</b> '
+             f'{e("Allow anonymous usage statistics for our pilot: visits and finished rounds, with a random id. No names, emails or answers. You can change this in Settings.")}</div>')
+        with st.container(key="consent_actions", horizontal=True):
+            st.button(t("Allow"), key="consent_allow", type="primary", on_click=analytics.grant)
+            st.button(t("No thanks"), key="consent_deny", on_click=analytics.deny)
+
+
+def _privacy_changed() -> None:
+    analytics.grant() if st.session_state.privacy_statistics else analytics.deny()
+
+
+def _privacy_controls() -> None:
+    if not analytics.enabled():
+        return
+    st.subheader(t("Privacy"))
+    gpc = analytics.gpc_active()
+    # Always show the real choice: it can change in another tab (synchronised on every run) or by GPC.
+    st.session_state.privacy_statistics = st.session_state.get("an_consent") == "granted" and not gpc
+    st.toggle(t("Share anonymous usage statistics"), key="privacy_statistics", disabled=gpc, on_change=_privacy_changed)
+    cookie_script()
+    if gpc:
+        st.caption(t("Your browser sends a Global Privacy Control signal, so usage statistics stay off and nothing is "
+                     "recorded, even if you allowed them before."))
+    st.caption(t("For our pilot we count visits, started and finished rounds and the days you play, with a random id "
+                 "kept in this browser (or a one-way code of your account when signed in), plus device type and app "
+                 "language. Never names, emails, answers, photos or location. Switching this off stops it at once in "
+                 "every open tab of this browser and in your other signed-in sessions, and events not yet sent are "
+                 "discarded."))
+    if analytics.is_owner():
+        if st.button("Owner dashboard", key="owner_dashboard_open", width="stretch"):
+            navigate("Owner")
+            st.rerun()
+
+
+# --------------------------------------------------------------------------- feedback
+
+FEEDBACK_PAGES = ("Explore", "Learn", "Quiz", "Badges", "Other")
+DEVICES = {"phone": "Phone", "tablet": "Tablet", "desktop": "Computer"}
+
+
+def _feedback_body() -> None:
+    page = st.session_state.page if st.session_state.page in FEEDBACK_PAGES else "Other"
+    st.caption(t("We will send only what you see here: the page, your device type, your description and, if you add "
+                 "them, contact details — plus the app language and the time. No quiz history or account details."))
+    with st.form("feedback_form", border=False):
+        where = st.selectbox(t("Page"), FEEDBACK_PAGES, index=FEEDBACK_PAGES.index(page), format_func=t, key="feedback_page")
+        devices = list(DEVICES)
+        device = st.selectbox(t("Device"), devices, index=devices.index(st.session_state.get("an_device", "desktop")),
+                              format_func=lambda d: t(DEVICES[d]), key="feedback_device")
+        text = st.text_area(t("What happened, or what could be better?"), max_chars=2000, key="feedback_text")
+        contact = st.text_input(t("Contact (optional)"), max_chars=120, key="feedback_contact",
+                                help=t("Only if you would like a reply."))
+        sent = st.form_submit_button(t("Send feedback"), type="primary", width="stretch")
+    if sent:
+        last = st.session_state.get("feedback_sent_at", 0.0)
+        if not text.strip():
+            st.warning(t("Please describe the problem or idea first."))
+        elif time.time() - last < 30:
+            st.info(t("Thank you — your feedback was already sent."))
+        elif analytics.send_feedback(where, device, text, contact):
+            st.session_state.feedback_sent_at = time.time()
+            st.success(t("Thank you — your feedback was sent."))
+        else:
+            st.error(t("Feedback could not be sent right now. Your text is still here; please try again later."))
+
+
+def feedback_button() -> None:
+    if analytics.config().get("enabled") and accounts.storage_ready():
+        if st.button(t("Send feedback"), key="feedback_open", type="tertiary"):
+            st.dialog(t("Send feedback"), width="small")(_feedback_body)()
 
 
 def _preview_sound() -> None:
@@ -278,6 +414,7 @@ def _settings_body() -> None:
     st.divider()
     sound_on, volume = _sound_controls()
     st.divider()
+    _privacy_controls()
     if st.button(t("Apply settings"), key="apply_preferences", type="primary", width="stretch"):
         st.session_state.pending_preferences = {
             "profile_name": name.strip(), "app_language": lang, "scope_mode": mode, "scope_continent": area,

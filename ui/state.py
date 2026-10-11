@@ -6,7 +6,9 @@ from datetime import date
 
 import streamlit as st
 
-from core import badges, daily, records
+import secrets
+
+from core import analytics, badges, daily, records
 from core import quiz as engine
 from core.data import COLLECTIONS, CONTINENTS, DEFAULT_COLLECTION, get_countries, get_country, load_political_records
 from core.i18n import DEFAULT_LANGUAGE, render_parts, translate
@@ -80,6 +82,8 @@ def country_formatter(all_label: str | None = None):
 # --------------------------------------------------------------------------- navigation & scope
 
 def navigate(page: str) -> None:
+    if page != "Quiz":
+        engine.pause(st.session_state.get("quiz"))  # an untimed question's clock stops while it is not on screen
     st.session_state.page = page
 
 
@@ -238,16 +242,32 @@ def _group(mode: str) -> str:
     return "daily" if mode in ("daily", "daily_replay") else mode
 
 
+DOUBLE_START_SECONDS = 3.0
+
+
+def _repeat_start(current, settings: dict, mode: str, day: str | None) -> bool:
+    """A second Start within a few seconds (double click / double tap) on an untouched identical round."""
+    return bool(current and not current["finished"] and current.get("mode", "regular") == mode and current.get("day") == day
+                and not current["history"] and current["index"] == 0
+                and current.get("settings") == (engine.normalize_settings(settings) or dict(settings))
+                and time.monotonic() - current.get("created", -1e9) < DOUBLE_START_SECONDS)
+
+
 def _begin(settings: dict, questions: list[dict], available: int, mode: str, day: str | None = None) -> None:
     ss = st.session_state
     current = ss.quiz
+    if _repeat_start(current, settings, mode, day):
+        ss.show_setup, ss.page = False, "Quiz"
+        return
     parked = ss.setdefault("parked_rounds", {})
     if current and not current["finished"] and _group(current.get("mode", "regular")) != _group(mode):
+        engine.pause(current)
         parked[_group(current.get("mode", "regular"))] = current
     parked.pop(_group(mode), None)
     ss.quiz_serial += 1
     ss.quiz = engine.new_round(settings, questions, available, ss.quiz_serial)
-    ss.quiz.update(mode=mode, day=day)
+    ss.quiz.update(mode=mode, day=day, uid=secrets.token_hex(8), created=time.monotonic())
+    analytics.track_round("round_start", ss.quiz)
     # Badges held when the round began, so the results screen can name newly earned ones.
     ss.quiz["badges_before"] = sorted(badges.earned_ids(ss.stats, ss.points, ss.rounds_finished))
     ss.review_mode = "missed"
@@ -305,6 +325,7 @@ def resume_round(group: str) -> None:
         return
     current = ss.quiz
     if current and not current["finished"]:
+        engine.pause(current)
         parked[_group(current.get("mode", "regular"))] = current
     ss.quiz = target
     ss.show_setup, ss.page = False, "Quiz"
@@ -355,6 +376,7 @@ def next_question(serial: int, index: int) -> None:
         st.session_state.points += bonus
     if quiz["finished"] and not quiz.get("round_recorded"):
         quiz["round_recorded"] = True  # totals, badge statistics and records change once per round
+        analytics.track_round("round_complete", quiz)
         if replay:
             return  # practice replay of today's challenge: nothing is recorded
         st.session_state.rounds_finished += 1
@@ -402,6 +424,7 @@ def quiz_on_country(country_id: str) -> None:
 
 
 def open_setup() -> None:
+    engine.pause(st.session_state.get("quiz"))
     st.session_state.show_setup = True
 
 

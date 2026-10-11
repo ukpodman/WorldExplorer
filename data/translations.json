@@ -1796,11 +1796,6 @@
    "¿Sabías que…?",
    "你知道吗？"
   ],
-  "Fast answers add 25 points. A hint removes one wrong option and deducts 25 from that answer; a hinted answer still counts for the streak. Only the base points are multiplied. Each round has three hints.": [
-   "Schnelle Antworten bringen 25 Punkte extra. Ein Hinweis entfernt eine falsche Option und zieht 25 Punkte von dieser Antwort ab; eine Antwort mit Hinweis zählt trotzdem für die Serie. Nur die Grundpunkte werden multipliziert. Jede Runde hat drei Hinweise.",
-   "Las respuestas rápidas suman 25 puntos. Una pista elimina una opción incorrecta y resta 25 a esa respuesta; una respuesta con pista sigue contando para la racha. Solo se multiplican los puntos base. Cada ronda tiene tres pistas.",
-   "快速作答额外加 25 分。提示会移除一个错误选项，并从该题得分中扣除 25 分；使用提示的答案仍计入连对。只有基础分会被加倍。每轮有三次提示。"
-  ],
   "First score for these settings: {score}": [
    "Erstes Ergebnis mit diesen Einstellungen: {score}",
    "Primera puntuación con estos ajustes: {score}",
@@ -2355,6 +2350,186 @@
    "Zurück zur Tages-Challenge vom {date}",
    "Volver al reto diario del {date}",
    "返回 {date} 的每日挑战"
+  ],
+  "Start today's challenge": [
+   "Heutige Challenge starten",
+   "Empezar el reto de hoy",
+   "开始今日挑战"
+  ],
+  "Discover {name} →": [
+   "{name} entdecken →",
+   "Descubrir {name} →",
+   "探索{name} →"
+  ],
+  "Five questions. Discover something new every day.": [
+   "Fünf Fragen. Entdecke jeden Tag etwas Neues.",
+   "Cinco preguntas. Descubre algo nuevo cada día.",
+   "五道题，每天发现新知。"
+  ],
+  "In timed rounds, fast answers add 25 points. A hint removes one wrong option and deducts 25 from that answer; a hinted answer still counts for the streak. Only the base points are multiplied. Each round has three hints.": [
+   "In Runden mit Zeitlimit bringen schnelle Antworten 25 Punkte extra. Ein Hinweis entfernt eine falsche Option und zieht 25 Punkte von dieser Antwort ab; eine Antwort mit Hinweis zählt trotzdem für die Serie. Nur die Grundpunkte werden multipliziert. Jede Runde hat drei Hinweise.",
+   "En las rondas con tiempo, las respuestas rápidas suman 25 puntos. Una pista elimina una opción incorrecta y resta 25 a esa respuesta; una respuesta con pista sigue contando para la racha. Solo se multiplican los puntos base. Cada ronda tiene tres pistas.",
+   "限时轮次中，快速作答额外加 25 分。提示会移除一个错误选项，并从该题得分中扣除 25 分；使用提示的答案仍计入连对。只有基础分会被加倍。每轮有三次提示。"
+  ],
+  "Untimed rounds no longer give speed points, so a new record starts here. Your earlier best for these settings ({score}) is kept.": [
+   "Runden ohne Zeitlimit geben keine Tempopunkte mehr, daher beginnt hier ein neuer Rekord. Dein früherer Bestwert für diese Einstellungen ({score}) bleibt erhalten.",
+   "Las rondas sin tiempo ya no dan puntos por rapidez, así que aquí empieza un nuevo récord. Tu mejor resultado anterior con estos ajustes ({score}) se conserva.",
+   "不限时轮次不再有速度加分，因此从这里开始新的纪录。你之前在这些设置下的最佳成绩（{score}）会保留。"
+  ],
+  "Save your progress with Google": [
+   "Fortschritt mit Google speichern",
+   "Guarda tu progreso con Google",
+   "用 Google 保存进度"
+  ],
+  "Keep your points, streaks and badges for your next visit, on any device. What you played today comes with you.": [
+   "Behalte Punkte, Serien und Erfolge für deinen nächsten Besuch – auf jedem Gerät. Was du heute gespielt hast, kommt mit.",
+   "Conserva tus puntos, rachas y logros para tu próxima visita, en cualquier dispositivo. Lo que has jugado hoy se guarda contigo.",
+   "保留积分、连续记录和徽章，下次在任何设备上都能继续。今天的成绩也会一并保存。"
+  ],
+  "Continue as guest": [
+   "Als Gast weiterspielen",
+   "Seguir como invitado",
+   "以访客身份继续"
+  ],
+  "Privacy": [
+   "Datenschutz",
+   "Privacidad",
+   "隐私"
+  ],
+  "Share anonymous usage statistics": [
+   "Anonyme Nutzungsstatistik teilen",
+   "Compartir estadísticas de uso anónimas",
+   "分享匿名使用统计"
+  ],
+  "We will send only what you see here: the page, your device type, your description and, if you add them, contact details — plus the app language and the time. No quiz history or account details.": [
+   "Wir senden nur, was du hier siehst: die Seite, deinen Gerätetyp, deine Beschreibung und, falls angegeben, Kontaktdaten – dazu App-Sprache und Uhrzeit. Keinen Quizverlauf und keine Kontodaten.",
+   "Solo enviaremos lo que ves aquí: la página, tu tipo de dispositivo, tu descripción y, si los añades, tus datos de contacto, además del idioma y la hora. Ningún historial del cuestionario ni datos de la cuenta.",
+   "我们只发送你在这里看到的内容：页面、设备类型、你的描述，以及你填写的联系方式，另加应用语言和时间。不包含测验记录或账户信息。"
+  ],
+  "Page": [
+   "Seite",
+   "Página",
+   "页面"
+  ],
+  "Device": [
+   "Gerät",
+   "Dispositivo",
+   "设备"
+  ],
+  "Phone": [
+   "Smartphone",
+   "Teléfono",
+   "手机"
+  ],
+  "Tablet": [
+   "Tablet",
+   "Tableta",
+   "平板"
+  ],
+  "Computer": [
+   "Computer",
+   "Ordenador",
+   "电脑"
+  ],
+  "Other": [
+   "Sonstiges",
+   "Otra",
+   "其他"
+  ],
+  "What happened, or what could be better?": [
+   "Was ist passiert, oder was könnte besser sein?",
+   "¿Qué ha pasado o qué se podría mejorar?",
+   "发生了什么，或者哪里可以改进？"
+  ],
+  "Contact (optional)": [
+   "Kontakt (optional)",
+   "Contacto (opcional)",
+   "联系方式（可选）"
+  ],
+  "Send feedback": [
+   "Feedback senden",
+   "Enviar comentarios",
+   "发送反馈"
+  ],
+  "Continue to Google": [
+   "Weiter zu Google",
+   "Continuar a Google",
+   "前往 Google"
+  ],
+  "Continue to sign-in": [
+   "Weiter zur Anmeldung",
+   "Continuar al inicio de sesión",
+   "继续登录"
+  ],
+  "Allow": [
+   "Erlauben",
+   "Permitir",
+   "允许"
+  ],
+  "No thanks": [
+   "Nein, danke",
+   "No, gracias",
+   "不用了"
+  ],
+  "Only if you would like a reply.": [
+   "Nur, wenn du eine Antwort möchtest.",
+   "Solo si quieres una respuesta.",
+   "仅在你希望收到回复时填写。"
+  ],
+  "Please describe the problem or idea first.": [
+   "Bitte beschreibe zuerst das Problem oder die Idee.",
+   "Describe primero el problema o la idea.",
+   "请先描述问题或想法。"
+  ],
+  "Help improve World Explorer?": [
+   "World Explorer verbessern helfen?",
+   "¿Nos ayudas a mejorar World Explorer?",
+   "帮助改进 World Explorer？"
+  ],
+  "Allow anonymous usage statistics for our pilot: visits and finished rounds, with a random id. No names, emails or answers. You can change this in Settings.": [
+   "Erlaube anonyme Nutzungsstatistik für unseren Pilotversuch: Besuche und beendete Runden, mit einer zufälligen Kennung. Keine Namen, E-Mail-Adressen oder Antworten. Du kannst das in den Einstellungen ändern.",
+   "Permite estadísticas de uso anónimas para nuestro piloto: visitas y rondas terminadas, con un identificador aleatorio. Sin nombres, correos ni respuestas. Puedes cambiarlo en Ajustes.",
+   "允许为试用收集匿名使用统计：访问和完成的轮次，使用随机标识。不含姓名、邮箱或答案。可在设置中更改。"
+  ],
+  "Thank you — your feedback was already sent.": [
+   "Danke – dein Feedback wurde bereits gesendet.",
+   "Gracias, tus comentarios ya se enviaron.",
+   "谢谢，你的反馈已经发送。"
+  ],
+  "Thank you — your feedback was sent.": [
+   "Danke – dein Feedback wurde gesendet.",
+   "Gracias, tus comentarios se han enviado.",
+   "谢谢，你的反馈已发送。"
+  ],
+  "Feedback could not be sent right now. Your text is still here; please try again later.": [
+   "Das Feedback konnte gerade nicht gesendet werden. Dein Text ist noch da; bitte versuche es später erneut.",
+   "No se pudieron enviar los comentarios ahora. Tu texto sigue aquí; inténtalo de nuevo más tarde.",
+   "反馈暂时无法发送。你的文字仍在这里，请稍后再试。"
+  ],
+  "Your progress is now saved to your account.": [
+   "Dein Fortschritt ist jetzt in deinem Konto gespeichert.",
+   "Tu progreso ya está guardado en tu cuenta.",
+   "你的进度现已保存到账户。"
+  ],
+  "Your guest progress ({points} points) will be added to your account after you sign in. An existing saved profile is never replaced.": [
+   "Dein Gast-Fortschritt ({points} Punkte) wird nach der Anmeldung deinem Konto hinzugefügt. Ein bestehendes gespeichertes Profil wird nie ersetzt.",
+   "Tu progreso de invitado ({points} puntos) se añadirá a tu cuenta al iniciar sesión. Un perfil guardado existente nunca se sustituye.",
+   "登录后，你的访客进度（{points} 分）将添加到你的账户。已有的保存资料绝不会被覆盖。"
+  ],
+  "Your guest progress was added to your account: +{points} points.": [
+   "Dein Gast-Fortschritt wurde deinem Konto hinzugefügt: +{points} Punkte.",
+   "Tu progreso de invitado se ha añadido a tu cuenta: +{points} puntos.",
+   "你的访客进度已添加到账户：+{points} 分。"
+  ],
+  "For our pilot we count visits, started and finished rounds and the days you play, with a random id kept in this browser (or a one-way code of your account when signed in), plus device type and app language. Never names, emails, answers, photos or location. Switching this off stops it at once in every open tab of this browser and in your other signed-in sessions, and events not yet sent are discarded.": [
+   "Für unseren Pilotversuch zählen wir Besuche, begonnene und beendete Runden und die Tage, an denen du spielst – mit einer zufälligen Kennung in diesem Browser (oder einem nicht umkehrbaren Code deines Kontos, wenn du angemeldet bist) sowie Gerätetyp und App-Sprache. Niemals Namen, E-Mail-Adressen, Antworten, Fotos oder Standort. Wenn du es ausschaltest, endet es sofort in allen geöffneten Tabs dieses Browsers und in deinen anderen angemeldeten Sitzungen; noch nicht gesendete Ereignisse werden verworfen.",
+   "Para nuestro piloto contamos visitas, rondas empezadas y terminadas y los días en que juegas, con un identificador aleatorio guardado en este navegador (o un código irreversible de tu cuenta si has iniciado sesión), además del tipo de dispositivo y el idioma. Nunca nombres, correos, respuestas, fotos ni ubicación. Si lo desactivas, se detiene de inmediato en todas las pestañas abiertas de este navegador y en tus otras sesiones iniciadas, y los eventos aún no enviados se descartan.",
+   "在试用期间，我们会统计访问、开始和完成的轮次以及你玩的天数，使用保存在此浏览器中的随机标识（登录时为账户的单向代码），以及设备类型和应用语言。绝不收集姓名、邮箱、答案、照片或位置。关闭后，此浏览器所有已打开的标签页以及你其他已登录的会话都会立即停止，尚未发送的事件会被丢弃。"
+  ],
+  "Your browser sends a Global Privacy Control signal, so usage statistics stay off and nothing is recorded, even if you allowed them before.": [
+   "Dein Browser sendet ein Global-Privacy-Control-Signal. Daher bleibt die Nutzungsstatistik aus und nichts wird erfasst – auch wenn du sie früher erlaubt hast.",
+   "Tu navegador envía una señal de Global Privacy Control, así que las estadísticas de uso permanecen desactivadas y no se registra nada, aunque las hubieras permitido antes.",
+   "你的浏览器发送了“全球隐私控制”（Global Privacy Control）信号，因此使用统计保持关闭，不会记录任何内容，即使你之前允许过。"
   ]
  }
 }

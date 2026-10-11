@@ -47,7 +47,10 @@
 .stApp .stButton button:hover { border-color:var(--teal); background:var(--teal-soft); }
 .stApp button[kind="primary"], [data-testid="stDialog"] button[kind="primary"] { background:var(--teal) !important; border:1px solid var(--teal-deep) !important; color:#fff !important; }
 .stApp button[kind="primary"]:hover { background:var(--teal-deep) !important; }
-.stApp button[kind="primary"] p { color:#fff !important; }
+.stApp button[kind="primary"] p, [data-testid="stDialog"] button[kind="primary"] p { color:#fff !important; }
+:is(.stApp, [data-testid="stDialog"]) button[kind="primaryFormSubmit"] { background:var(--teal) !important; border:1px solid var(--teal-deep) !important; color:#fff !important; min-height:44px; }
+:is(.stApp, [data-testid="stDialog"]) button[kind="primaryFormSubmit"]:hover { background:var(--teal-deep) !important; }
+:is(.stApp, [data-testid="stDialog"]) button[kind="primaryFormSubmit"] p { color:#fff !important; }
 /* Disabled controls stay readable: no washed-out opacity, a dashed edge marks them as unavailable. */
 .stApp button:disabled, [data-testid="stDialog"] button:disabled { opacity:1 !important; background:var(--surface-3) !important; color:var(--slate) !important;
   border:1px dashed var(--disabled-border) !important; cursor:not-allowed; }
@@ -778,3 +781,68 @@ html[data-we-theme="dark"] [data-testid="stDialog"] [role="dialog"] { background
 html[data-we-theme="dark"] .stApp :is(button:focus-visible, a:focus-visible, input:focus-visible) { outline-color:var(--gold-text) !important; }
 /* Touch screens (phones in landscape, tablets): card buttons keep a 44 px target. */
 @media (pointer:coarse) { [class*="st-key-country_card_"] .stButton button { min-height:44px; } }
+
+/* ---------- pilot: consent bar, footer feedback link, owner dashboard ---------- */
+.st-key-consent_bar { background:var(--paper); border:1px solid var(--line-cool); border-left:4px solid var(--teal); border-radius:12px;
+  padding:10px 12px !important; gap:8px 14px !important; flex-wrap:wrap !important; margin:.15rem 0 .35rem; }
+.st-key-consent_bar > :first-child { flex:1 1 260px !important; min-width:0 !important; }
+.consent-text { font-size:.9rem; line-height:1.45; color:var(--navy); }
+.st-key-consent_bar [data-testid="stMarkdownContainer"] { margin-bottom:0 !important; }
+@media (max-width:700px) { .consent-text { font-size:.84rem; line-height:1.4; } .st-key-consent_bar { padding:8px 10px !important; } }
+.consent-text b { display:block; }
+.st-key-consent_actions { flex:0 0 auto !important; width:auto !important; gap:8px !important; flex-wrap:nowrap !important; }
+.st-key-consent_actions button { min-height:44px; white-space:nowrap; padding:0 1rem !important; }
+.st-key-app_footer { gap:4px 14px !important; flex-wrap:wrap !important; }
+.st-key-app_footer > :first-child { flex:1 1 220px !important; min-width:0 !important; }
+.st-key-feedback_open button { min-height:44px; color:var(--teal-dark) !important; text-decoration:underline; text-underline-offset:3px; }
+.st-key-feedback_open button p { color:var(--teal-dark) !important; }
+.owner-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(190px, 1fr)); gap:10px; margin:.25rem 0 1rem; }
+.owner-tile { background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:12px 14px; color:var(--navy); }
+.owner-tile span { display:block; font-size:.78rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--slate); }
+.owner-tile b { display:block; font-size:1.6rem; line-height:1.2; margin-top:4px; color:var(--navy); }
+.owner-tile small { display:block; font-size:.85rem; color:var(--slate); }
+.owner-table { overflow-x:auto; border:1px solid var(--line); border-radius:12px; background:var(--paper); }
+.owner-table table { width:100%; border-collapse:collapse; font-size:.9rem; color:var(--navy); }
+.owner-table th, .owner-table td { padding:8px 10px; text-align:left; border-bottom:1px solid var(--line); white-space:nowrap; }
+.owner-table th { font-size:.78rem; text-transform:uppercase; letter-spacing:.03em; color:var(--slate); background:var(--surface-2); }
+.owner-table tr:last-child td { border-bottom:0; }
+
+/* ---------- Explore: Daily Challenge invitation banner ---------- */
+.stApp .st-key-atlas_feature .invite-title { font-size:clamp(1.7rem,3.1vw,2.55rem) !important; max-width:600px; }
+.st-key-feature_actions { position:relative; z-index:2; gap:10px !important; flex-wrap:wrap !important; margin-top:4px; }
+.st-key-feature_actions .stButton { max-width:none !important; }
+.st-key-feature_actions button { min-height:44px; padding:0 1.15rem !important; }
+.st-key-atlas_feature .stButton button:not([kind="primary"]) { background:rgba(17,29,43,.35) !important; border:1px solid rgba(255,255,255,.62) !important; }
+.st-key-atlas_feature .stButton button:not([kind="primary"]) p { color:#fff !important; }
+.st-key-atlas_feature .stButton button:not([kind="primary"]):hover { background:rgba(255,255,255,.12) !important; }
+@media (max-width:700px) {
+  /* Phones: invitation text beside one Start / Continue / Replay button; the country list follows directly. */
+  .st-key-featured_discover { display:none !important; }
+  .st-key-feature_actions { margin-top:0; flex-wrap:nowrap !important; align-self:center; }
+  .stApp .st-key-atlas_feature .invite-title { font-size:1.02rem !important; line-height:1.3 !important; letter-spacing:-.01em; }
+  .st-key-atlas_feature .st-key-feature_actions .stButton button { white-space:normal !important; max-width:7.6rem; line-height:1.2; padding:4px .75rem !important; }
+  .st-key-atlas_feature .st-key-feature_actions .stButton button :is(p, div) { white-space:normal !important; overflow:visible !important; text-overflow:clip !important; }
+}
+
+/* ---------- compact score strip during a round (one line, question first) ---------- */
+.score-strip.compact { display:flex; flex-wrap:wrap; gap:6px; margin:2px 0 8px; }
+.score-strip.compact .score-item { display:flex; align-items:baseline; gap:6px; flex:1 1 auto; min-width:0; padding:6px 12px; border-radius:999px; }
+.score-strip.compact .score-label { font-size:.68rem; letter-spacing:.05em; white-space:nowrap; }
+.score-strip.compact .score-value { font-size:1.05rem; line-height:1.4; white-space:nowrap; }
+.score-strip.compact .mult-chip { font-size:.7rem; padding:0 6px; }
+@media (max-width:700px) {
+  .score-strip.compact { gap:5px; margin:0 0 6px; flex-wrap:nowrap; }
+  .score-strip.compact .score-item { padding:5px 9px; gap:5px; justify-content:center; }
+  .score-strip.compact .score-label { font-size:.58rem; letter-spacing:.03em; overflow:hidden; text-overflow:ellipsis; }
+  .score-strip.compact .score-value { font-size:.98rem; }
+}
+
+/* ---------- save-progress invitation (guests, after the first completed round) ---------- */
+.st-key-save_invite { background:var(--teal-soft); border:1px solid var(--chip-teal-border); border-radius:14px; padding:12px 14px !important; gap:8px !important; margin:.25rem 0 .5rem; }
+.save-invite-text { color:var(--navy); line-height:1.45; }
+.save-invite-text b { display:block; font-size:1.02rem; }
+.save-invite-text span { display:block; font-size:.9rem; color:var(--slate); }
+.st-key-save_invite [data-testid="stMarkdownContainer"] { margin-bottom:0 !important; }
+.st-key-save_invite_actions { gap:8px !important; flex-wrap:wrap !important; }
+.st-key-save_invite_actions > * { flex:1 1 200px !important; min-width:0 !important; }
+.st-key-save_invite_actions button { min-height:44px; width:100%; white-space:normal; line-height:1.25; }

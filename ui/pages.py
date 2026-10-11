@@ -17,7 +17,7 @@ from core.data import (AREAS, COLLECTIONS, COUNTRIES, DEFAULT_COLLECTION, PHOTOS
                        get_country, load_political_records)
 from core.quiz import CATEGORIES, DIFFICULTIES, QUESTION_COUNTS, currency_label
 
-from . import sound, state
+from . import owner, sound, state
 from .components import e, hero, html, photo_credits, status_chip
 from .state import country_formatter, country_label, formatter, parts, t
 
@@ -100,7 +100,7 @@ def _daily_button_label(d: dict) -> str:
 def _daily_short_label(d: dict) -> str:
     if d["in_progress"]:
         return t("Continue today's challenge")
-    return t("Replay today's challenge") if d["done"] else t("Today's challenge")
+    return t("Replay today's challenge") if d["done"] else t("Start today's challenge")
 
 
 def _streak_text(d: dict) -> str:
@@ -119,15 +119,13 @@ def _practise_button(key: str) -> None:
 
 
 def _challenge() -> None:
-    d = _daily_status()
+    """Grid card for building your own quiz (the Daily Challenge invitation is the banner at the top)."""
     with st.container(key="atlas_quiz"):
         html(f'<div class="feature-kicker">{e("Your next adventure")}</div>'
              f'<div class="challenge-title">{e("Your next challenge")}</div>'
-             f'<div class="challenge-note daily-note">{escape(_streak_text(d))}</div>')
+             f'<div class="challenge-note">{e("Capitals, flags, currencies, languages and more.")}</div>')
         with st.container(key="challenge_actions", horizontal=True):
-            st.button(_daily_short_label(d), key="explore_daily", type="primary", on_click=state.start_daily,
-                      help=t("Five questions a day, the same for everyone."))
-            st.button(t("Take a quiz →"), key="atlas_take_quiz", on_click=state.navigate, args=("Quiz",))
+            st.button(t("Take a quiz →"), key="atlas_take_quiz", type="primary", on_click=state.navigate, args=("Quiz",))
 
 
 def _exploration_area() -> None:
@@ -168,15 +166,24 @@ def explore() -> None:
     available = state.scoped_countries()
     feature = next((c for code in FEATURED for c in available if c["id"] == code), available[0])
     photo = PHOTOS.get(feature["id"])
+    d = _daily_status()
+    # One banner, one clear first step: today's challenge (Start / Continue / Replay) with the featured
+    # destination as the second action. On phones the country list follows directly, so only the first is shown.
     with st.container(key="atlas_feature"):
         scene = (f'style="background-image:url(\'{escape(photo["url"], quote=True)}\')"' if photo else 'class="no-photo"')
+        kicker = e("Today's challenge") + (f' · <span aria-hidden="true">🔥</span> {d["streak"]}' if d["streak"] else "")
+        status = (_streak_text(d) + (" " + d["next"] if d["done"] else "")) if d["done"] or d["streak"] else ""
+        place = e("Featured destination") + ": " + e(feature["name"]) + (" · " + escape(photo["caption"]) if photo else "")
         html(f'<div class="feature-scene" {scene} role="img" aria-label="{escape(photo["caption"] if photo else "", quote=True)}"></div>'
-             f'<div class="feature-copy"><div class="feature-kicker">{e("Featured destination")}</div>'
-             f'<h2 class="feature-title">{e(feature["name"])}</h2>'
-             f'<div class="feature-description">{e("Explore places. Build knowledge. Find your next challenge.")}</div>'
-             f'<div class="feature-place">{escape(photo["caption"]) if photo else e(feature["continent"])}</div></div>')
-        st.button(t("Discover country →"), key="featured_discover", type="primary", width="stretch",
-                  on_click=state.learn, args=(feature["id"],))
+             f'<div class="feature-copy"><div class="feature-kicker">{kicker}</div>'
+             f'<h2 class="feature-title invite-title">{e("Five questions. Discover something new every day.")}</h2>'
+             + (f'<div class="feature-description">{escape(status)}</div>' if status else "")
+             + f'<div class="feature-place">{place}</div></div>')
+        with st.container(key="feature_actions", horizontal=True):
+            st.button(_daily_short_label(d), key="explore_daily", type="primary" if not d["done"] else "secondary",
+                      on_click=state.start_daily, help=_daily_button_label(d))
+            st.button(t("Discover {name} →", name=feature["name"]), key="featured_discover",
+                      on_click=state.learn, args=(feature["id"],))
 
     _exploration_area()
 
@@ -520,8 +527,9 @@ def _setup() -> None:
             st.write(t("Correct answers earn 100 base points, multiplied by difficulty: Easy ×1, Medium ×1.25, Difficult ×1.5, Expert ×2."))
             st.write(t("Answer streak: the 1st and 2nd correct answers in a row earn the base points, the 3rd and 4th earn double, "
                        "and from the 5th on they earn triple. A wrong answer or a timeout resets the streak, and every round starts at 0."))
-            st.write(t("Fast answers add 25 points. A hint removes one wrong option and deducts 25 from that answer; a hinted "
-                       "answer still counts for the streak. Only the base points are multiplied. Each round has three hints."))
+            st.write(t("In timed rounds, fast answers add 25 points. A hint removes one wrong option and deducts 25 from that "
+                       "answer; a hinted answer still counts for the streak. Only the base points are multiplied. Each round "
+                       "has three hints."))
             st.write(t("A perfect round without hints adds 250 points × difficulty (never multiplied by the streak). Wrong and "
                        "timed-out answers earn zero."))
             st.write(t("Medals depend on accuracy only: gold from 90%, silver from 70%, bronze from 50%."))
@@ -548,10 +556,11 @@ def _score_strip(quiz) -> None:
     streak = quiz["streak"]
     multiplier = engine.streak_multiplier(streak) if streak else 1
     chip = f'<span class="mult-chip">×{multiplier}</span>' if multiplier > 1 else ""
-    items = (("Round score", f"{quiz['score']:,}"), ("Streak", f"{streak}{chip}"), ("Hints remaining", quiz["hints_remaining"]))
-    html('<div class="score-strip">' + "".join(
-        f'<div class="score-item"><div class="score-label">{e(label)}</div><div class="score-value">{value}</div></div>'
-        for label, value in items) + "</div>")
+    items = (("Round score", f"{quiz['score']:,}", "score"), ("Streak", f"{streak}{chip}", "streak"),
+             ("Hints remaining", quiz["hints_remaining"], "hints"))
+    html('<div class="score-strip compact">' + "".join(
+        f'<div class="score-item {cls}"><span class="score-label">{e(label)}</span><span class="score-value">{value}</span></div>'
+        for label, value, cls in items) + "</div>")
 
 
 def _feedback(quiz, q, record, fresh: bool) -> None:
@@ -597,6 +606,7 @@ def _active_round() -> None:
     if not quiz or quiz["finished"] or st.session_state.show_setup or st.session_state.page != "Quiz":
         return
     state.expire_if_due()
+    engine.mark_presented(quiz)  # the answer clock starts when the question is shown (timed and untimed)
     q, index, serial = engine.current_question(quiz), quiz["index"], quiz["serial"]
     total, limit = len(quiz["questions"]), engine.time_limit(quiz)
     slug, icon = CATEGORY_STYLES.get(q["kind"], ("geography", "🧭"))
@@ -748,6 +758,24 @@ def _return_label(group: str, kept: dict) -> str:
     return t({"daily": "Return to today's challenge", "practice": "Return to mistake practice"}.get(group, "Return to your quiz round"))
 
 
+def _dismiss_save_invite() -> None:
+    st.session_state.save_invite_dismissed = True
+
+
+def _save_invite() -> None:
+    """After a guest's first completed round: offer to keep the progress with Google (dismissible)."""
+    from .components import sign_in_button  # local import: components imports this module's state helpers
+    if (accounts.identity() is not None or st.session_state.get("save_invite_dismissed")
+            or st.session_state.rounds_finished < 1 or not accounts.provider_ready("google")):
+        return
+    with st.container(key="save_invite"):
+        html(f'<div class="save-invite-text"><b>{e("Save your progress with Google")}</b>'
+             f'<span>{e("Keep your points, streaks and badges for your next visit, on any device. What you played today comes with you.")}</span></div>')
+        with st.container(key="save_invite_actions", horizontal=True):
+            sign_in_button("google", "Save your progress with Google", "save_invite_google", primary=True)
+            st.button(t("Continue as guest"), key="save_invite_dismiss", on_click=_dismiss_save_invite)
+
+
 def _results(quiz) -> None:
     stats, settings = engine.statistics(quiz), quiz["settings"]
     sound.play_event(quiz["event"])
@@ -774,6 +802,10 @@ def _results(quiz) -> None:
             pass
         elif outcome["first_score"]:
             chips.append(("record", e("First score for these settings: {score}", score=f"{stats['score']:,}")))
+            earlier = records.earlier_untimed_best(st.session_state.records, quiz)
+            if earlier is not None:
+                st.caption(t("Untimed rounds no longer give speed points, so a new record starts here. Your earlier best "
+                             "for these settings ({score}) is kept.", score=f"{earlier:,}"))
         elif outcome["new_score"]:
             chips.append(("record new", e("New best for these settings! Previous best: {score}", score=f"{outcome['previous_score']:,}")))
         else:
@@ -811,6 +843,7 @@ def _results(quiz) -> None:
                 if b["id"].startswith("continent_") or b["id"] == "flag_spotter":
                     label = (t("Practise {continent}", continent=b["fields"]["continent"]) if b["fields"] else t("Practise flags"))
                     st.button(label, key="practise_badge", on_click=_practise_for, args=(b["id"],))
+        _save_invite()
         one, two = st.columns(2)
         if mode in ("daily", "daily_replay"):
             d = _daily_status()
@@ -859,8 +892,7 @@ def quiz() -> None:
         with setup:
             _setup()
         return
-    hero("World Quiz", "Every answer takes you further.", "Think carefully. Build a streak. Discover something new.",
-         variant="compact")
+    # During a round the question comes first: no decorative banner, just the round bar and a compact score strip.
     with st.container(key="round_bar"):
         summary, action = st.columns([3, 1], vertical_alignment="center")
         s = current["settings"]
@@ -936,4 +968,4 @@ def badges() -> None:
             _award_grid(rest)
 
 
-ROUTES = {"Explore": explore, "Learn": learn, "Quiz": quiz, "Badges": badges}
+ROUTES = {"Explore": explore, "Learn": learn, "Quiz": quiz, "Badges": badges, "Owner": owner.render}

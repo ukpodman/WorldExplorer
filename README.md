@@ -60,12 +60,16 @@ core/
   badges.py                badge rules and the quiz statistics they are earned from
   records.py               medals and personal records (per round settings)
   daily.py                 Daily Challenge, day streak and "Practise mistakes" (pure Python)
+  analytics.py             pilot measurement: consent, pseudonymous ids, deduplicated events, feedback storage
+  metrics.py               pilot metric definitions and calculations for the owner dashboard (pure Python)
+  cookies.py               the four small first-party cookies (read on the server, written by a tiny script)
   facts.py                 the sourced "Did you know?" fact after each answer
   learn.py                 Learn helpers: country stepping, neighbours by collection, size comparison
 ui/
   state.py                 session state and round callbacks
   components.py            header, hero, settings drawer (profile, sign-in help, places, sound)
   pages.py                 Explore, Learn, Quiz, Badges
+  owner.py                 private owner dashboard (server-side owner check)
   sound.py                 optional generated sound effects
 data/
   countries.json           244 places (generated; do not edit by hand)
@@ -85,8 +89,9 @@ tools/                     rebuild data/countries.json, flags.json and COVERAGE.
 ```bash
 python -m unittest discover tests
 ```
-`test_core.py` needs only Python. `test_app.py` runs the real app with Streamlit's AppTest and is
-skipped if Streamlit is not installed.
+`test_core.py` needs only Python. `test_app.py`, `test_analytics.py` (measurement, owner access, guest → account)
+and `test_reliability.py` (answer timing, signed-in profiles, save/load failures) run the real app with Streamlit's
+AppTest against simulated Google and Supabase stand-ins; they are skipped if Streamlit is not installed.
 
 ## Updating data
 
@@ -115,6 +120,9 @@ grant select, insert, update on public.world_explorer_profiles to service_role;
 Only the server, using the server key from secrets, reads or writes rows. The row id is derived
 from the verified sign-in identity.
 
+The pilot measurement and feedback tables are separate from player progress; their SQL and the secrets section
+that switches them on are in `SETUP_ANALYTICS.md`.
+
 ## Sounds
 
 Sound effects are off by default (☰ Settings → Sound effects, with volume and preview). The tones
@@ -136,12 +144,12 @@ but are not covered by the ODbL (see `COVERAGE.md`). Photo credits are listed in
 | Base points | 100 × difficulty (Easy ×1, Medium ×1.25, Difficult ×1.5, Expert ×2), for a correct answer |
 | Streak multiplier | Consecutive correct answers in the current round: 1st–2nd ×1, 3rd–4th ×2, 5th onward ×3. Only the base points are multiplied |
 | Streak reset | A wrong answer or a timeout resets the streak to 0. Every new round starts at 0. (There is no skip button; leaving the page keeps the round and the streak.) |
-| Speed bonus | +25 (flat, not multiplied) for answering within 7 s, or within a third of the time limit in timed rounds |
+| Speed bonus | Timed rounds only: +25 (flat, not multiplied) for answering within a third of the time limit. Untimed rounds give no speed points (since the 2026-10 pilot update; see below) |
 | Hint | −25 (flat) from that answer, applied after multiplying. A hinted correct answer still continues the streak |
 | Question total | `max(0, base × multiplier + speed − hint)`; wrong and timed-out answers score 0 |
 | Perfect round | +250 × difficulty when every answer is correct and no hint was used. Never multiplied by the streak |
 | Medals | Accuracy only: gold ≥ 90 %, silver ≥ 70 %, bronze ≥ 50 %, otherwise "Keep practising" |
-| Score records | Compared only with rounds of identical settings: places, area, category, difficulty, question count, timed or not, and (for Mixed) flag questions on/off |
+| Score records | Compared only with rounds of identical settings: places, area, category, difficulty, question count, timed or not, and (for Mixed) flag questions on/off. Untimed rounds scored after the speed-points change have their own records; earlier untimed records stay saved and are named on the results screen |
 | Streak record | Best answer streak in any round |
 
 Each answer, timeout and finished round is recorded once: answer, Next and timer callbacks check the round
@@ -162,7 +170,130 @@ accounts). After uploading:
    `records` entry next to `points`, `rounds_finished` and `stats`. Older rows without it keep working.
 5. If the footer says "Saved profile not reachable yet", nothing is written until the profile has loaded.
 
-## Fix in this update: daily results after midnight UTC
+## Pilot update (measurement, timing fix, easier first use)
+
+**Rollback.**
+* The working version before this update is commit `82c6293`, tagged `checkpoint-before-pilot-update`.
+* The same files are in `WorldExplorer_backup_before_pilot_update.zip`.
+* To restore, upload that ZIP's files to GitHub as usual, or run
+  `git checkout checkpoint-before-pilot-update -- .` and then commit.
+* No database or secrets change is needed to roll back. The two analytics tables can stay; nothing reads them.
+
+### Stage 1 — Measurement (off until you set it up: see SETUP_ANALYTICS.md)
+
+Nothing is recorded until the visitor allows it (consent bar, or Settings → Privacy). Each event is recorded
+once per person and round or session, and failures are silent.
+
+**Events recorded**
+* `visit` (once per browser session)
+* `round_start` and `round_complete`, each with a mode:
+  * `regular`: a round started from quiz setup
+  * `daily`: the first counted Daily Challenge attempt of that day
+  * `daily_replay`: a Daily Challenge replay
+  * `practice`: a Practise mistakes round
+* `link`: a guest id joined to the account after sign-in
+* an anonymous `consent_declined` tally
+
+**Identifiers**
+* Guests: a random id in the `we_aid` cookie, kept across refreshes in the same browser.
+* Signed-in players: a salted one-way hash of the profile id.
+* No fingerprinting.
+* The limits of guest identity across devices, cleared storage, private windows and Safari's 7-day cookie cap
+  are in SETUP_ANALYTICS.md.
+
+**Owner dashboard**
+* Opened from ☰ Settings → Privacy → Owner dashboard.
+* Only for signed-in Google accounts whose verified email is in `[analytics] owner_emails`.
+* The check runs on the server on every load. Anyone else gets "This page is not available" and no data.
+* Owner and test traffic is excluded by default; see SETUP_ANALYTICS.md §4.
+
+**Metric definitions.** All days are UTC calendar days, the same as the Daily Challenge. Every rate is shown as
+"n of d" next to the percentage.
+
+| Metric | Numerator | Denominator / scope |
+|---|---|---|
+| Measured people | distinct pseudonymous ids (a guest id that later signed in is merged into that account) | all data; only visitors who allowed statistics |
+| New visitors | people whose first event falls in the selected period (7 days, 28 days or all) | count |
+| Returning visitors | people active in the period on a UTC day after the day they were first seen | count |
+| Quiz starts / completions | `round_start` / `round_complete` events in the period, by mode, plus distinct people | counts |
+| Daily Challenge first counted completions | completed rounds of mode `daily`, plus distinct person-days | counts |
+| First-round completion | people whose first started round (any mode except replay) was completed | people who started a first round; first rounds started in the last hour are pending and left out |
+| Return within 7 days | people with any event on a later UTC day within 7×24 h after their first completed round | people whose first completed round was at least 7×24 h ago (full window elapsed); the rest are shown as "still in window" |
+| Active on 3+ days | people with events on at least three distinct UTC days | all measured people |
+| Signed-in vs guest | people with any signed-in event / the rest | all measured people |
+| "No thanks" answers | anonymous count of declined statistics prompts | period |
+
+### Stage 2 — Answer timing and speed points (bug fixed)
+
+**The bug.** The answer clock only started the first time code read it.
+* In timed rounds the countdown read it when the question appeared, so timing was right.
+* Untimed rounds have no countdown, so the first read happened when the answer was submitted. Every untimed
+  answer therefore took 0.0 s.
+* As a result, every correct untimed answer received the +25 speed bonus, and the "average response time" was
+  always 0.0.
+
+**The fix.**
+* The clock now starts when the question is shown, in every round (`engine.mark_presented`).
+* Untimed rounds pause the clock while the question is off screen (another page, quiz setup, or a round set
+  aside).
+* Timed rounds keep running as before, so leaving the page cannot buy extra time.
+
+**Decision on speed points.**
+* Speed points now apply only in timed rounds. Untimed rounds (including the Daily Challenge) are for reading and
+  learning at your own pace, and everyone's Daily Challenge is scored the same way.
+* Saved points, badges and earlier records are not recalculated.
+* Untimed rounds get new record entries, so a new score is never compared with an older one that included the
+  automatic bonus. The results screen shows the earlier best.
+
+### Stage 3 — Interface
+
+* **Explore:** the banner is now one invitation, "Five questions. Discover something new every day.", with
+  Start, Continue or Replay for today's challenge, plus "Discover {country}" on tablets and desktops.
+  * The grid card is "Take a quiz", so there is no second challenge card.
+  * On phones the banner shows one button and the country list follows directly.
+* **Active quiz:** no decorative banner during a round. The score, streak and hints sit in a compact one-line
+  strip, so the question and answers start higher on the screen. Category colours, explanations, sources and
+  the correct/incorrect states are unchanged.
+* **Save progress:** after a guest's first completed round, the results show "Save your progress with Google"
+  and "Continue as guest".
+  * Clicking keeps the guest's progress on the server for 30 minutes (cookie `we_handoff`). It stays there until
+    the account save that includes it succeeds, so a failed save can be recovered by a retry or a refresh.
+  * The saved profile records a one-way transfer id (`transfers`). Retries, a repeated sign-in and several open
+    tabs therefore never add the progress twice. Before writing, a save that includes the progress reads the
+    profile again: if another tab already saved the transfer, it uses that result; if the profile changed in the
+    meantime, it adds the guest progress to the fresh copy.
+  * After Google's page, the progress is added to the account:
+    * points, rounds and statistics add up;
+    * records keep the higher value;
+    * daily days are combined, and a saved day keeps its saved result;
+    * the day streak continues;
+    * an existing saved profile is never replaced.
+  * A one-time message says what was added. The same two-step flow applies to the sign-in button in Settings.
+* **Feedback:** "Send feedback" in the footer (shown once SETUP_ANALYTICS.md is done) asks for page, device type,
+  a description and optional contact details. It says exactly what is sent, and never sends quiz history or
+  account details.
+
+## Fixes before upload (2026-10-11)
+
+The working version before these fixes is the pilot update (commit `d8424e2`). It is tagged
+`checkpoint-before-consent-handoff-fix` and saved in `WorldExplorer_backup_before_consent_handoff_fix.zip`.
+
+* **Guest progress transfer:** the hand-off is no longer used up before the account save succeeds. It is
+  recoverable after a failed save (retry or refresh), and idempotent through a one-way transfer id saved in the
+  profile. A failed save, a refresh, recovery, a repeated sign-in and concurrent tabs each add the progress
+  exactly once.
+* **Play during a pending transfer:** points, rounds and answer statistics earned while the transfer save is
+  still failing are kept when the save is retried. This holds whether another tab saved the transfer first or
+  the saved profile changed in the meantime. Retries after repeated failures never count anything twice.
+* **Consent:**
+  * "No thanks" in one tab now stops measurement in every open tab of the browser without a reload (and in the
+    person's other signed-in sessions).
+  * Events already waiting in the background queue are checked again and dropped.
+  * Global Privacy Control now wins over an earlier "Allow": nothing is recorded, the id cookie is removed and
+    the Settings switch is locked off.
+  * The privacy wording in Settings and in SETUP_ANALYTICS.md describes exactly this.
+
+## Earlier: daily results after midnight UTC
 
 - The daily results card now looks up the saved result by the round's own date (`quiz["day"]`), not by today's date.
   Reopening yesterday's replay (or counted round) after midnight UTC no longer crashes, and yesterday's score is never
@@ -173,7 +304,7 @@ accounts). After uploading:
   A kept daily round from an earlier day is labelled "Return to the daily challenge of {date}".
 - If an earlier day is finished after a later one, its result is saved but the day streak never moves backwards.
 
-## Earlier in this update (Daily Challenge, day streak, Practise mistakes)
+## Earlier: Daily Challenge, day streak, Practise mistakes
 
 - **Daily Challenge:** 5 questions a day, the same for everyone: Mixed categories at Medium, all UN member and
   observer states, generated by the normal quiz engine with a seed taken from the date (no random state, no

@@ -22,7 +22,7 @@ from .components import e, hero, html, photo_credits, status_chip
 from .state import country_formatter, country_label, formatter, parts, t
 
 CONTINENTS_LIST = list(AREAS[1:])
-EXPLORE_PAGE_SIZE = 7  # desktop: 3 + challenge card in row 1, 4 in row 2
+EXPLORE_PAGE_SIZE = 8  # two full rows of four on tablets and desktops; one list on phones
 FEATURED = ("NGA", "JPN", "ITA", "BRA")
 
 
@@ -118,16 +118,6 @@ def _practise_button(key: str) -> None:
                   help=t("A round built from questions you missed. Correct answers clear them from the list."))
 
 
-def _challenge() -> None:
-    """Grid card for building your own quiz (the Daily Challenge invitation is the banner at the top)."""
-    with st.container(key="atlas_quiz"):
-        html(f'<div class="feature-kicker">{e("Your next adventure")}</div>'
-             f'<div class="challenge-title">{e("Your next challenge")}</div>'
-             f'<div class="challenge-note">{e("Capitals, flags, currencies, languages and more.")}</div>')
-        with st.container(key="challenge_actions", horizontal=True):
-            st.button(t("Take a quiz →"), key="atlas_take_quiz", type="primary", on_click=state.navigate, args=("Quiz",))
-
-
 def _exploration_area() -> None:
     """Area summary with an "Exploration area" button that opens a compact inline section (closed by default).
     It edits the same shared preferences as Settings and applies changes immediately."""
@@ -187,28 +177,18 @@ def explore() -> None:
 
     _exploration_area()
 
-    entries = _filtered(available)  # filters span the full width, above the cards and the challenge card
+    entries = _filtered(available)  # filters span the full width, above the cards
     with st.container(key="explore_grid"):
         if not entries:
-            message, side = st.columns([3, 1])
-            message.info(t("No countries match your search."))
-            with side:
-                _challenge()
+            st.info(t("No countries match your search."))
         else:
             pages = math.ceil(len(entries) / EXPLORE_PAGE_SIZE)
             page = st.session_state.explore_page = min(st.session_state.explore_page, pages - 1)
             batch = entries[page * EXPLORE_PAGE_SIZE:(page + 1) * EXPLORE_PAGE_SIZE]  # never render the whole list
-            # Desktop: two rows of four equal columns. Row 1 = three countries + the challenge card,
-            # row 2 = countries four to seven, so the seventh sits directly under the challenge card.
-            # On phones CSS moves the challenge card after the list; nothing is rendered twice.
-            first = st.columns(4)
-            for column, country in zip(first[:3], batch[:3]):
-                with column:
-                    _country_card(country)
-            with first[3]:
-                _challenge()
-            if len(batch) > 3:
-                for column, country in zip(st.columns(4), batch[3:]):
+            # Tablets and desktops: rows of four equal columns (the Daily Challenge invitation is the banner above,
+            # so the grid holds countries only). On phones CSS stacks the cards as one list in page order.
+            for row in range(0, len(batch), 4):
+                for column, country in zip(st.columns(4), batch[row:row + 4]):
                     with column:
                         _country_card(country)
             with st.container(key="explore_pagination"):

@@ -48,7 +48,7 @@ class AppTests(unittest.TestCase):
     def test_explore_paginates_and_filters(self):
         at = self.new()
         cards = [b for b in at.button if b.key and b.key.startswith("discover_")]
-        self.assertEqual(len(cards), 7)  # seven per page, never hundreds of cards at once
+        self.assertEqual(len(cards), 8)  # two full rows of four per page, never hundreds of cards at once
         at.text_input(key="explore_search").input("Bern").run()
         self.assertEqual([b.key for b in at.button if b.key and b.key.startswith("discover_")], ["discover_CHE"])
         at = self.new(scope_collection="All countries and territories")
@@ -194,7 +194,7 @@ class RefinementTests(unittest.TestCase):
         self.assertEqual([e.value for e in at.exception], [])
         self.assertTrue(any("Earned badges" in m.value for m in at.markdown))
 
-    # ---------------------------------------------------------------- compact layout (7 per page, badges)
+    # ---------------------------------------------------------------- compact layout (8 per page, badges)
 
     def _walk_explore(self, at):
         """Click Next until the last page; return the Discover keys of every page in order."""
@@ -220,7 +220,7 @@ class RefinementTests(unittest.TestCase):
             pages = self._walk_explore(at)
             keys = [k for page in pages for k in page]
             self.assertEqual(len(keys), len(set(keys)), (state, filters))                       # no duplicates
-            self.assertTrue(all(len(p) == 7 for p in pages[:-1]) and 1 <= len(pages[-1]) <= 7)  # no gaps
+            self.assertTrue(all(len(p) == 8 for p in pages[:-1]) and 1 <= len(pages[-1]) <= 8)  # no gaps
             caption = " ".join(c.value for c in at.caption)
             self.assertIn(f"· {len(keys)} countries", caption, (state, filters))
             if not filters:  # unfiltered: exactly the places in the chosen collection
@@ -228,6 +228,34 @@ class RefinementTests(unittest.TestCase):
                 expected = {c["id"] for c in everything if state or c["status"] in ("un_member", "un_observer")}
                 self.assertEqual(len(expected), 244 if state else 195)
                 self.assertEqual({k.removeprefix("discover_") for k in keys}, expected)
+
+    def test_explore_has_no_second_challenge_card(self):
+        """The Daily Challenge banner is the only challenge entry on Explore — also when nothing matches."""
+        from core.i18n import translate
+        for lang in LANGS:
+            at = self.new(app_language=lang)
+            for search in ("", "zzzz-no-match"):
+                if search:
+                    at.text_input(key="explore_search").input(search).run()
+                keys = [b.key for b in at.button]
+                self.assertNotIn("atlas_take_quiz", keys, (lang, search))
+                self.assertIn("explore_daily", keys, (lang, search))       # the banner stays
+                text = " ".join(m.value for m in at.markdown)
+                self.assertNotIn(translate("Your next challenge", lang), text, (lang, search))
+                self.assertNotIn("atlas_quiz", str(at), (lang, search))
+            self.assertTrue(any(translate("No countries match your search.", lang) in i.value for i in at.info))
+            self.assertEqual([e.value for e in at.exception], [], lang)
+
+    def test_eighth_card_takes_the_old_challenge_slot(self):
+        at = self.new()
+        keys = [b.key for b in at.button if b.key and b.key.startswith("discover_")]
+        self.assertEqual(len(keys), 8)
+        at.button(key="explore_next").click().run()
+        second = [b.key for b in at.button if b.key and b.key.startswith("discover_")]
+        self.assertEqual(len(second), 8)
+        self.assertFalse(set(keys) & set(second))                    # page 2 starts with the ninth country
+        at.button(key=keys[7] if keys[7] in [b.key for b in at.button] else second[7]).click().run()
+        self.assertEqual(at.session_state["page"], "Learn")
 
     def test_seventh_card_discover_opens_learn(self):
         at = self.new()
@@ -487,7 +515,7 @@ class RefinementTests(unittest.TestCase):
         at.selectbox(key="explore_area_collection").select("All countries and territories").run()
         at.selectbox(key="explore_area_mode").select("All countries").run()
         cards = [b.key for b in at.button if b.key and b.key.startswith("discover_")]
-        self.assertEqual(len(cards), 7)
+        self.assertEqual(len(cards), 8)
         self.assertIn("· 244 countries", " ".join(c.value for c in at.caption))
         self.assertEqual([e.value for e in at.exception], [])
 

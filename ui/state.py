@@ -428,6 +428,7 @@ def explore_select(target) -> None:
         ss.explore_notice = t("Your exploration area was {area}. It now includes all countries so you can browse {target}.",
                               area=before, target=t(target) if target != WORLD else t("All countries"))
     if ss.get("explore_selected") != target:
+        ss.explore_country = None
         ss.explore_page = 0
         ss.explore_search = ""
         ss.explore_status = "all"
@@ -438,6 +439,29 @@ def explore_select(target) -> None:
 def explore_close() -> None:
     """ "← World map": back to the map; the selected highlight is cleared."""
     st.session_state.explore_selected = None
+    st.session_state.explore_country = None
+
+
+def explore_country(selection):
+    """The country shown on the right side of the box (None: nothing chosen yet)."""
+    value = st.session_state.get("explore_country")
+    return value if selection and value and get_country(value) else None
+
+
+def explore_pick(country_id) -> None:
+    """A list row shows that country beside the list (on phones: instead of the list)."""
+    if country_id and get_country(country_id):
+        st.session_state.explore_country = country_id
+        st.session_state.explore_detail_open = True
+
+
+def explore_back_to_list() -> None:
+    """Phones: back from the country to the list; the country stays selected (highlighted) in the list."""
+    st.session_state.explore_detail_open = False
+
+
+def explore_detail_open() -> bool:
+    return bool(st.session_state.get("explore_detail_open", True))
 
 
 def restore_explore_filters() -> None:

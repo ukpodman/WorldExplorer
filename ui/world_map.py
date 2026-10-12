@@ -58,6 +58,30 @@ def emblem_svg(continent: str, size: int = 44) -> str:
             f'<circle cx="12" cy="12" r="13" fill="#17283B" stroke="#E2B55A" stroke-width="1.4"/>{art}</svg>')
 
 
+# Ocean names drawn on the map (longitude, latitude of the label), projected like the outlines.
+OCEANS = {"Arctic Ocean": [(-5, 79.5)], "Atlantic Ocean": [(-38, 27)], "Pacific Ocean": [(-140, 2), (168, 14)],
+          "Indian Ocean": [(77, -22)], "Southern Ocean": [(30, -57)]}
+
+
+def _project(lon: float, lat: float) -> tuple[float, float]:
+    """Natural Earth I, scaled exactly like tools/build_world_map.py (1000 units wide, top at 84° N)."""
+    import math
+
+    def raw(lo, la):
+        lam, phi = math.radians(lo), math.radians(la)
+        p2 = phi * phi
+        p4 = p2 * p2
+        return (lam * (0.870700 - 0.131979 * p2 - 0.013791 * p4 + 0.003971 * p4 * p4 * p2 - 0.001529 * p4 * p4 * p4),
+                phi * (1.007226 + 0.015085 * p2 - 0.044475 * p4 * p2 + 0.028874 * p4 * p4 - 0.005916 * p4 * p4 * p2))
+    scale = 500 / raw(180, 0)[0]
+    top = raw(0, 84)[1]
+    x, y = raw(lon, lat)
+    return round(x * scale + 500, 1), round((top - y) * scale, 1)
+
+
+OCEAN_POINTS = {name: [_project(*ll) for ll in points] for name, points in OCEANS.items()}
+
+
 @st.cache_resource(show_spinner=False)
 def map_data() -> dict:
     return json.loads(MAP_FILE.read_text(encoding="utf-8"))
@@ -66,7 +90,9 @@ def map_data() -> dict:
 CSS = """
 :host { display:block; }
 .wm { position:relative; width:100%; line-height:0; }
-.wm svg { display:block; width:100%; height:auto; border-radius:14px; background:#1B4A63; touch-action:manipulation; }
+.wm svg { display:block; width:100%; height:auto; border-radius:14px; background:#163F57; touch-action:manipulation; }
+/* the map fills the box but never pushes the continent pills off a desktop screen (it stays whole: no cropping) */
+@media (min-width:701px) { .wm svg { max-height:max(340px, calc(100vh - 340px)); } }
 .wm .land { stroke:#1B4A63; stroke-width:.6; stroke-linejoin:round; vector-effect:non-scaling-stroke; cursor:pointer;
             transition:fill-opacity .15s ease, fill .15s ease; -webkit-tap-highlight-color:transparent; }
 .wm .land:hover { fill-opacity:1 !important; filter:brightness(1.06); }
@@ -77,6 +103,7 @@ CSS = """
 .wm .coast { fill:none; stroke:#8FD3CD; stroke-opacity:.28; stroke-width:5; stroke-linejoin:round; vector-effect:non-scaling-stroke; pointer-events:none; }
 .wm .waves { fill:none; stroke:#CFE8E4; stroke-opacity:.16; stroke-linecap:round; vector-effect:non-scaling-stroke; pointer-events:none; }
 .wm .compass { pointer-events:none; opacity:.8; }
+.wm .oceans text { font-style:italic; font-weight:500; fill:#CFE8E4; fill-opacity:.62; stroke:none; letter-spacing:.04em; }
 .wm .emb { cursor:pointer; transform-box:fill-box; transform-origin:center; transition:transform .18s ease; -webkit-tap-highlight-color:transparent; }
 .wm .emb:hover { transform:scale(1.12); }
 .wm .emb .ring { fill:none; stroke:#E2B55A; stroke-width:1.4; opacity:0; transform-box:fill-box; transform-origin:center; }
@@ -113,6 +140,26 @@ function installGlobalHandlers() {
     const t = ev.target;
     if (t && t.closest && (t.closest("[class*='st-key-continent_btn_']") || t.closest(".st-key-browse_all") || t.closest("[class*='st-key-world_map']"))) viewState().opener = t;
   }, true);
+}
+
+function syncDetail(data) {
+  // Phones: the chosen country replaces the list inside the box. Focus its name (bring it into view if needed);
+  // when going back to the list, focus that country's arrow again.
+  const s = viewState();
+  const before = s.detail;
+  s.detail = data.detail || null;
+  if (before === s.detail || !window.matchMedia("(max-width:700px)").matches) return;
+  let tries = 0;
+  (function settle() {
+    const target = s.detail ? visible(".st-key-stage_detail .detail-name") : visible(".st-key-discover_" + before + " button");
+    if (target) {
+      target.focus({ preventScroll: true });
+      const box = visible("[class*='st-key-explore_stage']");
+      if (box && box.getBoundingClientRect().top < 0) box.scrollIntoView({ block: "start" });
+      return;
+    }
+    if (tries++ < 40) setTimeout(settle, 50);
+  })();
 }
 
 function syncView(data, trigger) {
@@ -157,6 +204,7 @@ export default function (component) {
   if (data.map) Object.assign(cache, data.map);
   installGlobalHandlers();
   syncView(data, setTriggerValue);
+  syncDetail(data);
   if (!cache.continents) { setTriggerValue("need_map", Date.now()); return; }
 
   let root = parentElement.querySelector(".wm");
@@ -194,6 +242,7 @@ export default function (component) {
       p.addEventListener("click", () => setTriggerValue("select", name));
       svg.appendChild(p);
     }
+    svg.appendChild(el("g", { class: "oceans", "aria-hidden": "true" }));
     const labels = el("g", { class: "labels", "aria-hidden": "true" });
     for (const name of Object.keys(cache.labels)) {
       const [x, y] = cache.labels[name];
@@ -223,11 +272,14 @@ export default function (component) {
         g.style.display = icon ? "" : "none";
         g.setAttribute("transform", "translate(" + (x - 12 * s).toFixed(1) + " " + (y - (px * 1.05) / scale - 26 * s).toFixed(1) + ") scale(" + s.toFixed(3) + ")");
       });
+      svg.querySelectorAll(".oceans text").forEach(t => { t.setAttribute("font-size", ((w < 420 ? 8 : w < 760 ? 10.5 : 12.5) / scale).toFixed(1)); });
+      svg.querySelector(".oceans").style.display = w < 330 ? "none" : "";
       const c = svg.querySelector(".compass");
       c.style.display = w < 420 ? "none" : "";
       const n = svg.querySelector(".compass-n");
       n.setAttribute("font-size", 9); n.setAttribute("stroke-width", 0); n.setAttribute("fill", "#E2B55A");
     };
+    root.__weFit = fit;
     if (window.ResizeObserver) new ResizeObserver(fit).observe(svg);
     fit();
   }
@@ -245,6 +297,13 @@ export default function (component) {
     p.setAttribute("fill", sel ? data.selected_fill : (data.fills[name] || "#CCCCCC"));
     p.querySelector("title").textContent = (data.labels && data.labels[name]) || name;
   });
+  const og = root.querySelector(".oceans");
+  if (og && og.getAttribute("data-sig") !== JSON.stringify(data.oceans || [])) {  // ocean names (translated)
+    og.setAttribute("data-sig", JSON.stringify(data.oceans || []));
+    og.innerHTML = "";
+    for (const [name, x, y] of (data.oceans || [])) { const t = el("text", { x: x, y: y }); t.textContent = name; og.appendChild(t); }
+    if (root.__weFit) root.__weFit();
+  }
   root.querySelectorAll(".labels text").forEach(t => { t.textContent = (data.labels && data.labels[t.getAttribute("data-continent")]) || ""; });
 }
 """
@@ -256,12 +315,13 @@ def _need_map() -> None:
 
 
 def render(selected: str | None, labels: dict[str, str], aria_label: str, *, on_select, on_close, hidden: bool = False,
-           view: str | None = None) -> None:
+           view: str | None = None, detail: str | None = None, oceans: dict[str, str] | None = None) -> None:
     """Draw the map. The outlines (about 100 kB) are sent once per browser session; the page caches them."""
     ss = st.session_state
     payload = {"selected": selected, "labels": labels, "aria_label": aria_label, "fills": FILLS,
                "selected_fill": SELECTED_FILL, "stack_max": STACK_MAX_WIDTH, "hidden": hidden, "emblems": EMBLEMS,
-               "view_open": bool(view), "view_key": view}
+               "view_open": bool(view), "view_key": view, "detail": detail,
+               "oceans": [[(oceans or {}).get(name, name), x, y] for name, pts in OCEAN_POINTS.items() for x, y in pts]}
     if not ss.get("world_map_sent"):
         payload["map"] = map_data()
         ss.world_map_sent = True

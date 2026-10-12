@@ -3103,12 +3103,6 @@
    "查看{continent}的国家",
    "Показать страны: {continent}"
   ],
-  "Choose a continent on the map or with the buttons to see its countries.": [
-   "Wähle einen Kontinent auf der Karte oder mit den Schaltflächen, um seine Länder zu sehen.",
-   "Elige un continente en el mapa o con los botones para ver sus países.",
-   "在地图上或用按钮选择一个大洲，查看它的国家。",
-   "Выберите континент на карте или кнопками, чтобы увидеть его страны."
-  ],
   "Browse all countries": [
    "Alle Länder ansehen",
    "Ver todos los países",
@@ -3138,6 +3132,84 @@
    "Tu área de exploración era {area}. Ahora incluye todos los países para que puedas ver {target}.",
    "你的探索范围原为{area}。现已包含所有国家，方便你浏览{target}。",
    "Ваша область исследования была: {area}. Теперь она включает все страны, чтобы вы могли открыть «{target}»."
+  ],
+  "Filters": [
+   "Filter",
+   "Filtros",
+   "筛选",
+   "Фильтры"
+  ],
+  "Discover {name}": [
+   "{name} entdecken",
+   "Descubrir {name}",
+   "探索{name}",
+   "Открыть: {name}"
+  ],
+  "Choose a country in the list to discover it here.": [
+   "Wähle ein Land in der Liste, um es hier zu entdecken.",
+   "Elige un país de la lista para descubrirlo aquí.",
+   "在列表中选择一个国家，即可在这里探索它。",
+   "Выберите страну в списке, чтобы открыть её здесь."
+  ],
+  "Back to the list": [
+   "Zurück zur Liste",
+   "Volver a la lista",
+   "返回列表",
+   "Назад к списку"
+  ],
+  "Arctic Ocean": [
+   "Arktischer Ozean",
+   "Océano Ártico",
+   "北冰洋",
+   "Северный Ледовитый океан"
+  ],
+  "Atlantic Ocean": [
+   "Atlantischer Ozean",
+   "Océano Atlántico",
+   "大西洋",
+   "Атлантический океан"
+  ],
+  "Pacific Ocean": [
+   "Pazifischer Ozean",
+   "Océano Pacífico",
+   "太平洋",
+   "Тихий океан"
+  ],
+  "Indian Ocean": [
+   "Indischer Ozean",
+   "Océano Índico",
+   "印度洋",
+   "Индийский океан"
+  ],
+  "Southern Ocean": [
+   "Südlicher Ozean",
+   "Océano Austral",
+   "南大洋",
+   "Южный океан"
+  ],
+  "Search {place}…": [
+   "{place} durchsuchen …",
+   "Buscar en {place}…",
+   "搜索{place}…",
+   "Поиск: {place}…"
+  ],
+  "Status and places to include": [
+   "Status und einbezogene Orte",
+   "Estatus y lugares incluidos",
+   "状态和包含的地区",
+   "Статус и какие места включить"
+  ],
+  "Quiz {name}": [
+   "Quiz: {name}",
+   "Cuestionario: {name}",
+   "测验：{name}",
+   "Викторина: {name}"
+  ],
+  "All continents": [
+   "Alle Kontinente",
+   "Todos los continentes",
+   "所有大洲",
+   "Все континенты"
   ]
  }
 }

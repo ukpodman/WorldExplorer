@@ -178,32 +178,33 @@ accounts). After uploading:
    `records` entry next to `points`, `rounds_finished` and `stats`. Older rows without it keep working.
 5. If the footer says "Saved profile not reachable yet", nothing is written until the profile has loaded.
 
-## Continent map on Explore and Russian (2026-10-12)
+## Explore: map and country browser in one space (2026-10-12)
 
-* **Explore home:** a compact summary of your real points, day streak and earned badges (zeros for a new explorer);
-  the five-question Daily Challenge with its usual Start / Continue / Replay; "Choose a continent" with an accurate,
-  interactive world map; and six continent buttons that do the same as the map for keyboard and screen-reader users.
-* **Selecting a continent** (map or button) highlights it and opens its details: the number of places under your
-  current "Places to include" setting ("countries", or "countries and territories" when territories are included),
-  your real progress towards that continent's existing badge (correct answers out of 5), **Explore countries** and
-  **Quiz this continent**. Selecting never starts a quiz or touches an unfinished round.
-  * **Explore countries** filters the country browser below the map to the continent (search, status filter, cards
-    and pagination are unchanged) and scrolls to it. If your exploration area leaves the continent out, it widens to
-    all countries; places to include stay as they are.
-  * **Quiz this continent** opens quiz setup with the continent selected; an unfinished round is kept exactly as with
-    "Quiz me on this country".
-* **Layouts:** on desktop (over 900 px) the map sits beside the Daily Challenge and the details. On phones and portrait
-  tablets the Daily Challenge comes first, the whole world map fits the width, the buttons wrap two or three per row
-  (48 px tall) and the details open as a bottom sheet. The sheet scrolls on its own, keeps its close button and
-  actions reachable, clears the iPhone home indicator, dims and blocks the page behind it, keeps keyboard focus inside,
-  closes with Escape or a tap on the dimmed page and returns focus to the control that opened it.
+* **Map view:** the header, navigation and a compact summary of your real points, day streak and earned badges; the
+  world map as the main content (Natural Earth outlines with small continent emblems), the Daily Challenge beside it on
+  desktop and above it on phones, six accessible continent buttons and **Browse all countries**. No country grid under
+  the map.
+* **Choosing a continent** on the map or with its button replaces the map with that continent's country browser in the
+  same space: **← World map**, the heading, one compact filter row (search, status when territories are included,
+  **Places to include**), country cards in a responsive grid (columns follow the space; a list on phones) and pages.
+  Beside it on desktop: the Daily Challenge, the count, your real progress towards the continent's badge and
+  **Quiz this continent**. On phones the page simply flows: back control and heading, a compact summary with the quiz
+  action and today's challenge, then the filters and cards. No sheets, no fixed heights.
+* **Browse all countries** opens the same browser without a continent; "Quiz all countries" opens quiz setup for the
+  whole world.
+* **One selection** drives heading, list, count and quiz action. Switching continents clears the search, resets the
+  status filter and page, and keeps places to include. After opening a country in Learn, Explore comes back to the
+  same continent, search, status and page. "← World map" (or Escape) returns to the map and clears the highlight.
+* **Places to include** in the filter row is the same preference as in Settings. The exploration area stays in Settings;
+  if it leaves out the continent you open, it widens to all countries under the usual rules and the browser says so.
+* **Quiz this continent** opens quiz setup with that continent; an unfinished round is kept exactly as with
+  "Quiz me on this country" and nothing starts on its own.
 * **Map data:** Natural Earth 1:50m country outlines (public domain), simplified and bundled in
-  `assets/world_map.json`; colours follow the continents in `data/countries.json` (for example, Russia is drawn with
-  Europe, Türkiye and Kazakhstan with Asia). The outlines (about 100 kB) are sent once per browser session.
+  `assets/world_map.json`; colours follow the continents in `data/countries.json` (Russia with Europe, Türkiye and
+  Kazakhstan with Asia). The outlines (about 100 kB) are sent once per browser session.
 * **Russian (Русский)** is the fifth language: every interface string, with Russian plural forms. Country names come
-  from the same dataset translations as the other languages (mledoze/countries, same commit); capitals, currencies,
-  languages and regions in facts keep the dataset spelling, as in German, Spanish and Chinese. Missing translations
-  fall back to English. Saved language choices are unchanged.
+  from the same dataset translations as the other languages; capitals, currencies, languages and regions in facts keep
+  the dataset spelling, as in German, Spanish and Chinese. Missing translations fall back to English.
 * No new scoring rules, no exploration percentages, no setup changes.
 
 ## Pilot update (measurement, timing fix, easier first use)

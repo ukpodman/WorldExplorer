@@ -10,7 +10,7 @@ import secrets
 
 from core import analytics, badges, daily, records
 from core import quiz as engine
-from core.data import COLLECTIONS, CONTINENTS, DEFAULT_COLLECTION, get_countries, get_country, load_political_records
+from core.data import COLLECTIONS, CONTINENTS, DEFAULT_COLLECTION, WORLD, get_countries, get_country, load_political_records
 from core.i18n import DEFAULT_LANGUAGE, render_parts, translate
 
 PAGES = ("Explore", "Learn", "Quiz", "Badges")
@@ -123,7 +123,6 @@ def remember_size_reference() -> None:
 
 def open_settings() -> None:
     st.session_state.settings_open = True
-    st.session_state.explore_area_open = False  # never show the same exploration controls twice
 
 
 def scoped_countries() -> list[dict]:
@@ -163,8 +162,8 @@ def _after_scope_change() -> None:
                                    "filter_collection": st.session_state.scope_collection}
     st.session_state.explore_page = 0
     st.session_state.explore_search = ""
-    st.session_state.pop("explore_continent", None)
-    st.session_state.pop("explore_status", None)
+    st.session_state.explore_status = "all"
+    st.session_state.explore_saved = {"search": "", "status": "all"}
     ids = [c["id"] for c in scoped_countries()]
     if st.session_state.get("learn_country") not in ids:
         st.session_state.learn_country = ids[0]
@@ -194,32 +193,6 @@ def apply_pending_preferences() -> None:
         return
     st.session_state.update(pending)
     _after_scope_change()
-
-
-def apply_exploration_area() -> None:
-    """Explore's inline "Exploration area" controls: apply the change right away to the shared preferences."""
-    ss = st.session_state
-    chosen = normalized_scope(ss.get("explore_area_mode", ss.scope_mode),
-                              ss.get("explore_area_continent", ss.scope_continent),
-                              ss.get("explore_area_country", ss.scope_country),
-                              ss.get("explore_area_collection", ss.scope_collection))
-    if all(ss.get(k) == v for k, v in chosen.items()):
-        return
-    ss.update(chosen)
-    # Keep the inline widgets on valid values (e.g. a country that is not in the newly chosen places).
-    if chosen["scope_mode"] == "One country":
-        ss.explore_area_country = chosen["scope_country"]
-    elif chosen["scope_mode"] == "One continent":
-        ss.explore_area_continent = chosen["scope_continent"]
-    _after_scope_change()
-
-
-def toggle_exploration_area() -> None:
-    opening = not st.session_state.get("explore_area_open", False)
-    st.session_state.explore_area_open = opening
-    if opening:  # start from the shared preferences (they may have changed in Settings meanwhile)
-        for key in ("explore_area_collection", "explore_area_mode", "explore_area_continent", "explore_area_country"):
-            st.session_state.pop(key, None)
 
 
 # --------------------------------------------------------------------------- quiz
@@ -423,53 +396,85 @@ def quiz_on_country(country_id: str) -> None:
     navigate("Quiz")
 
 
-# --------------------------------------------------------------------------- Explore continent map
+# --------------------------------------------------------------------------- Explore: map and country browser
+# One selection drives the Explore view: None = world map, a continent = that continent's browser, "World" = all
+# countries. The search and status filter are copied out of their widgets so they survive a visit to Learn.
 
-def explore_select(continent) -> None:
-    """Map or continent button: highlight a continent and show its details. Nothing else changes (no quiz, no round)."""
-    if continent in CONTINENTS:
-        st.session_state.explore_selected = continent
+def explore_selection():
+    value = st.session_state.get("explore_selected")
+    return value if value in CONTINENTS or value == WORLD else None
+
+
+def _area_excludes(target: str) -> bool:
+    """True when the saved exploration area leaves out the target (a continent, or "World" for all countries)."""
+    mode = st.session_state.scope_mode
+    if target == WORLD:
+        return mode != "All countries"
+    return mode == "One country" or (mode == "One continent" and st.session_state.scope_continent != target)
+
+
+def explore_select(target) -> None:
+    """Map, continent button or "Browse all countries": open the browser. No quiz starts and an unfinished round is
+    untouched. A new selection starts with no search, all statuses and page 1; places to include are kept. If the
+    saved exploration area leaves the target out, it widens to all countries under the usual scope rules, and the
+    browser says so once."""
+    if target not in CONTINENTS and target != WORLD:
+        return
+    ss = st.session_state
+    if _area_excludes(target):
+        before = scope_label()
+        ss.update(normalized_scope("All countries", WORLD, "all", ss.scope_collection))
+        _after_scope_change()
+        ss.explore_notice = t("Your exploration area was {area}. It now includes all countries so you can browse {target}.",
+                              area=before, target=t(target) if target != WORLD else t("All countries"))
+    if ss.get("explore_selected") != target:
+        ss.explore_page = 0
+        ss.explore_search = ""
+        ss.explore_status = "all"
+        ss.explore_saved = {"search": "", "status": "all"}
+    ss.explore_selected = target
 
 
 def explore_close() -> None:
+    """ "← World map": back to the map; the selected highlight is cleared."""
     st.session_state.explore_selected = None
 
 
-def area_leaves_out(continent: str) -> bool:
-    """True when the exploration area is set to one country or to another continent."""
-    mode = st.session_state.scope_mode
-    return mode == "One country" or (mode == "One continent" and st.session_state.scope_continent != continent)
+def restore_explore_filters() -> None:
+    """Streamlit drops widget values while Explore is not shown (e.g. on Learn); put the last ones back."""
+    saved = st.session_state.get("explore_saved", {})
+    if "explore_search" not in st.session_state:
+        st.session_state.explore_search = saved.get("search", "")
+    if "explore_status" not in st.session_state:
+        st.session_state.explore_status = saved.get("status", "all")
 
 
-def explore_continent(continent: str) -> None:
-    """ "Explore countries": open the country browser below the map, filtered to the continent. Search and status
-    filters, cards and pagination stay as they are; the search text is cleared so the continent's list shows.
-    If the exploration area leaves the continent out, the area widens to all countries (places to include stay)."""
-    if continent not in CONTINENTS:
-        return
+def remember_explore_filters() -> None:
+    st.session_state.explore_saved = {"search": st.session_state.get("explore_search", ""),
+                                      "status": st.session_state.get("explore_status", "all")}
+
+
+def apply_explore_places() -> None:
+    """The browser's compact "Places to include" control: the same shared preference as Settings."""
     ss = st.session_state
-    if area_leaves_out(continent):
-        ss.update(normalized_scope("All countries", "World", "all", ss.scope_collection))
-        _after_scope_change()
-    ss.explore_continent = continent
-    ss.explore_search = ""
-    ss.explore_page = 0
-    ss.explore_selected = None
-    ss.explore_scroll = ss.get("explore_scroll", 0) + 1  # the page scrolls to the country list once
+    collection = ss.get("explore_places", ss.scope_collection)
+    if collection == ss.scope_collection:
+        return
+    ss.update(normalized_scope(ss.scope_mode, ss.scope_continent, ss.scope_country, collection))
+    _after_scope_change()
 
 
-def quiz_continent(continent: str) -> None:
-    """ "Quiz this continent": open quiz setup with the continent selected. An unfinished round is kept, exactly as
-    with "Quiz me on this country" (setup offers to return to it); nothing starts until the visitor presses Start."""
-    if continent not in CONTINENTS:
+def quiz_continent(target: str) -> None:
+    """ "Quiz this continent" / "Quiz all countries": open quiz setup with that area selected. An unfinished round is
+    kept, exactly as with "Quiz me on this country" (setup offers to return to it); nothing starts until Start."""
+    if target not in CONTINENTS and target != WORLD:
         return
     ss = st.session_state
     restore_quiz_filters()
     ss.filter_collection = ss.scope_collection
-    ss.filter_continent = continent
+    ss.filter_continent = target
     ss.filter_country = "all"
     remember_quiz_filters()
-    ss.explore_selected = None
     ss.show_setup = True
     engine.pause(ss.get("quiz"))
     navigate("Quiz")

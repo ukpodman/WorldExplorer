@@ -787,7 +787,7 @@ class RussianAndMapTests(unittest.TestCase):
         from core.i18n import LANGUAGES, STRINGS, missing_translations
         self.assertEqual(LANGUAGES, ("English", "Deutsch", "Español", "中文（普通话）", "Русский"))
         self.assertEqual(missing_translations(), [])
-        self.assertEqual(translate("Explore countries", "Русский"), "Смотреть страны")
+        self.assertEqual(translate("World map", "Русский"), "Карта мира")
         self.assertEqual(translate("Germany", "Русский"), "Германия")      # dataset translation, same as other languages
         self.assertEqual(translate("Europe Explorer", "Русский"), "Europe Explorer")  # not a key: unchanged
 

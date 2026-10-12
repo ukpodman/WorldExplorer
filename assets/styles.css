@@ -892,10 +892,10 @@ html[data-we-theme="dark"] .stApp :is(button:focus-visible, a:focus-visible, inp
   .st-key-explore_area_panel { padding:10px 12px 10px !important; }
 }
 
-/* ---------- Explore home: summary, Daily Challenge, continent map and details ----------
-   Desktop (> 900 px): map on the left; Daily Challenge and continent details beside it.
-   Phones and portrait tablets (<= 900 px): Daily Challenge above the map, columns stacked, and the continent details
-   open as a bottom sheet (ui/world_map.py moves focus into it, traps Tab, closes on Escape or a tap outside). */
+/* ---------- Explore: the world map and the country browser share one main area ----------
+   Map view: map + continent buttons + "Browse all countries" (Daily Challenge beside it on desktop, above it on phones).
+   Browser view: "← World map", heading, filters, a responsive card grid and pages; the Daily Challenge and the
+   selection summary sit beside it on desktop (> 900 px). Phones and tablets use normal page flow, no sheets. */
 .st-key-explore_home { gap:14px !important; margin-bottom:6px; }
 .st-key-explore_home [data-testid="stMarkdownContainer"] { margin-bottom:0 !important; }
 .explore-summary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
@@ -941,7 +941,7 @@ html[data-we-theme="dark"] .stApp :is(button:focus-visible, a:focus-visible, inp
 .st-key-continent_btn_Oceania button::before { background:#F2E4BE; }
 .st-key-continent_buttons button[kind="primary"]::before { background:#E2B55A; border-color:#FFFFFF; }
 
-.st-key-continent_panel { background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:16px 18px !important;
+:is(.st-key-continent_panel, .st-key-continent_panel_phone) { background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:16px 18px !important;
   box-shadow:var(--shadow); gap:12px !important; }
 .st-key-continent_panel_head { flex-wrap:nowrap !important; gap:8px !important; }
 .st-key-continent_panel_head > :first-child { flex:1 1 auto; min-width:0; }
@@ -949,44 +949,60 @@ html[data-we-theme="dark"] .stApp :is(button:focus-visible, a:focus-visible, inp
 .stApp .continent-title { font-size:1.75rem !important; line-height:1.15; margin:2px 0 2px; padding:0; outline:none; overflow-wrap:anywhere; }
 .continent-title [data-testid="stHeaderActionElements"], .st-key-continent_panel [data-testid="stHeaderActionElements"] { display:none !important; }
 .continent-count { color:var(--slate); font-size:.92rem; }
+.continent-head { display:flex; align-items:center; gap:12px; min-width:0; }
+.continent-head .continent-text { min-width:0; }
+.continent-emblem { flex-shrink:0; filter:drop-shadow(0 3px 6px rgba(23,40,59,.25)); }
+@media (max-width:380px) { .continent-emblem { width:42px; height:42px; } }
 .st-key-continent_close { flex:0 0 auto !important; width:auto !important; }
 .st-key-continent_close button { width:44px; min-width:44px; height:44px; min-height:44px; padding:0 !important; justify-content:center; }
 .st-key-continent_close button [data-testid="stMarkdownContainer"] { position:absolute !important; width:1px; height:1px; overflow:hidden;
   clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; }
 .st-key-continent_close button [data-testid="stIconMaterial"] { margin:0 !important; font-size:1.3rem; }
-.st-key-continent_badge { background:var(--surface-2); border:1px solid var(--line); border-radius:14px; padding:10px 12px !important; gap:6px !important; }
+:is(.st-key-continent_badge, .st-key-continent_badge_phone) { background:var(--surface-2); border:1px solid var(--line); border-radius:14px; padding:10px 12px !important; gap:6px !important; }
 .continent-badge-head { display:flex; justify-content:space-between; align-items:center; gap:6px 10px; flex-wrap:wrap; color:var(--navy); }
-.st-key-continent_actions { gap:10px !important; }
-.st-key-explore_scope { scroll-margin-top:calc(var(--toolbar-h) + 12px); }
-.st-key-continent_actions button { min-height:48px; }
+:is(.st-key-continent_actions, .st-key-continent_actions_phone) { gap:8px !important; }
+:is(.st-key-continent_actions, .st-key-continent_actions_phone) button { min-height:48px; }
 .st-key-continent_hint p.continent-hint { color:var(--slate); background:var(--paper); border:1px dashed var(--line); border-radius:16px;
   padding:14px 16px; margin:0; font-size:.94rem; line-height:1.5; }
-[data-testid="stElementContainer"]:has(.continent-scrim) { display:none; }
+.st-key-world_map_frame_hidden { position:absolute !important; width:1px !important; height:1px !important; overflow:hidden; padding:0 !important; margin:0 !important; }
+[data-testid="stLayoutWrapper"]:has(> .st-key-world_map_frame_hidden) { position:absolute !important; width:1px; height:1px; overflow:hidden; }
+.st-key-browser_head { gap:6px !important; }
+.st-key-continent_back { width:auto !important; }
+.st-key-continent_back button { min-height:44px; padding:0 1rem 0 .7rem !important; border-radius:999px; }
+.browser-heading h2 { overflow-wrap:anywhere; outline:none; }
+.st-key-browse_all { margin-top:2px; }
+.st-key-browse_all button { min-height:48px; border-style:dashed !important; }
+.continent-name { font-size:1.45rem; font-weight:750; line-height:1.2; color:var(--navy); letter-spacing:-.02em; overflow-wrap:anywhere; }
+/* Country cards: a responsive grid, so the column count follows the space (3–4 on desktop, 2–3 on tablets). */
+.st-key-explore_cards { display:grid !important; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:16px !important; }
+.st-key-explore_cards > * { width:auto !important; min-width:0; }
+.st-key-explore_cards [class*="st-key-country_card_"] { height:100%; }
+.st-key-explore_cards [class*="st-key-country_card_"] > :last-child { margin-top:auto; }
 
 @media (min-width:901px) {
-  [data-testid="stLayoutWrapper"]:has(> .st-key-explore_daily_top), .st-key-explore_daily_top { display:none !important; }
-  .st-key-explore_layout [data-testid="stColumn"]:last-child > [data-testid="stVerticalBlock"] { gap:14px !important; }
+  [data-testid="stLayoutWrapper"]:has(> .st-key-explore_daily_top), .st-key-explore_daily_top,
+  [data-testid="stLayoutWrapper"]:has(> .st-key-continent_panel_phone), .st-key-continent_panel_phone { display:none !important; }
+  :is(.st-key-explore_layout, .st-key-explore_layout_browser) > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:last-child > [data-testid="stVerticalBlock"] { gap:14px !important; }
+  /* the details stay in view while the cards scroll */
+  .st-key-explore_layout_browser > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:last-child > [data-testid="stVerticalBlock"] {
+    position:sticky; top:calc(var(--toolbar-h) + 12px); }
 }
 @media (max-width:900px) {
   [data-testid="stLayoutWrapper"]:has(> .st-key-explore_daily_side), .st-key-explore_daily_side,
   [data-testid="stLayoutWrapper"]:has(> .st-key-continent_hint), .st-key-continent_hint { display:none !important; }
-  .st-key-explore_layout [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"]) { flex-direction:column !important; gap:0 !important; }
-  .st-key-explore_layout [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"]) > [data-testid="stColumn"] {
+  :is(.st-key-explore_layout, .st-key-explore_layout_browser) > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] {
+    flex-direction:column !important; gap:0 !important; }
+  :is(.st-key-explore_layout, .st-key-explore_layout_browser) > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
     width:100% !important; flex:1 1 auto !important; min-width:0 !important; }
-  /* Bottom sheet: scrolls on its own, keeps its close button and actions reachable, clears the iPhone home indicator. */
-  .st-key-continent_panel { position:fixed !important; left:0; right:0; bottom:0; z-index:1000002; width:auto !important;
-    max-width:640px; margin:0 auto !important; max-height:82vh; max-height:min(82dvh, 640px); overflow-y:auto; overscroll-behavior:contain;
-    -webkit-overflow-scrolling:touch; border-radius:24px 24px 0 0; border-bottom:0;
-    padding:8px 18px calc(18px + env(safe-area-inset-bottom, 0px)) !important; box-shadow:0 -14px 34px rgba(0,0,0,.35); }
-  .st-key-continent_panel::before { content:""; display:block; flex-shrink:0; width:44px; height:5px; border-radius:5px;
-    background:var(--line); margin:2px auto 0; }
-  [data-testid="stElementContainer"]:has(.continent-scrim) { display:block; position:fixed !important; inset:0; z-index:1000001; margin:0 !important; }
-  .continent-scrim { position:absolute; inset:0; background:rgba(7,16,26,.5); }
-  html:has(.st-key-continent_panel), html:has(.st-key-continent_panel) body,
-  html:has(.st-key-continent_panel) [data-testid="stMain"], html:has(.st-key-continent_panel) [data-testid="stAppViewContainer"] { overflow:hidden !important; }
+  /* phones and tablets: the compact summary in the main column replaces the side area */
+  [data-testid="stLayoutWrapper"]:has(> .st-key-continent_panel), .st-key-continent_panel { display:none !important; }
+  .st-key-continent_panel_phone { padding:12px 14px !important; gap:10px !important; }
+  .st-key-continent_panel_phone .continent-name { font-size:1.15rem; }
+  .st-key-browser_head { scroll-margin-top:calc(var(--toolbar-h) + 8px); }
 }
 @media (max-width:700px) {
   .st-key-continent_buttons { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .st-key-explore_cards { grid-template-columns:minmax(0,1fr); gap:.5rem !important; }
   .explore-summary { gap:8px; }
   .summary-tile { padding:8px 10px; gap:8px; }
   .summary-text b { font-size:1.08rem; }
@@ -1003,3 +1019,9 @@ html[data-we-theme="dark"] .stApp :is(button:focus-visible, a:focus-visible, inp
   .st-key-continent_buttons button::before { left:9px; }
 }
 @media (pointer:coarse) { .st-key-continent_buttons button { min-height:48px; } }
+/* Up to 1100 px the browser column is narrow: search on its own row, status and places side by side. */
+@media (max-width:1100px) {
+  .st-key-explore_filters [data-testid="stHorizontalBlock"] { flex-wrap:wrap !important; gap:8px 10px !important; }
+  .st-key-explore_filters [data-testid="stColumn"]:first-child { flex:0 0 100% !important; width:100% !important; min-width:0 !important; }
+  .st-key-explore_filters [data-testid="stColumn"]:not(:first-child) { flex:1 1 calc(50% - 6px) !important; min-width:0 !important; width:auto !important; }
+}

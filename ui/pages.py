@@ -13,7 +13,7 @@ from core import daily as daily_engine
 from core import learn as learn_engine
 from core import badges as badge_engine
 from core import quiz as engine
-from core.data import (AREAS, COLLECTIONS, COUNTRIES, DEFAULT_COLLECTION, PHOTOS, STATE_STATUSES, STATUS_LABELS, STATUSES, flag_image,
+from core.data import (AREAS, COLLECTIONS, WORLD, COUNTRIES, DEFAULT_COLLECTION, PHOTOS, STATE_STATUSES, STATUS_LABELS, STATUSES, flag_image,
                        get_countries, get_country, load_political_records)
 from core.quiz import CATEGORIES, DIFFICULTIES, QUESTION_COUNTS, currency_label
 
@@ -22,7 +22,7 @@ from .components import e, hero, html, photo_credits, status_chip
 from .state import country_formatter, country_label, formatter, parts, t
 
 CONTINENTS_LIST = list(AREAS[1:])
-EXPLORE_PAGE_SIZE = 8  # two full rows of four on tablets and desktops; one list on phones
+EXPLORE_PAGE_SIZE = 12  # full rows of 2, 3 or 4 cards whatever the width; one list on phones
 
 
 def _flag(country: dict, width: int, alt: str) -> None:
@@ -32,13 +32,19 @@ def _flag(country: dict, width: int, alt: str) -> None:
 
 
 # --------------------------------------------------------------------------- Explore
-
-def _reset_explore_page() -> None:
-    st.session_state.explore_page = 0
-
+# The world map and the country browser share one main area. Map view: the map (Daily Challenge beside it on desktop,
+# above it on phones), six continent buttons and "Browse all countries". Choosing a continent (map or button) replaces
+# the map with that continent's country browser; "← World map" goes back. One selection state drives the heading,
+# list, count and quiz action. Nothing here starts a quiz or touches an unfinished round.
 
 def _turn_page(delta: int) -> None:
     st.session_state.explore_page = max(0, st.session_state.explore_page + delta)
+    state.remember_explore_filters()
+
+
+def _filters_changed() -> None:
+    st.session_state.explore_page = 0
+    state.remember_explore_filters()
 
 
 def _country_card(c: dict) -> None:
@@ -52,22 +58,41 @@ def _country_card(c: dict) -> None:
                   help=t("Learn about {name}", name=c["name"]))
 
 
-def _filtered(available: list[dict]) -> list[dict]:
+def _browser_places(selection: str) -> list[dict]:
+    """Places for the browser under the current "Places to include" setting (the same lists the quiz uses)."""
+    return get_countries(selection if selection in CONTINENTS_LIST else "World", collection=st.session_state.scope_collection)
+
+
+def _count_text(selection: str) -> str:
+    """"countries", or "countries and territories" when the list includes territories (counted from the dataset)."""
+    places = _browser_places(selection)
+    if all(c["status"] in STATE_STATUSES for c in places):
+        return t("{n} countries", n=len(places))
+    return t("{n} countries and territories", n=len(places))
+
+
+def _filtered(places: list[dict]) -> list[dict]:
+    """One compact row: search (names and capitals), status (when territories are included) and places to include."""
+    state.restore_explore_filters()
+    statuses = ["all"] + [s for s in STATUSES if any(c["status"] == s for c in places)]
+    if st.session_state.get("explore_status") not in statuses:
+        st.session_state.explore_status = "all"
     with st.container(key="explore_filters"):
-        search, continent, status = st.columns([2, 1, 1])
-        query = search.text_input(t("Search countries or capitals"), key="explore_search", on_change=_reset_explore_page)
-        present = [a for a in AREAS if a == "World" or any(a in c["continents"] for c in available)]
-        area = continent.selectbox(t("Continent"), present, format_func=formatter(present), key="explore_continent",
-                                   on_change=_reset_explore_page)
-        statuses = ["all"] + [s for s in STATUSES if any(c["status"] == s for c in available)]
-        labels = {"all": t("All statuses"), **{s: t(STATUS_LABELS[s]) for s in STATUSES}}
-        chosen = status.selectbox(t("Status"), statuses, format_func=labels.get, key="explore_status",
-                                  on_change=_reset_explore_page, disabled=len(statuses) <= 2)
+        columns = st.columns([1.5, 1, 1.4] if len(statuses) > 2 else [2, 1.4])
+        query = columns[0].text_input(t("Search countries or capitals"), key="explore_search", on_change=_filters_changed)
+        chosen = "all"
+        if len(statuses) > 2:
+            labels = {"all": t("All statuses"), **{s: t(STATUS_LABELS[s]) for s in STATUSES}}
+            chosen = columns[1].selectbox(t("Status"), statuses, format_func=labels.get, key="explore_status",
+                                          on_change=_filters_changed)
+        if st.session_state.get("explore_places") != st.session_state.scope_collection:
+            st.session_state.explore_places = st.session_state.scope_collection  # follows Settings
+        columns[-1].selectbox(t("Places to include"), COLLECTIONS, format_func=formatter(COLLECTIONS), key="explore_places",
+                              on_change=state.apply_explore_places)
+    state.remember_explore_filters()
     needle = query.strip().casefold()
     out = []
-    for c in available:
-        if area != "World" and area not in c["continents"]:
-            continue
+    for c in places:
         if chosen != "all" and c["status"] != chosen:
             continue
         names = [c["name"], t(c["name"]), c.get("official_name", "")] + [x["name"] for x in c["capitals"]]
@@ -75,6 +100,28 @@ def _filtered(available: list[dict]) -> list[dict]:
             continue
         out.append(c)
     return out if needle else sorted(out, key=lambda c: (c["id"] not in PHOTOS, t(c["name"])))
+
+
+def _country_grid(selection: str) -> None:
+    """Search and filters, then the cards in a responsive grid (columns follow the space) and the pages."""
+    entries = _filtered(_browser_places(selection))
+    with st.container(key="explore_grid"):
+        if not entries:
+            st.info(t("No countries match your search."))
+            return
+        pages = math.ceil(len(entries) / EXPLORE_PAGE_SIZE)
+        page = st.session_state.explore_page = min(st.session_state.explore_page, pages - 1)
+        batch = entries[page * EXPLORE_PAGE_SIZE:(page + 1) * EXPLORE_PAGE_SIZE]  # never render the whole list
+        with st.container(key="explore_cards"):  # CSS grid: 3–4 columns on desktop, 2–3 on tablets, a list on phones
+            for country in batch:
+                _country_card(country)
+        with st.container(key="explore_pagination"):
+            previous, status, following = st.columns([1, 2, 1], vertical_alignment="center")
+            previous.button(t("Previous"), key="explore_previous", disabled=page == 0,
+                            width="stretch", on_click=_turn_page, args=(-1,))
+            status.caption(t("Page {page} of {pages} · {count} countries", page=page + 1, pages=pages, count=len(entries)))
+            following.button(t("Next"), key="explore_next", disabled=page + 1 >= pages,
+                             width="stretch", on_click=_turn_page, args=(1,))
 
 
 # --------------------------------------------------------------------------- Daily challenge & mistakes
@@ -117,40 +164,6 @@ def _practise_button(key: str) -> None:
                   help=t("A round built from questions you missed. Correct answers clear them from the list."))
 
 
-def _exploration_area() -> None:
-    """Area summary with an "Exploration area" button that opens a compact inline section (closed by default).
-    It edits the same shared preferences as Settings and applies changes immediately."""
-    is_open = st.session_state.get("explore_area_open", False)
-    with st.container(key="explore_scope", horizontal=True, vertical_alignment="center"):
-        html(f'<div class="browse-scope">{escape(state.scope_label())}</div>')
-        st.button(t("Exploration area"), key="explore_area_toggle", icon=":material/expand_less:" if is_open else ":material/expand_more:",
-                  on_click=state.toggle_exploration_area,
-                  help=t("Hide the exploration area options") if is_open else t("Choose which countries Explore, Learn and the quiz use"))
-    if not is_open:
-        return
-    ss = st.session_state
-
-    def initial(key, options, current):
-        """Default index only for a widget's first render; afterwards its own state (kept valid by the callback) wins."""
-        return {} if key in ss else {"index": options.index(current) if current in options else 0}
-
-    with st.container(key="explore_area_panel"):
-        modes = list(accounts.SCOPE_MODES)
-        collection = st.selectbox(t("Places to include"), COLLECTIONS, format_func=formatter(COLLECTIONS), key="explore_area_collection",
-                                  on_change=state.apply_exploration_area, **initial("explore_area_collection", COLLECTIONS, ss.scope_collection))
-        with st.container(key="explore_area_row", horizontal=True):
-            mode = st.selectbox(t("Exploration area"), modes, format_func=formatter(modes), key="explore_area_mode",
-                                on_change=state.apply_exploration_area, **initial("explore_area_mode", modes, ss.scope_mode))
-            if mode == "One continent":
-                st.selectbox(t("Continent"), CONTINENTS_LIST, format_func=formatter(CONTINENTS_LIST), key="explore_area_continent",
-                             on_change=state.apply_exploration_area, **initial("explore_area_continent", CONTINENTS_LIST, ss.scope_continent))
-            elif mode == "One country":
-                ids = [c["id"] for c in get_countries(collection=collection)]
-                st.selectbox(t("Country"), ids, format_func=country_formatter(), key="explore_area_country",
-                             on_change=state.apply_exploration_area, **initial("explore_area_country", ids, ss.scope_country))
-        st.caption(t("Changes apply right away to Explore, Learn and the next quiz setup. Your current round is kept."))
-
-
 def _explore_summary() -> None:
     """Compact, real progress: points, today's day streak and earned badges (zeros for a new explorer)."""
     ss = st.session_state
@@ -178,58 +191,53 @@ def _explore_daily(d: dict, key: str, button_key: str) -> None:
                   on_click=state.start_daily, help=_daily_button_label(d), width="stretch")
 
 
-def _place_count(continent: str) -> tuple[int, str]:
-    """Places on a continent under the current "Places to include" choice, and the right word for them."""
-    places = get_countries(continent, collection=st.session_state.scope_collection)
-    if all(c["status"] in STATE_STATUSES for c in places):
-        return len(places), t("{n} countries", n=len(places))
-    return len(places), t("{n} countries and territories", n=len(places))
-
-
 def _continent_badge(continent: str) -> dict:
     ss = st.session_state
     badge_id = "continent_" + continent.lower().replace(" ", "_")
     return next(b for b in badge_engine.evaluate(ss.stats, ss.points, ss.rounds_finished) if b["id"] == badge_id)
 
 
-def _continent_buttons(selected: str | None) -> None:
-    """Six buttons: the accessible way to choose a continent (same effect as tapping the map)."""
+def _continent_buttons() -> None:
+    """Six continent buttons (the accessible way to choose, same as the map) and "Browse all countries"."""
     with st.container(key="continent_buttons"):
         for continent in CONTINENTS_LIST:
-            st.button(t(continent), key=f"continent_btn_{continent.replace(' ', '_')}",
-                      type="primary" if continent == selected else "secondary", width="stretch",
+            st.button(t(continent), key=f"continent_btn_{continent.replace(' ', '_')}", width="stretch",
                       on_click=state.explore_select, args=(continent,),
-                      help=t("Show details for {continent}", continent=continent))
+                      help=t("Show the countries of {continent}", continent=continent))
+    st.button(t("Browse all countries"), key="browse_all", icon=":material/travel_explore:", width="stretch",
+              on_click=state.explore_select, args=(WORLD,), help=t("Opens the country list without a continent filter."))
 
 
-def _continent_panel(continent: str) -> None:
-    """Details for the selected continent. Desktop: beside the map. Phones and portrait tablets: a bottom sheet."""
-    _, count_text = _place_count(continent)
-    badge = _continent_badge(continent)
-    with st.container(key="continent_panel"):
-        with st.container(key="continent_panel_head", horizontal=True, vertical_alignment="top"):
-            html(f'<div class="continent-head"><div class="continent-kicker">{e("Continent")}</div>'
-                 f'<h2 class="continent-title" tabindex="-1">{e(continent)}</h2>'
-                 f'<div class="continent-count">{escape(count_text)}</div></div>')
-            st.button(t("Close"), key="continent_close", icon=":material/close:", on_click=state.explore_close,
-                      help=t("Close the details for {continent}", continent=continent))
-        with st.container(key="continent_badge"):
-            state_text = e("Earned") if badge["earned"] else e("In progress")
-            html(f'<div class="continent-badge-head"><b>{escape(_badge_name(badge))}</b>'
-                 f'<span class="award-state {"earned" if badge["earned"] else ""}">{state_text}</span></div>')
-            st.progress(badge["value"] / badge["target"],
-                        text=t("{value} of {target} correct answers about {continent}", value=badge["value"],
-                               target=badge["target"], continent=continent))
-        if state.area_leaves_out(continent):
-            st.caption(t("Your exploration area is {scope}. Exploring {continent} switches it to all countries.",
-                         scope=state.scope_label(), continent=continent))
-        with st.container(key="continent_actions"):
-            st.button(t("Explore countries"), key="continent_explore", type="primary", width="stretch",
-                      on_click=state.explore_continent, args=(continent,),
-                      help=t("Shows the countries of {continent} in the list below.", continent=continent))
-            st.button(t("Quiz this continent"), key="continent_quiz", width="stretch",
-                      on_click=state.quiz_continent, args=(continent,),
-                      help=t("Opens the quiz setup with {continent} selected.", continent=continent))
+def _selection_title(selection: str) -> str:
+    return t(selection) if selection in CONTINENTS_LIST else t("All countries and territories") \
+        if st.session_state.scope_collection != DEFAULT_COLLECTION else t("All countries")
+
+
+def _selection_summary(selection: str, d: dict, where: str) -> None:
+    """Count, real badge progress and the quiz action for the selection (side area on desktop, compact on phones)."""
+    continent = selection if selection in CONTINENTS_LIST else None
+    with st.container(key=f"continent_panel{'' if where == 'side' else '_' + where}"):
+        emblem = world_map.emblem_svg(continent, 48 if where == "side" else 40) if continent else world_map.globe_svg(48 if where == "side" else 40)
+        if continent or where == "side":  # on phones "all countries" needs no second heading, just the actions
+            html(f'<div class="continent-head">{emblem}<div class="continent-text">'
+                 f'<div class="continent-kicker">{e("Continent") if continent else e("World")}</div>'
+                 f'<div class="continent-name">{escape(_selection_title(selection))}</div>'
+                 f'<div class="continent-count">{escape(_count_text(selection))}</div></div></div>')
+        if continent:
+            badge = _continent_badge(continent)
+            with st.container(key=f"continent_badge{'' if where == 'side' else '_' + where}"):
+                state_text = e("Earned") if badge["earned"] else e("In progress")
+                html(f'<div class="continent-badge-head"><b>{escape(_badge_name(badge))}</b>'
+                     f'<span class="award-state {"earned" if badge["earned"] else ""}">{state_text}</span></div>')
+                st.progress(badge["value"] / badge["target"],
+                            text=t("{value} of {target} correct answers about {continent}", value=badge["value"],
+                                   target=badge["target"], continent=continent))
+        suffix = "" if where == "side" else "_" + where
+        with st.container(key=f"continent_actions{suffix}"):
+            st.button(t("Quiz this continent") if continent else t("Quiz all countries"), key=f"continent_quiz{suffix}",
+                      type="primary", width="stretch", on_click=state.quiz_continent, args=(selection,),
+                      help=t("Opens the quiz setup with {continent} selected.", continent=continent) if continent
+                      else t("Opens the quiz setup for all countries."))
 
 
 def _map_select() -> None:
@@ -237,57 +245,48 @@ def _map_select() -> None:
 
 
 def explore() -> None:
-    available = state.scoped_countries()
     d = _daily_status()
-    selected = st.session_state.get("explore_selected")
-    if selected not in CONTINENTS_LIST:
-        selected = None
+    selection = state.explore_selection()
     with st.container(key="explore_home"):
         _explore_summary()
-        _explore_daily(d, "explore_daily_top", "explore_daily")  # phones and tablets: above the map
-        with st.container(key="explore_layout"):
-            map_column, side_column = st.columns([1.8, 1], gap="large")
-            with map_column:
-                html(f'<div class="map-heading"><h2>{e("Choose a continent")}</h2>'
-                     f'<span class="map-hint">{e("Tap the map or use the buttons below.")}</span></div>')
-                with st.container(key="world_map_frame"):
-                    world_map.render(selected, {c: t(c) for c in CONTINENTS_LIST},
+        # Phones and tablets: the Daily Challenge sits above the shared area in both views, so the country cards
+        # appear exactly where the map was (and the map returns to the same place).
+        _explore_daily(d, "explore_daily_top", "explore_daily")
+        with st.container(key="explore_layout_browser" if selection else "explore_layout"):
+            main_column, side_column = st.columns([2.4, 1] if selection else [1.8, 1], gap="large")
+            with main_column:
+                if selection:
+                    with st.container(key="browser_head"):
+                        st.button(t("World map"), key="continent_back", icon=":material/arrow_back:",
+                                  on_click=state.explore_close, help=t("Back to the world map"))
+                        heading = (t("Countries of {continent}", continent=selection) if selection in CONTINENTS_LIST
+                                   else _selection_title(selection))
+                        html(f'<div class="map-heading browser-heading"><h2 class="continent-title" tabindex="-1">{escape(heading)}</h2>'
+                             f'<span class="map-hint">{escape(_count_text(selection))}</span></div>')
+                    notice = st.session_state.pop("explore_notice", None)
+                    if notice:
+                        st.info(notice, icon=":material/info:")
+                    _selection_summary(selection, d, "phone")  # phones and tablets only (CSS)
+                else:
+                    html(f'<div class="map-heading"><h2>{e("Choose a continent")}</h2>'
+                         f'<span class="map-hint">{e("Tap the map or use the buttons below.")}</span></div>')
+                # The map stays mounted (hidden in the browser) so going back is instant and focus returns properly.
+                with st.container(key="world_map_frame_hidden" if selection else "world_map_frame"):
+                    world_map.render(selection if selection in CONTINENTS_LIST else None, {c: t(c) for c in CONTINENTS_LIST},
                                      t("World map. Use the continent buttons below to choose a continent."),
-                                     st.session_state.get("explore_scroll", 0), _map_select, state.explore_close)
-                _continent_buttons(selected)
+                                     on_select=_map_select, on_close=state.explore_close, hidden=bool(selection),
+                                     view=selection)
+                if selection:
+                    _country_grid(selection)
+                else:
+                    _continent_buttons()
             with side_column:
-                _explore_daily(d, "explore_daily_side", "explore_daily_side_start")  # desktop: beside the map
-                if selected:
-                    _continent_panel(selected)
+                _explore_daily(d, "explore_daily_side", "explore_daily_side_start")  # desktop: beside the main area
+                if selection:
+                    _selection_summary(selection, d, "side")
                 else:
                     with st.container(key="continent_hint"):
-                        html(f'<p class="continent-hint">{e("Choose a continent on the map or with the buttons to see its details.")}</p>')
-    if selected:  # dims the page behind the bottom sheet (phones and portrait tablets only; see styles.css)
-        html('<div class="continent-scrim" aria-hidden="true"></div>')
-
-    _exploration_area()
-
-    entries = _filtered(available)  # filters span the full width, above the cards
-    with st.container(key="explore_grid"):
-        if not entries:
-            st.info(t("No countries match your search."))
-        else:
-            pages = math.ceil(len(entries) / EXPLORE_PAGE_SIZE)
-            page = st.session_state.explore_page = min(st.session_state.explore_page, pages - 1)
-            batch = entries[page * EXPLORE_PAGE_SIZE:(page + 1) * EXPLORE_PAGE_SIZE]  # never render the whole list
-            # Tablets and desktops: rows of four equal columns (the Daily Challenge invitation is the banner above,
-            # so the grid holds countries only). On phones CSS stacks the cards as one list in page order.
-            for row in range(0, len(batch), 4):
-                for column, country in zip(st.columns(4), batch[row:row + 4]):
-                    with column:
-                        _country_card(country)
-            with st.container(key="explore_pagination"):
-                previous, status, following = st.columns([1, 2, 1], vertical_alignment="center")
-                previous.button(t("Previous"), key="explore_previous", disabled=page == 0,
-                                width="stretch", on_click=_turn_page, args=(-1,))
-                status.caption(t("Page {page} of {pages} · {count} countries", page=page + 1, pages=pages, count=len(entries)))
-                following.button(t("Next"), key="explore_next", disabled=page + 1 >= pages,
-                                 width="stretch", on_click=_turn_page, args=(1,))
+                        html(f'<p class="continent-hint">{e("Choose a continent on the map or with the buttons to see its countries.")}</p>')
     photo_credits()
 
 

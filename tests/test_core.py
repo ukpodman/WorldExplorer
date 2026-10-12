@@ -5,6 +5,7 @@ from itertools import combinations
 import re
 import sys
 import unittest
+import unittest.mock
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -779,3 +780,56 @@ class BadgeTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RussianAndMapTests(unittest.TestCase):
+    def test_russian_is_the_fifth_language_and_complete(self):
+        from core.i18n import LANGUAGES, STRINGS, missing_translations
+        self.assertEqual(LANGUAGES, ("English", "Deutsch", "Español", "中文（普通话）", "Русский"))
+        self.assertEqual(missing_translations(), [])
+        self.assertEqual(translate("Explore countries", "Русский"), "Смотреть страны")
+        self.assertEqual(translate("Germany", "Русский"), "Германия")      # dataset translation, same as other languages
+        self.assertEqual(translate("Europe Explorer", "Русский"), "Europe Explorer")  # not a key: unchanged
+
+    def test_russian_plural_forms(self):
+        expected = {1: "1 страна", 2: "2 страны", 5: "5 стран", 11: "11 стран", 21: "21 страна", 24: "24 страны", 112: "112 стран"}
+        for n, text in expected.items():
+            self.assertEqual(translate("{n} countries", "Русский", n=n), text)
+        self.assertEqual(translate("{n} questions", "Русский", n=3), "3 вопроса")
+        self.assertIn("1,251 очко", translate("Your guest progress was added to your account: +{points} points.", "Русский", points="1,251"))
+
+    def test_missing_translation_falls_back_to_english(self):
+        from core import i18n
+        with unittest.mock.patch.dict(i18n.STRINGS, {"Only in English {n}": ["Nur Deutsch {n}", "", "", ""]}):
+            self.assertEqual(translate("Only in English {n}", "Español", n=2), "Only in English 2")
+            self.assertEqual(translate("Only in English {n}", "Русский", n=2), "Only in English 2")   # entry missing entirely
+            self.assertEqual(translate("Only in English {n}", "Deutsch", n=2), "Nur Deutsch 2")
+
+    def test_saved_russian_preference_is_accepted(self):
+        try:
+            from core import accounts
+        except ImportError:  # pragma: no cover - accounts needs Streamlit
+            self.skipTest("streamlit is not installed")
+        self.assertEqual(accounts.sanitize_profile({"app_language": "Русский"}).get("app_language"), "Русский")
+        self.assertNotIn("app_language", accounts.sanitize_profile({"app_language": "Klingon"}))
+
+    def test_map_asset_matches_the_dataset_continents(self):
+        import json
+        from pathlib import Path
+        from core.data import CONTINENTS
+        data = json.loads((Path(__file__).resolve().parent.parent / "assets" / "world_map.json").read_text(encoding="utf-8"))
+        self.assertEqual(sorted(data["continents"]), sorted(CONTINENTS))
+        self.assertEqual(sorted(data["labels"]), sorted(CONTINENTS))
+        self.assertIn("Natural Earth", data["source"])
+        width, height = data["viewbox"][2:]
+        self.assertEqual(width, 1000)
+        for continent, path in data["continents"].items():
+            self.assertGreater(len(path), 3000, continent)
+            xs = [float(v.split(",")[0]) for v in path.replace("M", "L").replace("Z", "").split("L") if v]
+            self.assertTrue(0 <= min(xs) and max(xs) <= width, continent)
+        # Geographic sanity: label anchors sit where the continents are (west to east, north to south).
+        L = data["labels"]
+        self.assertLess(L["North America"][0], L["Europe"][0])
+        self.assertLess(L["Europe"][0], L["Asia"][0])
+        self.assertLess(L["Europe"][1], L["Africa"][1])
+        self.assertLess(L["Africa"][1], L["Oceania"][1])

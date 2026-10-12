@@ -6,8 +6,12 @@ of rendered sentences. Answers are stored in canonical English; only their
 display is localised.
 
 Country names come from the country dataset's own translations (German,
-Spanish and Chinese). Capitals, currencies and languages keep the dataset's
-English spelling.
+Spanish, Chinese and Russian). Capitals, currencies and languages keep the
+dataset's English spelling.
+
+A missing or empty translation falls back to the English text. Russian
+templates choose plural forms with a format spec, e.g.
+"{n} {n:plural:вопрос|вопроса|вопросов}" (one | few | many).
 """
 from __future__ import annotations
 
@@ -30,7 +34,31 @@ NAME_FIELDS = frozenset({"name", "other", "first", "second", "third", "country"}
 PLACE_NAMES: dict[str, dict[str, str]] = {
     lang: {c["name"]: c["names"].get(lang, c["name"]) for c in COUNTRIES} for lang in LANGUAGES[1:]}
 
-_formatter = string.Formatter()
+
+
+def plural_form(value, forms: list[str]) -> str:
+    """Russian-style plural choice (one | few | many); with two forms, English-style (one | other)."""
+    try:
+        n = abs(int(str(value).replace(",", "").replace("\u00a0", "").replace(" ", "").split(".")[0]))
+    except ValueError:
+        return forms[-1]
+    if len(forms) == 2:
+        return forms[0] if n == 1 else forms[1]
+    if n % 10 == 1 and n % 100 != 11:
+        return forms[0]
+    if 2 <= n % 10 <= 4 and not 12 <= n % 100 <= 14:
+        return forms[1]
+    return forms[2]
+
+
+class _Formatter(string.Formatter):
+    def format_field(self, value, format_spec):
+        if format_spec.startswith("plural:"):
+            return plural_form(value, format_spec[len("plural:"):].split("|"))
+        return super().format_field(value, format_spec)
+
+
+_formatter = _Formatter()
 
 
 def place_name(name, language: str = DEFAULT_LANGUAGE):
@@ -48,7 +76,8 @@ def translate(text, language: str = DEFAULT_LANGUAGE, /, **fields):
     idx = LANGUAGES.index(language) - 1 if language in LANGUAGES else -1
     if idx >= 0:
         if text in STRINGS:
-            text = STRINGS[text][idx]
+            entries = STRINGS[text]
+            text = entries[idx] if idx < len(entries) and entries[idx] else text  # English fallback
         elif not fields:
             return place_name(text, language)
         fields = {k: translate(v, language) if k in TRANSLATED_FIELDS

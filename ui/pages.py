@@ -13,17 +13,16 @@ from core import daily as daily_engine
 from core import learn as learn_engine
 from core import badges as badge_engine
 from core import quiz as engine
-from core.data import (AREAS, COLLECTIONS, COUNTRIES, DEFAULT_COLLECTION, PHOTOS, STATUS_LABELS, STATUSES, flag_image, get_countries,
-                       get_country, load_political_records)
+from core.data import (AREAS, COLLECTIONS, COUNTRIES, DEFAULT_COLLECTION, PHOTOS, STATE_STATUSES, STATUS_LABELS, STATUSES, flag_image,
+                       get_countries, get_country, load_political_records)
 from core.quiz import CATEGORIES, DIFFICULTIES, QUESTION_COUNTS, currency_label
 
-from . import owner, sound, state
+from . import owner, sound, state, world_map
 from .components import e, hero, html, photo_credits, status_chip
 from .state import country_formatter, country_label, formatter, parts, t
 
 CONTINENTS_LIST = list(AREAS[1:])
 EXPLORE_PAGE_SIZE = 8  # two full rows of four on tablets and desktops; one list on phones
-FEATURED = ("NGA", "JPN", "ITA", "BRA")
 
 
 def _flag(country: dict, width: int, alt: str) -> None:
@@ -152,28 +151,119 @@ def _exploration_area() -> None:
         st.caption(t("Changes apply right away to Explore, Learn and the next quiz setup. Your current round is kept."))
 
 
+def _explore_summary() -> None:
+    """Compact, real progress: points, today's day streak and earned badges (zeros for a new explorer)."""
+    ss = st.session_state
+    status = badge_engine.evaluate(ss.stats, ss.points, ss.rounds_finished)
+    earned = sum(1 for b in status if b["earned"])
+    streak = daily_engine.current_streak(ss.daily, state.today())
+    tiles = (("points", "★", f"{ss.points:,}", "Points"), ("streak", "🔥", str(streak), "Day streak"),
+             ("badges", "🏅", f"{earned}/{len(status)}", "Badges"))
+    html('<div class="explore-summary" role="list">' + "".join(
+        f'<div class="summary-tile summary-{cls}" role="listitem"><span class="summary-icon" aria-hidden="true">{icon}</span>'
+        f'<span class="summary-text"><b>{value}</b><span>{e(label)}</span></span></div>'
+        for cls, icon, value, label in tiles) + "</div>")
+
+
+def _explore_daily(d: dict, key: str, button_key: str) -> None:
+    """The five-question Daily Challenge with its existing Start / Continue / Replay behaviour."""
+    with st.container(key=key):
+        status = _streak_text(d) + (" " + d["next"] if d["done"] else "")
+        kicker = e("Daily challenge")
+        html(f'<div class="explore-daily-head"><span class="explore-daily-icon" aria-hidden="true">📅</span><div>'
+             f'<div class="explore-daily-kicker">{kicker}</div>'
+             f'<h2 class="explore-daily-title">{e("Five questions. Discover something new every day.")}</h2>'
+             f'<p class="explore-daily-status">{escape(status)}</p></div></div>')
+        st.button(_daily_short_label(d), key=button_key, type="primary" if not d["done"] else "secondary",
+                  on_click=state.start_daily, help=_daily_button_label(d), width="stretch")
+
+
+def _place_count(continent: str) -> tuple[int, str]:
+    """Places on a continent under the current "Places to include" choice, and the right word for them."""
+    places = get_countries(continent, collection=st.session_state.scope_collection)
+    if all(c["status"] in STATE_STATUSES for c in places):
+        return len(places), t("{n} countries", n=len(places))
+    return len(places), t("{n} countries and territories", n=len(places))
+
+
+def _continent_badge(continent: str) -> dict:
+    ss = st.session_state
+    badge_id = "continent_" + continent.lower().replace(" ", "_")
+    return next(b for b in badge_engine.evaluate(ss.stats, ss.points, ss.rounds_finished) if b["id"] == badge_id)
+
+
+def _continent_buttons(selected: str | None) -> None:
+    """Six buttons: the accessible way to choose a continent (same effect as tapping the map)."""
+    with st.container(key="continent_buttons"):
+        for continent in CONTINENTS_LIST:
+            st.button(t(continent), key=f"continent_btn_{continent.replace(' ', '_')}",
+                      type="primary" if continent == selected else "secondary", width="stretch",
+                      on_click=state.explore_select, args=(continent,),
+                      help=t("Show details for {continent}", continent=continent))
+
+
+def _continent_panel(continent: str) -> None:
+    """Details for the selected continent. Desktop: beside the map. Phones and portrait tablets: a bottom sheet."""
+    _, count_text = _place_count(continent)
+    badge = _continent_badge(continent)
+    with st.container(key="continent_panel"):
+        with st.container(key="continent_panel_head", horizontal=True, vertical_alignment="top"):
+            html(f'<div class="continent-head"><div class="continent-kicker">{e("Continent")}</div>'
+                 f'<h2 class="continent-title" tabindex="-1">{e(continent)}</h2>'
+                 f'<div class="continent-count">{escape(count_text)}</div></div>')
+            st.button(t("Close"), key="continent_close", icon=":material/close:", on_click=state.explore_close,
+                      help=t("Close the details for {continent}", continent=continent))
+        with st.container(key="continent_badge"):
+            state_text = e("Earned") if badge["earned"] else e("In progress")
+            html(f'<div class="continent-badge-head"><b>{escape(_badge_name(badge))}</b>'
+                 f'<span class="award-state {"earned" if badge["earned"] else ""}">{state_text}</span></div>')
+            st.progress(badge["value"] / badge["target"],
+                        text=t("{value} of {target} correct answers about {continent}", value=badge["value"],
+                               target=badge["target"], continent=continent))
+        if state.area_leaves_out(continent):
+            st.caption(t("Your exploration area is {scope}. Exploring {continent} switches it to all countries.",
+                         scope=state.scope_label(), continent=continent))
+        with st.container(key="continent_actions"):
+            st.button(t("Explore countries"), key="continent_explore", type="primary", width="stretch",
+                      on_click=state.explore_continent, args=(continent,),
+                      help=t("Shows the countries of {continent} in the list below.", continent=continent))
+            st.button(t("Quiz this continent"), key="continent_quiz", width="stretch",
+                      on_click=state.quiz_continent, args=(continent,),
+                      help=t("Opens the quiz setup with {continent} selected.", continent=continent))
+
+
+def _map_select() -> None:
+    state.explore_select(world_map.selected_value())
+
+
 def explore() -> None:
     available = state.scoped_countries()
-    feature = next((c for code in FEATURED for c in available if c["id"] == code), available[0])
-    photo = PHOTOS.get(feature["id"])
     d = _daily_status()
-    # One banner, one clear first step: today's challenge (Start / Continue / Replay) with the featured
-    # destination as the second action. On phones the country list follows directly, so only the first is shown.
-    with st.container(key="atlas_feature"):
-        scene = (f'style="background-image:url(\'{escape(photo["url"], quote=True)}\')"' if photo else 'class="no-photo"')
-        kicker = e("Today's challenge") + (f' · <span aria-hidden="true">🔥</span> {d["streak"]}' if d["streak"] else "")
-        status = (_streak_text(d) + (" " + d["next"] if d["done"] else "")) if d["done"] or d["streak"] else ""
-        place = e("Featured destination") + ": " + e(feature["name"]) + (" · " + escape(photo["caption"]) if photo else "")
-        html(f'<div class="feature-scene" {scene} role="img" aria-label="{escape(photo["caption"] if photo else "", quote=True)}"></div>'
-             f'<div class="feature-copy"><div class="feature-kicker">{kicker}</div>'
-             f'<h2 class="feature-title invite-title">{e("Five questions. Discover something new every day.")}</h2>'
-             + (f'<div class="feature-description">{escape(status)}</div>' if status else "")
-             + f'<div class="feature-place">{place}</div></div>')
-        with st.container(key="feature_actions", horizontal=True):
-            st.button(_daily_short_label(d), key="explore_daily", type="primary" if not d["done"] else "secondary",
-                      on_click=state.start_daily, help=_daily_button_label(d))
-            st.button(t("Discover {name} →", name=feature["name"]), key="featured_discover",
-                      on_click=state.learn, args=(feature["id"],))
+    selected = st.session_state.get("explore_selected")
+    if selected not in CONTINENTS_LIST:
+        selected = None
+    with st.container(key="explore_home"):
+        _explore_summary()
+        _explore_daily(d, "explore_daily_top", "explore_daily")  # phones and tablets: above the map
+        with st.container(key="explore_layout"):
+            map_column, side_column = st.columns([1.8, 1], gap="large")
+            with map_column:
+                html(f'<div class="map-heading"><h2>{e("Choose a continent")}</h2>'
+                     f'<span class="map-hint">{e("Tap the map or use the buttons below.")}</span></div>')
+                with st.container(key="world_map_frame"):
+                    world_map.render(selected, {c: t(c) for c in CONTINENTS_LIST},
+                                     t("World map. Use the continent buttons below to choose a continent."),
+                                     st.session_state.get("explore_scroll", 0), _map_select, state.explore_close)
+                _continent_buttons(selected)
+            with side_column:
+                _explore_daily(d, "explore_daily_side", "explore_daily_side_start")  # desktop: beside the map
+                if selected:
+                    _continent_panel(selected)
+                else:
+                    with st.container(key="continent_hint"):
+                        html(f'<p class="continent-hint">{e("Choose a continent on the map or with the buttons to see its details.")}</p>')
+    if selected:  # dims the page behind the bottom sheet (phones and portrait tablets only; see styles.css)
+        html('<div class="continent-scrim" aria-hidden="true"></div>')
 
     _exploration_area()
 

@@ -6,7 +6,8 @@
   "names": {
    "Deutsch": "Afghanistan",
    "Español": "Afganistán",
-   "中文（普通话）": "阿富汗"
+   "中文（普通话）": "阿富汗",
+   "Русский": "Афганистан"
   },
   "status": "un_member",
   "status_note": "",
@@ -72,7 +73,8 @@
   "names": {
    "Deutsch": "Albanien",
    "Español": "Albania",
-   "中文（普通话）": "阿尔巴尼亚"
+   "中文（普通话）": "阿尔巴尼亚",
+   "Русский": "Албания"
   },
   "status": "un_member",
   "status_note": "",
@@ -134,7 +136,8 @@
   "names": {
    "Deutsch": "Algerien",
    "Español": "Argelia",
-   "中文（普通话）": "阿尔及利亚"
+   "中文（普通话）": "阿尔及利亚",
+   "Русский": "Алжир"
   },
   "status": "un_member",
   "status_note": "",
@@ -191,7 +194,8 @@
   "names": {
    "Deutsch": "Amerikanisch-Samoa",
    "Español": "Samoa Americana",
-   "中文（普通话）": "美属萨摩亚"
+   "中文（普通话）": "美属萨摩亚",
+   "Русский": "Американское Самоа"
   },
   "status": "territory",
   "status_note": "",
@@ -240,7 +244,8 @@
   "names": {
    "Deutsch": "Andorra",
    "Español": "Andorra",
-   "中文（普通话）": "安道尔"
+   "中文（普通话）": "安道尔",
+   "Русский": "Андорра"
   },
   "status": "un_member",
   "status_note": "",
@@ -296,7 +301,8 @@
   "names": {
    "Deutsch": "Angola",
    "Español": "Angola",
-   "中文（普通话）": "安哥拉"
+   "中文（普通话）": "安哥拉",
+   "Русский": "Ангола"
   },
   "status": "un_member",
   "status_note": "",
@@ -349,7 +355,8 @@
   "names": {
    "Deutsch": "Anguilla",
    "Español": "Anguilla",
-   "中文（普通话）": "安圭拉"
+   "中文（普通话）": "安圭拉",
+   "Русский": "Ангилья"
   },
   "status": "territory",
   "status_note": "",
@@ -397,7 +404,8 @@
   "names": {
    "Deutsch": "Antigua und Barbuda",
    "Español": "Antigua y Barbuda",
-   "中文（普通话）": "安提瓜和巴布达"
+   "中文（普通话）": "安提瓜和巴布达",
+   "Русский": "Антигуа и Барбуда"
   },
   "status": "un_member",
   "status_note": "",
@@ -445,7 +453,8 @@
   "names": {
    "Deutsch": "Argentinien",
    "Español": "Argentina",
-   "中文（普通话）": "阿根廷"
+   "中文（普通话）": "阿根廷",
+   "Русский": "Аргентина"
   },
   "status": "un_member",
   "status_note": "",
@@ -513,7 +522,8 @@
   "names": {
    "Deutsch": "Armenien",
    "Español": "Armenia",
-   "中文（普通话）": "亚美尼亚"
+   "中文（普通话）": "亚美尼亚",
+   "Русский": "Армения"
   },
   "status": "un_member",
   "status_note": "",
@@ -567,7 +577,8 @@
   "names": {
    "Deutsch": "Aruba",
    "Español": "Aruba",
-   "中文（普通话）": "阿鲁巴"
+   "中文（普通话）": "阿鲁巴",
+   "Русский": "Аруба"
   },
   "status": "territory",
   "status_note": "",
@@ -616,7 +627,8 @@
   "names": {
    "Deutsch": "Australien",
    "Español": "Australia",
-   "中文（普通话）": "澳大利亚"
+   "中文（普通话）": "澳大利亚",
+   "Русский": "Австралия"
   },
   "status": "un_member",
   "status_note": "",
@@ -677,7 +689,8 @@
   "names": {
    "Deutsch": "Österreich",
    "Español": "Austria",
-   "中文（普通话）": "奥地利"
+   "中文（普通话）": "奥地利",
+   "Русский": "Австрия"
   },
   "status": "un_member",
   "status_note": "",
@@ -734,7 +747,8 @@
   "names": {
    "Deutsch": "Aserbaidschan",
    "Español": "Azerbaiyán",
-   "中文（普通话）": "阿塞拜疆"
+   "中文（普通话）": "阿塞拜疆",
+   "Русский": "Азербайджан"
   },
   "status": "un_member",
   "status_note": "",
@@ -790,7 +804,8 @@
   "names": {
    "Deutsch": "Bahamas",
    "Español": "Bahamas",
-   "中文（普通话）": "巴哈马"
+   "中文（普通话）": "巴哈马",
+   "Русский": "Багамские Острова"
   },
   "status": "un_member",
   "status_note": "",
@@ -842,7 +857,8 @@
   "names": {
    "Deutsch": "Bahrain",
    "Español": "Bahrein",
-   "中文（普通话）": "巴林"
+   "中文（普通话）": "巴林",
+   "Русский": "Бахрейн"
   },
   "status": "un_member",
   "status_note": "",
@@ -890,7 +906,8 @@
   "names": {
    "Deutsch": "Bangladesch",
    "Español": "Bangladesh",
-   "中文（普通话）": "孟加拉国"
+   "中文（普通话）": "孟加拉国",
+   "Русский": "Бангладеш"
   },
   "status": "un_member",
   "status_note": "",
@@ -941,7 +958,8 @@
   "names": {
    "Deutsch": "Barbados",
    "Español": "Barbados",
-   "中文（普通话）": "巴巴多斯"
+   "中文（普通话）": "巴巴多斯",
+   "Русский": "Барбадос"
   },
   "status": "un_member",
   "status_note": "",
@@ -989,7 +1007,8 @@
   "names": {
    "Deutsch": "Belarus",
    "Español": "Bielorrusia",
-   "中文（普通话）": "白俄罗斯"
+   "中文（普通话）": "白俄罗斯",
+   "Русский": "Беларусь"
   },
   "status": "un_member",
   "status_note": "",
@@ -1044,7 +1063,8 @@
   "names": {
    "Deutsch": "Belgien",
    "Español": "Bélgica",
-   "中文（普通话）": "比利时"
+   "中文（普通话）": "比利时",
+   "Русский": "Бельгия"
   },
   "status": "un_member",
   "status_note": "",
@@ -1099,7 +1119,8 @@
   "names": {
    "Deutsch": "Belize",
    "Español": "Belice",
-   "中文（普通话）": "伯利兹"
+   "中文（普通话）": "伯利兹",
+   "Русский": "Белиз"
   },
   "status": "un_member",
   "status_note": "",
@@ -1157,7 +1178,8 @@
   "names": {
    "Deutsch": "Benin",
    "Español": "Benín",
-   "中文（普通话）": "贝宁"
+   "中文（普通话）": "贝宁",
+   "Русский": "Бенин"
   },
   "status": "un_member",
   "status_note": "",
@@ -1210,7 +1232,8 @@
   "names": {
    "Deutsch": "Bermuda",
    "Español": "Bermudas",
-   "中文（普通话）": "百慕大"
+   "中文（普通话）": "百慕大",
+   "Русский": "Бермудские Острова"
   },
   "status": "territory",
   "status_note": "",
@@ -1258,7 +1281,8 @@
   "names": {
    "Deutsch": "Bhutan",
    "Español": "Bután",
-   "中文（普通话）": "不丹"
+   "中文（普通话）": "不丹",
+   "Русский": "Бутан"
   },
   "status": "un_member",
   "status_note": "",
@@ -1313,7 +1337,8 @@
   "names": {
    "Deutsch": "Bolivien",
    "Español": "Bolivia",
-   "中文（普通话）": "玻利维亚"
+   "中文（普通话）": "玻利维亚",
+   "Русский": "Боливия"
   },
   "status": "un_member",
   "status_note": "",
@@ -1388,7 +1413,8 @@
   "names": {
    "Deutsch": "Bosnien und Herzegowina",
    "Español": "Bosnia y Herzegovina",
-   "中文（普通话）": "波斯尼亚和黑塞哥维那"
+   "中文（普通话）": "波斯尼亚和黑塞哥维那",
+   "Русский": "Босния и Герцеговина"
   },
   "status": "un_member",
   "status_note": "",
@@ -1442,7 +1468,8 @@
   "names": {
    "Deutsch": "Botswana",
    "Español": "Botswana",
-   "中文（普通话）": "博茨瓦纳"
+   "中文（普通话）": "博茨瓦纳",
+   "Русский": "Ботсвана"
   },
   "status": "un_member",
   "status_note": "",
@@ -1505,7 +1532,8 @@
   "names": {
    "Deutsch": "Brasilien",
    "Español": "Brasil",
-   "中文（普通话）": "巴西"
+   "中文（普通话）": "巴西",
+   "Русский": "Бразилия"
   },
   "status": "un_member",
   "status_note": "",
@@ -1577,7 +1605,8 @@
   "names": {
    "Deutsch": "Britisches Territorium im Indischen Ozean",
    "Español": "Territorio Británico del Océano Índico",
-   "中文（普通话）": "英属印度洋领地"
+   "中文（普通话）": "英属印度洋领地",
+   "Русский": "Британская территория в Индийском океане"
   },
   "status": "territory",
   "status_note": "Sovereignty disputed.",
@@ -1625,7 +1654,8 @@
   "names": {
    "Deutsch": "Britische Jungferninseln",
    "Español": "Islas Vírgenes del Reino Unido",
-   "中文（普通话）": "英属维尔京群岛"
+   "中文（普通话）": "英属维尔京群岛",
+   "Русский": "Британские Виргинские острова"
   },
   "status": "territory",
   "status_note": "",
@@ -1673,7 +1703,8 @@
   "names": {
    "Deutsch": "Brunei",
    "Español": "Brunei",
-   "中文（普通话）": "文莱"
+   "中文（普通话）": "文莱",
+   "Русский": "Бруней"
   },
   "status": "un_member",
   "status_note": "",
@@ -1727,7 +1758,8 @@
   "names": {
    "Deutsch": "Bulgarien",
    "Español": "Bulgaria",
-   "中文（普通话）": "保加利亚"
+   "中文（普通话）": "保加利亚",
+   "Русский": "Болгария"
   },
   "status": "un_member",
   "status_note": "",
@@ -1781,7 +1813,8 @@
   "names": {
    "Deutsch": "Burkina Faso",
    "Español": "Burkina Faso",
-   "中文（普通话）": "布基纳法索"
+   "中文（普通话）": "布基纳法索",
+   "Русский": "Буркина-Фасо"
   },
   "status": "un_member",
   "status_note": "",
@@ -1836,7 +1869,8 @@
   "names": {
    "Deutsch": "Burundi",
    "Español": "Burundi",
-   "中文（普通话）": "布隆迪"
+   "中文（普通话）": "布隆迪",
+   "Русский": "Бурунди"
   },
   "status": "un_member",
   "status_note": "",
@@ -1889,7 +1923,8 @@
   "names": {
    "Deutsch": "Kambodscha",
    "Español": "Camboya",
-   "中文（普通话）": "柬埔寨"
+   "中文（普通话）": "柬埔寨",
+   "Русский": "Камбоджа"
   },
   "status": "un_member",
   "status_note": "",
@@ -1958,7 +1993,8 @@
   "names": {
    "Deutsch": "Kamerun",
    "Español": "Camerún",
-   "中文（普通话）": "喀麦隆"
+   "中文（普通话）": "喀麦隆",
+   "Русский": "Камерун"
   },
   "status": "un_member",
   "status_note": "",
@@ -2014,7 +2050,8 @@
   "names": {
    "Deutsch": "Kanada",
    "Español": "Canadá",
-   "中文（普通话）": "加拿大"
+   "中文（普通话）": "加拿大",
+   "Русский": "Канада"
   },
   "status": "un_member",
   "status_note": "",
@@ -2078,7 +2115,8 @@
   "names": {
    "Deutsch": "Kap Verde",
    "Español": "Cabo Verde",
-   "中文（普通话）": "佛得角"
+   "中文（普通话）": "佛得角",
+   "Русский": "Кабо-Верде"
   },
   "status": "un_member",
   "status_note": "",
@@ -2131,7 +2169,8 @@
   "names": {
    "Deutsch": "Karibische Niederlande",
    "Español": "Caribe Neerlandés",
-   "中文（普通话）": "荷蘭加勒比區"
+   "中文（普通话）": "荷蘭加勒比區",
+   "Русский": "Карибские Нидерланды"
   },
   "status": "territory",
   "status_note": "",
@@ -2191,7 +2230,8 @@
   "names": {
    "Deutsch": "Kaimaninseln",
    "Español": "Islas Caimán",
-   "中文（普通话）": "开曼群岛"
+   "中文（普通话）": "开曼群岛",
+   "Русский": "Каймановы острова"
   },
   "status": "territory",
   "status_note": "",
@@ -2239,7 +2279,8 @@
   "names": {
    "Deutsch": "Zentralafrikanische Republik",
    "Español": "República Centroafricana",
-   "中文（普通话）": "中非共和国"
+   "中文（普通话）": "中非共和国",
+   "Русский": "Центральноафриканская Республика"
   },
   "status": "un_member",
   "status_note": "",
@@ -2295,7 +2336,8 @@
   "names": {
    "Deutsch": "Tschad",
    "Español": "Chad",
-   "中文（普通话）": "乍得"
+   "中文（普通话）": "乍得",
+   "Русский": "Чад"
   },
   "status": "un_member",
   "status_note": "",
@@ -2351,7 +2393,8 @@
   "names": {
    "Deutsch": "Chile",
    "Español": "Chile",
-   "中文（普通话）": "智利"
+   "中文（普通话）": "智利",
+   "Русский": "Чили"
   },
   "status": "un_member",
   "status_note": "",
@@ -2416,7 +2459,8 @@
   "names": {
    "Deutsch": "China",
    "Español": "China",
-   "中文（普通话）": "中国"
+   "中文（普通话）": "中国",
+   "Русский": "Китай"
   },
   "status": "un_member",
   "status_note": "",
@@ -2498,7 +2542,8 @@
   "names": {
    "Deutsch": "Weihnachtsinsel",
    "Español": "Isla de Navidad",
-   "中文（普通话）": "圣诞岛"
+   "中文（普通话）": "圣诞岛",
+   "Русский": "Остров Рождества"
   },
   "status": "territory",
   "status_note": "",
@@ -2546,7 +2591,8 @@
   "names": {
    "Deutsch": "Kokosinseln",
    "Español": "Islas Cocos o Islas Keeling",
-   "中文（普通话）": "科科斯"
+   "中文（普通话）": "科科斯",
+   "Русский": "Кокосовые острова"
   },
   "status": "territory",
   "status_note": "",
@@ -2594,7 +2640,8 @@
   "names": {
    "Deutsch": "Kolumbien",
    "Español": "Colombia",
-   "中文（普通话）": "哥伦比亚"
+   "中文（普通话）": "哥伦比亚",
+   "Русский": "Колумбия"
   },
   "status": "un_member",
   "status_note": "",
@@ -2661,7 +2708,8 @@
   "names": {
    "Deutsch": "Komoren",
    "Español": "Comoras",
-   "中文（普通话）": "科摩罗"
+   "中文（普通话）": "科摩罗",
+   "Русский": "Коморы"
   },
   "status": "un_member",
   "status_note": "",
@@ -2716,7 +2764,8 @@
   "names": {
    "Deutsch": "Kongo",
    "Español": "Congo",
-   "中文（普通话）": "刚果"
+   "中文（普通话）": "刚果",
+   "Русский": "Республика Конго"
   },
   "status": "un_member",
   "status_note": "",
@@ -2772,7 +2821,8 @@
   "names": {
    "Deutsch": "Cookinseln",
    "Español": "Islas Cook",
-   "中文（普通话）": "库克群岛"
+   "中文（普通话）": "库克群岛",
+   "Русский": "Острова Кука"
   },
   "status": "associated_state",
   "status_note": "Self-governing in free association with New Zealand; not a UN member.",
@@ -2825,7 +2875,8 @@
   "names": {
    "Deutsch": "Costa Rica",
    "Español": "Costa Rica",
-   "中文（普通话）": "哥斯达黎加"
+   "中文（普通话）": "哥斯达黎加",
+   "Русский": "Коста-Рика"
   },
   "status": "un_member",
   "status_note": "",
@@ -2889,7 +2940,8 @@
   "names": {
    "Deutsch": "Kroatien",
    "Español": "Croacia",
-   "中文（普通话）": "克罗地亚"
+   "中文（普通话）": "克罗地亚",
+   "Русский": "Хорватия"
   },
   "status": "un_member",
   "status_note": "",
@@ -2943,7 +2995,8 @@
   "names": {
    "Deutsch": "Kuba",
    "Español": "Cuba",
-   "中文（普通话）": "古巴"
+   "中文（普通话）": "古巴",
+   "Русский": "Куба"
   },
   "status": "un_member",
   "status_note": "",
@@ -3008,7 +3061,8 @@
   "names": {
    "Deutsch": "Curaçao",
    "Español": "Curazao",
-   "中文（普通话）": "库拉索"
+   "中文（普通话）": "库拉索",
+   "Русский": "Кюрасао"
   },
   "status": "territory",
   "status_note": "",
@@ -3058,7 +3112,8 @@
   "names": {
    "Deutsch": "Zypern",
    "Español": "Chipre",
-   "中文（普通话）": "塞浦路斯"
+   "中文（普通话）": "塞浦路斯",
+   "Русский": "Кипр"
   },
   "status": "un_member",
   "status_note": "",
@@ -3108,7 +3163,8 @@
   "names": {
    "Deutsch": "Tschechien",
    "Español": "Chequia",
-   "中文（普通话）": "捷克"
+   "中文（普通话）": "捷克",
+   "Русский": "Чехия"
   },
   "status": "un_member",
   "status_note": "",
@@ -3162,7 +3218,8 @@
   "names": {
    "Deutsch": "Kongo (Dem. Rep.)",
    "Español": "Congo (Rep. Dem.)",
-   "中文（普通话）": "民主刚果"
+   "中文（普通话）": "民主刚果",
+   "Русский": "Демократическая Республика Конго"
   },
   "status": "un_member",
   "status_note": "",
@@ -3224,7 +3281,8 @@
   "names": {
    "Deutsch": "Dänemark",
    "Español": "Dinamarca",
-   "中文（普通话）": "丹麦"
+   "中文（普通话）": "丹麦",
+   "Русский": "Дания"
   },
   "status": "un_member",
   "status_note": "",
@@ -3274,7 +3332,8 @@
   "names": {
    "Deutsch": "Dschibuti",
    "Español": "Djibouti",
-   "中文（普通话）": "吉布提"
+   "中文（普通话）": "吉布提",
+   "Русский": "Джибути"
   },
   "status": "un_member",
   "status_note": "",
@@ -3327,7 +3386,8 @@
   "names": {
    "Deutsch": "Dominica",
    "Español": "Dominica",
-   "中文（普通话）": "多米尼加"
+   "中文（普通话）": "多米尼加",
+   "Русский": "Доминика"
   },
   "status": "un_member",
   "status_note": "",
@@ -3380,7 +3440,8 @@
   "names": {
    "Deutsch": "Dominikanische Republik",
    "Español": "República Dominicana",
-   "中文（普通话）": "多明尼加"
+   "中文（普通话）": "多明尼加",
+   "Русский": "Доминиканская Республика"
   },
   "status": "un_member",
   "status_note": "",
@@ -3430,7 +3491,8 @@
   "names": {
    "Deutsch": "Ecuador",
    "Español": "Ecuador",
-   "中文（普通话）": "厄瓜多尔"
+   "中文（普通话）": "厄瓜多尔",
+   "Русский": "Эквадор"
   },
   "status": "un_member",
   "status_note": "",
@@ -3481,7 +3543,8 @@
   "names": {
    "Deutsch": "Ägypten",
    "Español": "Egipto",
-   "中文（普通话）": "埃及"
+   "中文（普通话）": "埃及",
+   "Русский": "Египет"
   },
   "status": "un_member",
   "status_note": "",
@@ -3549,7 +3612,8 @@
   "names": {
    "Deutsch": "El Salvador",
    "Español": "El Salvador",
-   "中文（普通话）": "萨尔瓦多"
+   "中文（普通话）": "萨尔瓦多",
+   "Русский": "Сальвадор"
   },
   "status": "un_member",
   "status_note": "",
@@ -3600,7 +3664,8 @@
   "names": {
    "Deutsch": "Äquatorialguinea",
    "Español": "Guinea Ecuatorial",
-   "中文（普通话）": "赤道几内亚"
+   "中文（普通话）": "赤道几内亚",
+   "Русский": "Экваториальная Гвинея"
   },
   "status": "un_member",
   "status_note": "",
@@ -3653,7 +3718,8 @@
   "names": {
    "Deutsch": "Eritrea",
    "Español": "Eritrea",
-   "中文（普通话）": "厄立特里亚"
+   "中文（普通话）": "厄立特里亚",
+   "Русский": "Эритрея"
   },
   "status": "un_member",
   "status_note": "",
@@ -3707,7 +3773,8 @@
   "names": {
    "Deutsch": "Estland",
    "Español": "Estonia",
-   "中文（普通话）": "爱沙尼亚"
+   "中文（普通话）": "爱沙尼亚",
+   "Русский": "Эстония"
   },
   "status": "un_member",
   "status_note": "",
@@ -3763,7 +3830,8 @@
   "names": {
    "Deutsch": "Eswatini",
    "Español": "Esuatini",
-   "中文（普通话）": "斯威士兰"
+   "中文（普通话）": "斯威士兰",
+   "Русский": "Свазиленд"
   },
   "status": "un_member",
   "status_note": "",
@@ -3824,7 +3892,8 @@
   "names": {
    "Deutsch": "Äthiopien",
    "Español": "Etiopía",
-   "中文（普通话）": "埃塞俄比亚"
+   "中文（普通话）": "埃塞俄比亚",
+   "Русский": "Эфиопия"
   },
   "status": "un_member",
   "status_note": "",
@@ -3879,7 +3948,8 @@
   "names": {
    "Deutsch": "Falklandinseln",
    "Español": "Islas Malvinas",
-   "中文（普通话）": "福克兰群岛"
+   "中文（普通话）": "福克兰群岛",
+   "Русский": "Фолклендские острова"
   },
   "status": "territory",
   "status_note": "Sovereignty disputed.",
@@ -3927,7 +3997,8 @@
   "names": {
    "Deutsch": "Färöer-Inseln",
    "Español": "Islas Faroe",
-   "中文（普通话）": "法罗群岛"
+   "中文（普通话）": "法罗群岛",
+   "Русский": "Фарерские острова"
   },
   "status": "territory",
   "status_note": "",
@@ -3980,7 +4051,8 @@
   "names": {
    "Deutsch": "Fidschi",
    "Español": "Fiyi",
-   "中文（普通话）": "斐济"
+   "中文（普通话）": "斐济",
+   "Русский": "Фиджи"
   },
   "status": "un_member",
   "status_note": "",
@@ -4035,7 +4107,8 @@
   "names": {
    "Deutsch": "Finnland",
    "Español": "Finlandia",
-   "中文（普通话）": "芬兰"
+   "中文（普通话）": "芬兰",
+   "Русский": "Финляндия"
   },
   "status": "un_member",
   "status_note": "",
@@ -4088,7 +4161,8 @@
   "names": {
    "Deutsch": "Frankreich",
    "Español": "Francia",
-   "中文（普通话）": "法国"
+   "中文（普通话）": "法国",
+   "Русский": "Франция"
   },
   "status": "un_member",
   "status_note": "",
@@ -4158,7 +4232,8 @@
   "names": {
    "Deutsch": "Französisch-Guayana",
    "Español": "Guayana Francesa",
-   "中文（普通话）": "法属圭亚那"
+   "中文（普通话）": "法属圭亚那",
+   "Русский": "Французская Гвиана"
   },
   "status": "territory",
   "status_note": "",
@@ -4209,7 +4284,8 @@
   "names": {
    "Deutsch": "Französisch-Polynesien",
    "Español": "Polinesia Francesa",
-   "中文（普通话）": "法属波利尼西亚"
+   "中文（普通话）": "法属波利尼西亚",
+   "Русский": "Французская Полинезия"
   },
   "status": "territory",
   "status_note": "",
@@ -4257,7 +4333,8 @@
   "names": {
    "Deutsch": "Gabun",
    "Español": "Gabón",
-   "中文（普通话）": "加蓬"
+   "中文（普通话）": "加蓬",
+   "Русский": "Габон"
   },
   "status": "un_member",
   "status_note": "",
@@ -4309,7 +4386,8 @@
   "names": {
    "Deutsch": "Gambia",
    "Español": "Gambia",
-   "中文（普通话）": "冈比亚"
+   "中文（普通话）": "冈比亚",
+   "Русский": "Гамбия"
   },
   "status": "un_member",
   "status_note": "",
@@ -4359,7 +4437,8 @@
   "names": {
    "Deutsch": "Georgien",
    "Español": "Georgia",
-   "中文（普通话）": "格鲁吉亚"
+   "中文（普通话）": "格鲁吉亚",
+   "Русский": "Грузия"
   },
   "status": "un_member",
   "status_note": "",
@@ -4413,7 +4492,8 @@
   "names": {
    "Deutsch": "Deutschland",
    "Español": "Alemania",
-   "中文（普通话）": "德国"
+   "中文（普通话）": "德国",
+   "Русский": "Германия"
   },
   "status": "un_member",
   "status_note": "",
@@ -4484,7 +4564,8 @@
   "names": {
    "Deutsch": "Ghana",
    "Español": "Ghana",
-   "中文（普通话）": "加纳"
+   "中文（普通话）": "加纳",
+   "Русский": "Гана"
   },
   "status": "un_member",
   "status_note": "",
@@ -4545,7 +4626,8 @@
   "names": {
    "Deutsch": "Gibraltar",
    "Español": "Gibraltar",
-   "中文（普通话）": "直布罗陀"
+   "中文（普通话）": "直布罗陀",
+   "Русский": "Гибралтар"
   },
   "status": "territory",
   "status_note": "Sovereignty disputed.",
@@ -4595,7 +4677,8 @@
   "names": {
    "Deutsch": "Griechenland",
    "Español": "Grecia",
-   "中文（普通话）": "希腊"
+   "中文（普通话）": "希腊",
+   "Русский": "Греция"
   },
   "status": "un_member",
   "status_note": "",
@@ -4648,7 +4731,8 @@
   "names": {
    "Deutsch": "Grönland",
    "Español": "Groenlandia",
-   "中文（普通话）": "格陵兰"
+   "中文（普通话）": "格陵兰",
+   "Русский": "Гренландия"
   },
   "status": "territory",
   "status_note": "",
@@ -4696,7 +4780,8 @@
   "names": {
    "Deutsch": "Grenada",
    "Español": "Grenada",
-   "中文（普通话）": "格林纳达"
+   "中文（普通话）": "格林纳达",
+   "Русский": "Гренада"
   },
   "status": "un_member",
   "status_note": "",
@@ -4744,7 +4829,8 @@
   "names": {
    "Deutsch": "Guadeloupe",
    "Español": "Guadalupe",
-   "中文（普通话）": "瓜德罗普岛"
+   "中文（普通话）": "瓜德罗普岛",
+   "Русский": "Гваделупа"
   },
   "status": "territory",
   "status_note": "",
@@ -4792,7 +4878,8 @@
   "names": {
    "Deutsch": "Guam",
    "Español": "Guam",
-   "中文（普通话）": "关岛"
+   "中文（普通话）": "关岛",
+   "Русский": "Гуам"
   },
   "status": "territory",
   "status_note": "",
@@ -4842,7 +4929,8 @@
   "names": {
    "Deutsch": "Guatemala",
    "Español": "Guatemala",
-   "中文（普通话）": "危地马拉"
+   "中文（普通话）": "危地马拉",
+   "Русский": "Гватемала"
   },
   "status": "un_member",
   "status_note": "",
@@ -4908,7 +4996,8 @@
   "names": {
    "Deutsch": "Guernsey",
    "Español": "Guernsey",
-   "中文（普通话）": "根西岛"
+   "中文（普通话）": "根西岛",
+   "Русский": "Гернси"
   },
   "status": "territory",
   "status_note": "",
@@ -4962,7 +5051,8 @@
   "names": {
    "Deutsch": "Guinea",
    "Español": "Guinea",
-   "中文（普通话）": "几内亚"
+   "中文（普通话）": "几内亚",
+   "Русский": "Гвинея"
   },
   "status": "un_member",
   "status_note": "",
@@ -5017,7 +5107,8 @@
   "names": {
    "Deutsch": "Guinea-Bissau",
    "Español": "Guinea-Bisáu",
-   "中文（普通话）": "几内亚比绍"
+   "中文（普通话）": "几内亚比绍",
+   "Русский": "Гвинея-Бисау"
   },
   "status": "un_member",
   "status_note": "",
@@ -5069,7 +5160,8 @@
   "names": {
    "Deutsch": "Guyana",
    "Español": "Guyana",
-   "中文（普通话）": "圭亚那"
+   "中文（普通话）": "圭亚那",
+   "Русский": "Гайана"
   },
   "status": "un_member",
   "status_note": "",
@@ -5121,7 +5213,8 @@
   "names": {
    "Deutsch": "Haiti",
    "Español": "Haití",
-   "中文（普通话）": "海地"
+   "中文（普通话）": "海地",
+   "Русский": "Гаити"
   },
   "status": "un_member",
   "status_note": "",
@@ -5172,7 +5265,8 @@
   "names": {
    "Deutsch": "Honduras",
    "Español": "Honduras",
-   "中文（普通话）": "洪都拉斯"
+   "中文（普通话）": "洪都拉斯",
+   "Русский": "Гондурас"
   },
   "status": "un_member",
   "status_note": "",
@@ -5233,7 +5327,8 @@
   "names": {
    "Deutsch": "Hongkong",
    "Español": "Hong Kong",
-   "中文（普通话）": "香港"
+   "中文（普通话）": "香港",
+   "Русский": "Гонконг"
   },
   "status": "territory",
   "status_note": "",
@@ -5285,7 +5380,8 @@
   "names": {
    "Deutsch": "Ungarn",
    "Español": "Hungría",
-   "中文（普通话）": "匈牙利"
+   "中文（普通话）": "匈牙利",
+   "Русский": "Венгрия"
   },
   "status": "un_member",
   "status_note": "",
@@ -5341,7 +5437,8 @@
   "names": {
    "Deutsch": "Island",
    "Español": "Islandia",
-   "中文（普通话）": "冰岛"
+   "中文（普通话）": "冰岛",
+   "Русский": "Исландия"
   },
   "status": "un_member",
   "status_note": "",
@@ -5389,7 +5486,8 @@
   "names": {
    "Deutsch": "Indien",
    "Español": "India",
-   "中文（普通话）": "印度"
+   "中文（普通话）": "印度",
+   "Русский": "Индия"
   },
   "status": "un_member",
   "status_note": "",
@@ -5459,7 +5557,8 @@
   "names": {
    "Deutsch": "Indonesien",
    "Español": "Indonesia",
-   "中文（普通话）": "印度尼西亚"
+   "中文（普通话）": "印度尼西亚",
+   "Русский": "Индонезия"
   },
   "status": "un_member",
   "status_note": "",
@@ -5512,7 +5611,8 @@
   "names": {
    "Deutsch": "Iran",
    "Español": "Iran",
-   "中文（普通话）": "伊朗"
+   "中文（普通话）": "伊朗",
+   "Русский": "Иран"
   },
   "status": "un_member",
   "status_note": "",
@@ -5569,7 +5669,8 @@
   "names": {
    "Deutsch": "Irak",
    "Español": "Irak",
-   "中文（普通话）": "伊拉克"
+   "中文（普通话）": "伊拉克",
+   "Русский": "Ирак"
   },
   "status": "un_member",
   "status_note": "",
@@ -5626,7 +5727,8 @@
   "names": {
    "Deutsch": "Irland",
    "Español": "Irlanda",
-   "中文（普通话）": "爱尔兰"
+   "中文（普通话）": "爱尔兰",
+   "Русский": "Ирландия"
   },
   "status": "un_member",
   "status_note": "",
@@ -5677,7 +5779,8 @@
   "names": {
    "Deutsch": "Insel Man",
    "Español": "Isla de Man",
-   "中文（普通话）": "马恩岛"
+   "中文（普通话）": "马恩岛",
+   "Русский": "Остров Мэн"
   },
   "status": "territory",
   "status_note": "",
@@ -5730,7 +5833,8 @@
   "names": {
    "Deutsch": "Israel",
    "Español": "Israel",
-   "中文（普通话）": "以色列"
+   "中文（普通话）": "以色列",
+   "Русский": "Израиль"
   },
   "status": "un_member",
   "status_note": "",
@@ -5786,7 +5890,8 @@
   "names": {
    "Deutsch": "Italien",
    "Español": "Italia",
-   "中文（普通话）": "意大利"
+   "中文（普通话）": "意大利",
+   "Русский": "Италия"
   },
   "status": "un_member",
   "status_note": "",
@@ -5854,7 +5959,8 @@
   "names": {
    "Deutsch": "Côte d'Ivoire",
    "Español": "Costa de Marfil",
-   "中文（普通话）": "科特迪瓦"
+   "中文（普通话）": "科特迪瓦",
+   "Русский": "Кот-д’Ивуар"
   },
   "status": "un_member",
   "status_note": "",
@@ -5908,7 +6014,8 @@
   "names": {
    "Deutsch": "Jamaika",
    "Español": "Jamaica",
-   "中文（普通话）": "牙买加"
+   "中文（普通话）": "牙买加",
+   "Русский": "Ямайка"
   },
   "status": "un_member",
   "status_note": "",
@@ -5966,7 +6073,8 @@
   "names": {
    "Deutsch": "Japan",
    "Español": "Japón",
-   "中文（普通话）": "日本"
+   "中文（普通话）": "日本",
+   "Русский": "Япония"
   },
   "status": "un_member",
   "status_note": "",
@@ -6028,7 +6136,8 @@
   "names": {
    "Deutsch": "Jersey",
    "Español": "Jersey",
-   "中文（普通话）": "泽西岛"
+   "中文（普通话）": "泽西岛",
+   "Русский": "Джерси"
   },
   "status": "territory",
   "status_note": "",
@@ -6082,7 +6191,8 @@
   "names": {
    "Deutsch": "Jordanien",
    "Español": "Jordania",
-   "中文（普通话）": "约旦"
+   "中文（普通话）": "约旦",
+   "Русский": "Иордания"
   },
   "status": "un_member",
   "status_note": "",
@@ -6137,7 +6247,8 @@
   "names": {
    "Deutsch": "Kasachstan",
    "Español": "Kazajistán",
-   "中文（普通话）": "哈萨克斯坦"
+   "中文（普通话）": "哈萨克斯坦",
+   "Русский": "Казахстан"
   },
   "status": "un_member",
   "status_note": "",
@@ -6194,7 +6305,8 @@
   "names": {
    "Deutsch": "Kenia",
    "Español": "Kenia",
-   "中文（普通话）": "肯尼亚"
+   "中文（普通话）": "肯尼亚",
+   "Русский": "Кения"
   },
   "status": "un_member",
   "status_note": "",
@@ -6262,7 +6374,8 @@
   "names": {
    "Deutsch": "Kiribati",
    "Español": "Kiribati",
-   "中文（普通话）": "基里巴斯"
+   "中文（普通话）": "基里巴斯",
+   "Русский": "Кирибати"
   },
   "status": "un_member",
   "status_note": "",
@@ -6320,7 +6433,8 @@
   "names": {
    "Deutsch": "Kosovo",
    "Español": "Kosovo",
-   "中文（普通话）": "科索沃"
+   "中文（普通话）": "科索沃",
+   "Русский": "Республика Косово"
   },
   "status": "limited_recognition",
   "status_note": "Declared independence in 2008; recognised by some UN member states, not a UN member.",
@@ -6374,7 +6488,8 @@
   "names": {
    "Deutsch": "Kuwait",
    "Español": "Kuwait",
-   "中文（普通话）": "科威特"
+   "中文（普通话）": "科威特",
+   "Русский": "Кувейт"
   },
   "status": "un_member",
   "status_note": "",
@@ -6425,7 +6540,8 @@
   "names": {
    "Deutsch": "Kirgisistan",
    "Español": "Kirguizistán",
-   "中文（普通话）": "吉尔吉斯斯坦"
+   "中文（普通话）": "吉尔吉斯斯坦",
+   "Русский": "Киргизия"
   },
   "status": "un_member",
   "status_note": "",
@@ -6479,7 +6595,8 @@
   "names": {
    "Deutsch": "Laos",
    "Español": "Laos",
-   "中文（普通话）": "老挝"
+   "中文（普通话）": "老挝",
+   "Русский": "Лаос"
   },
   "status": "un_member",
   "status_note": "",
@@ -6546,7 +6663,8 @@
   "names": {
    "Deutsch": "Lettland",
    "Español": "Letonia",
-   "中文（普通话）": "拉脱维亚"
+   "中文（普通话）": "拉脱维亚",
+   "Русский": "Латвия"
   },
   "status": "un_member",
   "status_note": "",
@@ -6608,7 +6726,8 @@
   "names": {
    "Deutsch": "Libanon",
    "Español": "Líbano",
-   "中文（普通话）": "黎巴嫩"
+   "中文（普通话）": "黎巴嫩",
+   "Русский": "Ливан"
   },
   "status": "un_member",
   "status_note": "",
@@ -6660,7 +6779,8 @@
   "names": {
    "Deutsch": "Lesotho",
    "Español": "Lesotho",
-   "中文（普通话）": "莱索托"
+   "中文（普通话）": "莱索托",
+   "Русский": "Лесото"
   },
   "status": "un_member",
   "status_note": "",
@@ -6715,7 +6835,8 @@
   "names": {
    "Deutsch": "Liberia",
    "Español": "Liberia",
-   "中文（普通话）": "利比里亚"
+   "中文（普通话）": "利比里亚",
+   "Русский": "Либерия"
   },
   "status": "un_member",
   "status_note": "",
@@ -6767,7 +6888,8 @@
   "names": {
    "Deutsch": "Libyen",
    "Español": "Libia",
-   "中文（普通话）": "利比亚"
+   "中文（普通话）": "利比亚",
+   "Русский": "Ливия"
   },
   "status": "un_member",
   "status_note": "",
@@ -6822,7 +6944,8 @@
   "names": {
    "Deutsch": "Liechtenstein",
    "Español": "Liechtenstein",
-   "中文（普通话）": "列支敦士登"
+   "中文（普通话）": "列支敦士登",
+   "Русский": "Лихтенштейн"
   },
   "status": "un_member",
   "status_note": "",
@@ -6873,7 +6996,8 @@
   "names": {
    "Deutsch": "Litauen",
    "Español": "Lituania",
-   "中文（普通话）": "立陶宛"
+   "中文（普通话）": "立陶宛",
+   "Русский": "Литва"
   },
   "status": "un_member",
   "status_note": "",
@@ -6939,7 +7063,8 @@
   "names": {
    "Deutsch": "Luxemburg",
    "Español": "Luxemburgo",
-   "中文（普通话）": "卢森堡"
+   "中文（普通话）": "卢森堡",
+   "Русский": "Люксембург"
   },
   "status": "un_member",
   "status_note": "",
@@ -6998,7 +7123,8 @@
   "names": {
    "Deutsch": "Macao",
    "Español": "Macao",
-   "中文（普通话）": "澳门"
+   "中文（普通话）": "澳门",
+   "Русский": "Макао"
   },
   "status": "territory",
   "status_note": "",
@@ -7044,7 +7170,8 @@
   "names": {
    "Deutsch": "Madagaskar",
    "Español": "Madagascar",
-   "中文（普通话）": "马达加斯加"
+   "中文（普通话）": "马达加斯加",
+   "Русский": "Мадагаскар"
   },
   "status": "un_member",
   "status_note": "",
@@ -7106,7 +7233,8 @@
   "names": {
    "Deutsch": "Malawi",
    "Español": "Malawi",
-   "中文（普通话）": "马拉维"
+   "中文（普通话）": "马拉维",
+   "Русский": "Малави"
   },
   "status": "un_member",
   "status_note": "",
@@ -7159,7 +7287,8 @@
   "names": {
    "Deutsch": "Malaysia",
    "Español": "Malasia",
-   "中文（普通话）": "马来西亚"
+   "中文（普通话）": "马来西亚",
+   "Русский": "Малайзия"
   },
   "status": "un_member",
   "status_note": "",
@@ -7212,7 +7341,8 @@
   "names": {
    "Deutsch": "Malediven",
    "Español": "Maldivas",
-   "中文（普通话）": "马尔代夫"
+   "中文（普通话）": "马尔代夫",
+   "Русский": "Мальдивы"
   },
   "status": "un_member",
   "status_note": "",
@@ -7260,7 +7390,8 @@
   "names": {
    "Deutsch": "Mali",
    "Español": "Mali",
-   "中文（普通话）": "马里"
+   "中文（普通话）": "马里",
+   "Русский": "Мали"
   },
   "status": "un_member",
   "status_note": "",
@@ -7316,7 +7447,8 @@
   "names": {
    "Deutsch": "Malta",
    "Español": "Malta",
-   "中文（普通话）": "马耳他"
+   "中文（普通话）": "马耳他",
+   "Русский": "Мальта"
   },
   "status": "un_member",
   "status_note": "",
@@ -7378,7 +7510,8 @@
   "names": {
    "Deutsch": "Marshallinseln",
    "Español": "Islas Marshall",
-   "中文（普通话）": "马绍尔群岛"
+   "中文（普通话）": "马绍尔群岛",
+   "Русский": "Маршалловы Острова"
   },
   "status": "un_member",
   "status_note": "",
@@ -7432,7 +7565,8 @@
   "names": {
    "Deutsch": "Martinique",
    "Español": "Martinica",
-   "中文（普通话）": "马提尼克"
+   "中文（普通话）": "马提尼克",
+   "Русский": "Мартиника"
   },
   "status": "territory",
   "status_note": "",
@@ -7480,7 +7614,8 @@
   "names": {
    "Deutsch": "Mauretanien",
    "Español": "Mauritania",
-   "中文（普通话）": "毛里塔尼亚"
+   "中文（普通话）": "毛里塔尼亚",
+   "Русский": "Мавритания"
   },
   "status": "un_member",
   "status_note": "",
@@ -7533,7 +7668,8 @@
   "names": {
    "Deutsch": "Mauritius",
    "Español": "Mauricio",
-   "中文（普通话）": "毛里求斯"
+   "中文（普通话）": "毛里求斯",
+   "Русский": "Маврикий"
   },
   "status": "un_member",
   "status_note": "",
@@ -7592,7 +7728,8 @@
   "names": {
    "Deutsch": "Mayotte",
    "Español": "Mayotte",
-   "中文（普通话）": "马约特"
+   "中文（普通话）": "马约特",
+   "Русский": "Майотта"
   },
   "status": "territory",
   "status_note": "Sovereignty disputed.",
@@ -7640,7 +7777,8 @@
   "names": {
    "Deutsch": "Mexiko",
    "Español": "México",
-   "中文（普通话）": "墨西哥"
+   "中文（普通话）": "墨西哥",
+   "Русский": "Мексика"
   },
   "status": "un_member",
   "status_note": "",
@@ -7705,7 +7843,8 @@
   "names": {
    "Deutsch": "Mikronesien",
    "Español": "Micronesia",
-   "中文（普通话）": "密克罗尼西亚"
+   "中文（普通话）": "密克罗尼西亚",
+   "Русский": "Федеративные Штаты Микронезии"
   },
   "status": "un_member",
   "status_note": "",
@@ -7753,7 +7892,8 @@
   "names": {
    "Deutsch": "Moldawien",
    "Español": "Moldavia",
-   "中文（普通话）": "摩尔多瓦"
+   "中文（普通话）": "摩尔多瓦",
+   "Русский": "Молдавия"
   },
   "status": "un_member",
   "status_note": "",
@@ -7804,7 +7944,8 @@
   "names": {
    "Deutsch": "Monaco",
    "Español": "Mónaco",
-   "中文（普通话）": "摩纳哥"
+   "中文（普通话）": "摩纳哥",
+   "Русский": "Монако"
   },
   "status": "un_member",
   "status_note": "",
@@ -7854,7 +7995,8 @@
   "names": {
    "Deutsch": "Mongolei",
    "Español": "Mongolia",
-   "中文（普通话）": "蒙古"
+   "中文（普通话）": "蒙古",
+   "Русский": "Монголия"
   },
   "status": "un_member",
   "status_note": "",
@@ -7918,7 +8060,8 @@
   "names": {
    "Deutsch": "Montenegro",
    "Español": "Montenegro",
-   "中文（普通话）": "黑山"
+   "中文（普通话）": "黑山",
+   "Русский": "Черногория"
   },
   "status": "un_member",
   "status_note": "",
@@ -7972,7 +8115,8 @@
   "names": {
    "Deutsch": "Montserrat",
    "Español": "Montserrat",
-   "中文（普通话）": "蒙特塞拉特"
+   "中文（普通话）": "蒙特塞拉特",
+   "Русский": "Монтсеррат"
   },
   "status": "territory",
   "status_note": "",
@@ -8020,7 +8164,8 @@
   "names": {
    "Deutsch": "Marokko",
    "Español": "Marruecos",
-   "中文（普通话）": "摩洛哥"
+   "中文（普通话）": "摩洛哥",
+   "Русский": "Марокко"
   },
   "status": "un_member",
   "status_note": "",
@@ -8074,7 +8219,8 @@
   "names": {
    "Deutsch": "Mosambik",
    "Español": "Mozambique",
-   "中文（普通话）": "莫桑比克"
+   "中文（普通话）": "莫桑比克",
+   "Русский": "Мозамбик"
   },
   "status": "un_member",
   "status_note": "",
@@ -8129,7 +8275,8 @@
   "names": {
    "Deutsch": "Myanmar",
    "Español": "Myanmar",
-   "中文（普通话）": "缅甸"
+   "中文（普通话）": "缅甸",
+   "Русский": "Мьянма"
   },
   "status": "un_member",
   "status_note": "",
@@ -8183,7 +8330,8 @@
   "names": {
    "Deutsch": "Namibia",
    "Español": "Namibia",
-   "中文（普通话）": "纳米比亚"
+   "中文（普通话）": "纳米比亚",
+   "Русский": "Намибия"
   },
   "status": "un_member",
   "status_note": "",
@@ -8257,7 +8405,8 @@
   "names": {
    "Deutsch": "Nauru",
    "Español": "Nauru",
-   "中文（普通话）": "瑙鲁"
+   "中文（普通话）": "瑙鲁",
+   "Русский": "Науру"
   },
   "status": "un_member",
   "status_note": "",
@@ -8307,7 +8456,8 @@
   "names": {
    "Deutsch": "Nepal",
    "Español": "Nepal",
-   "中文（普通话）": "尼泊尔"
+   "中文（普通话）": "尼泊尔",
+   "Русский": "Непал"
   },
   "status": "un_member",
   "status_note": "",
@@ -8371,7 +8521,8 @@
   "names": {
    "Deutsch": "Niederlande",
    "Español": "Países Bajos",
-   "中文（普通话）": "荷兰"
+   "中文（普通话）": "荷兰",
+   "Русский": "Нидерланды"
   },
   "status": "un_member",
   "status_note": "",
@@ -8422,7 +8573,8 @@
   "names": {
    "Deutsch": "Neukaledonien",
    "Español": "Nueva Caledonia",
-   "中文（普通话）": "新喀里多尼亚"
+   "中文（普通话）": "新喀里多尼亚",
+   "Русский": "Новая Каледония"
   },
   "status": "territory",
   "status_note": "",
@@ -8470,7 +8622,8 @@
   "names": {
    "Deutsch": "Neuseeland",
    "Español": "Nueva Zelanda",
-   "中文（普通话）": "新西兰"
+   "中文（普通话）": "新西兰",
+   "Русский": "Новая Зеландия"
   },
   "status": "un_member",
   "status_note": "",
@@ -8533,7 +8686,8 @@
   "names": {
    "Deutsch": "Nicaragua",
    "Español": "Nicaragua",
-   "中文（普通话）": "尼加拉瓜"
+   "中文（普通话）": "尼加拉瓜",
+   "Русский": "Никарагуа"
   },
   "status": "un_member",
   "status_note": "",
@@ -8593,7 +8747,8 @@
   "names": {
    "Deutsch": "Niger",
    "Español": "Níger",
-   "中文（普通话）": "尼日尔"
+   "中文（普通话）": "尼日尔",
+   "Русский": "Нигер"
   },
   "status": "un_member",
   "status_note": "",
@@ -8649,7 +8804,8 @@
   "names": {
    "Deutsch": "Nigeria",
    "Español": "Nigeria",
-   "中文（普通话）": "尼日利亚"
+   "中文（普通话）": "尼日利亚",
+   "Русский": "Нигерия"
   },
   "status": "un_member",
   "status_note": "",
@@ -8711,7 +8867,8 @@
   "names": {
    "Deutsch": "Niue",
    "Español": "Niue",
-   "中文（普通话）": "纽埃"
+   "中文（普通话）": "纽埃",
+   "Русский": "Ниуэ"
   },
   "status": "associated_state",
   "status_note": "Self-governing in free association with New Zealand; not a UN member.",
@@ -8760,7 +8917,8 @@
   "names": {
    "Deutsch": "Norfolkinsel",
    "Español": "Isla de Norfolk",
-   "中文（普通话）": "诺福克岛"
+   "中文（普通话）": "诺福克岛",
+   "Русский": "Норфолк"
   },
   "status": "territory",
   "status_note": "",
@@ -8809,7 +8967,8 @@
   "names": {
    "Deutsch": "Nordkorea",
    "Español": "Corea del Norte",
-   "中文（普通话）": "朝鲜"
+   "中文（普通话）": "朝鲜",
+   "Русский": "Северная Корея"
   },
   "status": "un_member",
   "status_note": "",
@@ -8861,7 +9020,8 @@
   "names": {
    "Deutsch": "Nordmazedonien",
    "Español": "Macedonia del Norte",
-   "中文（普通话）": "北馬其頓"
+   "中文（普通话）": "北馬其頓",
+   "Русский": "Северная Македония"
   },
   "status": "un_member",
   "status_note": "",
@@ -8915,7 +9075,8 @@
   "names": {
    "Deutsch": "Nördliche Marianen",
    "Español": "Islas Marianas del Norte",
-   "中文（普通话）": "北马里亚纳群岛"
+   "中文（普通话）": "北马里亚纳群岛",
+   "Русский": "Северные Марианские острова"
   },
   "status": "territory",
   "status_note": "",
@@ -8965,7 +9126,8 @@
   "names": {
    "Deutsch": "Norwegen",
    "Español": "Noruega",
-   "中文（普通话）": "挪威"
+   "中文（普通话）": "挪威",
+   "Русский": "Норвегия"
   },
   "status": "un_member",
   "status_note": "",
@@ -9019,7 +9181,8 @@
   "names": {
    "Deutsch": "Oman",
    "Español": "Omán",
-   "中文（普通话）": "阿曼"
+   "中文（普通话）": "阿曼",
+   "Русский": "Оман"
   },
   "status": "un_member",
   "status_note": "",
@@ -9071,7 +9234,8 @@
   "names": {
    "Deutsch": "Pakistan",
    "Español": "Pakistán",
-   "中文（普通话）": "巴基斯坦"
+   "中文（普通话）": "巴基斯坦",
+   "Русский": "Пакистан"
   },
   "status": "un_member",
   "status_note": "",
@@ -9138,7 +9302,8 @@
   "names": {
    "Deutsch": "Palau",
    "Español": "Palau",
-   "中文（普通话）": "帕劳"
+   "中文（普通话）": "帕劳",
+   "Русский": "Палау"
   },
   "status": "un_member",
   "status_note": "",
@@ -9192,7 +9357,8 @@
   "names": {
    "Deutsch": "Palästina",
    "Español": "Palestina",
-   "中文（普通话）": "巴勒斯坦"
+   "中文（普通话）": "巴勒斯坦",
+   "Русский": "Палестина"
   },
   "status": "un_observer",
   "status_note": "",
@@ -9254,7 +9420,8 @@
   "names": {
    "Deutsch": "Panama",
    "Español": "Panamá",
-   "中文（普通话）": "巴拿马"
+   "中文（普通话）": "巴拿马",
+   "Русский": "Панама"
   },
   "status": "un_member",
   "status_note": "",
@@ -9309,7 +9476,8 @@
   "names": {
    "Deutsch": "Papua-Neuguinea",
    "Español": "Papúa Nueva Guinea",
-   "中文（普通话）": "巴布亚新几内亚"
+   "中文（普通话）": "巴布亚新几内亚",
+   "Русский": "Папуа — Новая Гвинея"
   },
   "status": "un_member",
   "status_note": "",
@@ -9366,7 +9534,8 @@
   "names": {
    "Deutsch": "Paraguay",
    "Español": "Paraguay",
-   "中文（普通话）": "巴拉圭"
+   "中文（普通话）": "巴拉圭",
+   "Русский": "Парагвай"
   },
   "status": "un_member",
   "status_note": "",
@@ -9424,7 +9593,8 @@
   "names": {
    "Deutsch": "Peru",
    "Español": "Perú",
-   "中文（普通话）": "秘鲁"
+   "中文（普通话）": "秘鲁",
+   "Русский": "Перу"
   },
   "status": "un_member",
   "status_note": "",
@@ -9493,7 +9663,8 @@
   "names": {
    "Deutsch": "Philippinen",
    "Español": "Filipinas",
-   "中文（普通话）": "菲律宾"
+   "中文（普通话）": "菲律宾",
+   "Русский": "Филиппины"
   },
   "status": "un_member",
   "status_note": "",
@@ -9542,7 +9713,8 @@
   "names": {
    "Deutsch": "Pitcairninseln",
    "Español": "Islas Pitcairn",
-   "中文（普通话）": "皮特凯恩群岛"
+   "中文（普通话）": "皮特凯恩群岛",
+   "Русский": "Острова Питкэрн"
   },
   "status": "territory",
   "status_note": "",
@@ -9590,7 +9762,8 @@
   "names": {
    "Deutsch": "Polen",
    "Español": "Polonia",
-   "中文（普通话）": "波兰"
+   "中文（普通话）": "波兰",
+   "Русский": "Польша"
   },
   "status": "un_member",
   "status_note": "",
@@ -9646,7 +9819,8 @@
   "names": {
    "Deutsch": "Portugal",
    "Español": "Portugal",
-   "中文（普通话）": "葡萄牙"
+   "中文（普通话）": "葡萄牙",
+   "Русский": "Португалия"
   },
   "status": "un_member",
   "status_note": "",
@@ -9709,7 +9883,8 @@
   "names": {
    "Deutsch": "Puerto Rico",
    "Español": "Puerto Rico",
-   "中文（普通话）": "波多黎各"
+   "中文（普通话）": "波多黎各",
+   "Русский": "Пуэрто-Рико"
   },
   "status": "territory",
   "status_note": "",
@@ -9758,7 +9933,8 @@
   "names": {
    "Deutsch": "Katar",
    "Español": "Catar",
-   "中文（普通话）": "卡塔尔"
+   "中文（普通话）": "卡塔尔",
+   "Русский": "Катар"
   },
   "status": "un_member",
   "status_note": "",
@@ -9809,7 +9985,8 @@
   "names": {
    "Deutsch": "Rumänien",
    "Español": "Rumania",
-   "中文（普通话）": "罗马尼亚"
+   "中文（普通话）": "罗马尼亚",
+   "Русский": "Румыния"
   },
   "status": "un_member",
   "status_note": "",
@@ -9863,7 +10040,8 @@
   "names": {
    "Deutsch": "Russland",
    "Español": "Rusia",
-   "中文（普通话）": "俄罗斯"
+   "中文（普通话）": "俄罗斯",
+   "Русский": "Россия"
   },
   "status": "un_member",
   "status_note": "",
@@ -9929,7 +10107,8 @@
   "names": {
    "Deutsch": "Ruanda",
    "Español": "Ruanda",
-   "中文（普通话）": "卢旺达"
+   "中文（普通话）": "卢旺达",
+   "Русский": "Руанда"
   },
   "status": "un_member",
   "status_note": "",
@@ -9984,7 +10163,8 @@
   "names": {
    "Deutsch": "Réunion",
    "Español": "Reunión",
-   "中文（普通话）": "留尼旺岛"
+   "中文（普通话）": "留尼旺岛",
+   "Русский": "Реюньон"
   },
   "status": "territory",
   "status_note": "",
@@ -10032,7 +10212,8 @@
   "names": {
    "Deutsch": "Saint-Barthélemy",
    "Español": "San Bartolomé",
-   "中文（普通话）": "圣巴泰勒米"
+   "中文（普通话）": "圣巴泰勒米",
+   "Русский": "Сен-Бартелеми"
   },
   "status": "territory",
   "status_note": "",
@@ -10080,7 +10261,8 @@
   "names": {
    "Deutsch": "St. Helena, Ascension und Tristan da Cunha",
    "Español": "Santa Elena, Ascensión y Tristán de Acuña",
-   "中文（普通话）": "圣赫勒拿、阿森松和特里斯坦-达库尼亚"
+   "中文（普通话）": "圣赫勒拿、阿森松和特里斯坦-达库尼亚",
+   "Русский": "Острова Святой Елены, Вознесения и Тристан-да-Кунья"
   },
   "status": "territory",
   "status_note": "",
@@ -10134,7 +10316,8 @@
   "names": {
    "Deutsch": "St. Kitts und Nevis",
    "Español": "San Cristóbal y Nieves",
-   "中文（普通话）": "圣基茨和尼维斯"
+   "中文（普通话）": "圣基茨和尼维斯",
+   "Русский": "Сент-Китс и Невис"
   },
   "status": "un_member",
   "status_note": "",
@@ -10187,7 +10370,8 @@
   "names": {
    "Deutsch": "St. Lucia",
    "Español": "Santa Lucía",
-   "中文（普通话）": "圣卢西亚"
+   "中文（普通话）": "圣卢西亚",
+   "Русский": "Сент-Люсия"
   },
   "status": "un_member",
   "status_note": "",
@@ -10240,7 +10424,8 @@
   "names": {
    "Deutsch": "Saint-Martin",
    "Español": "Saint Martin",
-   "中文（普通话）": "圣马丁"
+   "中文（普通话）": "圣马丁",
+   "Русский": "Сен-Мартен"
   },
   "status": "territory",
   "status_note": "",
@@ -10291,7 +10476,8 @@
   "names": {
    "Deutsch": "St. Pierre und Miquelon",
    "Español": "San Pedro y Miquelón",
-   "中文（普通话）": "圣皮埃尔和密克隆"
+   "中文（普通话）": "圣皮埃尔和密克隆",
+   "Русский": "Сен-Пьер и Микелон"
   },
   "status": "territory",
   "status_note": "",
@@ -10339,7 +10525,8 @@
   "names": {
    "Deutsch": "St. Vincent und die Grenadinen",
    "Español": "San Vicente y Granadinas",
-   "中文（普通话）": "圣文森特和格林纳丁斯"
+   "中文（普通话）": "圣文森特和格林纳丁斯",
+   "Русский": "Сент-Винсент и Гренадины"
   },
   "status": "un_member",
   "status_note": "",
@@ -10387,7 +10574,8 @@
   "names": {
    "Deutsch": "Samoa",
    "Español": "Samoa",
-   "中文（普通话）": "萨摩亚"
+   "中文（普通话）": "萨摩亚",
+   "Русский": "Самоа"
   },
   "status": "un_member",
   "status_note": "",
@@ -10436,7 +10624,8 @@
   "names": {
    "Deutsch": "San Marino",
    "Español": "San Marino",
-   "中文（普通话）": "圣马力诺"
+   "中文（普通话）": "圣马力诺",
+   "Русский": "Сан-Марино"
   },
   "status": "un_member",
   "status_note": "",
@@ -10491,7 +10680,8 @@
   "names": {
    "Deutsch": "Saudi-Arabien",
    "Español": "Arabia Saudí",
-   "中文（普通话）": "沙特阿拉伯"
+   "中文（普通话）": "沙特阿拉伯",
+   "Русский": "Саудовская Аравия"
   },
   "status": "un_member",
   "status_note": "",
@@ -10548,7 +10738,8 @@
   "names": {
    "Deutsch": "Senegal",
    "Español": "Senegal",
-   "中文（普通话）": "塞内加尔"
+   "中文（普通话）": "塞内加尔",
+   "Русский": "Сенегал"
   },
   "status": "un_member",
   "status_note": "",
@@ -10615,7 +10806,8 @@
   "names": {
    "Deutsch": "Serbien",
    "Español": "Serbia",
-   "中文（普通话）": "塞尔维亚"
+   "中文（普通话）": "塞尔维亚",
+   "Русский": "Сербия"
   },
   "status": "un_member",
   "status_note": "",
@@ -10673,7 +10865,8 @@
   "names": {
    "Deutsch": "Seychellen",
    "Español": "Seychelles",
-   "中文（普通话）": "塞舌尔"
+   "中文（普通话）": "塞舌尔",
+   "Русский": "Сейшельские Острова"
   },
   "status": "un_member",
   "status_note": "",
@@ -10732,7 +10925,8 @@
   "names": {
    "Deutsch": "Sierra Leone",
    "Español": "Sierra Leone",
-   "中文（普通话）": "塞拉利昂"
+   "中文（普通话）": "塞拉利昂",
+   "Русский": "Сьерра-Леоне"
   },
   "status": "un_member",
   "status_note": "",
@@ -10783,7 +10977,8 @@
   "names": {
    "Deutsch": "Singapur",
    "Español": "Singapur",
-   "中文（普通话）": "新加坡"
+   "中文（普通话）": "新加坡",
+   "Русский": "Сингапур"
   },
   "status": "un_member",
   "status_note": "",
@@ -10836,7 +11031,8 @@
   "names": {
    "Deutsch": "Sint Maarten",
    "Español": "Sint Maarten",
-   "中文（普通话）": "圣马丁岛"
+   "中文（普通话）": "圣马丁岛",
+   "Русский": "Синт-Мартен"
   },
   "status": "territory",
   "status_note": "",
@@ -10888,7 +11084,8 @@
   "names": {
    "Deutsch": "Slowakei",
    "Español": "Eslovaquia",
-   "中文（普通话）": "斯洛伐克"
+   "中文（普通话）": "斯洛伐克",
+   "Русский": "Словакия"
   },
   "status": "un_member",
   "status_note": "",
@@ -10942,7 +11139,8 @@
   "names": {
    "Deutsch": "Slowenien",
    "Español": "Eslovenia",
-   "中文（普通话）": "斯洛文尼亚"
+   "中文（普通话）": "斯洛文尼亚",
+   "Русский": "Словения"
   },
   "status": "un_member",
   "status_note": "",
@@ -11004,7 +11202,8 @@
   "names": {
    "Deutsch": "Salomonen",
    "Español": "Islas Salomón",
-   "中文（普通话）": "所罗门群岛"
+   "中文（普通话）": "所罗门群岛",
+   "Русский": "Соломоновы Острова"
   },
   "status": "un_member",
   "status_note": "",
@@ -11057,7 +11256,8 @@
   "names": {
    "Deutsch": "Somalia",
    "Español": "Somalia",
-   "中文（普通话）": "索马里"
+   "中文（普通话）": "索马里",
+   "Русский": "Сомали"
   },
   "status": "un_member",
   "status_note": "",
@@ -11110,7 +11310,8 @@
   "names": {
    "Deutsch": "Südafrika",
    "Español": "Sudáfrica",
-   "中文（普通话）": "南非"
+   "中文（普通话）": "南非",
+   "Русский": "Южно-Африканская Республика"
   },
   "status": "un_member",
   "status_note": "",
@@ -11184,7 +11385,8 @@
   "names": {
    "Deutsch": "Südkorea",
    "Español": "Corea del Sur",
-   "中文（普通话）": "韩国"
+   "中文（普通话）": "韩国",
+   "Русский": "Южная Корея"
   },
   "status": "un_member",
   "status_note": "",
@@ -11235,7 +11437,8 @@
   "names": {
    "Deutsch": "Südsudan",
    "Español": "Sudán del Sur",
-   "中文（普通话）": "南苏丹"
+   "中文（普通话）": "南苏丹",
+   "Русский": "Южный Судан"
   },
   "status": "un_member",
   "status_note": "",
@@ -11290,7 +11493,8 @@
   "names": {
    "Deutsch": "Spanien",
    "Español": "España",
-   "中文（普通话）": "西班牙"
+   "中文（普通话）": "西班牙",
+   "Русский": "Испания"
   },
   "status": "un_member",
   "status_note": "",
@@ -11357,7 +11561,8 @@
   "names": {
    "Deutsch": "Sri Lanka",
    "Español": "Sri Lanka",
-   "中文（普通话）": "斯里兰卡"
+   "中文（普通话）": "斯里兰卡",
+   "Русский": "Шри-Ланка"
   },
   "status": "un_member",
   "status_note": "",
@@ -11426,7 +11631,8 @@
   "names": {
    "Deutsch": "Sudan",
    "Español": "Sudán",
-   "中文（普通话）": "苏丹"
+   "中文（普通话）": "苏丹",
+   "Русский": "Судан"
   },
   "status": "un_member",
   "status_note": "",
@@ -11483,7 +11689,8 @@
   "names": {
    "Deutsch": "Suriname",
    "Español": "Surinam",
-   "中文（普通话）": "苏里南"
+   "中文（普通话）": "苏里南",
+   "Русский": "Суринам"
   },
   "status": "un_member",
   "status_note": "",
@@ -11548,7 +11755,8 @@
   "names": {
    "Deutsch": "Spitzbergen und Jan Mayen",
    "Español": "Islas Svalbard y Jan Mayen",
-   "中文（普通话）": "斯瓦尔巴特"
+   "中文（普通话）": "斯瓦尔巴特",
+   "Русский": "Шпицберген и Ян-Майен"
   },
   "status": "territory",
   "status_note": "",
@@ -11594,7 +11802,8 @@
   "names": {
    "Deutsch": "Schweden",
    "Español": "Suecia",
-   "中文（普通话）": "瑞典"
+   "中文（普通话）": "瑞典",
+   "Русский": "Швеция"
   },
   "status": "un_member",
   "status_note": "",
@@ -11645,7 +11854,8 @@
   "names": {
    "Deutsch": "Schweiz",
    "Español": "Suiza",
-   "中文（普通话）": "瑞士"
+   "中文（普通话）": "瑞士",
+   "Русский": "Швейцария"
   },
   "status": "un_member",
   "status_note": "",
@@ -11702,7 +11912,8 @@
   "names": {
    "Deutsch": "Syrien",
    "Español": "Siria",
-   "中文（普通话）": "叙利亚"
+   "中文（普通话）": "叙利亚",
+   "Русский": "Сирия"
   },
   "status": "un_member",
   "status_note": "",
@@ -11757,7 +11968,8 @@
   "names": {
    "Deutsch": "São Tomé und Príncipe",
    "Español": "Santo Tomé y Príncipe",
-   "中文（普通话）": "圣多美和普林西比"
+   "中文（普通话）": "圣多美和普林西比",
+   "Русский": "Сан-Томе и Принсипи"
   },
   "status": "un_member",
   "status_note": "",
@@ -11810,7 +12022,8 @@
   "names": {
    "Deutsch": "Taiwan",
    "Español": "Taiwán",
-   "中文（普通话）": "台灣"
+   "中文（普通话）": "台灣",
+   "Русский": "Тайвань"
   },
   "status": "limited_recognition",
   "status_note": "Governed separately; recognised by a small number of states, not a UN member.",
@@ -11860,7 +12073,8 @@
   "names": {
    "Deutsch": "Tadschikistan",
    "Español": "Tayikistán",
-   "中文（普通话）": "塔吉克斯坦"
+   "中文（普通话）": "塔吉克斯坦",
+   "Русский": "Таджикистан"
   },
   "status": "un_member",
   "status_note": "",
@@ -11914,7 +12128,8 @@
   "names": {
    "Deutsch": "Tansania",
    "Español": "Tanzania",
-   "中文（普通话）": "坦桑尼亚"
+   "中文（普通话）": "坦桑尼亚",
+   "Русский": "Танзания"
   },
   "status": "un_member",
   "status_note": "",
@@ -11972,7 +12187,8 @@
   "names": {
    "Deutsch": "Thailand",
    "Español": "Tailandia",
-   "中文（普通话）": "泰国"
+   "中文（普通话）": "泰国",
+   "Русский": "Таиланд"
   },
   "status": "un_member",
   "status_note": "",
@@ -12039,7 +12255,8 @@
   "names": {
    "Deutsch": "Osttimor",
    "Español": "Timor Oriental",
-   "中文（普通话）": "东帝汶"
+   "中文（普通话）": "东帝汶",
+   "Русский": "Восточный Тимор"
   },
   "status": "un_member",
   "status_note": "",
@@ -12090,7 +12307,8 @@
   "names": {
    "Deutsch": "Togo",
    "Español": "Togo",
-   "中文（普通话）": "多哥"
+   "中文（普通话）": "多哥",
+   "Русский": "Того"
   },
   "status": "un_member",
   "status_note": "",
@@ -12142,7 +12360,8 @@
   "names": {
    "Deutsch": "Tokelau",
    "Español": "Islas Tokelau",
-   "中文（普通话）": "托克劳"
+   "中文（普通话）": "托克劳",
+   "Русский": "Токелау"
   },
   "status": "territory",
   "status_note": "",
@@ -12192,7 +12411,8 @@
   "names": {
    "Deutsch": "Tonga",
    "Español": "Tonga",
-   "中文（普通话）": "汤加"
+   "中文（普通话）": "汤加",
+   "Русский": "Тонга"
   },
   "status": "un_member",
   "status_note": "",
@@ -12241,7 +12461,8 @@
   "names": {
    "Deutsch": "Trinidad und Tobago",
    "Español": "Trinidad y Tobago",
-   "中文（普通话）": "特立尼达和多巴哥"
+   "中文（普通话）": "特立尼达和多巴哥",
+   "Русский": "Тринидад и Тобаго"
   },
   "status": "un_member",
   "status_note": "",
@@ -12289,7 +12510,8 @@
   "names": {
    "Deutsch": "Tunesien",
    "Español": "Túnez",
-   "中文（普通话）": "突尼斯"
+   "中文（普通话）": "突尼斯",
+   "Русский": "Тунис"
   },
   "status": "un_member",
   "status_note": "",
@@ -12340,7 +12562,8 @@
   "names": {
    "Deutsch": "Turkmenistan",
    "Español": "Turkmenistán",
-   "中文（普通话）": "土库曼斯坦"
+   "中文（普通话）": "土库曼斯坦",
+   "Русский": "Туркмения"
   },
   "status": "un_member",
   "status_note": "",
@@ -12394,7 +12617,8 @@
   "names": {
    "Deutsch": "Turks-und Caicosinseln",
    "Español": "Islas Turks y Caicos",
-   "中文（普通话）": "特克斯和凯科斯群岛"
+   "中文（普通话）": "特克斯和凯科斯群岛",
+   "Русский": "Теркс и Кайкос"
   },
   "status": "territory",
   "status_note": "",
@@ -12442,7 +12666,8 @@
   "names": {
    "Deutsch": "Tuvalu",
    "Español": "Tuvalu",
-   "中文（普通话）": "图瓦卢"
+   "中文（普通话）": "图瓦卢",
+   "Русский": "Тувалу"
   },
   "status": "un_member",
   "status_note": "",
@@ -12495,7 +12720,8 @@
   "names": {
    "Deutsch": "Türkei",
    "Español": "Turquía",
-   "中文（普通话）": "土耳其"
+   "中文（普通话）": "土耳其",
+   "Русский": "Турция"
   },
   "status": "un_member",
   "status_note": "",
@@ -12553,7 +12779,8 @@
   "names": {
    "Deutsch": "Uganda",
    "Español": "Uganda",
-   "中文（普通话）": "乌干达"
+   "中文（普通话）": "乌干达",
+   "Русский": "Уганда"
   },
   "status": "un_member",
   "status_note": "",
@@ -12608,7 +12835,8 @@
   "names": {
    "Deutsch": "Ukraine",
    "Español": "Ucrania",
-   "中文（普通话）": "乌克兰"
+   "中文（普通话）": "乌克兰",
+   "Русский": "Украина"
   },
   "status": "un_member",
   "status_note": "",
@@ -12665,7 +12893,8 @@
   "names": {
    "Deutsch": "Vereinigte Arabische Emirate",
    "Español": "Emiratos Árabes Unidos",
-   "中文（普通话）": "阿拉伯联合酋长国"
+   "中文（普通话）": "阿拉伯联合酋长国",
+   "Русский": "Объединённые Арабские Эмираты"
   },
   "status": "un_member",
   "status_note": "",
@@ -12717,7 +12946,8 @@
   "names": {
    "Deutsch": "Vereinigtes Königreich",
    "Español": "Reino Unido",
-   "中文（普通话）": "英国"
+   "中文（普通话）": "英国",
+   "Русский": "Великобритания"
   },
   "status": "un_member",
   "status_note": "",
@@ -12767,7 +12997,8 @@
   "names": {
    "Deutsch": "Vereinigte Staaten",
    "Español": "Estados Unidos",
-   "中文（普通话）": "美国"
+   "中文（普通话）": "美国",
+   "Русский": "Соединённые Штаты Америки"
   },
   "status": "un_member",
   "status_note": "",
@@ -12831,7 +13062,8 @@
   "names": {
    "Deutsch": "Amerikanische Jungferninseln",
    "Español": "Islas Vírgenes de los Estados Unidos",
-   "中文（普通话）": "美属维尔京群岛"
+   "中文（普通话）": "美属维尔京群岛",
+   "Русский": "Виргинские Острова"
   },
   "status": "territory",
   "status_note": "",
@@ -12879,7 +13111,8 @@
   "names": {
    "Deutsch": "Uruguay",
    "Español": "Uruguay",
-   "中文（普通话）": "乌拉圭"
+   "中文（普通话）": "乌拉圭",
+   "Русский": "Уругвай"
   },
   "status": "un_member",
   "status_note": "",
@@ -12943,7 +13176,8 @@
   "names": {
    "Deutsch": "Usbekistan",
    "Español": "Uzbekistán",
-   "中文（普通话）": "乌兹别克斯坦"
+   "中文（普通话）": "乌兹别克斯坦",
+   "Русский": "Узбекистан"
   },
   "status": "un_member",
   "status_note": "",
@@ -12998,7 +13232,8 @@
   "names": {
    "Deutsch": "Vanuatu",
    "Español": "Vanuatu",
-   "中文（普通话）": "瓦努阿图"
+   "中文（普通话）": "瓦努阿图",
+   "Русский": "Вануату"
   },
   "status": "un_member",
   "status_note": "",
@@ -13053,7 +13288,8 @@
   "names": {
    "Deutsch": "Vatikanstadt",
    "Español": "Ciudad del Vaticano",
-   "中文（普通话）": "梵蒂冈"
+   "中文（普通话）": "梵蒂冈",
+   "Русский": "Ватикан"
   },
   "status": "un_observer",
   "status_note": "",
@@ -13102,7 +13338,8 @@
   "names": {
    "Deutsch": "Venezuela",
    "Español": "Venezuela",
-   "中文（普通话）": "委内瑞拉"
+   "中文（普通话）": "委内瑞拉",
+   "Русский": "Венесуэла"
   },
   "status": "un_member",
   "status_note": "",
@@ -13154,7 +13391,8 @@
   "names": {
    "Deutsch": "Vietnam",
    "Español": "Vietnam",
-   "中文（普通话）": "越南"
+   "中文（普通话）": "越南",
+   "Русский": "Вьетнам"
   },
   "status": "un_member",
   "status_note": "",
@@ -13219,7 +13457,8 @@
   "names": {
    "Deutsch": "Wallis und Futuna",
    "Español": "Wallis y Futuna",
-   "中文（普通话）": "瓦利斯和富图纳群岛"
+   "中文（普通话）": "瓦利斯和富图纳群岛",
+   "Русский": "Уоллис и Футуна"
   },
   "status": "territory",
   "status_note": "",
@@ -13267,7 +13506,8 @@
   "names": {
    "Deutsch": "Westsahara",
    "Español": "Sahara Occidental",
-   "中文（普通话）": "西撒哈拉"
+   "中文（普通话）": "西撒哈拉",
+   "Русский": "Западная Сахара"
   },
   "status": "disputed_territory",
   "status_note": "Sovereignty disputed; listed by the UN as a non-self-governing territory.",
@@ -13329,7 +13569,8 @@
   "names": {
    "Deutsch": "Jemen",
    "Español": "Yemen",
-   "中文（普通话）": "也门"
+   "中文（普通话）": "也门",
+   "Русский": "Йемен"
   },
   "status": "un_member",
   "status_note": "",
@@ -13380,7 +13621,8 @@
   "names": {
    "Deutsch": "Sambia",
    "Español": "Zambia",
-   "中文（普通话）": "赞比亚"
+   "中文（普通话）": "赞比亚",
+   "Русский": "Замбия"
   },
   "status": "un_member",
   "status_note": "",
@@ -13437,7 +13679,8 @@
   "names": {
    "Deutsch": "Simbabwe",
    "Español": "Zimbabue",
-   "中文（普通话）": "津巴布韦"
+   "中文（普通话）": "津巴布韦",
+   "Русский": "Зимбабве"
   },
   "status": "un_member",
   "status_note": "",
@@ -13537,7 +13780,8 @@
   "names": {
    "Deutsch": "Åland",
    "Español": "Alandia",
-   "中文（普通话）": "奥兰群岛"
+   "中文（普通话）": "奥兰群岛",
+   "Русский": "Аландские острова"
   },
   "status": "territory",
   "status_note": "",

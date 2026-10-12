@@ -30,6 +30,7 @@ lines = [
     "- Flags: SVG files from the same repository, rasterised to 320 px WebP. Flags are **not** covered by the ODbL; "
     "most national flags are in the public domain, but some contain emblems with separate rights or legal restrictions "
     "(see [Wikipedia: Copyright on emblems](https://en.wikipedia.org/wiki/Wikipedia:Copyright_on_emblems)).",
+    "- Explore map: [Natural Earth](https://www.naturalearthdata.com/) 1:50m Cultural Vectors, *Admin 0 – Countries* (public domain), from [nvkelso/natural-earth-vector](https://github.com/nvkelso/natural-earth-vector) commit `ca96624` (`geojson/ne_50m_admin_0_countries.geojson`), simplified with `tools/build_world_map.py` into `assets/world_map.json`. Outlines are coloured by the continent in `data/countries.json`; overseas parts drawn inside France and the Netherlands take the continent of their location. Natural Earth outlines without a dataset entry (South Georgia, French Southern Lands, Heard and McDonald Islands) are not drawn; Northern Cyprus, Somaliland, Kosovo and the Siachen area follow Cyprus, Somalia, Kosovo and India respectively for colouring only. Places too small for the 1:50m map are still selectable through their continent.",
     "- Heads of state: `data/heads_of_state.json`, each with source and `verified_on` date (not advanced without rechecking).", "",
     "## Reference comparison", "",
     f"- UN member states in the collection: **{counts['un_member']} of {len(ref['members'])}**",

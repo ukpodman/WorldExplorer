@@ -19,7 +19,7 @@ except ImportError:  # pragma: no cover
     AppTest = None
 
 APP = str(ROOT / "app.py")
-LANGS = ("English", "Deutsch", "Español", "中文（普通话）")
+LANGS = ("English", "Deutsch", "Español", "中文（普通话）", "Русский")
 
 
 def audio_count(at) -> int:
@@ -842,6 +842,171 @@ class AccountTests(unittest.TestCase):
         st = fake_streamlit(logged_in=False, secrets={"auth": auth})
         with mock.patch.object(self.accounts, "st", st), mock.patch.object(self.accounts, "_authlib_ready", lambda: False):
             self.assertEqual(self.accounts.auth_diagnosis("google")["problem"], "authlib_missing")
+
+
+@unittest.skipIf(AppTest is None, "streamlit is not installed")
+class ContinentMapTests(unittest.TestCase):
+    """The Explore home: real summary, Daily Challenge, interactive continent map, buttons and details panel."""
+    CONTINENTS = ("Africa", "Asia", "Europe", "North America", "South America", "Oceania")
+
+    def new(self, **state):
+        at = AppTest.from_file(APP, default_timeout=60)
+        for k, v in state.items():
+            at.session_state[k] = v
+        return at.run()
+
+    @staticmethod
+    def btn(continent):
+        return "continent_btn_" + continent.replace(" ", "_")
+
+    def summary(self, at):
+        return next(m.value for m in at.markdown if 'class="explore-summary"' in m.value)
+
+    def test_new_explorer_sees_real_zeros(self):
+        at = self.new()
+        text = self.summary(at)
+        self.assertIn("<b>0</b>", text)                        # points and day streak
+        self.assertIn("<b>0/14</b>", text)                     # earned badges
+        self.assertNotIn("Demo", str(at))
+        self.assertEqual([b for b in self.CONTINENTS if self.btn(b) not in [x.key for x in at.button]], [])
+        self.assertNotIn("continent_panel_head", str([b.key for b in at.button]))
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_saved_progress_is_shown(self):
+        from core import badges
+        stats = badges.empty_stats()
+        stats["correct_by_continent"]["Europe"] = 3
+        stats["correct"] = 3
+        at = self.new(points=1250, rounds_finished=2, stats=stats, explore_selected="Europe")
+        text = self.summary(at)
+        self.assertIn("<b>1,250</b>", text)
+        earned = sum(1 for b in badges.evaluate(stats, 1250, 2) if b["earned"])
+        self.assertIn(f"<b>{earned}/14</b>", text)
+        self.assertTrue(any("3 of 5 correct answers about Europe" in (p.proto.text or "") for p in at.get("progress")))
+
+    def test_selecting_by_button_opens_details_without_touching_rounds(self):
+        at = self.new(page="Quiz")
+        at.button(key="start_quiz").click().run()
+        q = at.session_state["quiz"]
+        qn = q["questions"][0]
+        at.button(key=f"answer_{q['serial']}_0_{qn['choices'].index(qn['answer'])}").click().run()
+        before = (q["serial"], q["score"], len(q["history"]), q["finished"])
+        at.button(key="nav_Explore").click().run()
+        for continent in self.CONTINENTS:
+            at.button(key=self.btn(continent)).click().run()
+            self.assertEqual(at.session_state["explore_selected"], continent)
+            self.assertEqual(at.session_state["page"], "Explore")
+            self.assertEqual(at.button(key=self.btn(continent)).proto.type, "primary")
+            heading = next(m.value for m in at.markdown if 'class="continent-title"' in m.value)
+            self.assertIn(continent, heading)
+            current = at.session_state["quiz"]
+            self.assertEqual((current["serial"], current["score"], len(current["history"]), current["finished"]), before)
+        at.button(key="continent_close").click().run()
+        self.assertIsNone(at.session_state["explore_selected"])
+        self.assertNotIn("continent_close", [b.key for b in at.button])
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_map_selection_uses_the_same_rules(self):
+        from ui import state, world_map
+        class Fake(dict):
+            __getattr__, __setattr__ = dict.get, dict.__setitem__
+        fake = Fake(world_map={"select": "Asia"})
+        with mock.patch.object(world_map.st, "session_state", fake), mock.patch.object(state.st, "session_state", fake):
+            self.assertEqual(world_map.selected_value(), "Asia")
+            state.explore_select(world_map.selected_value())
+            self.assertEqual(fake["explore_selected"], "Asia")
+            state.explore_select("Atlantis")                      # unknown names are ignored
+            self.assertEqual(fake["explore_selected"], "Asia")
+
+    def test_place_counts_come_from_the_dataset(self):
+        from core.data import get_countries
+        for collection, word in (("UN member and observer states", "countries"),
+                                 ("All countries and territories", "countries and territories")):
+            for continent in self.CONTINENTS:
+                at = self.new(scope_collection=collection, explore_selected=continent)
+                n = len(get_countries(continent, collection=collection))
+                count = next(m.value for m in at.markdown if 'class="continent-count"' in m.value)
+                expected = f"{n} countries" if collection.startswith("UN") else f"{n} {word}"
+                self.assertIn(f">{expected}<", count, (collection, continent))
+
+    def test_explore_countries_filters_the_existing_browser(self):
+        from core.data import get_country
+        at = self.new(scope_collection="All countries and territories", explore_selected="Europe")
+        at.selectbox(key="explore_status").select("territory").run()
+        at.text_input(key="explore_search").input("zz").run()
+        at.button(key="continent_explore").click().run()
+        ss = at.session_state
+        self.assertEqual((ss["explore_continent"], ss["explore_search"], ss["explore_page"]), ("Europe", "", 0))
+        self.assertEqual(ss["explore_status"], "territory")      # the status filter is kept
+        self.assertIsNone(ss["explore_selected"])
+        self.assertEqual(ss["explore_scroll"], 1)
+        cards = [b.key.removeprefix("discover_") for b in at.button if b.key and b.key.startswith("discover_")]
+        self.assertTrue(cards)
+        for code in cards:
+            c = get_country(code)
+            self.assertIn("Europe", c["continents"])
+            self.assertEqual(c["status"], "territory")
+        at.selectbox(key="explore_status").select("all").run()
+        self.assertEqual(len([b for b in at.button if b.key and b.key.startswith("discover_")]), 8)
+        at.button(key="explore_next").click().run()               # pagination still works
+        self.assertEqual(at.session_state["explore_page"], 1)
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_explore_countries_widens_a_narrower_area(self):
+        at = self.new(scope_mode="One continent", scope_continent="Asia", explore_selected="Europe")
+        self.assertTrue(any("switches it to all countries" in c.value for c in at.caption))
+        at.button(key="continent_explore").click().run()
+        ss = at.session_state
+        self.assertEqual((ss["scope_mode"], ss["scope_continent"], ss["explore_continent"]), ("All countries", "World", "Europe"))
+        self.assertEqual(ss["scope_collection"], "UN member and observer states")
+
+    def test_quiz_this_continent_opens_setup_and_keeps_rounds(self):
+        from datetime import date
+        with mock.patch("core.daily.utc_today", return_value=date(2026, 10, 10)):
+            at = self.new()
+            at.button(key="explore_daily").click().run()             # an unfinished daily round
+            daily = at.session_state["quiz"]
+            at.button(key="nav_Explore").click().run()
+            at.button(key=self.btn("Oceania")).click().run()
+            self.assertIs(at.session_state["quiz"]["uid"], daily["uid"])
+            at.button(key="continent_quiz").click().run()
+            ss = at.session_state
+            self.assertEqual((ss["page"], ss["show_setup"]), ("Quiz", True))
+            self.assertEqual((ss["filter_continent"], ss["filter_country"]), ("Oceania", "all"))
+            self.assertEqual(at.selectbox(key="filter_continent").value, "Oceania")
+            self.assertEqual(ss["quiz"]["uid"], daily["uid"])        # nothing started, nothing discarded
+            self.assertFalse(ss["quiz"]["finished"])
+            self.assertTrue(any("Your current round is kept" in i.value for i in at.info))
+            self.assertEqual([e.value for e in at.exception], [])
+
+    def test_daily_states_on_the_explore_home(self):
+        from datetime import date
+        with mock.patch("core.daily.utc_today", return_value=date(2026, 10, 10)):
+            at = self.new()
+            self.assertEqual(at.button(key="explore_daily").label, "Start today's challenge")
+            self.assertEqual(at.button(key="explore_daily_side_start").label, "Start today's challenge")
+            at.button(key="explore_daily_side_start").click().run()
+            self.assertEqual(at.session_state["quiz"]["mode"], "daily")
+            at.button(key="nav_Explore").click().run()
+            self.assertEqual(at.button(key="explore_daily").label, "Continue today's challenge")
+            at.button(key="explore_daily").click().run()
+            for i in range(5):
+                q = at.session_state["quiz"]
+                qn = q["questions"][i]
+                at.button(key=f"answer_{q['serial']}_{i}_{qn['choices'].index(qn['answer'])}").click().run()
+                at.button(key=f"next_{q['serial']}_{i}").click().run()
+            at.button(key="nav_Explore").click().run()
+            self.assertEqual(at.button(key="explore_daily").label, "Replay today's challenge")
+            self.assertIn("<b>1</b>", self.summary(at))              # day streak 1
+
+    def test_every_language_renders_the_map_home(self):
+        from core.i18n import translate
+        for lang in LANGS:
+            at = self.new(app_language=lang, explore_selected="North America")
+            self.assertEqual([e.value for e in at.exception], [], lang)
+            self.assertEqual(at.button(key="continent_explore").label, translate("Explore countries", lang))
+            self.assertEqual(at.button(key=self.btn("South America")).label, translate("South America", lang))
+            self.assertIn(translate("Choose a continent", lang), " ".join(m.value for m in at.markdown))
 
 
 @unittest.skipIf(AppTest is None, "streamlit is not installed")

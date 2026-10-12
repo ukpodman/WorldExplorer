@@ -442,6 +442,9 @@ def data_sources() -> None:
                     "Missing or disputed facts skip only the question types that need them.")
         st.markdown("Flags are SVG files from the same repository, resized for the app. Flags are not covered by the ODbL; "
                     "see [Wikipedia: copyright on emblems](https://en.wikipedia.org/wiki/Wikipedia:Copyright_on_emblems).")
+        st.markdown("Map outlines: [Natural Earth](https://www.naturalearthdata.com/) 1:50m Admin 0 – Countries (public domain), "
+                    "simplified and coloured by the continents in the country data (`assets/world_map.json`, built by "
+                    "`tools/build_world_map.py`).")
         st.markdown("Landmarks: [UNESCO World Heritage List](https://whc.unesco.org/en/list/) (single-country sites only). "
                     "Head-of-state questions use dated, sourced records only; records older than 30 days are excluded "
                     "until verified again.")

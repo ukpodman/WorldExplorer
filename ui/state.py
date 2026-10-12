@@ -423,6 +423,58 @@ def quiz_on_country(country_id: str) -> None:
     navigate("Quiz")
 
 
+# --------------------------------------------------------------------------- Explore continent map
+
+def explore_select(continent) -> None:
+    """Map or continent button: highlight a continent and show its details. Nothing else changes (no quiz, no round)."""
+    if continent in CONTINENTS:
+        st.session_state.explore_selected = continent
+
+
+def explore_close() -> None:
+    st.session_state.explore_selected = None
+
+
+def area_leaves_out(continent: str) -> bool:
+    """True when the exploration area is set to one country or to another continent."""
+    mode = st.session_state.scope_mode
+    return mode == "One country" or (mode == "One continent" and st.session_state.scope_continent != continent)
+
+
+def explore_continent(continent: str) -> None:
+    """ "Explore countries": open the country browser below the map, filtered to the continent. Search and status
+    filters, cards and pagination stay as they are; the search text is cleared so the continent's list shows.
+    If the exploration area leaves the continent out, the area widens to all countries (places to include stay)."""
+    if continent not in CONTINENTS:
+        return
+    ss = st.session_state
+    if area_leaves_out(continent):
+        ss.update(normalized_scope("All countries", "World", "all", ss.scope_collection))
+        _after_scope_change()
+    ss.explore_continent = continent
+    ss.explore_search = ""
+    ss.explore_page = 0
+    ss.explore_selected = None
+    ss.explore_scroll = ss.get("explore_scroll", 0) + 1  # the page scrolls to the country list once
+
+
+def quiz_continent(continent: str) -> None:
+    """ "Quiz this continent": open quiz setup with the continent selected. An unfinished round is kept, exactly as
+    with "Quiz me on this country" (setup offers to return to it); nothing starts until the visitor presses Start."""
+    if continent not in CONTINENTS:
+        return
+    ss = st.session_state
+    restore_quiz_filters()
+    ss.filter_collection = ss.scope_collection
+    ss.filter_continent = continent
+    ss.filter_country = "all"
+    remember_quiz_filters()
+    ss.explore_selected = None
+    ss.show_setup = True
+    engine.pause(ss.get("quiz"))
+    navigate("Quiz")
+
+
 def open_setup() -> None:
     engine.pause(st.session_state.get("quiz"))
     st.session_state.show_setup = True

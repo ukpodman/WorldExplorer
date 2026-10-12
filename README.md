@@ -1,6 +1,6 @@
 # World Explorer
 
-Learn about every country and take a geography quiz in English, German, Spanish or Chinese. The
+Learn about every country and take a geography quiz in English, German, Spanish, Chinese or Russian. The
 quiz covers capitals, flags, currencies, languages, neighbours, UNESCO landmarks, area
 comparisons, heads of state and more.
 
@@ -69,6 +69,7 @@ ui/
   state.py                 session state and round callbacks
   components.py            header, hero, settings drawer (profile, sign-in help, places, sound)
   pages.py                 Explore, Learn, Quiz, Badges
+  world_map.py             interactive continent map on Explore (custom component, bundled outlines)
   owner.py                 private owner dashboard (server-side owner check)
   sound.py                 optional generated sound effects
 data/
@@ -80,8 +81,9 @@ data/
 assets/
   styles.css               all styling (palette and accessibility notes at the top)
   flags.json               244 flag images (WebP, base64) in one file
+  world_map.json           continent outlines for the Explore map (Natural Earth, public domain; generated)
 tests/                     test_core.py (logic) and test_app.py (real Streamlit AppTest)
-tools/                     rebuild data/countries.json, flags.json and COVERAGE.md
+tools/                     rebuild data/countries.json, flags.json, world_map.json and COVERAGE.md
 ```
 
 ## Tests
@@ -100,6 +102,11 @@ AppTest against simulated Google and Supabase stand-ins; they are skipped if Str
 3. `python tools/build_countries.py <clone>`, then `python tools/render_flags.py <clone>`
    (needs Playwright + Chromium), then `python tools/write_coverage_md.py`.
 4. Run the tests.
+
+**Explore map:** `assets/world_map.json` is built from Natural Earth's 1:50m *Admin 0 – Countries* file
+(public domain): `python tools/build_world_map.py <path to ne_50m_admin_0_countries.geojson>` (from
+`github.com/nvkelso/natural-earth-vector`, folder `geojson/`). Every outline is coloured by the continent in
+`data/countries.json`, so rebuild the map after rebuilding the countries.
 
 **Heads of state:** edit `data/heads_of_state.json` only after rechecking each source, and set
 `verified_on` to the date you checked. Records older than 30 days are hidden automatically.
@@ -135,7 +142,8 @@ sound has an on-screen message too.
 Country data: [mledoze/countries](https://github.com/mledoze/countries), ODbL 1.0. The adapted
 database in `data/` is distributed under the same licence. Flags come from the same repository
 but are not covered by the ODbL (see `COVERAGE.md`). Photo credits are listed in the app and in
-`data/photos.json`. Landmarks link to the UNESCO World Heritage List.
+`data/photos.json`. Landmarks link to the UNESCO World Heritage List. Map outlines: [Natural Earth](https://www.naturalearthdata.com/)
+(public domain; "Made with Natural Earth"), simplified for the Explore map.
 
 ## Scoring rules
 
@@ -169,6 +177,34 @@ accounts). After uploading:
 4. In Supabase (Table editor → `world_explorer_profiles`) your row's `profile` JSON should now contain a
    `records` entry next to `points`, `rounds_finished` and `stats`. Older rows without it keep working.
 5. If the footer says "Saved profile not reachable yet", nothing is written until the profile has loaded.
+
+## Continent map on Explore and Russian (2026-10-12)
+
+* **Explore home:** a compact summary of your real points, day streak and earned badges (zeros for a new explorer);
+  the five-question Daily Challenge with its usual Start / Continue / Replay; "Choose a continent" with an accurate,
+  interactive world map; and six continent buttons that do the same as the map for keyboard and screen-reader users.
+* **Selecting a continent** (map or button) highlights it and opens its details: the number of places under your
+  current "Places to include" setting ("countries", or "countries and territories" when territories are included),
+  your real progress towards that continent's existing badge (correct answers out of 5), **Explore countries** and
+  **Quiz this continent**. Selecting never starts a quiz or touches an unfinished round.
+  * **Explore countries** filters the country browser below the map to the continent (search, status filter, cards
+    and pagination are unchanged) and scrolls to it. If your exploration area leaves the continent out, it widens to
+    all countries; places to include stay as they are.
+  * **Quiz this continent** opens quiz setup with the continent selected; an unfinished round is kept exactly as with
+    "Quiz me on this country".
+* **Layouts:** on desktop (over 900 px) the map sits beside the Daily Challenge and the details. On phones and portrait
+  tablets the Daily Challenge comes first, the whole world map fits the width, the buttons wrap two or three per row
+  (48 px tall) and the details open as a bottom sheet. The sheet scrolls on its own, keeps its close button and
+  actions reachable, clears the iPhone home indicator, dims and blocks the page behind it, keeps keyboard focus inside,
+  closes with Escape or a tap on the dimmed page and returns focus to the control that opened it.
+* **Map data:** Natural Earth 1:50m country outlines (public domain), simplified and bundled in
+  `assets/world_map.json`; colours follow the continents in `data/countries.json` (for example, Russia is drawn with
+  Europe, Türkiye and Kazakhstan with Asia). The outlines (about 100 kB) are sent once per browser session.
+* **Russian (Русский)** is the fifth language: every interface string, with Russian plural forms. Country names come
+  from the same dataset translations as the other languages (mledoze/countries, same commit); capitals, currencies,
+  languages and regions in facts keep the dataset spelling, as in German, Spanish and Chinese. Missing translations
+  fall back to English. Saved language choices are unchanged.
+* No new scoring rules, no exploration percentages, no setup changes.
 
 ## Pilot update (measurement, timing fix, easier first use)
 

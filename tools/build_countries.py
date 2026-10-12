@@ -18,7 +18,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 REF = ROOT / "data" / "reference"
-LANG_KEYS = {"Deutsch": "deu", "Español": "spa", "中文（普通话）": "zho"}
+LANG_KEYS = {"Deutsch": "deu", "Español": "spa", "中文（普通话）": "zho", "Русский": "rus"}
 AMERICAS = {"South America": "South America"}  # every other Americas subregion maps to North America
 
 

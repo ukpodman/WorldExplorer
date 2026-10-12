@@ -48,7 +48,7 @@ class AppTests(unittest.TestCase):
     def test_explore_paginates_and_filters(self):
         at = self.new(explore_selected="Europe")
         cards = [b for b in at.button if b.key and b.key.startswith("discover_")]
-        self.assertEqual(len(cards), 12)  # full rows of 2, 3 or 4 per page, never hundreds of cards at once
+        self.assertEqual(len(cards), 10)  # ten list rows per page, never hundreds at once
         at.text_input(key="explore_search").input("Bern").run()
         self.assertEqual([b.key for b in at.button if b.key and b.key.startswith("discover_")], ["discover_CHE"])
         at = self.new(scope_collection="All countries and territories", explore_selected="Africa")
@@ -217,8 +217,9 @@ class RefinementTests(unittest.TestCase):
                 pages = self._walk_explore(at)
                 keys = [k for page in pages for k in page]
                 self.assertEqual(len(keys), len(set(keys)), (collection, continent))                 # no duplicates
-                self.assertTrue(all(len(p) == 12 for p in pages[:-1]) and 1 <= len(pages[-1]) <= 12)  # no gaps
-                self.assertIn(f"· {len(keys)} countries", " ".join(c.value for c in at.caption))
+                self.assertTrue(all(len(p) == 10 for p in pages[:-1]) and 1 <= len(pages[-1]) <= 10)  # no gaps
+                self.assertIn(f"/ {len(pages)}", " ".join(c.value for c in at.caption))
+                self.assertTrue(any(f">{len(keys)} countries" in m.value for m in at.markdown if 'class="continent-count"' in m.value))
                 expected = {c["id"] for c in get_countries(continent, collection=collection)}
                 self.assertEqual({k.removeprefix("discover_") for k in keys}, expected, (collection, continent))
                 seen |= expected
@@ -230,7 +231,7 @@ class RefinementTests(unittest.TestCase):
             pages = self._walk_explore(at)
             keys = [k for page in pages for k in page]
             self.assertEqual(len(keys), len(set(keys)), filters)
-            self.assertIn(f"· {len(keys)} countries", " ".join(c.value for c in at.caption))
+            self.assertIn(f"/ {len(pages)}", " ".join(c.value for c in at.caption))
 
     def test_explore_has_no_second_challenge_card(self):
         """The Daily Challenge banner is the only challenge entry on Explore — also when nothing matches."""
@@ -242,7 +243,7 @@ class RefinementTests(unittest.TestCase):
                     at.text_input(key="explore_search").input(search).run()
                 keys = [b.key for b in at.button]
                 self.assertNotIn("atlas_take_quiz", keys, (lang, search))
-                self.assertIn("explore_daily_side_start", keys, (lang, search))       # the challenge stays
+                self.assertIn("explore_daily", keys, (lang, search))                  # the challenge stays
                 text = " ".join(m.value for m in at.markdown)
                 self.assertNotIn(translate("Your next challenge", lang), text, (lang, search))
                 self.assertNotIn("atlas_quiz", str(at), (lang, search))
@@ -252,20 +253,27 @@ class RefinementTests(unittest.TestCase):
     def test_eighth_card_takes_the_old_challenge_slot(self):
         at = self.new(explore_selected="Asia")
         keys = [b.key for b in at.button if b.key and b.key.startswith("discover_")]
-        self.assertEqual(len(keys), 12)
+        self.assertEqual(len(keys), 10)
         at.button(key="explore_next").click().run()
         second = [b.key for b in at.button if b.key and b.key.startswith("discover_")]
-        self.assertEqual(len(second), 12)
+        self.assertEqual(len(second), 10)
         self.assertFalse(set(keys) & set(second))                    # page 2 starts with the ninth country
-        at.button(key=second[7]).click().run()
+        at.button(key=second[7]).click().run()                        # the arrow shows the country beside the list
+        self.assertEqual((at.session_state["page"], at.session_state["explore_country"]), ("Explore", second[7].removeprefix("discover_")))
+        at.button(key="detail_learn").click().run()
         self.assertEqual(at.session_state["page"], "Learn")
 
     def test_seventh_card_discover_opens_learn(self):
         at = self.new(explore_selected="Africa")
         seventh = [b.key for b in at.button if b.key and b.key.startswith("discover_")][6]
         at.button(key=seventh).click().run()
+        code = seventh.removeprefix("discover_")
+        self.assertEqual(at.session_state["explore_country"], code)
+        self.assertTrue(any('class="detail-name"' in m.value for m in at.markdown))          # discovered on the right
+        self.assertNotIn("world_map_frame", str([c for c in at.markdown if "map-heading" in c.value]))
+        at.button(key="detail_learn").click().run()
         self.assertEqual(at.session_state["page"], "Learn")
-        self.assertEqual(at.session_state["learn_country"], seventh.removeprefix("discover_"))
+        self.assertEqual(at.session_state["learn_country"], code)
 
     def test_badges_show_each_badge_once_and_viewing_changes_nothing(self):
         from core import badges
@@ -511,7 +519,7 @@ class RefinementTests(unittest.TestCase):
         at.text_input(key="explore_search").input("an").run()
         self._settings_area(at, "All countries", collection="All countries and territories")
         self.assertEqual((at.session_state["explore_page"], at.session_state["explore_search"]), (0, ""))
-        self.assertEqual(len([b for b in at.button if b.key and b.key.startswith("discover_")]), 12)
+        self.assertEqual(len([b for b in at.button if b.key and b.key.startswith("discover_")]), 10)
         self.assertEqual([e.value for e in at.exception], [])
 
     def test_area_change_and_quiz_settings_keep_an_unfinished_round(self):
@@ -876,7 +884,9 @@ class ContinentMapTests(unittest.TestCase):
         self.assertIn("<b>1,250</b>", text)
         earned = sum(1 for b in badges.evaluate(stats, 1250, 2) if b["earned"])
         self.assertIn(f"<b>{earned}/14</b>", text)
-        self.assertTrue(any("3 of 5 correct answers about Europe" in (p.proto.text or "") for p in at.get("progress")))
+        head = next(m.value for m in at.markdown if 'class="detail-empty"' in m.value)
+        self.assertIn("3 of 5 correct answers about Europe", head)
+        self.assertIn('aria-valuenow="3"', head)
 
     def test_selecting_by_button_opens_details_without_touching_rounds(self):
         at = self.new(page="Quiz")
@@ -932,7 +942,7 @@ class ContinentMapTests(unittest.TestCase):
         self.assertNotIn("explore_search", [x.key for x in at.text_input])
         at.button(key=self.btn("Europe")).click().run()
         cards = [b.key.removeprefix("discover_") for b in at.button if b.key and b.key.startswith("discover_")]
-        self.assertEqual(len(cards), 12)
+        self.assertEqual(len(cards), 10)
         self.assertTrue(all("Europe" in get_country(c)["continents"] for c in cards))
         at.selectbox(key="explore_status").select("territory").run()                 # status filter
         territories = [b.key.removeprefix("discover_") for b in at.button if b.key and b.key.startswith("discover_")]
@@ -947,7 +957,7 @@ class ContinentMapTests(unittest.TestCase):
         at.button(key=self.btn("Asia")).click().run()                                 # switching starts again at page 1
         self.assertEqual((at.session_state["explore_page"], at.session_state["explore_search"]), (0, ""))
         n = len(get_countries("Asia", collection="All countries and territories"))
-        self.assertIn(f"· {n} countries", " ".join(c.value for c in at.caption))
+        self.assertTrue(any(f">{n} countries and territories<" in m.value for m in at.markdown if 'class="continent-count"' in m.value))
         self.assertEqual([e.value for e in at.exception], [])
 
     def test_a_narrower_exploration_area_widens_with_a_notice(self):
@@ -961,7 +971,7 @@ class ContinentMapTests(unittest.TestCase):
         self.assertEqual((ss["scope_mode"], ss["scope_continent"], ss["scope_collection"]),
                          ("All countries", "World", "UN member and observer states"))
         self.assertTrue(any("now includes all countries" in i.value for i in at.info))
-        self.assertEqual(len([b for b in at.button if b.key and b.key.startswith("discover_")]), 12)
+        self.assertEqual(len([b for b in at.button if b.key and b.key.startswith("discover_")]), 10)
         at.run()
         self.assertFalse(any("now includes all countries" in i.value for i in at.info))   # said once
 
@@ -970,13 +980,14 @@ class ContinentMapTests(unittest.TestCase):
         at = self.new()
         at.button(key="browse_all").click().run()
         self.assertEqual(at.session_state["explore_selected"], "World")
-        self.assertIn("· 195 countries", " ".join(c.value for c in at.caption))
+        self.assertTrue(any(">195 countries<" in m.value for m in at.markdown if 'class="continent-count"' in m.value))
         at.text_input(key="explore_search").input("Bern").run()
         self.assertEqual([b.key for b in at.button if b.key and b.key.startswith("discover_")], ["discover_CHE"])
         at.text_input(key="explore_search").input("").run()
         at.selectbox(key="explore_places").select("All countries and territories").run()   # compact places control
         self.assertEqual(at.session_state["scope_collection"], "All countries and territories")  # same preference as Settings
-        self.assertIn(f"· {len(get_countries(collection='All countries and territories'))} countries", " ".join(c.value for c in at.caption))
+        self.assertTrue(any(f">{len(get_countries(collection='All countries and territories'))} countries and territories<" in m.value
+                            for m in at.markdown if 'class="continent-count"' in m.value))
         at.button(key="continent_quiz").click().run()
         self.assertEqual((at.session_state["page"], at.session_state["filter_continent"]), ("Quiz", "World"))
         self.assertEqual([e.value for e in at.exception], [])
@@ -1001,6 +1012,7 @@ class ContinentMapTests(unittest.TestCase):
         page = at.session_state["explore_page"]
         card = [b.key for b in at.button if b.key and b.key.startswith("discover_")][0]
         at.button(key=card).click().run()
+        at.button(key="detail_learn").click().run()
         self.assertEqual(at.session_state["page"], "Learn")
         at.button(key="nav_Explore").click().run()
         ss = at.session_state
@@ -1008,6 +1020,38 @@ class ContinentMapTests(unittest.TestCase):
                          ("Europe", "an", "un_member", page))
         self.assertIn(card, [b.key for b in at.button])
         self.assertEqual([e.value for e in at.exception], [])
+
+    def test_country_shows_beside_the_list_and_back(self):
+        at = self.new(explore_selected="Asia")
+        self.assertFalse(any('class="detail-name"' in m.value for m in at.markdown))   # nothing chosen yet
+        first = [b.key for b in at.button if b.key and b.key.startswith("discover_")][0]
+        at.button(key=first).click().run()
+        self.assertTrue(any('class="detail-name"' in m.value for m in at.markdown))    # the country, beside the list
+        self.assertEqual(at.button(key=first).proto.type, "primary")     # the chosen row is highlighted
+        self.assertIn("country_back", [b.key for b in at.button])
+        at.button(key="detail_quiz").click().run()                      # quiz me on this country keeps the rules
+        self.assertEqual((at.session_state["page"], at.session_state["filter_country"]), ("Quiz", first.removeprefix("discover_")))
+        at.button(key="nav_Explore").click().run()
+        self.assertEqual(at.session_state["explore_country"], first.removeprefix("discover_"))   # restored on return
+        at.button(key="country_back").click().run()                     # phones: back to the list,
+        self.assertEqual(at.session_state["explore_country"], first.removeprefix("discover_"))   # still selected
+        self.assertFalse(at.session_state["explore_detail_open"])
+        self.assertEqual(at.button(key=first).proto.type, "primary")
+        at.button(key="continent_back").click().run()
+        self.assertFalse([b for b in at.button if b.key and b.key.startswith("discover_")])     # map only again
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_destination_photo_collapses_when_it_cannot_load(self):
+        """Photos are real images without a fixed-height box, with caption and licence in one line underneath."""
+        at = self.new(explore_selected="Africa", explore_country="NGA")
+        figure = next(m.value for m in at.markdown if 'class="photo-frame detail-photo-frame"' in m.value)
+        self.assertIn('<img src="https://upload.wikimedia.org/', figure)
+        self.assertNotIn("background-image", figure)
+        self.assertIn("CC BY-SA 3.0", figure)
+        at = self.new(explore_selected="Africa", explore_country="DZA")         # no bundled photo: nothing at all
+        self.assertFalse(any("photo-frame" in m.value for m in at.markdown if "<figure" in m.value))
+        at = self.new(page="Learn", learn_country="NGA")
+        self.assertTrue(any('class="photo-frame learn-photo-frame"' in m.value for m in at.markdown))
 
     def test_quiz_this_continent_opens_setup_and_keeps_rounds(self):
         from datetime import date
@@ -1033,8 +1077,7 @@ class ContinentMapTests(unittest.TestCase):
         with mock.patch("core.daily.utc_today", return_value=date(2026, 10, 10)):
             at = self.new()
             self.assertEqual(at.button(key="explore_daily").label, "Start today's challenge")
-            self.assertEqual(at.button(key="explore_daily_side_start").label, "Start today's challenge")
-            at.button(key="explore_daily_side_start").click().run()
+            at.button(key="explore_daily").click().run()
             self.assertEqual(at.session_state["quiz"]["mode"], "daily")
             at.button(key="nav_Explore").click().run()
             self.assertEqual(at.button(key="explore_daily").label, "Continue today's challenge")
@@ -1054,11 +1097,13 @@ class ContinentMapTests(unittest.TestCase):
             at = self.new(app_language=lang, explore_selected="North America")
             self.assertEqual([e.value for e in at.exception], [], lang)
             self.assertEqual(at.button(key="continent_back").label, translate("World map", lang))
-            self.assertEqual(at.button(key="continent_quiz").label, translate("Quiz this continent", lang))
-            self.assertIn(translate("Countries of {continent}", lang, continent="North America"), " ".join(m.value for m in at.markdown))
+            self.assertEqual(at.button(key="continent_quiz").label,
+                             translate("Quiz {name}", lang, name=translate("North America", lang)))
+            heading = next(m.value for m in at.markdown if 'class="continent-title"' in m.value)
+            self.assertIn(translate("North America", lang), heading)
             at.button(key="continent_back").click().run()
             self.assertEqual(at.button(key=self.btn("South America")).label, translate("South America", lang))
-            self.assertEqual(at.button(key="browse_all").label, translate("Browse all countries", lang))
+            self.assertEqual(at.button(key="browse_all").label, translate("All continents", lang))
 
 
 @unittest.skipIf(AppTest is None, "streamlit is not installed")

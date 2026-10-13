@@ -3210,6 +3210,432 @@
    "Todos los continentes",
    "所有大洲",
    "Все континенты"
+  ],
+  "Rewards": [
+   "Prämien",
+   "Recompensas",
+   "奖励",
+   "Награды"
+  ],
+  "Rewards pilot": [
+   "Prämien-Pilotprojekt",
+   "Piloto de recompensas",
+   "奖励试点",
+   "Пилотная программа наград"
+  ],
+  "My Rewards": [
+   "Meine Prämien",
+   "Mis recompensas",
+   "我的奖励",
+   "Мои награды"
+  ],
+  "Learn, explore and earn rewards every month.": [
+   "Lernen, entdecken und jeden Monat Prämien verdienen.",
+   "Aprende, explora y gana recompensas cada mes.",
+   "学习、探索，每月赚取奖励。",
+   "Учитесь, исследуйте и получайте награды каждый месяц."
+  ],
+  "Active days": [
+   "Aktive Tage",
+   "Días activos",
+   "活跃天数",
+   "Активные дни"
+  ],
+  "Quizzes": [
+   "Quiz-Runden",
+   "Cuestionarios",
+   "测验",
+   "Викторины"
+  ],
+  "Countries explored": [
+   "Entdeckte Länder",
+   "Países explorados",
+   "已探索的国家",
+   "Изученные страны"
+  ],
+  "Referrals": [
+   "Einladungen",
+   "Invitaciones",
+   "邀请",
+   "Приглашения"
+  ],
+  "A day with a finished quiz or two countries explored": [
+   "Ein Tag mit einer beendeten Quiz-Runde oder zwei entdeckten Ländern",
+   "Un día con un cuestionario terminado o dos países explorados",
+   "完成一次测验或探索两个国家的一天",
+   "День с завершённой викториной или двумя изученными странами"
+  ],
+  "A finished quiz of 5 or more questions (any score)": [
+   "Eine beendete Quiz-Runde mit mindestens 5 Fragen (jedes Ergebnis)",
+   "Un cuestionario terminado de 5 o más preguntas (cualquier puntuación)",
+   "完成一次至少5道题的测验（不论得分）",
+   "Завершённая викторина из 5 и более вопросов (с любым результатом)"
+  ],
+  "A new country explored this month": [
+   "Ein in diesem Monat neu entdecktes Land",
+   "Un país nuevo explorado este mes",
+   "本月新探索的一个国家",
+   "Новая страна, изученная в этом месяце"
+  ],
+  "A friend whose new account completes the learning steps": [
+   "Eine Freundin oder ein Freund, deren neues Konto die Lernschritte abschließt",
+   "Un amigo cuya cuenta nueva completa los pasos de aprendizaje",
+   "新账户完成学习步骤的好友",
+   "Друг, чей новый аккаунт выполнил учебные шаги"
+  ],
+  "Completed — awaiting review": [
+   "Abgeschlossen – wird geprüft",
+   "Completado: pendiente de revisión",
+   "已完成——等待审核",
+   "Выполнено — ожидает проверки"
+  ],
+  "Approved": [
+   "Genehmigt",
+   "Aprobado",
+   "已批准",
+   "Одобрено"
+  ],
+  "Not eligible": [
+   "Nicht berechtigt",
+   "No válido",
+   "不符合条件",
+   "Не засчитано"
+  ],
+  "Pending review": [
+   "Wird geprüft",
+   "Pendiente de revisión",
+   "待审核",
+   "Ожидает проверки"
+  ],
+  "Paid": [
+   "Ausgezahlt",
+   "Pagado",
+   "已支付",
+   "Выплачено"
+  ],
+  "On hold": [
+   "Zurückgestellt",
+   "En espera",
+   "暂缓",
+   "Приостановлено"
+  ],
+  "Rejected": [
+   "Abgelehnt",
+   "Rechazado",
+   "已拒绝",
+   "Отклонено"
+  ],
+  "Test mode: these records are marked as test records and are never payable.": [
+   "Testmodus: Diese Einträge sind als Test markiert und werden nie ausgezahlt.",
+   "Modo de prueba: estos registros están marcados como prueba y nunca se pagan.",
+   "测试模式：这些记录被标记为测试记录，永远不会支付。",
+   "Тестовый режим: эти записи помечены как тестовые и никогда не выплачиваются."
+  ],
+  "Pilot preview: amounts are shown for information and are not payable until the programme is officially launched.": [
+   "Pilot-Vorschau: Beträge dienen nur zur Information und werden erst nach dem offiziellen Start des Programms ausgezahlt.",
+   "Vista previa del piloto: los importes son informativos y no se pagan hasta el lanzamiento oficial del programa.",
+   "试点预览：金额仅供参考，在项目正式启动前不予支付。",
+   "Предварительный просмотр: суммы показаны для информации и не выплачиваются до официального запуска программы."
+  ],
+  "Preview storage: records last until the app restarts.": [
+   "Vorschau-Speicher: Einträge bleiben bis zum Neustart der App erhalten.",
+   "Almacenamiento de vista previa: los registros duran hasta que se reinicie la app.",
+   "预览存储：记录保留到应用重启为止。",
+   "Временное хранилище: записи сохраняются до перезапуска приложения."
+  ],
+  "up to {amount} a month": [
+   "bis zu {amount} im Monat",
+   "hasta {amount} al mes",
+   "每月最多 {amount}",
+   "до {amount} в месяц"
+  ],
+  "Up to {cap} in total each month, reachable without inviting anyone. Opening the app or signing in never earns rewards.": [
+   "Insgesamt bis zu {cap} pro Monat – auch ohne Einladungen erreichbar. Das Öffnen der App oder das Anmelden bringt nie Prämien.",
+   "Hasta {cap} en total cada mes, alcanzable sin invitar a nadie. Abrir la app o iniciar sesión nunca da recompensas.",
+   "每月合计最多 {cap}，无需邀请他人也能达到。仅打开应用或登录不会获得奖励。",
+   "Всего до {cap} в месяц — можно получить и без приглашений. За открытие приложения или вход награды не начисляются."
+  ],
+  "Join the rewards pilot": [
+   "Am Prämien-Pilotprojekt teilnehmen",
+   "Únete al piloto de recompensas",
+   "加入奖励试点",
+   "Присоединиться к пилотной программе наград"
+  ],
+  "Programme rules": [
+   "Teilnahmebedingungen",
+   "Reglas del programa",
+   "项目规则",
+   "Правила программы"
+  ],
+  "The programme rules are available in English.": [
+   "Die Teilnahmebedingungen gibt es auf Englisch.",
+   "Las reglas del programa están disponibles en inglés.",
+   "项目规则以英文提供。",
+   "Правила программы доступны на английском языке."
+  ],
+  "The rewards programme is paused. Your earned rewards are kept.": [
+   "Das Prämienprogramm ist pausiert. Deine verdienten Prämien bleiben erhalten.",
+   "El programa de recompensas está en pausa. Tus recompensas ganadas se conservan.",
+   "奖励项目已暂停。您已获得的奖励会保留。",
+   "Программа наград приостановлена. Заработанные награды сохраняются."
+  ],
+  "I am 18 years or older.": [
+   "Ich bin mindestens 18 Jahre alt.",
+   "Tengo 18 años o más.",
+   "我已年满18岁。",
+   "Мне 18 лет или больше."
+  ],
+  "I live in Nigeria.": [
+   "Ich wohne in Nigeria.",
+   "Vivo en Nigeria.",
+   "我居住在尼日利亚。",
+   "Я живу в Нигерии."
+  ],
+  "I have read and accept the programme rules.": [
+   "Ich habe die Teilnahmebedingungen gelesen und akzeptiere sie.",
+   "He leído y acepto las reglas del programa.",
+   "我已阅读并接受项目规则。",
+   "Я прочитал(а) и принимаю правила программы."
+  ],
+  "Your answers give provisional eligibility. Before any payment we will ask you to verify them. We do not ask for bank details here.": [
+   "Deine Angaben gelten vorläufig. Vor einer Auszahlung bitten wir dich, sie zu bestätigen. Bankdaten fragen wir hier nicht ab.",
+   "Tus respuestas dan una elegibilidad provisional. Antes de cualquier pago te pediremos verificarlas. Aquí no pedimos datos bancarios.",
+   "您的回答仅代表临时资格。付款前我们会请您进行核实。我们不会在这里索取银行信息。",
+   "Ваши ответы дают предварительное право участия. Перед выплатой мы попросим их подтвердить. Банковские данные здесь не запрашиваются."
+  ],
+  "Join": [
+   "Teilnehmen",
+   "Unirme",
+   "加入",
+   "Присоединиться"
+  ],
+  "Please confirm all three statements to join.": [
+   "Bitte bestätige alle drei Aussagen, um teilzunehmen.",
+   "Confirma las tres afirmaciones para unirte.",
+   "请确认全部三项声明后加入。",
+   "Подтвердите все три утверждения, чтобы присоединиться."
+  ],
+  "Joining did not work. Please try again.": [
+   "Die Teilnahme hat nicht geklappt. Bitte versuche es noch einmal.",
+   "No se pudo completar la inscripción. Inténtalo de nuevo.",
+   "加入失败，请重试。",
+   "Не удалось присоединиться. Попробуйте ещё раз."
+  ],
+  "All places are taken this month. You are on the waiting list (position {n}).": [
+   "In diesem Monat sind alle Plätze vergeben. Du stehst auf der Warteliste (Platz {n}).",
+   "Este mes no quedan plazas. Estás en la lista de espera (posición {n}).",
+   "本月名额已满。您已进入候补名单（第 {n} 位）。",
+   "В этом месяце все места заняты. Вы в списке ожидания (позиция {n})."
+  ],
+  "Welcome to the rewards pilot! Your activity now counts.": [
+   "Willkommen beim Prämien-Pilotprojekt! Deine Aktivität zählt ab jetzt.",
+   "¡Bienvenido al piloto de recompensas! Tu actividad ya cuenta.",
+   "欢迎加入奖励试点！您的活动现在开始计入。",
+   "Добро пожаловать в пилотную программу наград! Теперь ваша активность засчитывается."
+  ],
+  "You are taking part this month.": [
+   "Du nimmst in diesem Monat teil.",
+   "Participas este mes.",
+   "您本月正在参与。",
+   "Вы участвуете в этом месяце."
+  ],
+  "You are on the waiting list (position {n}). You will be added when a place becomes free.": [
+   "Du stehst auf der Warteliste (Platz {n}). Sobald ein Platz frei wird, bist du dabei.",
+   "Estás en la lista de espera (posición {n}). Te añadiremos cuando quede una plaza libre.",
+   "您在候补名单中（第 {n} 位）。有名额空出时会为您加入。",
+   "Вы в списке ожидания (позиция {n}). Вас добавят, когда освободится место."
+  ],
+  "You left the programme this month. Rewards you earned are kept.": [
+   "Du hast das Programm in diesem Monat verlassen. Verdiente Prämien bleiben erhalten.",
+   "Dejaste el programa este mes. Las recompensas ganadas se conservan.",
+   "您本月已退出项目。已获得的奖励会保留。",
+   "Вы покинули программу в этом месяце. Заработанные награды сохраняются."
+  ],
+  "Your place for this month is confirmed with your first quiz or country.": [
+   "Dein Platz für diesen Monat wird mit deiner ersten Quiz-Runde oder deinem ersten Land bestätigt.",
+   "Tu plaza de este mes se confirma con tu primer cuestionario o país.",
+   "您本月的名额将在完成第一次测验或探索第一个国家时确认。",
+   "Место на этот месяц подтверждается вашей первой викториной или страной."
+  ],
+  "This month": [
+   "Dieser Monat",
+   "Este mes",
+   "本月",
+   "Этот месяц"
+  ],
+  "{amount} left to earn this month · Today: {q}/{qmax} quizzes, {c}/{cmax} countries.": [
+   "Noch {amount} in diesem Monat · Heute: Quiz-Runden {q}/{qmax}, Länder {c}/{cmax}.",
+   "Te quedan {amount} por ganar este mes · Hoy: cuestionarios {q}/{qmax}, países {c}/{cmax}.",
+   "本月还可赚取 {amount} · 今天：测验 {q}/{qmax}，国家 {c}/{cmax}。",
+   "Осталось заработать в этом месяце: {amount} · Сегодня: викторины {q}/{qmax}, страны {c}/{cmax}."
+  ],
+  "Finish a quiz of 5 or more questions.": [
+   "Beende eine Quiz-Runde mit mindestens 5 Fragen.",
+   "Termina un cuestionario de 5 o más preguntas.",
+   "完成一次至少5道题的测验。",
+   "Завершите викторину из 5 и более вопросов."
+  ],
+  "Explore a new country: open its neighbours, landmarks or details, or start its quiz.": [
+   "Entdecke ein neues Land: Öffne Nachbarn, Sehenswürdigkeiten oder Details oder starte sein Quiz.",
+   "Explora un país nuevo: abre sus vecinos, lugares emblemáticos o detalles, o empieza su cuestionario.",
+   "探索一个新国家：打开其邻国、地标或详情，或开始它的测验。",
+   "Изучите новую страну: откройте её соседей, достопримечательности или подробности либо начните викторину по ней."
+  ],
+  "Make today an active day with one finished quiz or two countries.": [
+   "Mach heute zu einem aktiven Tag – mit einer beendeten Quiz-Runde oder zwei Ländern.",
+   "Haz de hoy un día activo con un cuestionario terminado o dos países.",
+   "完成一次测验或探索两个国家，让今天成为活跃日。",
+   "Сделайте сегодняшний день активным: одна завершённая викторина или две страны."
+  ],
+  "Invite a friend with your link.": [
+   "Lade mit deinem Link jemanden ein.",
+   "Invita a un amigo con tu enlace.",
+   "用您的链接邀请好友。",
+   "Пригласите друга по своей ссылке."
+  ],
+  "How to earn more": [
+   "So verdienst du mehr",
+   "Cómo ganar más",
+   "如何赚取更多",
+   "Как заработать больше"
+  ],
+  "Earnings and payments by month": [
+   "Prämien und Auszahlungen nach Monat",
+   "Ganancias y pagos por mes",
+   "按月的收入和付款",
+   "Награды и выплаты по месяцам"
+  ],
+  "Leave the programme": [
+   "Programm verlassen",
+   "Dejar el programa",
+   "退出项目",
+   "Выйти из программы"
+  ],
+  "You can leave at any time. Rewards you earned before leaving are kept for review.": [
+   "Du kannst jederzeit gehen. Vorher verdiente Prämien bleiben zur Prüfung erhalten.",
+   "Puedes salir cuando quieras. Las recompensas ganadas antes de salir se conservan para su revisión.",
+   "您可以随时退出。退出前获得的奖励会保留以供审核。",
+   "Вы можете выйти в любой момент. Награды, заработанные до выхода, сохраняются для проверки."
+  ],
+  "Yes, I want to leave the rewards programme.": [
+   "Ja, ich möchte das Prämienprogramm verlassen.",
+   "Sí, quiero dejar el programa de recompensas.",
+   "是的，我要退出奖励项目。",
+   "Да, я хочу выйти из программы наград."
+  ],
+  "You left the rewards programme. You can keep using World Explorer as before.": [
+   "Du hast das Prämienprogramm verlassen. World Explorer kannst du wie bisher nutzen.",
+   "Dejaste el programa de recompensas. Puedes seguir usando World Explorer como antes.",
+   "您已退出奖励项目。您可以像以前一样继续使用 World Explorer。",
+   "Вы вышли из программы наград. Пользоваться World Explorer можно как прежде."
+  ],
+  "That did not work. Please try again.": [
+   "Das hat nicht geklappt. Bitte versuche es noch einmal.",
+   "No ha funcionado. Inténtalo de nuevo.",
+   "操作未成功，请重试。",
+   "Не получилось. Попробуйте ещё раз."
+  ],
+  "Invite friends": [
+   "Freunde einladen",
+   "Invitar a amigos",
+   "邀请好友",
+   "Пригласить друзей"
+  ],
+  "Your personal invitation link (code {code}):": [
+   "Dein persönlicher Einladungslink (Code {code}):",
+   "Tu enlace de invitación personal (código {code}):",
+   "您的专属邀请链接（邀请码 {code}）：",
+   "Ваша личная ссылка-приглашение (код {code}):"
+  ],
+  "Share on WhatsApp": [
+   "Über WhatsApp teilen",
+   "Compartir en WhatsApp",
+   "分享到 WhatsApp",
+   "Поделиться в WhatsApp"
+  ],
+  "Join me on World Explorer and learn about every country:": [
+   "Entdecke mit mir World Explorer und lerne jedes Land kennen:",
+   "Únete a mí en World Explorer y aprende sobre todos los países:",
+   "和我一起用 World Explorer 了解世界上的每个国家：",
+   "Присоединяйтесь ко мне в World Explorer и узнайте о каждой стране:"
+  ],
+  "A friend counts when their new account has {d} active days, {q} quizzes and {c} countries explored. Existing accounts and your own account do not count.": [
+   "Eine Einladung zählt, wenn das neue Konto {d} aktive Tage, {q} Quiz-Runden und {c} entdeckte Länder hat. Bestehende Konten und dein eigenes Konto zählen nicht.",
+   "Un amigo cuenta cuando su cuenta nueva tiene {d} días activos, {q} cuestionarios y {c} países explorados. Las cuentas existentes y la tuya no cuentan.",
+   "好友的新账户达到 {d} 个活跃日、{q} 次测验和探索 {c} 个国家后才计入。已有账户和您自己的账户不计入。",
+   "Приглашение засчитывается, когда в новом аккаунте друга есть активные дни: {d}, викторины: {q} и изученные страны: {c}. Существующие аккаунты и ваш собственный не засчитываются."
+  ],
+  "Link visits": [
+   "Link-Aufrufe",
+   "Visitas al enlace",
+   "链接访问",
+   "Переходы по ссылке"
+  ],
+  "Friends joined": [
+   "Beigetretene Freunde",
+   "Amigos registrados",
+   "已加入的好友",
+   "Присоединились"
+  ],
+  "Completed": [
+   "Abgeschlossen",
+   "Completadas",
+   "已完成",
+   "Выполнено"
+  ],
+  "Earned from invitations": [
+   "Durch Einladungen verdient",
+   "Ganado con invitaciones",
+   "邀请所得",
+   "Заработано на приглашениях"
+  ],
+  "Invitation history": [
+   "Einladungsverlauf",
+   "Historial de invitaciones",
+   "邀请记录",
+   "История приглашений"
+  ],
+  "Friend {n}": [
+   "Freund/in {n}",
+   "Amigo {n}",
+   "好友 {n}",
+   "Друг {n}"
+  ],
+  "{d}/{dn} days, {q}/{qn} quizzes, {c}/{cn} countries": [
+   "Tage {d}/{dn}, Quiz-Runden {q}/{qn}, Länder {c}/{cn}",
+   "días {d}/{dn}, cuestionarios {q}/{qn}, países {c}/{cn}",
+   "活跃日 {d}/{dn}，测验 {q}/{qn}，国家 {c}/{cn}",
+   "дни {d}/{dn}, викторины {q}/{qn}, страны {c}/{cn}"
+  ],
+  "You joined through a friend's invitation. Your learning activity helps their invitation count: {d}/{dn} days, {q}/{qn} quizzes, {c}/{cn} countries.": [
+   "Du bist über eine Einladung dabei. Deine Lernaktivität lässt diese Einladung zählen: Tage {d}/{dn}, Quiz-Runden {q}/{qn}, Länder {c}/{cn}.",
+   "Te uniste con la invitación de un amigo. Tu actividad de aprendizaje ayuda a que su invitación cuente: días {d}/{dn}, cuestionarios {q}/{qn}, países {c}/{cn}.",
+   "您是通过好友邀请加入的。您的学习活动会让该邀请计入：活跃日 {d}/{dn}，测验 {q}/{qn}，国家 {c}/{cn}。",
+   "Вы присоединились по приглашению друга. Ваша учебная активность помогает засчитать его приглашение: дни {d}/{dn}, викторины {q}/{qn}, страны {c}/{cn}."
+  ],
+  "This page is not available.": [
+   "Diese Seite ist nicht verfügbar.",
+   "Esta página no está disponible.",
+   "此页面不可用。",
+   "Эта страница недоступна."
+  ],
+  "Sign in with Google to join the rewards pilot and get your invitation link.": [
+   "Melde dich mit Google an, um am Prämien-Pilotprojekt teilzunehmen und deinen Einladungslink zu erhalten.",
+   "Inicia sesión con Google para unirte al piloto de recompensas y obtener tu enlace de invitación.",
+   "使用 Google 登录即可加入奖励试点并获取您的邀请链接。",
+   "Войдите через Google, чтобы присоединиться к пилотной программе наград и получить ссылку-приглашение."
+  ],
+  "Rewards are not available right now. Please try again later.": [
+   "Prämien sind gerade nicht verfügbar. Bitte versuche es später noch einmal.",
+   "Las recompensas no están disponibles ahora. Inténtalo más tarde.",
+   "奖励功能暂时不可用，请稍后再试。",
+   "Награды сейчас недоступны. Попробуйте позже."
+  ],
+  "Your participation is on hold. Please use “Send feedback” if you think this is a mistake.": [
+   "Deine Teilnahme ist zurückgestellt. Wenn du einen Fehler vermutest, nutze bitte „Feedback senden“.",
+   "Tu participación está en espera. Usa «Enviar comentarios» si crees que es un error.",
+   "您的参与已暂缓。如果您认为有误，请使用“发送反馈”。",
+   "Ваше участие приостановлено. Если вы считаете, что это ошибка, воспользуйтесь кнопкой «Отправить отзыв»."
   ]
  }
 }

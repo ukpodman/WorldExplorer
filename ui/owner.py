@@ -49,7 +49,16 @@ def render() -> None:
         # Same message whether the page exists or not; no data is loaded.
         st.info("This page is not available.")
         return
+    from . import owner_rewards  # local import: only owners ever load the rewards dashboard
     st.title("Pilot dashboard")
+    analytics_tab, rewards_tab = st.tabs(["Pilot analytics", "💰 Rewards & Referral Management"])
+    with analytics_tab:
+        _pilot_analytics()
+    with rewards_tab:
+        owner_rewards.render()
+
+
+def _pilot_analytics() -> None:
     st.caption("Private to the accounts listed in secrets [analytics] owner_emails. All days are UTC calendar days "
                "(the Daily Challenge day). Only visitors who allowed usage statistics are measured.")
     if not analytics.enabled():

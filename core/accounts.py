@@ -273,6 +273,7 @@ def restore_profile(now: float | None = None) -> None:
                        "existing": bool(rows),
                        "points": merged["points"] - base["points"], "rounds": merged["rounds_finished"] - base["rounds_finished"]}
     st.session_state.update(saved)
+    st.session_state.profile_was_new = not rows  # no saved profile yet: a new registration (rewards referrals)
     st.session_state.account_loaded = who["profile_id"]
     st.session_state.profile_save_error = False
     st.session_state.profile_saved_fingerprint = _fingerprint() if rows else ""

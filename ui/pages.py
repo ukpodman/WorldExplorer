@@ -17,7 +17,7 @@ from core.data import (AREAS, COLLECTIONS, WORLD, COUNTRIES, DEFAULT_COLLECTION,
                        get_countries, get_country, load_political_records)
 from core.quiz import CATEGORIES, DIFFICULTIES, QUESTION_COUNTS, currency_label
 
-from . import owner, sound, state, world_map
+from . import owner, rewards_hooks, rewards_page, sound, state, world_map
 from .components import e, hero, html, photo_credits, status_chip
 from .state import country_formatter, country_label, formatter, parts, t
 
@@ -194,27 +194,30 @@ def _country_detail(c: dict, selection: str) -> None:
          + _fact("area", "Total area", f"{c['area_km2']:,.0f} km²" if c["area_km2"] else none) + "</div>")
     allowed = {x["id"] for x in get_countries(collection=st.session_state.scope_collection)}
     shown, hidden = learn_engine.split_neighbours(c, allowed)
-    with st.expander(t("Neighbours") + (f" ({len(shown)})" if shown else ""), icon=":material/group:", key="detail_neighbours"):
+    with st.expander(t("Neighbours") + (f" ({len(shown)})" if shown else ""), icon=":material/group:", key="detail_neighbours",
+                     **rewards_hooks.expander_hook("detail_neighbours", c["id"])):
         if not c["borders"]:
             st.caption(t("{name} has no land borders with other places in this dataset.", name=c["name"]))
         if shown:
             with st.container(key="detail_neighbour_list", horizontal=True):
                 for n in shown:
-                    st.button(t(n["name"]), key=f"nbx_{n['id']}", on_click=state.explore_pick, args=(n["id"],),
+                    st.button(t(n["name"]), key=f"nbx_{n['id']}", on_click=rewards_hooks.explored,
+                              args=(c["id"], state.explore_pick, n["id"]),
                               help=t("Discover {name}", name=n["name"]))
         if hidden:
             st.caption(t("Not shown with your current places setting: {names}. To include territories, choose them in ☰ Settings → Places to include.",
                          names=", ".join(t(n["name"]) for n in hidden)))
     with st.expander(t("Landmarks") + (f" ({len(c['landmarks'])})" if c["landmarks"] else ""), icon=":material/landscape:",
-                     key="detail_landmarks"):
+                     key="detail_landmarks", **rewards_hooks.expander_hook("detail_landmarks", c["id"])):
         if c["landmarks"]:
             st.markdown(" · ".join(f"[{s['name']}]({s['source']})" for s in c["landmarks"]))
         else:
             st.caption(t("Not included yet"))
     st.button(t("Quiz {name}", name=c["name"]), key="detail_quiz", type="primary", icon=":material/help:", width="stretch",
-              on_click=state.quiz_on_country, args=(c["id"],), help=t("Opens the quiz setup with this country selected."))
+              on_click=rewards_hooks.explored, args=(c["id"], state.quiz_on_country, c["id"]),
+              help=t("Opens the quiz setup with this country selected."))
     st.button(t("Learn about {name}", name=c["name"]), key="detail_learn", type="tertiary", icon=":material/menu_book:",
-              on_click=state.learn, args=(c["id"],))
+              on_click=rewards_hooks.explored, args=(c["id"], state.learn, c["id"]))
 
 
 def _selection_overview(selection: str) -> None:
@@ -409,7 +412,8 @@ def _neighbour_buttons(c: dict) -> None:
             html(f"<style>{rules}</style>")
             with st.container(key="learn_neighbours", horizontal=True):
                 for n in shown:
-                    st.button(t(n["name"]), key=f"nb_{n['id']}", on_click=state.learn, args=(n["id"],),
+                    st.button(t(n["name"]), key=f"nb_{n['id']}", on_click=rewards_hooks.explored,
+                              args=(c["id"], state.learn, n["id"]),
                               help=t("Learn about {name}", name=n["name"]))
         if hidden:
             st.caption(t("Not shown with your current places setting: {names}. To include territories, choose them in ☰ Settings → Places to include.",
@@ -417,7 +421,7 @@ def _neighbour_buttons(c: dict) -> None:
 
 
 def _size_comparison(c: dict) -> None:
-    with st.expander(t("Compare country size"), key="compare_size"):
+    with st.expander(t("Compare country size"), key="compare_size", **rewards_hooks.expander_hook("compare_size", c["id"])):
         options = [x["id"] for x in COUNTRIES if x["area_km2"]]
         if "size_reference_select" not in st.session_state:  # restore the remembered choice (session or profile)
             saved = st.session_state.get("size_reference")
@@ -529,7 +533,7 @@ def learn() -> None:
                 st.caption(t(c["status_note"]))
             with st.container(key="learn_quiz_action"):
                 st.button(t("Quiz me on this country"), key="learn_quiz_me", type="primary",
-                          on_click=state.quiz_on_country, args=(c["id"],),
+                          on_click=rewards_hooks.explored, args=(c["id"], state.quiz_on_country, c["id"]),
                           help=t("Opens the quiz setup with this country selected."))
         with art:
             _learn_media(c)
@@ -555,7 +559,7 @@ def learn() -> None:
         _open_sections_on_desktop(c["id"])
         with st.container(key="learn_meta_desktop"):
             _source_lines(c, leader)
-        with st.expander(t("More details"), key="learn_more"):
+        with st.expander(t("More details"), key="learn_more", **rewards_hooks.expander_hook("learn_more", c["id"])):
             details = [("Official name", c.get("official_name") or none), ("Country code", c["id"]),
                        ("Calling codes and internet domains", codes)]
             html('<div class="more-details">' + "".join(f'<div><span>{e(k)}</span><b>{escape(v)}</b></div>' for k, v in details) + "</div>")
@@ -1101,4 +1105,5 @@ def badges() -> None:
             _award_grid(rest)
 
 
-ROUTES = {"Explore": explore, "Learn": learn, "Quiz": quiz, "Badges": badges, "Owner": owner.render}
+ROUTES = {"Explore": explore, "Learn": learn, "Quiz": quiz, "Badges": badges, "Owner": owner.render,
+          "Rewards": rewards_page.render}

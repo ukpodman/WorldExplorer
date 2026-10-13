@@ -62,7 +62,9 @@ core/
   daily.py                 Daily Challenge, day streak and "Practise mistakes" (pure Python)
   analytics.py             pilot measurement: consent, pseudonymous ids, deduplicated events, feedback storage
   metrics.py               pilot metric definitions and calculations for the owner dashboard (pure Python)
-  cookies.py               the four small first-party cookies (read on the server, written by a tiny script)
+  cookies.py               the small first-party cookies (read on the server, written by a tiny script)
+  rewards.py               rewards pilot rules: amounts, caps, Nigeria days, referrals, budget, fraud signals
+  rewards_store.py         rewards storage: Supabase REST (server only) and an in-memory preview store
   facts.py                 the sourced "Did you know?" fact after each answer
   learn.py                 Learn helpers: country stepping, neighbours by collection, size comparison
 ui/
@@ -71,6 +73,9 @@ ui/
   pages.py                 Explore, Learn, Quiz, Badges
   world_map.py             interactive continent map on Explore (custom component, bundled outlines)
   owner.py                 private owner dashboard (server-side owner check)
+  owner_rewards.py         owner "💰 Rewards & Referral Management" tab
+  rewards_page.py          💰 My Rewards page (join, month, payments, invitation link)
+  rewards_hooks.py         rewards switches, referral capture and the small activity hooks
   sound.py                 optional generated sound effects
 data/
   countries.json           244 places (generated; do not edit by hand)
@@ -82,7 +87,8 @@ assets/
   styles.css               all styling (palette and accessibility notes at the top)
   flags.json               244 flag images (WebP, base64) in one file
   world_map.json           continent outlines for the Explore map (Natural Earth, public domain; generated)
-tests/                     test_core.py (logic) and test_app.py (real Streamlit AppTest)
+supabase/rewards_schema.sql  rewards tables, rules, functions and access (run once in Supabase; see REWARDS_SETUP.md)
+tests/                     test_core.py (logic), test_app.py (real Streamlit AppTest), test_rewards*.py
 tools/                     rebuild data/countries.json, flags.json, world_map.json and COVERAGE.md
 ```
 
@@ -94,6 +100,8 @@ python -m unittest discover tests
 `test_core.py` needs only Python. `test_app.py`, `test_analytics.py` (measurement, owner access, guest → account)
 and `test_reliability.py` (answer timing, signed-in profiles, save/load failures) run the real app with Streamlit's
 AppTest against simulated Google and Supabase stand-ins; they are skipped if Streamlit is not installed.
+`test_rewards.py` also runs the rewards SQL on a throwaway local PostgreSQL when one is installed (skipped otherwise);
+`test_rewards_app.py` drives the rewards pages with simulated Google identities.
 
 ## Updating data
 
@@ -178,27 +186,39 @@ accounts). After uploading:
    `records` entry next to `points`, `rounds_finished` and `stats`. Older rows without it keep working.
 5. If the footer says "Saved profile not reachable yet", nothing is written until the profile has loaded.
 
-## Explore: map and country browser in one space (2026-10-12)
+## Referral & monthly rewards pilot (2026-10-13) — switched off
 
-* **Map view:** the header, navigation and a compact summary of your real points, day streak and earned badges; the
-  world map as the main content (Natural Earth outlines with small continent emblems), the Daily Challenge beside it on
-  desktop and above it on phones, six accessible continent buttons and **Browse all countries**. No country grid under
-  the map.
-* **Choosing a continent** on the map or with its button replaces the map with that continent's country browser in the
-  same space: **← World map**, the heading, one compact filter row (search, status when territories are included,
-  **Places to include**), country cards in a responsive grid (columns follow the space; a list on phones) and pages.
-  Beside it on desktop: the Daily Challenge, the count, your real progress towards the continent's badge and
-  **Quiz this continent**. On phones the page simply flows: back control and heading, a compact summary with the quiz
-  action and today's challenge, then the filters and cards. No sheets, no fixed heights.
-* **Browse all countries** opens the same browser without a continent; "Quiz all countries" opens quiz setup for the
-  whole world.
-* **One selection** drives heading, list, count and quiz action. Switching continents clears the search, resets the
-  status filter and page, and keeps places to include. After opening a country in Learn, Explore comes back to the
-  same continent, search, status and page. "← World map" (or Escape) returns to the map and clears the highlight.
-* **Places to include** in the filter row is the same preference as in Settings. The exploration area stays in Settings;
-  if it leaves out the continent you open, it widens to all countries under the usual rules and the browser says so.
-* **Quiz this continent** opens quiz setup with that continent; an unfinished round is kept exactly as with
-  "Quiz me on this country" and nothing starts on its own.
+* Built in but **off**: with the default secrets nobody sees it and nothing is recorded. Setup, launch steps,
+  earning rules and what still needs live checking are in **REWARDS_SETUP.md**.
+* **People (when switched on):** a compact 💰 button beside ☰ (and Settings → 💰 Rewards) opens My Rewards. Joining
+  is optional (18+, lives in Nigeria, accepts the rules; self-declared = provisional until verified). The page shows
+  this month's ₦ / ₦1,000 with the four categories, remaining amount, how to earn more, payment status by month, a
+  permanent invitation link with copy and WhatsApp share, and invitation history.
+* **Owner:** Owner dashboard → "💰 Rewards & Referral Management": user, referral, financial and fraud figures; budget
+  and waiting list; participant search with full activity history; manual payments (approve → paid, with date,
+  reference, remarks); referral validation; settings and pause; audit log; CSV exports.
+* **Small hooks only:** a finished quiz (state.next_question) and meaningful country interactions on Explore and
+  Learn call the rewards hooks, which return at once when the programme does not apply. Quiz, exploration, badges,
+  sign-in and saved progress behave as before. A `?ref=CODE` link is kept through Google sign-in with the `we_ref`
+  cookie.
+* Server-side only: amounts are decided by the database; the server key never reaches the browser.
+
+## Explore: one exploration box (2026-10-12)
+
+* **Top bar:** your real day streak, points and badges, and the Daily Challenge (Start / Continue / Replay).
+* **World map:** the map fills the box (ocean names, continent emblems), with pills underneath: "All continents" and the
+  six continents. Tapping a continent on the map or its pill does the same.
+* **A continent:** the map is replaced in the same box. Left: "← World map | Africa" with the count, "Search Africa…",
+  a filter icon (status and places to include), the country list (flag, name, capital, ›; the whole row is the button)
+  and "‹ Previous 1/6 Next ›". Right: the chosen country with its flag, region, photo (where one is bundled), capital,
+  currency, languages, area, Neighbours and Landmarks, and "Quiz Nigeria" (plus "Learn about Nigeria"). Before a
+  country is chosen, the right side shows the continent's real badge progress and "Quiz Africa".
+* **Phones:** the same journey, one panel at a time in the box: map → list → country; "← Countries of Africa" returns
+  to the list with the country still highlighted; "← World map" returns to the map.
+* Switching continents clears the search, status filter, page and chosen country; places to include are kept. After
+  Learn or a quiz, Explore comes back to the same continent, search, page and country. Places to include is the same
+  preference as in Settings; the exploration area stays in Settings and widens (with a notice) if it would hide the
+  continent you open. Nothing here starts a quiz or touches an unfinished round.
 * **Map data:** Natural Earth 1:50m country outlines (public domain), simplified and bundled in
   `assets/world_map.json`; colours follow the continents in `data/countries.json` (Russia with Europe, Türkiye and
   Kazakhstan with Asia). The outlines (about 100 kB) are sent once per browser session.

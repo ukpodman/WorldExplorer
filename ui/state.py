@@ -359,6 +359,8 @@ def next_question(serial: int, index: int) -> None:
             from datetime import date as _date
             daily.record_daily(st.session_state.daily, _date.fromisoformat(quiz["day"]), quiz["correct"],
                                len(quiz["questions"]), quiz["score"])
+        from . import rewards_hooks  # local import: rewards_hooks imports this package
+        rewards_hooks.note_quiz(quiz)  # does nothing unless this person takes part in the rewards programme
 
 
 QUIZ_FILTER_DEFAULTS = {"filter_category": "Mixed", "filter_difficulty": "Medium", "filter_count": 10,

@@ -15,7 +15,7 @@ st.set_page_config(page_title="World Explorer", page_icon="🌍", layout="wide")
 
 from core import accounts, analytics, cookies  # noqa: E402  (set_page_config must run first)
 from core.data import COUNTRIES  # noqa: E402
-from ui import state  # noqa: E402
+from ui import rewards_hooks, state  # noqa: E402
 from ui.components import consent_bar, feedback_button, header, inject_styles  # noqa: E402
 from ui.pages import ROUTES  # noqa: E402
 
@@ -31,7 +31,9 @@ FOOTER = {
 def main() -> None:
     state.init()
     analytics.init_session()
+    rewards_hooks.capture_referral()  # keeps a ?ref= invitation through Google sign-in
     accounts.restore_profile()
+    rewards_hooks.after_sign_in()  # once per session; does nothing while the programme is off
     analytics.log_visit()  # once per session; only with the visitor's permission
     state.apply_pending_preferences()
     inject_styles()

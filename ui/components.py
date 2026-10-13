@@ -16,7 +16,7 @@ from core.data import COLLECTIONS, CONTINENTS, COUNTRIES, PHOTOS, STATES, STATUS
 from core.i18n import LANGUAGES
 from core.quiz import CATEGORIES
 
-from . import sound
+from . import rewards_hooks, sound
 from .state import PAGES, country_formatter, formatter, navigate, open_settings, scope_label, t
 
 STYLES = Path(__file__).resolve().parent.parent / "assets" / "styles.css"
@@ -136,7 +136,8 @@ def status_chip(country: dict) -> str:
 
 def header() -> None:
     with st.container(key="app_header"):
-        brand, nav, menu = st.columns([1.1, 1.6, .22], vertical_alignment="center")
+        show_rewards = rewards_hooks.visible()  # only when the programme is on, or for owners/testers
+        brand, nav, menu = st.columns([1.1, 1.6, .44 if show_rewards else .22], vertical_alignment="center")
         with brand, st.container(key="header_brand"):
             html('<div class="brand"><div class="brand-symbol" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 28 28" fill="none" '
                  'stroke="currentColor" stroke-width="1.4"><circle cx="14" cy="14" r="11"/>'
@@ -148,9 +149,18 @@ def header() -> None:
                 column.button(t(page), key=f"nav_{page}", width="stretch",
                               type="primary" if st.session_state.page == page else "secondary",
                               on_click=navigate, args=(page,))
-        with menu, st.container(key="header_menu"):
-            # Shows a ☰ drawn by CSS; its accessible name is the (visually hidden) translated word "Settings".
-            st.button(t("Settings"), key="settings_menu", help=t("Settings"), width="stretch", on_click=open_settings)
+        with menu:
+            tools = st.container(key="header_tools", horizontal=True, gap="small") if show_rewards else st.container()
+            with tools:
+                if show_rewards:
+                    # A compact 💰 drawn by CSS; its accessible name is the (visually hidden) word "Rewards".
+                    st.button(t("Rewards"), key="rewards_menu", help=t("Rewards"), width="stretch",
+                              type="primary" if st.session_state.page == "Rewards" else "secondary",
+                              on_click=navigate, args=("Rewards",))
+                with st.container(key="header_menu"):
+                    # Shows a ☰ drawn by CSS; its accessible name is the (visually hidden) translated word "Settings".
+                    st.button(t("Settings"), key="settings_menu", help=t("Settings"), width="stretch",
+                              on_click=open_settings)
         photo = st.session_state.profile_photo
         avatar = (f'<img class="header-avatar" src="{escape(photo, quote=True)}" alt="">' if photo
                   else '<span class="header-avatar default-avatar" aria-hidden="true">●</span>')
@@ -386,9 +396,22 @@ def _sound_controls() -> tuple[bool, int]:
     return on, volume
 
 
+def _rewards_entry() -> None:
+    if not rewards_hooks.visible():
+        return
+    if st.button("💰 " + t("Rewards"), key="settings_rewards", width="stretch"):
+        navigate("Rewards")
+        st.rerun()
+    if analytics.is_owner() and not analytics.enabled():  # with analytics on, the owner button is under Privacy
+        if st.button("Owner dashboard", key="owner_rewards_open", width="stretch"):
+            navigate("Owner")
+            st.rerun()
+
+
 def _settings_body() -> None:
     st.subheader(t("Profile"))
     _account_controls()
+    _rewards_entry()
     name = st.text_input(t("Display name"), value=st.session_state.profile_name, max_chars=40, key="preferences_name")
     lang = st.selectbox(t("App language"), LANGUAGES, index=LANGUAGES.index(st.session_state.app_language),
                         key="preferences_language")

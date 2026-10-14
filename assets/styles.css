@@ -107,11 +107,11 @@
 .st-key-navigation button[kind="primary"] p { color:#fff !important; }
 .st-key-navigation button[kind="primary"]:hover { background:var(--ink-2) !important; }
 .st-key-navigation button[kind="secondary"]:hover { background:var(--teal-soft) !important; }
-.st-key-settings_menu button p { position:absolute !important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; margin:-1px; }
-.st-key-settings_menu button::before { content:""; display:block; flex-shrink:0; width:26px; height:26px; background-color:currentColor;
+.st-key-header_menu .st-key-settings_menu button p { position:absolute !important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; margin:-1px; }
+.st-key-header_menu .st-key-settings_menu button::before { content:""; display:block; flex-shrink:0; width:26px; height:26px; background-color:currentColor;
   -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z'/%3E%3C/svg%3E") center / contain no-repeat;
   mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z'/%3E%3C/svg%3E") center / contain no-repeat; }
-.st-key-settings_menu button { color:var(--navy) !important; }
+.st-key-header_menu .st-key-settings_menu button { color:var(--navy) !important; }
 .profile-preview { width:76px; height:76px; object-fit:cover; border-radius:50%; border:3px solid var(--line); }
 
 /* ---------- hero ---------- */
@@ -1064,48 +1064,124 @@ html[data-we-theme="dark"] .stApp :is(button:focus-visible, a:focus-visible, inp
 .st-key-rw_invite [data-testid="stCode"] pre { white-space:pre-wrap !important; word-break:break-all; }
 @media (max-width:700px) { .owner-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); } .owner-tile b { font-size:1.25rem; } }
 
-/* ---------- header: account bar (sign-in, or photo + name + 💰 Rewards) and ☰ ---------- */
-/* Row 1: brand + navigation. Row 2: account bar and ☰, right-aligned. Scoped to the header row only. */
-.st-key-app_header [data-testid="stHorizontalBlock"]:has(.st-key-header_account) { flex-wrap:wrap !important; column-gap:12px !important; row-gap:2px !important; }
-.st-key-app_header [data-testid="stColumn"]:has(.st-key-header_brand) { flex:0 1 auto !important; width:auto !important; min-width:0 !important; order:1; }
-.st-key-app_header [data-testid="stColumn"]:has(.st-key-navigation) { flex:1 1 0 !important; width:auto !important; min-width:0 !important; order:2; }
-.st-key-app_header [data-testid="stColumn"]:has(.st-key-header_account) { flex:1 1 calc(100% - 64px) !important; width:auto !important; min-width:0 !important; order:3; }
-.st-key-app_header [data-testid="stColumn"]:has(.st-key-header_menu) { flex:0 0 44px !important; width:44px !important; min-width:44px !important; order:4; }
-.st-key-header_account { justify-content:flex-end !important; flex-wrap:nowrap !important; min-width:0; }
-.st-key-header_account [data-testid="stElementContainer"]:has(.account-chip) { flex:0 1 auto !important; min-width:0 !important; width:auto !important; }
-.st-key-header_account [data-testid="stElementContainer"]:has(button) { flex:0 0 auto !important; width:auto !important; }
-.account-chip { display:flex; align-items:center; gap:8px; min-width:0; color:var(--navy); }
-.account-chip .account-name { font-weight:650; font-size:.92rem; color:var(--navy); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:26ch; }
-.account-avatar { width:32px; height:32px; flex:0 0 32px; border-radius:50%; object-fit:cover; border:2px solid var(--line); }
-.account-initial { display:grid; place-items:center; background:var(--teal-soft); color:var(--teal-dark); font-weight:700; font-size:.95rem; }
-.st-key-header_account [data-testid="stMarkdownContainer"] p { margin:0; }
-.st-key-rewards_menu button { min-height:36px !important; padding:.15rem .85rem !important; border-radius:999px !important;
-  background:var(--gold-soft) !important; border:1px solid var(--chip-gold-border) !important; }
-.st-key-rewards_menu button p { color:var(--gold-deep) !important; font-weight:650 !important; font-size:.9rem !important; white-space:nowrap; }
-.st-key-rewards_menu button:hover { border-color:var(--gold) !important; }
-.st-key-rewards_menu button[kind="primary"] { background:var(--gold) !important; border-color:var(--gold) !important; }
-.st-key-rewards_menu button[kind="primary"] p { color:#fff !important; }
-:is(.st-key-header_signin, .st-key-header_signin_go) button { min-height:40px !important; border-radius:999px !important; padding:.2rem 1.1rem !important;
-  background:var(--ink) !important; border:1px solid var(--ink) !important; }
-:is(.st-key-header_signin, .st-key-header_signin_go) button p { color:#fff !important; font-weight:650 !important; white-space:nowrap; }
-:is(.st-key-header_signin, .st-key-header_signin_go) button:hover { background:var(--ink-2) !important; }
-:is(.st-key-header_signin, .st-key-header_signin_go) button:disabled { background:var(--surface-3) !important; border:1px dashed var(--disabled-border) !important; }
-:is(.st-key-header_signin, .st-key-header_signin_go) button:disabled p { color:var(--slate) !important; }
+/* ---------- header: navy band (Option A) ---------- */
+:root { --band:#17283B; --band-text:#FFFFFF; --band-muted:#C8D3DE; --band-note:#A9B7C4; --band-line:rgba(255,255,255,.28); }
+html[data-we-theme="dark"] { --band:#0A1520; --band-muted:#B9C6D2; }
+@media (prefers-color-scheme:dark) { html:not([data-we-theme]) { --band:#0A1520; --band-muted:#B9C6D2; } }
+/* Streamlit's own top toolbar joins the band, so the top of the page is one navy bar. */
+.stApp [data-testid="stHeader"] { background:var(--band) !important; height:var(--toolbar-h) !important; min-height:0 !important; }
+.stApp [data-testid="stHeader"] [data-testid="stToolbar"] { height:100% !important; min-height:0 !important; }
+/* The toolbar only holds Streamlit's ⋮ menu: a slimmer strip (its button is 44px tall) brings the band up. */
+:root { --toolbar-h:2.75rem; }
+/* The stylesheet and theme script above the header are invisible; drop their layout gaps (16px each). */
+.block-container [data-testid="stVerticalBlock"] > [data-testid="stElementContainer"]:has(~ [data-testid="stLayoutWrapper"] .st-key-app_header):is(:has(> .stMarkdown [data-testid="stMarkdownContainer"] > style:only-child), :has(> [data-testid="stHtml"] > script:first-child)) { display:none !important; }
+.stApp [data-testid="stHeader"] :is(button, a) { color:#FFFFFF !important; }
+.stApp [data-testid="stHeader"] svg { fill:currentColor; }
+.stApp .block-container { padding-top:var(--toolbar-h) !important; }
+.st-key-app_header { background:var(--band); box-shadow:0 0 0 100vmax var(--band); clip-path:inset(-100vmax -100vmax 0 -100vmax); padding:4px 0 12px; margin:0; }
+.st-key-app_header .brand-symbol { background:transparent; border-color:rgba(201,160,82,.6); color:#E7CF9C; }
+.st-key-app_header .brand-name { color:var(--band-text); }
+.st-key-app_header .brand-note { color:var(--band-note); }
+.st-key-app_header .st-key-navigation button { background:transparent !important; border:1px solid transparent !important; }
+.st-key-app_header .st-key-navigation button p { color:var(--band-muted) !important; font-weight:600 !important; }
+.st-key-app_header .st-key-navigation button:hover { background:rgba(255,255,255,.08) !important; }
+.st-key-app_header .st-key-navigation button[kind="primary"] { background:rgba(255,255,255,.10) !important; border-color:transparent !important; box-shadow:inset 0 -3px 0 #C9A052 !important; }
+.st-key-app_header .st-key-navigation button[kind="primary"] p { color:#FFFFFF !important; }
+/* Desktop and tablet: one row. */
+.st-key-app_header [data-testid="stHorizontalBlock"]:has(.st-key-header_account) { flex-wrap:nowrap !important; column-gap:16px !important; }
+.st-key-app_header [data-testid="stColumn"]:has(.st-key-header_brand) { flex:0 1 auto !important; width:auto !important; min-width:0 !important; }
+.st-key-app_header [data-testid="stColumn"]:has(.st-key-navigation) { flex:1 1 auto !important; width:auto !important; min-width:0 !important; }
+.st-key-app_header [data-testid="stColumn"]:has(.st-key-header_account) { flex:0 1 auto !important; width:auto !important; min-width:0 !important; }
+[data-testid="stPopoverBody"]:has(.account-card) [data-testid="stVerticalBlock"] { gap:.15rem !important; }
+.st-key-header_account { justify-content:flex-end !important; flex-wrap:nowrap !important; min-width:0; gap:10px !important; }
+.st-key-header_account > [data-testid="stElementContainer"], .st-key-header_account > div { width:auto !important; flex:0 0 auto; }
+.st-key-header_account [data-testid="stElementContainer"]:has(style) { display:none; }
+/* 💰 Rewards: gold-outlined pill. */
+.st-key-rewards_menu button { min-height:40px !important; padding:.1rem 1rem !important; border-radius:999px !important;
+  background:rgba(201,160,82,.16) !important; border:1px solid rgba(201,160,82,.75) !important; }
+.st-key-rewards_menu button p { color:#F3E2B8 !important; font-weight:650 !important; font-size:.9rem !important; white-space:nowrap; }
+.st-key-rewards_menu button:hover { background:rgba(201,160,82,.28) !important; }
+.st-key-rewards_menu button[kind="primary"] { background:#C9A052 !important; border-color:#C9A052 !important; }
+.st-key-rewards_menu button[kind="primary"] p { color:#17283B !important; }
+/* Account menu button: photo + name + chevron. */
+.st-key-account_menu button { min-height:44px !important; max-width:260px; border-radius:999px !important; padding:4px 12px 4px 46px !important;
+  background:var(--avatar) 5px center / 34px 34px no-repeat, rgba(255,255,255,.12) !important; border:1px solid var(--band-line) !important; color:#FFFFFF !important; }
+.st-key-account_menu button:hover { background:var(--avatar) 5px center / 34px 34px no-repeat, rgba(255,255,255,.2) !important; }
+.st-key-account_menu button p { color:#FFFFFF !important; font-weight:650 !important; font-size:.92rem !important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.st-key-account_menu button [data-testid="stIconMaterial"] { color:#FFFFFF !important; }
+.st-key-account_menu button > div { min-width:0; }
+.account-card { display:flex; align-items:center; gap:12px; padding:4px 2px 10px; border-bottom:1px solid var(--surface-3); margin-bottom:4px; min-width:240px; }
+.account-card-avatar { width:44px; height:44px; border-radius:50%; object-fit:cover; flex:0 0 44px; }
+.account-card-text { min-width:0; }
+.account-card-name { font-weight:700; font-size:1rem; color:var(--navy); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.account-card-email { font-size:.82rem; color:var(--slate); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.account-card-status { font-size:.78rem; color:var(--ok); margin-top:2px; }
+:is(.st-key-menu_rewards, .st-key-settings_menu, .st-key-menu_feedback, .st-key-menu_logout) button { justify-content:flex-start !important; min-height:42px; padding:0 .5rem !important; width:100%; }
+:is(.st-key-menu_rewards, .st-key-settings_menu, .st-key-menu_feedback, .st-key-menu_logout) button > div { justify-content:flex-start !important; width:100%; gap:.6rem; }
+:is(.st-key-menu_rewards, .st-key-settings_menu, .st-key-menu_feedback, .st-key-menu_logout) button p { font-size:.95rem !important; }
+.st-key-menu_signout { border-top:1px solid var(--surface-3); padding-top:4px; }
+.st-key-menu_logout button, .st-key-menu_logout button p, .st-key-menu_logout [data-testid="stIconMaterial"] { color:var(--bad) !important; font-weight:650 !important; }
+/* Signed out: white Sign in pill and ☰. */
+.st-key-header_menu button { width:44px; min-height:44px !important; border-radius:12px !important; background:transparent !important; border:1px solid var(--band-line) !important; color:#FFFFFF !important; }
+.st-key-header_menu .st-key-settings_menu button { color:#FFFFFF !important; }
+.stApp :is(.st-key-header_signin, .st-key-header_signin_go) button { min-height:44px !important; border-radius:999px !important; padding:.2rem 1.2rem !important;
+  background:#FFFFFF !important; border:1px solid #FFFFFF !important; box-shadow:0 4px 14px rgba(0,0,0,.25); }
+.stApp :is(.st-key-header_signin, .st-key-header_signin_go) button p { color:#17283B !important; font-weight:700 !important; white-space:nowrap; }
+.stApp :is(.st-key-header_signin, .st-key-header_signin_go) button:hover { background:#F3E9D4 !important; }
+.stApp :is(.st-key-header_signin, .st-key-header_signin_go) button:disabled { background:rgba(255,255,255,.15) !important; border:1px dashed var(--band-line) !important; box-shadow:none; }
+.stApp :is(.st-key-header_signin, .st-key-header_signin_go) button:disabled p { color:var(--band-muted) !important; }
+@media (max-width:1100px) {
+  .st-key-app_header .brand-note { display:none; }
+  .st-key-account_menu button { max-width:200px; }
+}
+/* Tablets and small laptops: brand and account on row 1, the tabs full width below. */
+@media (max-width:980px) {
+  .st-key-app_header [data-testid="stHorizontalBlock"]:has(.st-key-header_account) { flex-wrap:wrap !important; row-gap:6px !important; }
+  .st-key-app_header [data-testid="stColumn"]:has(.st-key-header_brand) { flex:1 1 auto !important; order:1; }
+  .st-key-app_header [data-testid="stColumn"]:has(.st-key-header_account) { order:2; }
+  .st-key-app_header [data-testid="stColumn"]:has(.st-key-navigation) { flex:0 0 100% !important; order:3; }
+}
 @media (max-width:700px) {
-  /* Phones: brand and ☰ on row 1, the account bar on row 2, navigation below. */
-  .st-key-app_header [data-testid="stHorizontalBlock"]:has(.st-key-header_account) { column-gap:8px !important; row-gap:8px !important; }
-  .st-key-app_header [data-testid="stColumn"]:has(.st-key-header_brand) { flex:1 1 calc(100% - 56px) !important; order:1; }
-  .st-key-app_header [data-testid="stColumn"]:has(.st-key-header_menu) { order:2; }
-  .st-key-app_header [data-testid="stColumn"]:has(.st-key-header_account) { flex:0 0 100% !important; order:3; }
-  .st-key-app_header [data-testid="stColumn"]:has(.st-key-navigation) { flex:0 0 100% !important; order:4; }
-  .st-key-header_account { justify-content:space-between !important; }
-  .st-key-header_account [data-testid="stElementContainer"]:has(.account-chip) { flex:1 1 auto !important; }
-  .account-chip .account-name { max-width:none; }
-  .st-key-header_account { min-height:40px; padding-bottom:6px; }
-  .st-key-header_account [data-testid="stElementContainer"]:is(.st-key-header_signin, .st-key-header_signin_go) { flex:1 1 100% !important; width:100% !important; }
+  .st-key-app_header { padding:2px 0 2px; }
+  .st-key-app_header [data-testid="stHorizontalBlock"]:has(.st-key-header_account) { column-gap:8px !important; row-gap:6px !important; }
+  .st-key-app_header .brand { min-height:44px; }
+  .st-key-app_header [data-testid="stColumn"]:has(.st-key-header_brand) { min-height:44px; justify-content:center; }
+  .st-key-header_account { gap:6px !important; }
+  /* Rewards becomes a round 💰 button, the account menu a round photo. */
+  .st-key-rewards_menu button { width:44px; min-height:44px !important; padding:0 !important; justify-content:center; }
+  .st-key-rewards_menu button p { font-size:0 !important; }
+  .st-key-rewards_menu button p::before { content:"💰"; font-size:1.2rem; }
+  .st-key-account_menu button { width:44px; max-width:44px; padding:0 !important; background:var(--avatar) center / 40px 40px no-repeat, rgba(255,255,255,.12) !important; border:2px solid #E7CF9C !important; }
+  .st-key-account_menu button > div, .st-key-account_menu button p, .st-key-account_menu button [data-testid="stIconMaterial"] { display:none !important; }
+  /* Signed out: full-width Sign in on its own row inside the band. */
+  .st-key-app_header [data-testid="stColumn"]:has(.st-key-header_signin, .st-key-header_signin_go) { flex:0 0 100% !important; order:3 !important; }
+  .st-key-app_header [data-testid="stColumn"]:has(.st-key-header_signin, .st-key-header_signin_go) ~ [data-testid="stColumn"]:has(.st-key-navigation),
+  .st-key-app_header [data-testid="stColumn"]:has(.st-key-navigation) { order:4 !important; }
+  .st-key-header_account:has(.st-key-header_signin, .st-key-header_signin_go) { justify-content:stretch !important; }
+  .st-key-header_account [data-testid="stElementContainer"]:is(.st-key-header_signin, .st-key-header_signin_go) { flex:1 1 auto !important; }
   :is(.st-key-header_signin, .st-key-header_signin_go) :is(.stButton, [data-testid="stTooltipHoverTarget"], button) { width:100% !important; max-width:none !important; }
 }
-html[data-we-theme="dark"] :is(.st-key-header_signin, .st-key-header_signin_go) button:not(:disabled) { background:var(--teal) !important; border-color:var(--teal-bright) !important; }
-@media (prefers-color-scheme:dark) {
-  html:not([data-we-theme]) :is(.st-key-header_signin, .st-key-header_signin_go) button:not(:disabled) { background:var(--teal) !important; border-color:#3FAEB0 !important; }
+/* ---------- consent: one slim gold strip ---------- */
+.stApp .st-key-consent_bar { background:var(--gold-soft) !important; border:1px solid var(--chip-gold-border) !important; border-left:1px solid var(--chip-gold-border) !important;
+  border-radius:12px !important; padding:6px 8px 6px 14px !important; gap:8px 12px !important; flex-wrap:wrap !important; }
+.stApp .st-key-consent_bar .consent-text { font-size:.86rem; line-height:1.35; color:var(--gold-deep); }
+.stApp .st-key-consent_bar .consent-text b { display:inline; margin-right:4px; }
+.stApp .st-key-consent_actions { margin-left:auto; flex-wrap:nowrap !important; }
+.stApp .st-key-consent_bar > :first-child { flex:1 1 0 !important; width:auto !important; min-width:0 !important; }
+.stApp .st-key-consent_bar > :has(> .st-key-consent_actions) { flex:0 0 auto !important; width:auto !important; }
+@media (min-width:1101px) { .st-key-app_header [data-testid="stColumn"]:has(.st-key-header_brand) { min-height:58px; justify-content:center; } }
+.stApp .st-key-consent_actions button { min-height:34px !important; border-radius:999px !important; padding:0 .95rem !important; }
+.stApp .st-key-consent_actions button p { font-size:.85rem !important; }
+.stApp .st-key-consent_deny button { background:transparent !important; border-color:var(--chip-gold-border) !important; }
+@media (max-width:700px) {
+  /* Phones: the question and both choices on one row (the question wraps beside the buttons if needed). */
+  .stApp .st-key-consent_bar { flex-wrap:wrap !important; padding:6px 6px 6px 12px !important; gap:6px 8px !important; }
+  .stApp .st-key-consent_bar > :first-child { flex:1 1 auto !important; min-width:0 !important; }
+  .stApp .st-key-consent_bar .consent-text { font-size:.82rem; line-height:1.25; }
+  .stApp .st-key-consent_bar .consent-text span { display:none; }
+  /* One row while the question keeps at least ~140px; otherwise the buttons move under it (narrow phones, long languages). */
+  .stApp .st-key-consent_bar > :first-child { flex:1 1 140px !important; width:auto !important; }
+  .stApp .st-key-consent_bar > :has(> .st-key-consent_actions) { flex:0 0 auto !important; width:auto !important; margin-left:auto; }
+  .stApp .st-key-consent_actions { gap:6px !important; flex-wrap:nowrap !important; }
+  .stApp .st-key-consent_actions button { min-height:40px !important; padding:0 .8rem !important; }
 }

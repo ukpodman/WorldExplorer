@@ -3726,6 +3726,36 @@
    "Progreso de recompensas del mes",
    "本月奖励进度",
    "Награды за месяц"
+  ],
+  "Account": [
+   "Konto",
+   "Cuenta",
+   "账户",
+   "Аккаунт"
+  ],
+  "Profile and settings": [
+   "Profil und Einstellungen",
+   "Perfil y ajustes",
+   "个人资料和设置",
+   "Профиль и настройки"
+  ],
+  "Signed in with Google": [
+   "Mit Google angemeldet",
+   "Sesión iniciada con Google",
+   "已通过 Google 登录",
+   "Вход через Google выполнен"
+  ],
+  "progress saved": [
+   "Fortschritt gespeichert",
+   "progreso guardado",
+   "进度已保存",
+   "прогресс сохранён"
+  ],
+  "Share anonymous usage statistics — no names, emails or answers.": [
+   "Anonyme Nutzungsstatistiken teilen – keine Namen, E-Mails oder Antworten.",
+   "Comparte estadísticas de uso anónimas: sin nombres, correos ni respuestas.",
+   "分享匿名使用统计——不含姓名、邮箱或答案。",
+   "Поделитесь анонимной статистикой использования — без имён, адресов почты и ответов."
   ]
  }
 }

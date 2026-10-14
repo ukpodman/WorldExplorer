@@ -3756,6 +3756,24 @@
    "Comparte estadísticas de uso anónimas: sin nombres, correos ni respuestas.",
    "分享匿名使用统计——不含姓名、邮箱或答案。",
    "Поделитесь анонимной статистикой использования — без имён, адресов почты и ответов."
+  ],
+  "Sign in": [
+   "Anmelden",
+   "Iniciar sesión",
+   "登录",
+   "Войти"
+  ],
+  "My account": [
+   "Mein Konto",
+   "Mi cuenta",
+   "我的账户",
+   "Мой аккаунт"
+  ],
+  "Allow anonymous usage statistics. No names, emails or answers.": [
+   "Anonyme Nutzungsstatistiken erlauben. Keine Namen, E-Mails oder Antworten.",
+   "Permite estadísticas de uso anónimas. Sin nombres, correos ni respuestas.",
+   "允许匿名使用统计。不含姓名、邮箱或答案。",
+   "Разрешите анонимную статистику использования. Без имён, адресов почты и ответов."
   ]
  }
 }

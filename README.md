@@ -186,6 +186,18 @@ accounts). After uploading:
    `records` entry next to `points`, `rounds_finished` and `stats`. Older rows without it keep working.
 5. If the footer says "Saved profile not reachable yet", nothing is written until the profile has loaded.
 
+## Phones: two-row header, account menu and map first (2026-10-14)
+
+* **Row 1:** 🌍 World Explorer · 💰 (owners/testers while the programme is off) · round photo (account menu) · ☰.
+  Signed out: 🌍 World Explorer · 🔑 Sign in · ☰. **Row 2:** Explore · Learn · Quiz · Badges in four equal parts.
+  Tablets and computers are unchanged (pixel-compared with the previous version).
+* **Account menu:** “My account”, photo and name, 💰 My Rewards, ⚙️ Profile and settings, 💬 Send feedback (when on),
+  🚪 Sign out. Opens and closes by tap or click. Header buttons no longer carry tooltips (on touch screens a tooltip
+  can take the first tap), and taps respond immediately (`touch-action: manipulation`).
+* **Explore on phones:** the world map comes straight after the navigation (and the consent strip until it is
+  answered); streak, points, badges and the Daily Challenge move under the map; the map's frame is slimmer and a little
+  wider. Same map, same aspect ratio, same interactions.
+
 ## Header photo fix and Option A restored (2026-10-14)
 
 * **What went wrong after the first Option A deploy:** the page combined the new stylesheet with the previous
@@ -547,3 +559,10 @@ The working version before these fixes is the pilot update (commit `d8424e2`). I
 - **Badges:** 14 badges (the original 3 unchanged) with requirements and progress bars, earned only from
   recorded answers and finished rounds; new statistics are saved with signed-in profiles
   (older profiles load with empty statistics and keep their points and rounds).
+
+### Mobile privacy notice text (consent-text-mobile)
+On phones the usage-statistics notice now shows a short explanation after the question:
+"Help improve World Explorer? Allow anonymous usage statistics. No names, emails or answers."
+It is translated into all five languages. The text fills the full width (2 lines in English and Chinese, 3 in German,
+Spanish and Russian on most phones) with Allow / No thanks on one row below. The tablet and desktop wording,
+header and map layout are unchanged. Nothing is ever turned on until the user taps Allow.

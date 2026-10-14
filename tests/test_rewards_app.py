@@ -280,6 +280,21 @@ class RewardsAppTests(unittest.TestCase):
         self.assertRegex(css, r"\.st-key-app_header img, \.account-card img \{ max-width:40px !important; max-height:40px !important")
         self.assertRegex(css, r"\.account-avatar, \.header-avatar \{ width:32px !important")
 
+    def test_phone_controls_and_account_menu_items(self):
+        at = self.app(who=OWNER, rewards={}, owner=True).run()
+        self.assertTrue([b for b in at.button if b.key == "settings_menu_m"])          # ☰ beside the photo (phones)
+        labels = {b.key: b.label for b in at.button}
+        self.assertTrue(labels["menu_rewards"].startswith("💰"))
+        self.assertTrue(labels["settings_menu"].startswith("⚙️"))
+        self.assertTrue(labels["menu_logout"].startswith("🚪"))
+        self.assertTrue(any("My account" in str(m.value) for m in at.markdown))
+        self.assertFalse(at.button(key="rewards_menu").help)                           # no tooltip to swallow a tap
+        at.button(key="settings_menu_m").click().run()
+        self.assertTrue([b for b in at.button if b.key == "profile_logout"])           # Settings opened
+        guest = self.app().run()
+        self.assertIn("Sign in", guest.button(key="header_signin_m").label)            # short label for phones
+        self.assertIn("Sign in with Google", guest.button(key="header_signin").label)
+
     def test_sign_out_from_account_menu(self):
         at = self.app(who=PLAYER).run()
         with mock.patch("core.accounts.logout") as logout:

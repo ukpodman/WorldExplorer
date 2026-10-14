@@ -160,6 +160,9 @@ def header() -> None:
         with account, st.container(key="header_account", horizontal=True, vertical_alignment="center", gap="small"):
             if who:
                 _account_menu(who)
+                with st.container(key="header_menu_m"):
+                    # Phones only (hidden on larger screens): ☰ next to the photo, opening the same Settings.
+                    st.button(t("Settings"), key="settings_menu_m", on_click=open_settings)
             else:
                 _header_sign_in()
                 with st.container(key="header_menu"):
@@ -212,10 +215,12 @@ def _account_menu(who: dict) -> None:
     # fixed 34px circle: its size never depends on the photo, and without the stylesheet only the name shows.
     html(f'<style>.st-key-account_menu button {{ --avatar: url("{avatar}"); }}</style>')
     if rewards_hooks.visible():  # owners/testers while the programme is off; everyone signed in once it is on
-        st.button("💰 " + t("Rewards"), key="rewards_menu", help=t("Rewards"),
+        # No tooltip: on touch screens a tooltip can swallow the first tap.
+        st.button("💰 " + t("Rewards"), key="rewards_menu",
                   type="primary" if st.session_state.page == "Rewards" else "secondary",
                   on_click=navigate, args=("Rewards",))
     with st.popover(name, key="account_menu"):
+        html(f'<div class="account-menu-title">{e("My account")}</div>')
         email = str(who.get("email") or "")
         saved = accounts.connection_state() == "saved"
         html(f'<div class="account-card">{_avatar_img(_avatar_url(who, name))}<div class="account-card-text"><div class="account-card-name">{escape(name)}</div>'
@@ -225,37 +230,41 @@ def _account_menu(who: dict) -> None:
         if rewards_hooks.visible():
             st.button("💰 " + t("My Rewards"), key="menu_rewards", width="stretch", type="tertiary",
                       on_click=_menu_go, args=("Rewards",))
-        st.button(t("Profile and settings"), key="settings_menu", icon=":material/person:", width="stretch",
+        st.button("⚙️ " + t("Profile and settings"), key="settings_menu", width="stretch",
                   type="tertiary", on_click=open_settings)
         if analytics.config().get("enabled") and accounts.storage_ready():
-            if st.button(t("Send feedback"), key="menu_feedback", icon=":material/chat:", width="stretch", type="tertiary"):
+            if st.button("💬 " + t("Send feedback"), key="menu_feedback", width="stretch", type="tertiary"):
                 st.dialog(t("Send feedback"), width="small")(_feedback_body)()
         with st.container(key="menu_signout"):
-            if st.button(t("Sign out"), key="menu_logout", icon=":material/logout:", width="stretch", type="tertiary"):
+            if st.button("🚪 " + t("Sign out"), key="menu_logout", width="stretch", type="tertiary"):
                 accounts.logout()
 
 
 def _header_sign_in() -> None:
-    """Visible Google sign-in for visitors (the existing sign-in; guest progress is kept as in Settings)."""
+    """Visible Google sign-in for visitors (the existing sign-in; guest progress is kept as in Settings). Two buttons
+    run the same sign-in: the full label on larger screens, a short one on phones (CSS shows one of them)."""
     ready = accounts.provider_ready("google")
-    note = (t("Sign in to save your profile and progress across visits. You can always play as a guest.") if ready
-            else t("Sign-in is not available right now. You can keep playing as a guest; progress lasts for this session."))
     if st.session_state.get("signin_ready") == "google" and accounts.guest_has_progress():
         cookie_script()
         if st.button("🔑 " + t("Continue to Google"), key="header_signin_go", type="primary", width="content",
-                     disabled=not ready,
-                     help=t("Your guest progress ({points} points) will be added to your account after you sign in. "
-                            "An existing saved profile is never replaced.", points=f"{st.session_state.points:,}")):
+                     disabled=not ready):
             if not accounts.login("google"):
                 st.toast(t("Sign-in could not start. You can keep playing as a guest."))
         return
-    label = "🔑 " + t("Sign in with Google")
-    if accounts.guest_has_progress():
-        st.button(label, key="header_signin", type="primary", width="content", disabled=not ready, help=note,
-                  on_click=_begin_sign_in, args=("google",))
-    elif st.button(label, key="header_signin", type="primary", width="content", disabled=not ready, help=note):
-        if not accounts.login("google"):
-            st.toast(t("Sign-in could not start. You can keep playing as a guest."))
+    for key, label in (("header_signin", "🔑 " + t("Sign in with Google")), ("header_signin_m", "🔑 " + t("Sign in"))):
+        # No tooltip: on touch screens a tooltip can swallow the first tap.
+        if accounts.guest_has_progress():
+            st.button(label, key=key, type="primary", width="content", disabled=not ready,
+                      on_click=_begin_header_sign_in)
+        elif st.button(label, key=key, type="primary", width="content", disabled=not ready):
+            if not accounts.login("google"):
+                st.toast(t("Sign-in could not start. You can keep playing as a guest."))
+
+
+def _begin_header_sign_in() -> None:
+    _begin_sign_in("google")
+    st.toast(t("Your guest progress ({points} points) will be added to your account after you sign in. "
+               "An existing saved profile is never replaced.", points=f"{st.session_state.points:,}"))
 
 
 # --------------------------------------------------------------------------- settings drawer
@@ -396,7 +405,8 @@ def consent_bar() -> None:
         return
     with st.container(key="consent_bar", horizontal=True, vertical_alignment="center"):
         html(f'<div class="consent-text"><b>{e("Help improve World Explorer?")}</b> '
-             f'<span>{e("Share anonymous usage statistics — no names, emails or answers.")}</span></div>')
+             f'<span class="consent-full">{e("Share anonymous usage statistics — no names, emails or answers.")}</span>'
+             f'<span class="consent-short">{e("Allow anonymous usage statistics. No names, emails or answers.")}</span></div>')
         with st.container(key="consent_actions", horizontal=True):
             st.button(t("Allow"), key="consent_allow", type="primary", on_click=analytics.grant)
             st.button(t("No thanks"), key="consent_deny", on_click=analytics.deny)

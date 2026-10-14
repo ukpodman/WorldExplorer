@@ -107,8 +107,8 @@
 .st-key-navigation button[kind="primary"] p { color:#fff !important; }
 .st-key-navigation button[kind="primary"]:hover { background:var(--ink-2) !important; }
 .st-key-navigation button[kind="secondary"]:hover { background:var(--teal-soft) !important; }
-.st-key-header_menu .st-key-settings_menu button p { position:absolute !important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; margin:-1px; }
-.st-key-header_menu .st-key-settings_menu button::before { content:""; display:block; flex-shrink:0; width:26px; height:26px; background-color:currentColor;
+:is(.st-key-header_menu .st-key-settings_menu, .st-key-settings_menu_m) button p { position:absolute !important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; margin:-1px; }
+:is(.st-key-header_menu .st-key-settings_menu, .st-key-settings_menu_m) button::before { content:""; display:block; flex-shrink:0; width:26px; height:26px; background-color:currentColor;
   -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z'/%3E%3C/svg%3E") center / contain no-repeat;
   mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z'/%3E%3C/svg%3E") center / contain no-repeat; }
 .st-key-header_menu .st-key-settings_menu button { color:var(--navy) !important; }
@@ -1131,12 +1131,12 @@ html[data-we-theme="dark"] { --band:#0A1520; --band-muted:#B9C6D2; }
 /* Signed out: white Sign in pill and ☰. */
 .st-key-header_menu button { width:44px; min-height:44px !important; border-radius:12px !important; background:transparent !important; border:1px solid var(--band-line) !important; color:#FFFFFF !important; }
 .st-key-header_menu .st-key-settings_menu button { color:#FFFFFF !important; }
-.stApp :is(.st-key-header_signin, .st-key-header_signin_go) button { min-height:44px !important; border-radius:999px !important; padding:.2rem 1.2rem !important;
+.stApp :is(.st-key-header_signin, .st-key-header_signin_m, .st-key-header_signin_go) button { min-height:44px !important; border-radius:999px !important; padding:.2rem 1.2rem !important;
   background:#FFFFFF !important; border:1px solid #FFFFFF !important; box-shadow:0 4px 14px rgba(0,0,0,.25); }
-.stApp :is(.st-key-header_signin, .st-key-header_signin_go) button p { color:#17283B !important; font-weight:700 !important; white-space:nowrap; }
-.stApp :is(.st-key-header_signin, .st-key-header_signin_go) button:hover { background:#F3E9D4 !important; }
-.stApp :is(.st-key-header_signin, .st-key-header_signin_go) button:disabled { background:rgba(255,255,255,.15) !important; border:1px dashed var(--band-line) !important; box-shadow:none; }
-.stApp :is(.st-key-header_signin, .st-key-header_signin_go) button:disabled p { color:var(--band-muted) !important; }
+.stApp :is(.st-key-header_signin, .st-key-header_signin_m, .st-key-header_signin_go) button p { color:#17283B !important; font-weight:700 !important; white-space:nowrap; }
+.stApp :is(.st-key-header_signin, .st-key-header_signin_m, .st-key-header_signin_go) button:hover { background:#F3E9D4 !important; }
+.stApp :is(.st-key-header_signin, .st-key-header_signin_m, .st-key-header_signin_go) button:disabled { background:rgba(255,255,255,.15) !important; border:1px dashed var(--band-line) !important; box-shadow:none; }
+.stApp :is(.st-key-header_signin, .st-key-header_signin_m, .st-key-header_signin_go) button:disabled p { color:var(--band-muted) !important; }
 @media (max-width:1100px) {
   .st-key-app_header .brand-note { display:none; }
   .st-key-account_menu button { max-width:200px; }
@@ -1161,19 +1161,52 @@ html[data-we-theme="dark"] { --band:#0A1520; --band-muted:#B9C6D2; }
   .st-key-account_menu button { width:44px; max-width:44px; padding:0 !important; justify-content:center !important; border:none !important; background:transparent !important; }
   .st-key-account_menu button::before { flex:0 0 40px; width:40px; height:40px; box-shadow:0 0 0 2px #E7CF9C; }
   .st-key-account_menu button > div, .st-key-account_menu button p, .st-key-account_menu button [data-testid="stIconMaterial"] { display:none !important; }
-  /* Signed out: full-width Sign in on its own row inside the band. */
-  .st-key-app_header [data-testid="stColumn"]:has(.st-key-header_signin, .st-key-header_signin_go) { flex:0 0 100% !important; order:3 !important; }
-  .st-key-app_header [data-testid="stColumn"]:has(.st-key-header_signin, .st-key-header_signin_go) ~ [data-testid="stColumn"]:has(.st-key-navigation),
-  .st-key-app_header [data-testid="stColumn"]:has(.st-key-navigation) { order:4 !important; }
-  .st-key-header_account:has(.st-key-header_signin, .st-key-header_signin_go) { justify-content:stretch !important; }
-  .st-key-header_account [data-testid="stElementContainer"]:is(.st-key-header_signin, .st-key-header_signin_go) { flex:1 1 auto !important; }
-  :is(.st-key-header_signin, .st-key-header_signin_go) :is(.stButton, [data-testid="stTooltipHoverTarget"], button) { width:100% !important; max-width:none !important; }
+  /* Two rows: brand · 💰 👤 ☰ (or brand · Sign in · ☰), then the four tabs sharing the width equally. */
+  .st-key-app_header [data-testid="stHorizontalBlock"]:has(.st-key-header_account) { flex-wrap:wrap !important; }
+  .st-key-app_header [data-testid="stColumn"]:has(.st-key-header_brand) { flex:1 1 0 !important; min-width:0 !important; order:1 !important; }
+  .st-key-app_header [data-testid="stColumn"]:has(.st-key-header_account) { flex:0 0 auto !important; width:auto !important; order:2 !important; }
+  .st-key-app_header [data-testid="stColumn"]:has(.st-key-navigation) { flex:0 0 100% !important; order:3 !important; }
+  .st-key-app_header .brand { gap:8px; min-width:0; }
+  .st-key-app_header .brand > div:last-child { min-width:0; }
+  .st-key-app_header .brand-name { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .st-key-header_account { justify-content:flex-end !important; }
+  .st-key-header_menu_m button, .st-key-header_menu button { width:44px; min-height:44px !important; padding:0 !important; border-radius:12px !important;
+    background:transparent !important; border:1px solid var(--band-line) !important; color:#FFFFFF !important; }
+  .st-key-settings_menu_m button { color:#FFFFFF !important; }
+  /* Signed out: a short "Sign in" pill in row 1 (the full label is used on larger screens). */
+  .st-key-header_account [data-testid="stElementContainer"].st-key-header_signin { display:none !important; }
+  .stApp .st-key-header_signin_m button { min-height:44px !important; padding:0 .9rem !important; }
+  .stApp .st-key-header_signin_go button { padding:0 .9rem !important; }
+  .st-key-app_header .st-key-navigation [data-testid="stColumn"] { flex:1 1 0 !important; width:auto !important; min-width:0 !important; }
+  .st-key-app_header .st-key-navigation button { padding:0 .2rem !important; }
+  .st-key-app_header :is(button, a) { touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
 }
+/* Larger screens: the phone-only controls stay out of the way (the desktop header is unchanged). */
+@media (min-width:701px) {
+  .st-key-header_account [data-testid="stElementContainer"].st-key-header_signin_m,
+  .st-key-header_account [data-testid="stLayoutWrapper"]:has(> .st-key-header_menu_m), .st-key-header_menu_m { display:none !important; }
+}
+/* The narrowest phones (320–359px): a slightly smaller logo so everything stays on two rows. */
+@media (max-width:359px) {
+  .st-key-app_header .brand-symbol { width:32px; height:32px; border-radius:10px; }
+  .st-key-app_header .brand-symbol svg { width:20px; height:20px; }
+  .st-key-app_header .brand-name { font-size:.95rem !important; letter-spacing:-.02em; }
+  .st-key-header_account { gap:4px !important; }
+  .st-key-app_header [data-testid="stHorizontalBlock"]:has(.st-key-header_account) { column-gap:6px !important; }
+  .st-key-rewards_menu button, .st-key-header_menu_m button, .st-key-header_menu button { width:40px !important; min-height:40px !important; }
+  .st-key-account_menu button { width:40px !important; max-width:40px !important; min-height:40px !important; }
+  .st-key-account_menu button::before { flex-basis:36px !important; width:36px !important; height:36px !important; }
+  .stApp .st-key-header_signin_m button { padding:0 .6rem !important; }
+  .stApp .st-key-header_signin_m button p { font-size:.85rem !important; }
+}
+/* Account menu heading. */
+.account-menu-title { font-size:.72rem; font-weight:750; letter-spacing:.1em; text-transform:uppercase; color:var(--slate); padding:2px 2px 6px; }
 /* ---------- consent: one slim gold strip ---------- */
 .stApp .st-key-consent_bar { background:var(--gold-soft) !important; border:1px solid var(--chip-gold-border) !important; border-left:1px solid var(--chip-gold-border) !important;
   border-radius:12px !important; padding:6px 8px 6px 14px !important; gap:8px 12px !important; flex-wrap:wrap !important; }
 .stApp .st-key-consent_bar .consent-text { font-size:.86rem; line-height:1.35; color:var(--gold-deep); }
 .stApp .st-key-consent_bar .consent-text b { display:inline; margin-right:4px; }
+.stApp .st-key-consent_bar .consent-text .consent-short { display:none; }
 .stApp .st-key-consent_actions { margin-left:auto; flex-wrap:nowrap !important; }
 .stApp .st-key-consent_bar > :first-child { flex:1 1 0 !important; width:auto !important; min-width:0 !important; }
 .stApp .st-key-consent_bar > :has(> .st-key-consent_actions) { flex:0 0 auto !important; width:auto !important; }
@@ -1182,14 +1215,23 @@ html[data-we-theme="dark"] { --band:#0A1520; --band-muted:#B9C6D2; }
 .stApp .st-key-consent_actions button p { font-size:.85rem !important; }
 .stApp .st-key-consent_deny button { background:transparent !important; border-color:var(--chip-gold-border) !important; }
 @media (max-width:700px) {
-  /* Phones: the question and both choices on one row (the question wraps beside the buttons if needed). */
-  .stApp .st-key-consent_bar { flex-wrap:wrap !important; padding:6px 6px 6px 12px !important; gap:6px 8px !important; }
-  .stApp .st-key-consent_bar > :first-child { flex:1 1 auto !important; min-width:0 !important; }
-  .stApp .st-key-consent_bar .consent-text { font-size:.82rem; line-height:1.25; }
-  .stApp .st-key-consent_bar .consent-text span { display:none; }
-  /* One row while the question keeps at least ~140px; otherwise the buttons move under it (narrow phones, long languages). */
-  .stApp .st-key-consent_bar > :first-child { flex:1 1 140px !important; width:auto !important; }
+  /* Phones: the question and a short explanation (usually two lines), then Allow / No thanks on one row. */
+  .stApp .st-key-consent_bar { flex-wrap:wrap !important; align-items:center !important; padding:6px 6px 6px 12px !important; gap:6px 8px !important; }
+  .stApp .st-key-consent_bar .consent-text { font-size:.78rem; line-height:1.28; }
+  .stApp .st-key-consent_bar .consent-text b { display:inline; margin-right:3px; }
+  .stApp .st-key-consent_bar .consent-text .consent-full { display:none; }
+  .stApp .st-key-consent_bar .consent-text .consent-short { display:inline; }
+  .stApp .st-key-consent_bar > :first-child { flex:1 1 100% !important; width:auto !important; min-width:0 !important; }
   .stApp .st-key-consent_bar > :has(> .st-key-consent_actions) { flex:0 0 auto !important; width:auto !important; margin-left:auto; }
   .stApp .st-key-consent_actions { gap:6px !important; flex-wrap:nowrap !important; }
-  .stApp .st-key-consent_actions button { min-height:40px !important; padding:0 .8rem !important; }
+  .stApp .st-key-consent_actions button { min-height:40px !important; padding:0 .75rem !important; }
+}
+
+/* ---------- Explore on phones: the world map first ---------- */
+@media (max-width:700px) {
+  .st-key-explore_home { gap:10px !important; }
+  .st-key-explore_home > [data-testid="stLayoutWrapper"]:has(> .st-key-explore_topbar) { order:2; }
+  .st-key-explore_home > [data-testid="stLayoutWrapper"]:has(> :is(.st-key-explore_stage, .st-key-explore_stage_list, .st-key-explore_stage_country)) { order:1; }
+  .st-key-explore_stage { padding:4px !important; margin:0 -8px; border-radius:14px; }
+  .st-key-explore_stage .st-key-world_map_frame { border-radius:11px; }
 }

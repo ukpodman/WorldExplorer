@@ -142,8 +142,8 @@ class RuleTests(unittest.TestCase):
 
     def test_rejected_months_return_to_budget_only_when_refused(self):
         events = [{"profile_id": "p", "month": "2026-09", "amount": 500}]
-        released = [{"request_id": 1, "month": "2026-09", "amount": 500, "status": "released"}]
-        refused = [{"request_id": 1, "month": "2026-09", "amount": 500, "status": "disqualified"}]
+        released = [{"request_id": 1, "profile_id": "p", "month": "2026-09", "amount": 500, "status": "released"}]
+        refused = [{"request_id": 1, "profile_id": "p", "month": "2026-09", "amount": 500, "status": "disqualified"}]
         req = [{"id": 1, "status": "rejected", "amount": 500}]
         self.assertEqual(withdrawals.summary(req, [], events, released, [], 1000, "2026-09-01", "2026-09")["remaining_budget"], 500)
         self.assertEqual(withdrawals.summary(req, [], events, refused, [], 1000, "2026-09-01", "2026-09")["remaining_budget"], 1000)
@@ -285,10 +285,13 @@ class Scenarios:
             d = f"{month}-{1 + (i // 5) % days:02d}"
             s.add_event(p, "country", f"c{i}", d, reward=True, test=False)
 
-    def player(self, s, n, test=False, joined_days_ago=45, m1=650, m2=900, current=55):
+    def player(self, s, n, test=False, joined_days_ago=45, m1=650, m2=900, current=55, verified=True):
+        """A participant; verified=True: the owner verified their eligibility in Participants (existing workflow)."""
         p = pid(n)
         s.ensure_account(p, f"p{n}@example.com", f"Player {n}", True, test)
         s.join(p, M1)
+        if verified:
+            s.update_account(p, {"verification": "verified"})
         for m in (M2, CUR):
             s.enrol(p, m)
         self.backdate(s, p, joined_days_ago)
@@ -555,7 +558,7 @@ class Scenarios:
         s.open_payment(p, M1, False, OWNER)                                  # an existing monthly review is reused
         req = s.request_cashout(p, "Ade Okafor", DECL, 1550)
         s.decide_cashout(req["id"], "approve", OWNER, beneficiary=True, eligibility=True)
-        self.assertEqual(s.account(p)["verification"], "verified")           # the owner confirmed eligibility
+        self.assertEqual(s.account(p)["verification"], "verified")           # set by the owner, not by the withdrawal
         s.pay_cashout(req["id"], 1550, TODAY.isoformat(), "TRX-1", OWNER)
         rows = {r["month"]: r for r in s.payments(profile_id=p)}
         self.assertEqual({m: (r["status"], r["paid_amount"], r["reference"]) for m, r in rows.items()},
@@ -615,7 +618,122 @@ class Scenarios:
         self.assertTrue(s.cashout_status(real))                               # real data untouched
 
 
-class MemoryWithdrawalTests(Scenarios, unittest.TestCase):
+class NetEarningsScenarios:
+    """Verification stays separate; balances use net verified earnings (mixed into both store test classes)."""
+
+    def referral_reward(self, s, p, n, status, month=None):
+        """p earns the ₦50 referral reward in `month` (default M2) for friend n, whose referral has `status`."""
+        friend = pid(n)
+        s.ensure_account(friend, f"f{n}@example.com", f"Friend {n}", True, False)
+        s.attribute(friend, s.account(p)["referral_code"])
+        if status != "pending":
+            s.update_referral(friend, {"status": status})
+        day = f"{month or M2}-15"
+        row = s.add_event(p, "referral", friend, day, reward=True, test=False)
+        self.assertEqual(int(row["amount"]), 50)
+        return friend
+
+    def test_approval_never_changes_the_players_verification(self):
+        s = self.setup_store()
+        p = self.player(s, 1, verified=False)
+        req = s.request_cashout(p, "Ade Okafor", DECL, 1550)
+        with self.assertRaises(StoreError) as caught:
+            s.decide_cashout(req["id"], "approve", OWNER, beneficiary=True, eligibility=True)
+        self.assertIn("account_not_verified", str(caught.exception))
+        self.assertEqual(s.account(p)["verification"], "provisional")         # untouched
+        s.update_account(p, {"verification": "verified"})                     # the owner, in Participants
+        approved = s.decide_cashout(req["id"], "approve", OWNER, beneficiary=True, eligibility=True)
+        self.assertTrue(approved["beneficiary_verified"] and approved["eligibility_confirmed"])   # on the request
+        s.update_account(p, {"verification": "failed"})                       # changed again before paying
+        with self.assertRaises(StoreError) as caught:
+            s.pay_cashout(req["id"], 1550, TODAY.isoformat(), None, OWNER)
+        self.assertIn("account_not_verified", str(caught.exception))
+        self.assertEqual(s.account(p)["verification"], "failed")              # still the owner's own decision
+        changes = [((a.get("old_value") or {}).get("verification"), (a.get("new_value") or {}).get("verification"))
+                   for a in s.audit() if a["action"] == "reward_accounts_update"
+                   and (a.get("old_value") or {}).get("verification") != (a.get("new_value") or {}).get("verification")]
+        self.assertEqual(sorted(changes), sorted([("provisional", "verified"), ("verified", "failed")]))  # owner only
+
+    def test_test_requests_need_no_account_verification(self):
+        s = self.setup_store(live=False, payouts=False)
+        p = self.player(s, 2, test=True, joined_days_ago=0, verified=False)
+        later = (TODAY + timedelta(days=40)).isoformat()
+        req = s.request_cashout(p, "Owner Test", DECL, 1605, as_of=later)
+        s.decide_cashout(req["id"], "approve", OWNER, beneficiary=True, eligibility=True)
+        self.assertEqual(s.account(p)["verification"], "provisional")
+
+    def test_rejected_referrals_are_deducted_and_unreviewed_ones_wait(self):
+        s = self.setup_store()
+        p = self.player(s, 1)
+        friend = self.referral_reward(s, p, 31, "qualified")                   # awaiting the owner's review
+        st = s.cashout_status(p)
+        self.assertEqual(([m["month"] for m in st["months"]], st["amount"], st["waiting_months"]), ([M1], 650, [M2]))
+        s.update_referral(friend, {"status": "approved"})
+        st = s.cashout_status(p)
+        self.assertEqual((st["amount"], st["months"][-1]), (1600, {"month": M2, "amount": 950}))
+        s.update_referral(friend, {"status": "rejected"})                     # the negative adjustment
+        st = s.cashout_status(p)
+        self.assertEqual((st["amount"], st["months"][-1], st["waiting_months"]), (1550, {"month": M2, "amount": 900}, []))
+        self.assertEqual((st["totals"]["earned"], st["totals"]["refused"], st["totals"]["unpaid"]), (1655, 50, 1605))
+        req = s.request_cashout(p, "Ade Okafor", DECL, 1550)
+        self.assertEqual(req["amount"], 1550)
+        self.assertEqual({m["month"]: m["amount"] for m in s.cashout_months(p)}, {M1: 650, M2: 900})
+
+    def test_a_month_is_never_negative_or_zero(self):
+        s = self.setup_store()
+        p = self.player(s, 1, m1=0, m2=0, current=0)                          # only referral rewards
+        self.referral_reward(s, p, 41, "rejected")
+        st = s.cashout_status(p)
+        self.assertEqual((st["amount"], st["months"]), (0, []))
+        self.assertIn("no_earnings", st["reasons"])
+        self.assertEqual(st["totals"]["unpaid"], 0)
+        with self.assertRaises(StoreError):
+            s.request_cashout(p, "Ade Okafor", DECL, 0)
+        with self.assertRaises(StoreError):
+            s.request_cashout(p, "Ade Okafor", DECL, -50)
+
+    def test_rejecting_a_referral_after_the_request_blocks_approval_and_payment(self):
+        s = self.setup_store()
+        p = self.player(s, 1)
+        friend = self.referral_reward(s, p, 51, "approved")
+        req = s.request_cashout(p, "Ade Okafor", DECL, 1600)
+        s.update_referral(friend, {"status": "rejected"})
+        with self.assertRaises(StoreError) as caught:
+            s.decide_cashout(req["id"], "approve", OWNER, beneficiary=True, eligibility=True)
+        self.assertIn("earnings_changed", str(caught.exception))
+        s.update_referral(friend, {"status": "approved"})
+        s.decide_cashout(req["id"], "approve", OWNER, beneficiary=True, eligibility=True)
+        s.update_referral(friend, {"status": "rejected"})                     # after approval, before payment
+        with self.assertRaises(StoreError) as caught:
+            s.pay_cashout(req["id"], 1600, TODAY.isoformat(), None, OWNER)
+        self.assertIn("earnings_changed", str(caught.exception))
+        self.assertEqual(s.cashout_payments(), [])
+        s.decide_cashout(req["id"], "reject", OWNER, note="A referral was rejected; please request again")
+        again = s.request_cashout(p, "Ade Okafor", DECL, 1550)                # the correct net amount
+        s.decide_cashout(again["id"], "approve", OWNER, beneficiary=True, eligibility=True)
+        s.pay_cashout(again["id"], 1550, TODAY.isoformat(), None, OWNER)
+        self.assertEqual({r["month"]: r["paid_amount"] for r in s.payments(profile_id=p)}, {M1: 650, M2: 900})
+        st = s.cashout_status(p)
+        self.assertEqual((st["totals"]["paid"], st["totals"]["refused"], st["totals"]["unpaid"]), (1550, 50, 55))
+        self.assertIn("no_earnings", st["reasons"])                           # never paid twice
+
+    def test_reports_count_refused_amounts_once(self):
+        s = self.setup_store()
+        p = self.player(s, 1)
+        self.referral_reward(s, p, 61, "rejected")
+        req = s.request_cashout(p, "Ade Okafor", DECL, 1550)
+        s.decide_cashout(req["id"], "reject", OWNER, note="Duplicate account", disqualify=True)
+        refs, events = s.referrals(), s.events()
+        earning = {r["Earning month"]: r for r in withdrawals.by_earning_month(events, s.cashout_months(),
+                                                                                s.cashout_requests(), s.payments(), refs)}
+        self.assertEqual((earning[M1]["Refused"], earning[M2]["Refused"]), (650, 950))   # full months, not 950 + 50
+        summary = withdrawals.summary(s.cashout_requests(), s.cashout_payments(), events, s.cashout_months(),
+                                      s.payments(), 50000, f"{M1}-01", CUR, referrals=refs)
+        self.assertEqual((summary["earned"], summary["refused"]), (1655, 1600))
+        self.assertEqual(s.cashout_status(p)["totals"]["refused"], 1600)
+
+
+class MemoryWithdrawalTests(NetEarningsScenarios, Scenarios, unittest.TestCase):
     def make_store(self):
         return MemoryStore()
 
@@ -647,7 +765,7 @@ class MemoryWithdrawalTests(Scenarios, unittest.TestCase):
 
 
 @unittest.skipUnless(pg_harness.available(), "PostgreSQL is not installed")
-class SqlWithdrawalTests(Scenarios, unittest.TestCase):
+class SqlWithdrawalTests(NetEarningsScenarios, Scenarios, unittest.TestCase):
     def make_store(self):
         if not CLUSTER:
             self.skipTest("local PostgreSQL did not start")
@@ -738,15 +856,21 @@ class SqlWithdrawalTests(Scenarios, unittest.TestCase):
         p = self.player(s, 1)
         req = s.request_cashout(p, "Ade Okafor", DECL, 1550)
         s.decide_cashout(req["id"], "reject", OWNER, note="Check", disqualify=False)
-        tables = {t: s.select(t) for t in ("reward_enrolments", "reward_activity_events", "reward_cashout_months",
-                                            "reward_payments", "reward_cashout_requests", "reward_cashout_payments")}
-        expected = withdrawals.status(s.account(p), s.cashout_settings(), tables["reward_enrolments"],
-                                      tables["reward_activity_events"], tables["reward_cashout_months"],
-                                      tables["reward_payments"], tables["reward_cashout_requests"],
-                                      tables["reward_cashout_payments"])
-        got = s.cashout_status(p)
-        for key in ("eligible", "reasons", "amount", "months", "joined_on", "eligible_on", "days_left", "totals"):
-            self.assertEqual(got[key], expected[key], key)
+        for state in ("qualified", "approved", "rejected"):
+            q = self.player(s, 2 if state == "qualified" else 3 if state == "approved" else 4)
+            self.referral_reward(s, q, {"qualified": 71, "approved": 72, "rejected": 73}[state], state)
+        for who in (pid(1), pid(2), pid(3), pid(4)):
+            tables = {t: s.select(t) for t in ("reward_enrolments", "reward_activity_events", "reward_cashout_months",
+                                                "reward_payments", "reward_cashout_requests", "reward_cashout_payments",
+                                                "user_referrals")}
+            expected = withdrawals.status(s.account(who), s.cashout_settings(), tables["reward_enrolments"],
+                                          tables["reward_activity_events"], tables["reward_cashout_months"],
+                                          tables["reward_payments"], tables["reward_cashout_requests"],
+                                          tables["reward_cashout_payments"], referrals=tables["user_referrals"])
+            got = s.cashout_status(who)
+            for key in ("eligible", "reasons", "amount", "months", "waiting_months", "joined_on", "eligible_on",
+                        "days_left", "totals"):
+                self.assertEqual(got[key], expected[key], f"{who[-1]} {key}")
 
 
 if __name__ == "__main__":

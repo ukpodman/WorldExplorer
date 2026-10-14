@@ -17,6 +17,12 @@
 --     app's own [rewards] withdrawals_active secret). Real approvals and payments are refused until real_payouts is
 --     switched on (and the app's [rewards] payouts_active). Test accounts can simulate everything; their rows are
 --     marked test = true and are never real liabilities.
+--   * Balances use NET VERIFIED earnings per completed month: rewards of referrals the owner rejected are deducted,
+--     a month with a referral reward still awaiting review waits, and nothing is ever negative. The amounts are
+--     checked again when the owner approves and when a payment is recorded.
+--   * Withdrawal approval never changes the player's general eligibility verification (reward_accounts); its own
+--     checks are stored on the request. Real requests need the account to be verified already in Participants,
+--     because the existing payment rules require it.
 --   * One record of what was paid per earning month: when a real request is marked as paid, each covered month is
 --     also settled in the EXISTING reward_payments table (status paid, reference = the WD- reference), so the
 --     existing Payments tab and budget figures include it. reward_cashout_payments keeps the bank transfer itself
@@ -148,6 +154,29 @@ $$;
 
 -- ============================================================================ eligibility and balance
 
+-- Net verified earnings per month for one person. Earned rewards are never negative or edited (rewards_schema.sql);
+-- the existing reduction is a REJECTED referral, whose reward stays recorded but is not payable. So per month:
+--   gross    = all rewards earned
+--   refused  = rewards of referrals the owner rejected (the negative adjustment)
+--   net      = gross - refused, never below zero
+--   awaiting = referral rewards whose referral the owner has not approved or rejected yet; a month with any of
+--              these is not verified yet and cannot be requested until the owner decides
+create or replace function public.reward_cashout_month_earnings(p_profile text, p_test boolean)
+returns table (month text, gross int, refused int, net int, awaiting int)
+language sql stable set search_path = public as $$
+  select e.month,
+         sum(e.amount)::int,
+         coalesce(sum(e.amount) filter (where e.kind = 'referral' and r.status = 'rejected'), 0)::int,
+         greatest(coalesce(sum(e.amount) filter (where not (e.kind = 'referral' and coalesce(r.status, '') = 'rejected')),
+                           0), 0)::int,
+         coalesce(sum(e.amount) filter (where e.kind = 'referral' and coalesce(r.status, 'pending') in ('pending','qualified')),
+                  0)::int
+    from public.reward_activity_events e
+    left join public.user_referrals r on e.kind = 'referral' and r.referred_id = e.subject
+   where e.profile_id = p_profile and e.test = p_test and e.amount > 0
+   group by e.month
+$$;
+
 -- Everything the app shows on the player's withdrawal card, computed here so the database is the authority.
 -- p_as_of (a simulated Nigeria date) is accepted for test accounts only.
 create or replace function public.reward_cashout_status(p_profile text, p_as_of date default null)
@@ -164,6 +193,7 @@ declare
   reasons      text[] := '{}';
   v_months     jsonb := '[]'::jsonb;
   v_amount     int := 0;
+  v_waiting    jsonb := '[]'::jsonb;
   open_req     jsonb;
   earned_all   int;
   earned_now   int;
@@ -203,16 +233,17 @@ begin
     reasons := reasons || 'waiting_period'::text;
   end if;
 
-  -- available: earnings from completed months that no request holds and no monthly review approved, paid,
-  -- held or refused (the current, incomplete month is never included)
-  select coalesce(jsonb_agg(jsonb_build_object('month', m.month, 'amount', m.total) order by m.month), '[]'::jsonb),
-         coalesce(sum(m.total), 0)::int
-    into v_months, v_amount
-    from (select e.month, sum(e.amount)::int as total
-            from public.reward_activity_events e
-           where e.profile_id = p_profile and e.test = acc.test and e.amount > 0 and e.month < cur_month
-           group by e.month) m
-   where not exists (select 1 from public.reward_cashout_months r
+  -- available: NET VERIFIED earnings (see reward_cashout_month_earnings) from completed months that no request
+  -- holds and no monthly review approved, paid, held or refused; the current, incomplete month is never included,
+  -- months with a referral reward still awaiting the owner's review wait, and a month is never below zero
+  select coalesce(jsonb_agg(jsonb_build_object('month', m.month, 'amount', m.net) order by m.month)
+                    filter (where m.awaiting = 0 and m.net > 0), '[]'::jsonb),
+         coalesce(sum(m.net) filter (where m.awaiting = 0 and m.net > 0), 0)::int,
+         coalesce(jsonb_agg(m.month order by m.month) filter (where m.awaiting > 0), '[]'::jsonb)
+    into v_months, v_amount, v_waiting
+    from public.reward_cashout_month_earnings(p_profile, acc.test) m
+   where m.month < cur_month
+     and not exists (select 1 from public.reward_cashout_months r
                       where r.profile_id = p_profile and r.month = m.month and r.status <> 'released')
      and not exists (select 1 from public.reward_payments p
                       where p.profile_id = p_profile and p.month = m.month
@@ -240,18 +271,27 @@ begin
                     where profile_id = p_profile and test = acc.test and status = 'paid'
                       and coalesce(reference, '') !~ '^WD-[0-9]{6}-[2-9A-HJ-NP-Z]{4}$'), 0)::int   -- not counted twice
     into paid;
-  select coalesce((select sum(amount) from public.reward_cashout_months
-                    where profile_id = p_profile and test = acc.test and status = 'disqualified'), 0)::int
-       + coalesce((select sum(e.amount) from public.reward_activity_events e
-                     join public.reward_payments p on p.profile_id = e.profile_id and p.month = e.month
-                    where e.profile_id = p_profile and e.test = acc.test and p.status = 'rejected'), 0)::int
-    into refused;
+  -- refused per month, one figure each: a month refused in a monthly review or disqualified with a withdrawal
+  -- counts in full; a month settled by a monthly review for less than was earned counts the difference; otherwise
+  -- the rewards of rejected referrals
+  select coalesce(sum(case
+           when rv.status = 'rejected' and not rv.settled then me.gross
+           when rv.status in ('approved','paid') and not rv.settled then greatest(me.gross - rv.approved_amount, 0)
+           when exists (select 1 from public.reward_cashout_months d
+                         where d.profile_id = p_profile and d.month = me.month and d.status = 'disqualified') then me.gross
+           else me.refused end), 0)::int
+    into refused
+    from public.reward_cashout_month_earnings(p_profile, acc.test) me
+    left join lateral (select p.status, p.approved_amount,
+                              coalesce(p.reference, '') ~ '^WD-[0-9]{6}-[2-9A-HJ-NP-Z]{4}$' as settled
+                         from public.reward_payments p
+                        where p.profile_id = p_profile and p.month = me.month) rv on true;
 
   return jsonb_build_object(
     'eligible', cardinality(reasons) = 0, 'reasons', to_jsonb(reasons), 'today', today, 'month', cur_month,
     'joined_on', joined_on, 'eligible_on', eligible_on,
     'days_left', case when eligible_on is null then null else greatest(eligible_on - today, 0) end,
-    'months', v_months, 'amount', v_amount, 'open_request', open_req, 'live', cs.live_requests, 'test', acc.test,
+    'months', v_months, 'amount', v_amount, 'waiting_months', v_waiting, 'open_request', open_req, 'live', cs.live_requests, 'test', acc.test,
     'min_days', cs.min_days,
     'totals', jsonb_build_object('earned', earned_all, 'current_month', earned_now, 'available', v_amount,
                                  'pending', pending, 'approved', approved, 'paid', paid, 'refused', refused,
@@ -320,6 +360,20 @@ end $$;
 
 -- ============================================================================ owner decisions
 
+-- True when a reserved month's net verified earnings no longer equal the reserved amount (for example the owner
+-- rejected a referral after the request) or a referral reward in it is awaiting review again. Such a request must
+-- be rejected and requested again, so nothing that is no longer payable is ever approved or paid.
+create or replace function public.reward_cashout_earnings_changed(p_id bigint) returns boolean
+language sql stable set search_path = public as $$
+  select exists (
+    select 1
+      from public.reward_cashout_months rm
+      join public.reward_cashout_requests rq on rq.id = rm.request_id
+      left join public.reward_cashout_month_earnings(rq.profile_id, rq.test) me on me.month = rm.month
+     where rm.request_id = p_id and rm.status = 'reserved'
+       and (me.month is null or me.net <> rm.amount or me.awaiting > 0))
+$$;
+
 -- p_action: 'review' (Under review) | 'approve' | 'hold' | 'reject'. Approving never moves money; it needs the
 -- owner's confirmation of eligibility and of the bank beneficiary name. Hold and reject need a reason.
 -- p_disqualify (reject only): the covered earnings stay blocked (an auditable disqualification) instead of being
@@ -363,6 +417,13 @@ begin
     select coalesce(sum(amount), 0) into reserved from public.reward_cashout_months
      where request_id = p_id and status = 'reserved';
     if reserved <> req.amount then raise exception 'reservation_mismatch'; end if;
+    -- withdrawal checks are recorded on the request only; the player's general eligibility verification is NOT
+    -- changed here. The existing payment rules need it, so a real request needs it to be verified already.
+    if not req.test and coalesce((select verification from public.reward_accounts
+                                   where profile_id = req.profile_id), '') <> 'verified' then
+      raise exception 'account_not_verified';
+    end if;
+    if public.reward_cashout_earnings_changed(p_id) then raise exception 'earnings_changed'; end if;
   end if;
 
   perform set_config('we.cashout', 'on', true);
@@ -376,13 +437,6 @@ begin
          decided_by = p_actor, decided_at = now(), updated_by = p_actor
    where id = p_id
   returning * into req;
-  if new_status = 'approved' and not req.test then
-    -- the owner confirmed eligibility: the account counts as verified (needed by the reward_payments rules)
-    update public.reward_accounts
-       set verification = 'verified',
-           verification_note = coalesce(verification_note, 'Verified by the owner for withdrawal ' || req.reference)
-     where profile_id = req.profile_id and verification <> 'verified';
-  end if;
   if new_status = 'rejected' then
     update public.reward_cashout_months
        set status = case when coalesce(p_disqualify, false) then 'disqualified' else 'released' end
@@ -419,6 +473,11 @@ begin
     raise exception 'payouts_disabled';
   end if;
   if p_amount is distinct from req.amount then raise exception 'amount_mismatch'; end if;
+  if not req.test and coalesce((select verification from public.reward_accounts
+                                 where profile_id = req.profile_id), '') <> 'verified' then
+    raise exception 'account_not_verified';
+  end if;
+  if public.reward_cashout_earnings_changed(p_id) then raise exception 'earnings_changed'; end if;
   if p_payment_date is null then raise exception 'payment_date_required'; end if;
   if not req.test and p_payment_date > today then raise exception 'payment_date_in_future'; end if;
   if not req.test and p_payment_date < (req.approved_at at time zone 'Africa/Lagos')::date then
@@ -640,6 +699,8 @@ grant select, insert, update, delete on public.reward_owner_notifications to ser
 revoke execute on function public.reward_cashout_today(date)                                 from public, anon, authenticated;
 revoke execute on function public.reward_cashout_is_owner(text)                              from public, anon, authenticated;
 revoke execute on function public.reward_cashout_status(text, date)                          from public, anon, authenticated;
+revoke execute on function public.reward_cashout_month_earnings(text, boolean)               from public, anon, authenticated;
+revoke execute on function public.reward_cashout_earnings_changed(bigint)                     from public, anon, authenticated;
 revoke execute on function public.reward_cashout_request(text, text, jsonb, int, date, jsonb) from public, anon, authenticated;
 revoke execute on function public.reward_cashout_decide(bigint, text, text, text, boolean, boolean, boolean)
   from public, anon, authenticated;
@@ -648,6 +709,8 @@ revoke execute on function public.reward_cashout_set_fingerprint(bigint, text, t
 grant  execute on function public.reward_cashout_today(date)                                 to service_role;
 grant  execute on function public.reward_cashout_is_owner(text)                              to service_role;
 grant  execute on function public.reward_cashout_status(text, date)                          to service_role;
+grant  execute on function public.reward_cashout_month_earnings(text, boolean)               to service_role;
+grant  execute on function public.reward_cashout_earnings_changed(bigint)                     to service_role;
 grant  execute on function public.reward_cashout_request(text, text, jsonb, int, date, jsonb) to service_role;
 grant  execute on function public.reward_cashout_decide(bigint, text, text, text, boolean, boolean, boolean) to service_role;
 grant  execute on function public.reward_cashout_pay(bigint, int, date, text, text)          to service_role;

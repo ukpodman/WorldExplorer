@@ -38,6 +38,12 @@ ERRORS = {
     "invalid_fingerprint": "The bank account fingerprint is not valid.",
     "payouts_disabled": "Real payouts are switched off in the database (reward_cashout_settings.real_payouts = false). "
                         "Real requests cannot be approved or paid until you switch it on after legal review.",
+    "account_not_verified": "Verify this player's eligibility first in Participants (Eligibility verification = "
+                            "verified). Approving a withdrawal never changes that status by itself; the existing "
+                            "payment rules require it before a month is approved or paid.",
+    "earnings_changed": "The earnings covered by this request changed after it was submitted (for example a referral "
+                        "was rejected, or one is awaiting review). Reject this request — the earnings are released — "
+                        "and the player can request the correct net amount again.",
     "verify the participant": "The player's eligibility is not verified in Participants (status 'failed'?). Check the "
                               "account before recording the payment.",
 }
@@ -177,7 +183,8 @@ def _summary(d: dict, include_test: bool) -> None:
     pick = (lambda rows: rows) if include_test else (lambda rows: [r for r in rows if not r.get("test")])
     settings = d["settings"]
     f = withdrawals.summary(pick(d["requests"]), pick(d["payments"]), pick(d["events"]), pick(d["months"]),
-                            pick(d["reviews"]), settings.monthly_budget, settings.start_date, rewards.month_key())
+                            pick(d["reviews"]), settings.monthly_budget, settings.start_date, rewards.month_key(),
+                            referrals=d["referrals"])
     _tiles([("Total withdrawal requests", str(f["total"])), ("Pending review", str(f["pending_review"])),
             ("Under review", str(f["under_review"])), ("Approved", str(f["approved"]), "not paid yet"),
             ("On hold", str(f["on_hold"])), ("Rejected", str(f["rejected"])),
@@ -249,7 +256,7 @@ def _review(s, d: dict, req: dict) -> None:
                                  f"{'yes' if account.get('residence_confirmed') else 'no'} · eligibility "
                                  f"{account.get('verification', '')} (self-declared until you verify)"),
                 ("Rewards enrolment date", joined.astimezone(rewards.LAGOS).date().isoformat() if joined else "—"),
-                ("Total verified earnings", _naira(sum(int(e.get("amount") or 0) for e in events if int(e.get("amount") or 0) > 0))),
+                ("Total earned / net verified", _net_line(pid, req, d)),
                 ("Withdrawal amount", _naira(req["amount"])),
                 ("Earning months covered", ", ".join(f"{m['month']} {_naira(m['amount'])} ({m['status']})" for m in months)),
                 ("Requested", str(req.get("requested_at") or "")[:16].replace("T", " ") + " UTC"
@@ -260,6 +267,12 @@ def _review(s, d: dict, req: dict) -> None:
                 ("Bank fingerprint", "recorded" if req.get("bank_fingerprint") else "not recorded"),
                 ("Decision", f"{req.get('decided_by') or '—'} {str(req.get('decided_at') or '')[:10]}"
                              + (f" · {req['decision_note']}" if req.get("decision_note") else "")))) + "</dl>")
+        if req["status"] not in ("paid", "rejected"):
+            if not req.get("test") and account.get("verification") != "verified":
+                st.warning("Eligibility is not verified for this player yet (" + str(account.get("verification"))
+                           + "). Verify it in Participants before approving; this withdrawal does not change it.")
+            if withdrawals.earnings_changed(req, d["months"], d["events"], d["referrals"]):
+                st.error(ERRORS["earnings_changed"])
         for flag in flags:
             st.warning(flag)
         if not flags:
@@ -275,6 +288,16 @@ def _review(s, d: dict, req: dict) -> None:
             return
         _fingerprint(s, req)
         _actions(s, req)
+
+
+def _net_line(pid: str, req: dict, d: dict) -> str:
+    earnings = withdrawals.month_earnings(pid, bool(req.get("test")), d["events"], d["referrals"])
+    gross = sum(m["gross"] for m in earnings.values())
+    refused = sum(m["refused"] for m in earnings.values())
+    waiting = sum(m["awaiting"] for m in earnings.values())
+    return (f"{_naira(gross)} earned · {_naira(gross - refused)} net verified"
+            + (f" · {_naira(refused)} from rejected referrals deducted" if refused else "")
+            + (f" · {_naira(waiting)} of referral rewards awaiting your review" if waiting else ""))
 
 
 def _fingerprint(s, req: dict) -> None:
@@ -412,7 +435,8 @@ def _pay(s, req: dict, real_locked: bool) -> None:
 def _accounting(d: dict, include_test: bool) -> None:
     pick = (lambda rows: rows) if include_test else (lambda rows: [r for r in rows if not r.get("test")])
     st.markdown("**By earning month** — liabilities stay in the month they were earned")
-    earning = withdrawals.by_earning_month(pick(d["events"]), pick(d["months"]), pick(d["requests"]), pick(d["reviews"]))
+    earning = withdrawals.by_earning_month(pick(d["events"]), pick(d["months"]), pick(d["requests"]), pick(d["reviews"]),
+                                           referrals=d["referrals"])
     _table(earning, "No earnings yet.")
     st.markdown("**By payment month** — cash actually transferred")
     cash = withdrawals.by_payment_month(pick(d["payments"]), pick(d["reviews"]))
@@ -425,9 +449,12 @@ def _accounting(d: dict, include_test: bool) -> None:
     with st.expander("Definitions"):
         st.markdown("- **Earning month**: when the player earned the reward. **Withdrawal month**: when they requested "
                     "payment. **Payment month**: when you transferred the money.\n"
+                    "- **Net verified earnings**: rewards earned minus rewards of referrals you rejected. A month with "
+                    "a referral reward awaiting your review is not withdrawable until you approve or reject it.\n"
                     "- **Requested**: held by a request awaiting review or on hold. **Approved, awaiting payment**: "
-                    "approved but not marked as paid. **Refused**: disqualified with a rejected request, or rejected "
-                    "in a monthly review.\n"
+                    "approved but not marked as paid. **Refused**: rewards of rejected referrals, a month disqualified "
+                    "with a rejected request or rejected in a monthly review, or the part a monthly review did not "
+                    "approve.\n"
                     "- **Remaining budget**: monthly budget × programme months so far − rewards earned + refused "
                     "rewards. An earned reward is a liability until it is paid or refused, so it is counted once.\n"
                     "- A rejected request without disqualification releases its months: the earnings become available "

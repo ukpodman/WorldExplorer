@@ -16,8 +16,13 @@ Nothing in this setup changes your existing tables, rewards, referrals or paymen
    * they joined the rewards programme (18+ and living in Nigeria are self-declared when joining);
    * at least **30 calendar days** have passed since their **first enrolment** (Nigeria time). Logging in again does not
      restart the count;
-   * they have earnings from **completed calendar months** that are not already requested, approved, paid, held or
-     refused. The current month is never included;
+   * they have **net verified earnings** from **completed calendar months** that are not already requested,
+     approved, paid, held or refused. The current month is never included. "Net verified" means:
+     * rewards for referrals you **rejected** are deducted (earned rewards are never negative or edited, so a rejected
+       referral is the deduction);
+     * a month with a referral reward still **awaiting your review** waits until you approve or reject that referral.
+       The player sees that it is being checked;
+     * a month is never below zero, and a request is never ₦0 or negative;
    * they have no other request in progress;
    * for real players, live withdrawals are switched on (step 5).
 2. **Whole balance only.** A request always covers the full available balance, for example September ₦650 +
@@ -53,8 +58,18 @@ Nothing in this setup changes your existing tables, rewards, referrals or paymen
      existing rules for that table still apply. Your existing Payments tab and Overview figures therefore show it.
      `reward_cashout_payments` keeps the bank transfer itself, because one transfer can cover several months. Reports
      count each payment once.
-   * Approving a real request also marks the player's eligibility as **verified**, because you confirmed it. The
-     existing payment rules require this.
+   * **Verification stays separate.**
+     * The withdrawal's own checks (eligibility confirmed, beneficiary name verified, who approved it and when) are
+       stored on the request.
+     * Approving a withdrawal **never changes the player's general eligibility verification**
+       (`reward_accounts.verification`).
+     * Your existing payment rules require that verification before a month is approved or paid. So for a real
+       request, first verify the player in **Participants** (Eligibility verification = verified). Otherwise the
+       approval is refused with that explanation.
+     * Test requests do not need it.
+   * **Earnings re-checked.** At approval and again at "Mark as paid", the database checks that each covered month
+     still has exactly the reserved net amount. If you rejected a referral in between, the request is refused with
+     "earnings changed": reject it, and the player can request the correct amount.
 6. **The player** follows the request on 💰 My Rewards. Its status goes from Pending Review to Under Review or On Hold,
    then to Approved — Awaiting Payment, and finally to Paid (or Rejected). Their history lists every request.
 

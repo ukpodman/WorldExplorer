@@ -284,6 +284,11 @@ def section(s, who: dict, account: dict) -> None:
         if months and not open_req:
             st.caption(t("A withdrawal covers your whole available balance from completed months: {period}.",
                          period=withdrawals.period_label([m["month"] for m in months], language())))
+        waiting = status.get("waiting_months") or []
+        if waiting:
+            st.caption(t("Earnings from {period} are still being checked (a friend's invitation is awaiting review) "
+                         "and become available afterwards.",
+                         period=withdrawals.period_label(list(waiting), language())))
         if current:
             st.caption(t("This month's {amount} becomes available after the month ends (Nigeria time).",
                          amount=_naira(current)))

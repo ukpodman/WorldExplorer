@@ -4212,6 +4212,12 @@
    "Requisitos",
    "申请条件",
    "Условия"
+  ],
+  "Earnings from {period} are still being checked (a friend's invitation is awaiting review) and become available afterwards.": [
+   "Die Belohnungen aus {period} werden noch geprüft (eine Einladung wartet auf Prüfung) und sind danach verfügbar.",
+   "Las ganancias de {period} aún se están revisando (una invitación está pendiente de revisión) y estarán disponibles después.",
+   "{period} 的收入仍在核查中（有一份邀请正在等待审核），审核后即可提取。",
+   "Заработок за {period} ещё проверяется (приглашение ожидает проверки) и станет доступен после этого."
   ]
  }
 }

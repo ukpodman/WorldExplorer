@@ -711,6 +711,16 @@ class MemoryStore(RewardsStore):
             "target": new.get("reference") or (f"request {new['request_id']}" if new.get("request_id") else "settings"),
             "old_value": dict(old) if old else None, "new_value": dict(new)})
 
+    def _payable_checks(self, req) -> None:
+        """Withdrawal approval never changes the player's general verification; real requests need it already
+        (the existing payment rules require it), and the reserved months must still be net verified earnings."""
+        account = self.account(req["profile_id"]) or {}
+        if not req["test"] and account.get("verification") != "verified":
+            raise StoreError("account_not_verified")
+        if withdrawals.earnings_changed(req, self.tables["reward_cashout_months"],
+                                        self.tables["reward_activity_events"], self.tables["user_referrals"]):
+            raise StoreError("earnings_changed")
+
     def _real_payouts(self) -> bool:
         return bool(self.tables["reward_cashout_settings"][0].get("real_payouts"))
 
@@ -724,7 +734,7 @@ class MemoryStore(RewardsStore):
                                       self.tables["reward_enrolments"], self.tables["reward_activity_events"],
                                       self.tables["reward_cashout_months"], self.tables["reward_payments"],
                                       self.tables["reward_cashout_requests"], self.tables["reward_cashout_payments"],
-                                      as_of=p_as_of)
+                                      as_of=p_as_of, referrals=self.tables["user_referrals"])
         except ValueError as error:
             raise StoreError(str(error)) from None
 
@@ -795,18 +805,14 @@ class MemoryStore(RewardsStore):
             raise StoreError("payouts_disabled")
         if new == "approved" and reserved != req["amount"]:
             raise StoreError("reservation_mismatch")
+        if new == "approved":
+            self._payable_checks(req)
         old, now, note = dict(req), _now(), (p_note or "").strip() or None
         req.update(status=new, decision_note=note or req.get("decision_note"), decided_by=p_actor, decided_at=now,
                    updated_by=p_actor, updated_at=now)
         if new == "approved":
             req.update(beneficiary_verified=True, eligibility_confirmed=True, approved_by=p_actor, approved_at=now)
-            if not req["test"]:   # the owner confirmed eligibility: the account counts as verified
-                for a in self.tables["reward_accounts"]:
-                    if a["profile_id"] == req["profile_id"] and a.get("verification") != "verified":
-                        old_account = dict(a)
-                        a.update(verification="verified", verification_note=a.get("verification_note")
-                                 or f"Verified by the owner for withdrawal {req['reference']}")
-                        self._audit("reward_accounts", "update", old_account, a)
+
         if new == "rejected":
             for m in self.tables["reward_cashout_months"]:
                 if m["request_id"] == req["id"] and m["status"] == "reserved":
@@ -827,6 +833,7 @@ class MemoryStore(RewardsStore):
             raise StoreError("payouts_disabled")
         if p_amount != req["amount"]:
             raise StoreError("amount_mismatch")
+        self._payable_checks(req)
         if not p_payment_date:
             raise StoreError("payment_date_required")
         pay_day = withdrawals.today(p_payment_date)

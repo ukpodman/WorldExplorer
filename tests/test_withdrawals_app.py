@@ -51,10 +51,13 @@ class WithdrawalAppTests(unittest.TestCase):
         self.addCleanup(patch.stop)
         return at
 
-    def player(self, pid="b" * 64, test=False, days_ago=45, live=True, name="Ade Player", real_payouts=True):
+    def player(self, pid="b" * 64, test=False, days_ago=45, live=True, name="Ade Player", real_payouts=True,
+               verified=True):
         s = self.s
         s.ensure_account(pid, "player@example.com", name, True, test)
         s.join(pid, M2)
+        if verified:                      # the owner verified eligibility in Participants (existing workflow)
+            s.update_account(pid, {"verification": "verified"})
         s.enrol(pid, CUR)
         stamp = (datetime.now(timezone.utc) - timedelta(days=days_ago)).isoformat()
         for e in s.tables["reward_enrolments"]:
@@ -196,6 +199,20 @@ class WithdrawalAppTests(unittest.TestCase):
         next(b for b in at.button if b.label == "Approve").click().run()
         self.assertTrue(any("real_payouts = false" in x.value for x in at.error))
         self.assertEqual(self.s.cashout_request(req["id"])["status"], "pending_review")
+
+    def test_unverified_player_cannot_be_approved_and_status_is_untouched(self):
+        pid = self.player(verified=False)
+        req = self.s.request_cashout(pid, "Ade Player", DECL, 850)
+        at = self.owner_tab(payouts=True)
+        next(b for b in at.button if b.key and b.key.startswith("rw_note_open_")).click().run()
+        self.assertTrue(any("not verified for this player yet" in w.value for w in at.warning))
+        for c in at.checkbox:
+            if c.label.startswith(("I confirmed the player's eligibility", "I verified that the bank account")):
+                c.check()
+        next(b for b in at.button if b.label == "Approve").click().run()
+        self.assertTrue(any("Verify this player's eligibility first in Participants" in x.value for x in at.error))
+        self.assertEqual(self.s.cashout_request(req["id"])["status"], "pending_review")
+        self.assertEqual(self.s.account(pid)["verification"], "provisional")
 
     def test_notifications_wait_for_the_owner_and_count_unread(self):
         a = self.player()

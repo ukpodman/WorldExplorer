@@ -101,19 +101,76 @@ def first_enrolment(enrolments: list[dict], test: bool):
     return min(stamps) if stamps else None
 
 
-def available_months(profile_id: str, test: bool, current_month: str, events: list[dict], reservations: list[dict],
-                     reviews: list[dict]) -> list[dict]:
-    """Earnings from completed months that no withdrawal holds and no monthly payment review approved, paid, held or
-    refused. The current (incomplete) month is never included."""
-    by_month: dict[str, int] = {}
+def month_earnings(profile_id: str, test: bool, events: list[dict], referrals: list[dict]) -> dict[str, dict]:
+    """Net verified earnings per month, exactly as reward_cashout_month_earnings() in the database.
+    Earned rewards are never negative or edited; the existing reduction is a REJECTED referral, whose reward stays
+    recorded but is not payable. gross = all rewards; refused = rewards of rejected referrals; net = gross − refused
+    (never below zero); awaiting = referral rewards whose referral is not approved or rejected yet (such a month is
+    not verified yet and waits for the owner's decision)."""
+    referral_status = {r.get("referred_id"): r.get("status") for r in referrals}
+    out: dict[str, dict] = {}
     for e in events:
-        if e.get("profile_id") == profile_id and bool(e.get("test")) == test and int(e.get("amount") or 0) > 0 \
-                and str(e["month"]) < current_month:
-            by_month[e["month"]] = by_month.get(e["month"], 0) + int(e["amount"])
+        amount = int(e.get("amount") or 0)
+        if e.get("profile_id") != profile_id or bool(e.get("test")) != test or amount <= 0:
+            continue
+        month = out.setdefault(e["month"], {"gross": 0, "refused": 0, "net": 0, "awaiting": 0})
+        month["gross"] += amount
+        if e.get("kind") == "referral":
+            state = referral_status.get(e.get("subject"))
+            if state == "rejected":
+                month["refused"] += amount
+            elif state in (None, "pending", "qualified"):
+                month["awaiting"] += amount
+    for month in out.values():
+        month["net"] = max(month["gross"] - month["refused"], 0)
+    return out
+
+
+def _open_months(profile_id: str, current_month: str, earnings: dict, reservations: list[dict],
+                 reviews: list[dict]) -> list[str]:
     held = {r["month"] for r in reservations if r.get("profile_id") == profile_id and r.get("status") != "released"}
     reviewed = {p["month"] for p in reviews if p.get("profile_id") == profile_id
                 and p.get("status") in ("approved", "paid", "on_hold", "rejected")}
-    return [{"month": m, "amount": a} for m, a in sorted(by_month.items()) if m not in held and m not in reviewed]
+    return [m for m in sorted(earnings) if m < current_month and m not in held and m not in reviewed]
+
+
+def available_months(profile_id: str, test: bool, current_month: str, events: list[dict], reservations: list[dict],
+                     reviews: list[dict], referrals: list[dict] | None = None) -> list[dict]:
+    """Net verified earnings from completed months that no withdrawal holds and no monthly payment review approved,
+    paid, held or refused. The current (incomplete) month is never included; a month with a referral reward still
+    awaiting review waits; a month is never negative."""
+    earnings = month_earnings(profile_id, test, events, referrals or [])
+    return [{"month": m, "amount": earnings[m]["net"]} for m in _open_months(profile_id, current_month, earnings,
+                                                                              reservations, reviews)
+            if earnings[m]["awaiting"] == 0 and earnings[m]["net"] > 0]
+
+
+def month_refused(profile_id: str, month: str, earning: dict, reservations: list[dict], reviews: list[dict]) -> int:
+    """One refused figure per person and month (never counted twice): a month refused in a monthly review or
+    disqualified with a withdrawal counts in full; a month a monthly review settled for less than was earned counts
+    the difference; otherwise the rewards of rejected referrals."""
+    review = next((p for p in reviews if p.get("profile_id") == profile_id and p.get("month") == month), None)
+    if review and not settled_by_withdrawal(review):
+        if review.get("status") == "rejected":
+            return earning["gross"]
+        if review.get("status") in ("approved", "paid"):
+            return max(earning["gross"] - int(review.get("approved_amount") or 0), 0)
+    if any(r.get("profile_id") == profile_id and r.get("month") == month and r.get("status") == "disqualified"
+           for r in reservations):
+        return earning["gross"]
+    return earning["refused"]
+
+
+def earnings_changed(request: dict, reservations: list[dict], events: list[dict], referrals: list[dict]) -> bool:
+    """True when a reserved month's net verified earnings no longer equal the reserved amount or a referral reward in
+    it awaits review again (the request must then be rejected and requested again)."""
+    earnings = month_earnings(request["profile_id"], bool(request.get("test")), events, referrals)
+    for r in reservations:
+        if r.get("request_id") == request["id"] and r.get("status") == "reserved":
+            month = earnings.get(r["month"])
+            if month is None or month["net"] != int(r["amount"]) or month["awaiting"] > 0:
+                return True
+    return False
 
 
 def public_request(row: dict | None) -> dict | None:
@@ -125,7 +182,7 @@ def public_request(row: dict | None) -> dict | None:
 
 def status(account: dict | None, settings: dict, enrolments: list[dict], events: list[dict], reservations: list[dict],
            reviews: list[dict], requests: list[dict], payments: list[dict], as_of=None,
-           now: datetime | None = None) -> dict:
+           now: datetime | None = None, referrals: list[dict] | None = None) -> dict:
     """The player's withdrawal card, exactly as reward_cashout_status() computes it in the database."""
     live, min_days = bool(settings.get("live_requests")), int(settings.get("min_days") or MIN_DAYS)
     if not account:
@@ -153,7 +210,11 @@ def status(account: dict | None, settings: dict, enrolments: list[dict], events:
         reasons.append("not_enrolled")
     elif day < eligible_on:
         reasons.append("waiting_period")
-    months = available_months(pid, test, current, events, reservations, reviews)
+    earnings = month_earnings(pid, test, events, referrals or [])
+    open_months = _open_months(pid, current, earnings, reservations, reviews)
+    months = [{"month": m, "amount": earnings[m]["net"]} for m in open_months
+              if earnings[m]["awaiting"] == 0 and earnings[m]["net"] > 0]
+    waiting = [m for m in open_months if earnings[m]["awaiting"] > 0]
     amount = sum(m["amount"] for m in months)
     if amount <= 0:
         reasons.append("no_earnings")
@@ -175,16 +236,13 @@ def status(account: dict | None, settings: dict, enrolments: list[dict], events:
         + sum(int(p.get("paid_amount") or 0) for p in reviews
               if p.get("profile_id") == pid and bool(p.get("test")) == test and p.get("status") == "paid"
               and not settled_by_withdrawal(p))
-    rejected_months = {p["month"] for p in reviews if p.get("profile_id") == pid and bool(p.get("test")) == test
-                       and p.get("status") == "rejected"}
-    refused = sum(int(r["amount"]) for r in reservations if r.get("profile_id") == pid
-                  and bool(r.get("test")) == test and r.get("status") == "disqualified") \
-        + sum(int(e["amount"]) for e in own_events if e["month"] in rejected_months)
+    refused = sum(month_refused(pid, m, earning, reservations, reviews) for m, earning in earnings.items())
     return {"eligible": not reasons, "reasons": reasons, "today": day.isoformat(), "month": current,
             "joined_on": joined_on.isoformat() if joined_on else None,
             "eligible_on": eligible_on.isoformat() if eligible_on else None,
             "days_left": max((eligible_on - day).days, 0) if eligible_on else None,
-            "months": months, "amount": amount, "open_request": public_request(open_request), "live": live,
+            "months": months, "amount": amount, "waiting_months": waiting,
+            "open_request": public_request(open_request), "live": live,
             "test": test, "min_days": min_days,
             "totals": {"earned": earned, "current_month": earned_now, "available": amount, "pending": pending,
                        "approved": approved, "paid": paid, "refused": refused,
@@ -278,8 +336,18 @@ def programme_months(start: str, until: str) -> list[str]:
     return out
 
 
+def _refused_by_person_month(events: list[dict], reservations: list[dict], reviews: list[dict],
+                             referrals: list[dict]) -> dict[tuple, int]:
+    out = {}
+    for pid, test in {(e.get("profile_id"), bool(e.get("test"))) for e in events}:
+        for month, earning in month_earnings(pid, test, events, referrals).items():
+            out[(pid, month)] = month_refused(pid, month, earning, reservations, reviews)
+    return out
+
+
 def summary(requests: list[dict], payments: list[dict], events: list[dict], reservations: list[dict],
-            reviews: list[dict], monthly_budget: int, start_date: str, current_month: str) -> dict:
+            reviews: list[dict], monthly_budget: int, start_date: str, current_month: str,
+            referrals: list[dict] | None = None) -> dict:
     """Withdrawal dashboard figures. Callers pass real rows only (test rows are never real liabilities).
 
     Remaining budget = monthly budget × programme months so far − rewards earned (an earned reward is owed until it is
@@ -290,9 +358,7 @@ def summary(requests: list[dict], payments: list[dict], events: list[dict], rese
     review_paid = sum(int(p.get("paid_amount") or 0) for p in reviews
                       if p.get("status") == "paid" and not settled_by_withdrawal(p))
     earned = sum(int(e.get("amount") or 0) for e in events if int(e.get("amount") or 0) > 0)
-    rejected_months = {(p["profile_id"], p["month"]) for p in reviews if p.get("status") == "rejected"}
-    refused = sum(int(r["amount"]) for r in reservations if r.get("status") == "disqualified") \
-        + sum(int(e.get("amount") or 0) for e in events if (e.get("profile_id"), e.get("month")) in rejected_months)
+    refused = sum(_refused_by_person_month(events, reservations, reviews, referrals or []).values())
     allocated = monthly_budget * len(programme_months(start_date, current_month))
     return {"total": len(requests), **count, "awaiting": awaiting, "paid_amount": cash_paid + review_paid,
             "paid_withdrawals": cash_paid, "paid_reviews": review_paid, "earned": earned, "refused": refused,
@@ -301,7 +367,8 @@ def summary(requests: list[dict], payments: list[dict], events: list[dict], rese
                                   if r.get("status") in ("pending_review", "under_review", "on_hold"))}
 
 
-def by_earning_month(events: list[dict], reservations: list[dict], requests: list[dict], reviews: list[dict]) -> list[dict]:
+def by_earning_month(events: list[dict], reservations: list[dict], requests: list[dict], reviews: list[dict],
+                     referrals: list[dict] | None = None) -> list[dict]:
     """Liabilities by the month in which rewards were earned (never by the month they were paid)."""
     status_of = {r["id"]: r["status"] for r in requests}
     rows: dict[str, dict] = {}
@@ -317,17 +384,14 @@ def by_earning_month(events: list[dict], reservations: list[dict], requests: lis
         target = row(r["month"])
         if r["status"] == "paid":
             target["Paid"] += int(r["amount"])
-        elif r["status"] == "disqualified":
-            target["Refused"] += int(r["amount"])
         elif r["status"] == "reserved":
             key = "Approved, awaiting payment" if status_of.get(r["request_id"]) == "approved" else "Requested"
             target[key] += int(r["amount"])
     for p in reviews:
         if p.get("status") == "paid" and not settled_by_withdrawal(p):
             row(p["month"])["Paid"] += int(p.get("paid_amount") or 0)
-        elif p.get("status") == "rejected":
-            row(p["month"])["Refused"] += sum(int(e.get("amount") or 0) for e in events
-                                              if e.get("profile_id") == p["profile_id"] and e.get("month") == p["month"])
+    for (pid, month), refused in _refused_by_person_month(events, reservations, reviews, referrals or []).items():
+        row(month)["Refused"] += refused
     for target in rows.values():
         target["Not yet requested"] = max(target["Earned (liability)"] - target["Requested"]
                                           - target["Approved, awaiting payment"] - target["Paid"] - target["Refused"], 0)

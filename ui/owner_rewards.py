@@ -560,21 +560,27 @@ def render() -> None:
                  "not affected.")
         return
     month = rewards.month_key()
-    tabs = st.tabs(["Overview", "Budget", "Participants", "Payments", "Referrals", "Fraud", "Settings", "Audit log"])
+    from . import owner_withdrawals   # 💳 Withdrawal Management (V21)
+    cash = hooks.cashout_store(for_tester=True)
+    waiting = owner_withdrawals.unread_count() if cash else 0     # the same unread number as the 🔔 alert
+    tabs = st.tabs([f"💳 Withdrawals ({waiting})", "Overview", "Budget", "Participants", "Payments", "Referrals",
+                    "Fraud", "Settings", "Audit log"])
     with tabs[0]:
-        _overview(d, month, include_test)
+        owner_withdrawals.render(include_test)
     with tabs[1]:
-        _budget(s, d, month)
+        _overview(d, month, include_test)
     with tabs[2]:
-        _participants(s, d, include_test)
+        _budget(s, d, month)
     with tabs[3]:
-        _payments(s, d, include_test)
+        _participants(s, d, include_test)
     with tabs[4]:
-        _referrals_tab(s, d, include_test)
+        _payments(s, d, include_test)
     with tabs[5]:
-        _fraud(d, include_test)
+        _referrals_tab(s, d, include_test)
     with tabs[6]:
-        _settings_tab(s, d)
+        _fraud(d, include_test)
     with tabs[7]:
+        _settings_tab(s, d)
+    with tabs[8]:
         _audit_tab(d)
     _test_tools(s)

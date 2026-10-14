@@ -379,7 +379,7 @@ class RewardsAppTests(unittest.TestCase):
         at.session_state["rw_owner_data"] = None
         at.run()
         [s for s in at.selectbox if s.label == "Status"][0].select("paid")
-        at.date_input[0].set_value(__import__("datetime").date(2026, 10, 20))
+        [d for d in at.date_input if d.label == "Payment date"][0].set_value(__import__("datetime").date(2026, 10, 20))
         at.text_input[[t.label for t in at.text_input].index("Transaction reference (optional)")].input("TRX-9")
         at.checkbox[[c.label for c in at.checkbox].index("I confirm this update (for Paid: the money was sent outside World Explorer)")].check()
         at.button[[b.label for b in at.button].index("Save payment update")].click().run()

@@ -566,3 +566,12 @@ On phones the usage-statistics notice now shows a short explanation after the qu
 It is translated into all five languages. The text fills the full width (2 lines in English and Chinese, 3 in German,
 Spanish and Russian on most phones) with Allow / No thanks on one row below. The tablet and desktop wording,
 header and map layout are unchanged. Nothing is ever turned on until the user taps Allow.
+
+### Deployed app showing old code (stale-code guard, build 2026-10-14.2)
+Cause: Streamlit keeps imported Python modules (and the compiled app.py) in memory and only reloads them when its file
+watcher sees a change. On the hosted app that did not happen when new code was pulled, so the server kept running the
+old ui/components.py (the V20/"Restore Working Header" markup, without the photo menu's Sign out) while styles.css,
+read from disk on each run, was already new. Old markup + new CSS = the scrambled phone header.
+Fix: app.py now compares the ui/ and core/ files on disk with the loaded ones on every run and reloads them if they
+changed; the stylesheet always comes from the same version as the running code; Settings shows "Version 2026-10-14.2".
+After deploying THIS update once, use Manage app → ⋮ → Reboot app (the running server still has the old app.py).

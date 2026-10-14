@@ -13,6 +13,31 @@ import streamlit as st
 
 st.set_page_config(page_title="World Explorer", page_icon="🌍", layout="wide")
 
+
+def _load_fresh_code() -> None:
+    """After a deploy, make sure this run uses the new ui/ and core/ code.
+
+    Streamlit keeps imported modules in memory and only drops them when its file watcher notices a change. On a
+    hosted app that does not always happen when the new code is pulled, so the server kept running old Python
+    while styles.css (read from disk) was already new, producing a broken mix. Here every run compares the
+    project's .py files on disk with the ones loaded; if any changed, the project modules are dropped from memory
+    so the imports below load the current code."""
+    import pathlib
+    import sys
+    root = pathlib.Path(__file__).resolve().parent
+    stamp = tuple(sorted((str(p), p.stat().st_mtime_ns, p.stat().st_size)
+                         for folder in ("ui", "core") for p in (root / folder).glob("*.py")))
+    previous = getattr(sys, "_world_explorer_code_stamp", None)
+    if previous is not None and previous != stamp:
+        for name, module in list(sys.modules.items()):
+            path = getattr(module, "__file__", None) or ""
+            if (name in ("ui", "core") or name.startswith(("ui.", "core."))) and path.startswith(str(root)):
+                sys.modules.pop(name, None)
+    sys._world_explorer_code_stamp = stamp
+
+
+_load_fresh_code()
+
 from core import accounts, analytics, cookies  # noqa: E402  (set_page_config must run first)
 from core.data import COUNTRIES  # noqa: E402
 from ui import rewards_hooks, state  # noqa: E402

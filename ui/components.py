@@ -33,6 +33,24 @@ def _stylesheet(version: int) -> str:
     return STYLES.read_text(encoding="utf-8")
 
 
+# Shown at the bottom of Settings so a deployed app can be checked against the delivered version.
+UI_BUILD = "2026-10-14.2"
+# The code and the stylesheet must always come from the same version. If this module on disk is newer than the copy
+# that is running (the server has not loaded the new Python yet), keep using the stylesheet that matches the running
+# code rather than mixing old markup with new styles, which is what scrambled the phone header after a deploy.
+_CODE_MTIME = Path(__file__).stat().st_mtime_ns
+_CSS_AT_IMPORT = STYLES.read_text(encoding="utf-8")
+
+
+def _current_stylesheet() -> str:
+    try:
+        if Path(__file__).stat().st_mtime_ns != _CODE_MTIME:
+            return _CSS_AT_IMPORT
+        return _stylesheet(STYLES.stat().st_mtime_ns)
+    except OSError:
+        return _CSS_AT_IMPORT
+
+
 # Follows Streamlit's *effective* theme (system setting, live changes, or an explicit Light/Dark choice in
 # Streamlit's settings): reads the background colour Streamlit gives its header and mirrors it as
 # <html data-we-theme="light|dark">, which assets/styles.css uses to switch its colour tokens.
@@ -94,7 +112,7 @@ GPC_SYNC = """<script data-we-gpc="1">
 
 
 def inject_styles() -> None:
-    html(f"<style>{_stylesheet(STYLES.stat().st_mtime_ns)}</style>")
+    html(f"<style>{_current_stylesheet()}</style>")
     st.html(THEME_SYNC + GPC_SYNC, unsafe_allow_javascript=True)  # one element: no extra layout gap
 
 
@@ -543,6 +561,7 @@ def _settings_body() -> None:
         st.rerun()
     st.caption(t("Signed-in profiles save online when the account connection is ready. Guest profiles last for this session."))
     data_sources()
+    st.caption(f"{t('Version')} {UI_BUILD}")
 
 
 def _settings_dialog() -> None:

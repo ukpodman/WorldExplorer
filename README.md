@@ -186,6 +186,22 @@ accounts). After uploading:
    `records` entry next to `points`, `rounds_finished` and `stats`. Older rows without it keep working.
 5. If the footer says "Saved profile not reachable yet", nothing is written until the profile has loaded.
 
+## Header account bar and Rewards page cards (2026-10-14)
+
+* **Header:** row 1 is the logo and Explore · Learn · Quiz · Badges. Row 2 is a compact account bar on the right:
+  **🔑 Sign in with Google** for visitors (the existing Google sign-in; guest progress and invitation links are kept),
+  or the signed-in person's photo and name with a small **💰 Rewards** button, then ☰. On phones: logo and ☰, then the
+  account bar (full-width Sign in, or photo + name with 💰 Rewards on the right), then the navigation. Long names are
+  shortened with "…". "All countries" is no longer shown beside the name (the exploration area setting is unchanged).
+* 💰 Rewards keeps the same visibility rules: owners and testers while the programme is off; signed-in people once it is
+  on (still also under Settings).
+* **My Rewards:** four separate reward cards (title, description, amount on their own lines; two per row on wider
+  screens, one per row on phones), the monthly limit below them, and clearer Join, progress and Invite sections. The
+  test warning now reads "Test mode — rewards are not payable."
+* **Styles after a deploy:** the stylesheet cache is now keyed by the file's version, so new styles appear after an
+  update without rebooting the app. (Before, an updated styles.css could stay cached until a reboot, which made new
+  pieces such as the reward rows and the 💰 button appear unstyled.)
+
 ## Referral & monthly rewards pilot (2026-10-13) — switched off
 
 * Built in but **off**: with the default secrets nobody sees it and nothing is recorded. Setup, launch steps,

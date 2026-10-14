@@ -3636,6 +3636,96 @@
    "Tu participación está en espera. Usa «Enviar comentarios» si crees que es un error.",
    "您的参与已暂缓。如果您认为有误，请使用“发送反馈”。",
    "Ваше участие приостановлено. Если вы считаете, что это ошибка, воспользуйтесь кнопкой «Отправить отзыв»."
+  ],
+  "Sign in with Google": [
+   "Mit Google anmelden",
+   "Iniciar sesión con Google",
+   "使用 Google 登录",
+   "Войти через Google"
+  ],
+  "Test mode — rewards are not payable. These records are marked as test records.": [
+   "Testmodus – Prämien werden nicht ausgezahlt. Diese Einträge sind als Test markiert.",
+   "Modo de prueba: las recompensas no se pagan. Estos registros están marcados como prueba.",
+   "测试模式——奖励不予支付。这些记录被标记为测试记录。",
+   "Тестовый режим — награды не выплачиваются. Эти записи помечены как тестовые."
+  ],
+  "Country exploration": [
+   "Länder entdecken",
+   "Exploración de países",
+   "国家探索",
+   "Изучение стран"
+  ],
+  "Complete a qualifying quiz or explore two countries.": [
+   "Beende eine zählende Quiz-Runde oder entdecke zwei Länder.",
+   "Completa un cuestionario válido o explora dos países.",
+   "完成一次符合条件的测验或探索两个国家。",
+   "Завершите засчитываемую викторину или изучите две страны."
+  ],
+  "Complete a qualifying quiz of at least five questions.": [
+   "Beende eine zählende Quiz-Runde mit mindestens fünf Fragen.",
+   "Completa un cuestionario válido de al menos cinco preguntas.",
+   "完成一次至少五道题的符合条件的测验。",
+   "Завершите засчитываемую викторину минимум из пяти вопросов."
+  ],
+  "Explore and learn about a new country.": [
+   "Entdecke ein neues Land und lerne es kennen.",
+   "Explora y aprende sobre un país nuevo.",
+   "探索并了解一个新国家。",
+   "Изучите новую страну и узнайте о ней больше."
+  ],
+  "Invite a friend who completes the qualifying activities.": [
+   "Lade jemanden ein, der die zählenden Aktivitäten abschließt.",
+   "Invita a un amigo que complete las actividades requeridas.",
+   "邀请一位完成符合条件活动的好友。",
+   "Пригласите друга, который выполнит нужные действия."
+  ],
+  "{amount} per day | Up to {cap} monthly": [
+   "{amount} pro Tag | bis zu {cap} im Monat",
+   "{amount} por día | hasta {cap} al mes",
+   "每天 {amount} | 每月最多 {cap}",
+   "{amount} за день | до {cap} в месяц"
+  ],
+  "{amount} per quiz | Up to {cap} monthly": [
+   "{amount} pro Quiz-Runde | bis zu {cap} im Monat",
+   "{amount} por cuestionario | hasta {cap} al mes",
+   "每次测验 {amount} | 每月最多 {cap}",
+   "{amount} за викторину | до {cap} в месяц"
+  ],
+  "{amount} per country | Up to {cap} monthly": [
+   "{amount} pro Land | bis zu {cap} im Monat",
+   "{amount} por país | hasta {cap} al mes",
+   "每个国家 {amount} | 每月最多 {cap}",
+   "{amount} за страну | до {cap} в месяц"
+  ],
+  "{amount} per successful referral | Up to {cap} monthly": [
+   "{amount} pro erfolgreicher Einladung | bis zu {cap} im Monat",
+   "{amount} por invitación exitosa | hasta {cap} al mes",
+   "每次成功邀请 {amount} | 每月最多 {cap}",
+   "{amount} за успешное приглашение | до {cap} в месяц"
+  ],
+  "Monthly earning limit: {cap}": [
+   "Monatliche Höchstgrenze: {cap}",
+   "Límite mensual de ganancias: {cap}",
+   "每月收入上限：{cap}",
+   "Месячный лимит наград: {cap}"
+  ],
+  "You can reach the monthly maximum without referrals. Opening the app or signing in never earns rewards.": [
+   "Den Monatshöchstbetrag erreichst du auch ohne Einladungen. Das Öffnen der App oder das Anmelden bringt nie Prämien.",
+   "Puedes alcanzar el máximo mensual sin invitaciones. Abrir la app o iniciar sesión nunca da recompensas.",
+   "无需邀请他人也能达到每月上限。仅打开应用或登录不会获得奖励。",
+   "Месячного максимума можно достичь и без приглашений. За открытие приложения или вход награды не начисляются."
+  ],
+  "Your declarations": [
+   "Deine Angaben",
+   "Tus declaraciones",
+   "您的声明",
+   "Ваши подтверждения"
+  ],
+  "Monthly rewards progress": [
+   "Prämien in diesem Monat",
+   "Progreso de recompensas del mes",
+   "本月奖励进度",
+   "Награды за месяц"
   ]
  }
 }

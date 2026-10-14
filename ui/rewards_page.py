@@ -21,6 +21,17 @@ KIND_RULE = {"active_day": "A day with a finished quiz or two countries explored
              "referral": "A friend whose new account completes the learning steps"}
 REFERRAL_STATUS = {"pending": "In progress", "qualified": "Completed — awaiting review", "approved": "Approved",
                    "rejected": "Not eligible"}
+# Information cards describing the existing earning rules (amounts and limits come from the programme settings).
+EARN_CARDS = {
+    "active_day": ("📅", "Active days", "Complete a qualifying quiz or explore two countries.",
+                   "{amount} per day | Up to {cap} monthly"),
+    "quiz": ("📝", "Quizzes", "Complete a qualifying quiz of at least five questions.",
+             "{amount} per quiz | Up to {cap} monthly"),
+    "country": ("🌍", "Country exploration", "Explore and learn about a new country.",
+                "{amount} per country | Up to {cap} monthly"),
+    "referral": ("🤝", "Referrals", "Invite a friend who completes the qualifying activities.",
+                 "{amount} per successful referral | Up to {cap} monthly"),
+}
 PAYMENT_TEXT = {"pending_review": "Pending review", "approved": "Approved", "paid": "Paid", "on_hold": "On hold",
                 "rejected": "Rejected"}
 
@@ -65,7 +76,7 @@ def _show_flash() -> None:
 
 def _banner(account: dict | None) -> None:
     if (account and account.get("test")) or (hooks.tester() and not hooks.enabled()):
-        st.info(t("Test mode: these records are marked as test records and are never payable."), icon="🧪")
+        st.warning(t("Test mode — rewards are not payable. These records are marked as test records."), icon="🧪")
     elif not hooks.payouts_active():
         st.info(t("Pilot preview: amounts are shown for information and are not payable until the programme is "
                   "officially launched."), icon="ℹ️")
@@ -74,26 +85,34 @@ def _banner(account: dict | None) -> None:
 
 
 def _earning_table(settings: rewards.Settings) -> None:
-    rows = "".join(
-        f'<div class="rw-earn-row"><b>{e(KIND_TEXT[k])}</b><span>{e(KIND_RULE[k])}</span>'
-        f'<em>{escape(_naira(settings.amount(k)))} · {e("up to {amount} a month", amount=_naira(settings.category_cap(k)))}</em></div>'
-        for k in rewards.KINDS)
-    html(f'<div class="rw-earn">{rows}</div>')
-    st.caption(t("Up to {cap} in total each month, reachable without inviting anyone. Opening the app or signing in "
-                 "never earns rewards.", cap=_naira(settings.monthly_cap)))
+    """Four separate reward cards (native Streamlit containers: title, description and amount on their own lines),
+    two per row where there is room and one per row on phones."""
+    for pair in (("active_day", "quiz"), ("country", "referral")):
+        for column, kind in zip(st.columns(2, gap="small"), pair):
+            icon, title, description, amounts = EARN_CARDS[kind]
+            with column, st.container(border=True, key=f"rw_card_{kind}"):
+                st.markdown(f"{icon} **{t(title)}**")
+                st.caption(t(description))
+                st.markdown("**" + t(amounts, amount=_naira(settings.amount(kind)),
+                                     cap=_naira(settings.category_cap(kind))) + "**")
+    with st.container(key="rw_limit"):
+        st.markdown("**" + t("Monthly earning limit: {cap}", cap=_naira(settings.monthly_cap)) + "**")
+        st.caption(t("You can reach the monthly maximum without referrals. Opening the app or signing in never earns "
+                     "rewards."))
 
 
 def _join_form(s, who: dict, ctx: dict) -> None:
     settings = ctx["settings"]
-    st.subheader(t("Join the rewards pilot"))
+    st.subheader("🎯 " + t("Join the rewards pilot"))
     _earning_table(settings)
-    with st.expander(t("Programme rules")):
+    with st.expander("📜 " + t("Programme rules")):
         st.caption(t("The programme rules are available in English."))
         st.markdown(TERMS.format(version=rewards.TERMS_VERSION, cap=_naira(settings.monthly_cap)))
     if settings.paused:
         st.warning(t("The rewards programme is paused. Your earned rewards are kept."))
         return
     with st.form("rewards_join", border=True):
+        st.markdown("**" + t("Your declarations") + "**")
         adult = st.checkbox(t("I am 18 years or older."), key="rw_adult")
         resident = st.checkbox(t("I live in Nigeria."), key="rw_resident")
         terms = st.checkbox(t("I have read and accept the programme rules."), key="rw_terms")
@@ -140,15 +159,16 @@ def _status_line(enrolment: dict | None, settings) -> None:
 def _month_card(events: list[dict], settings, ctx: dict) -> None:
     summary = rewards.summarize(events)
     total, cap = summary["total"], settings.monthly_cap
-    html(f'<div class="rw-month"><span>{e("This month")}</span>'
-         f'<b>{escape(_naira(total))} <small>/ {escape(_naira(cap))}</small></b></div>')
+    html(f'<div class="rw-month"><div class="rw-label">{e("This month")}</div>'
+         f'<div class="rw-total">{escape(_naira(total))} <small>/ {escape(_naira(cap))}</small></div></div>')
     st.progress(min(total / cap, 1.0) if cap else 0.0)
     rows = []
     for kind in rewards.KINDS:
         item = summary[kind]
-        rows.append(f'<div class="rw-cat"><span>{e(KIND_TEXT[kind])}</span>'
-                    f'<small>{item["count"]} / {settings.month_limit(kind)}</small>'
-                    f'<b>{escape(_naira(item["amount"]))} <small>/ {escape(_naira(settings.category_cap(kind)))}</small></b></div>')
+        rows.append(f'<div class="rw-cat"><div class="rw-cat-name">{e(KIND_TEXT[kind])}</div>'
+                    f'<div class="rw-cat-count">{item["count"]} / {settings.month_limit(kind)}</div>'
+                    f'<div class="rw-cat-amount">{escape(_naira(item["amount"]))} '
+                    f'<small>/ {escape(_naira(settings.category_cap(kind)))}</small></div></div>')
     html(f'<div class="rw-cats">{"".join(rows)}</div>')
     left = max(cap - total, 0)
     today = [x for x in events if str(x.get("day"))[:10] == ctx["day"] and int(x.get("amount") or 0) > 0]
@@ -203,7 +223,12 @@ def _leave(s, pid: str, month: str) -> None:
 
 
 def _referrals(s, account: dict, ctx: dict) -> None:
-    st.subheader(t("Invite friends"))
+    with st.container(border=True, key="rw_invite"):
+        _referrals_body(s, account)
+
+
+def _referrals_body(s, account: dict) -> None:
+    st.subheader("🤝 " + t("Invite friends"))
     code = account["referral_code"]
     link = hooks.referral_link(code)
     st.caption(t("Your personal invitation link (code {code}):", code=code))
@@ -220,7 +245,8 @@ def _referrals(s, account: dict, ctx: dict) -> None:
     done = sum(1 for r in mine if r["status"] in ("qualified", "approved"))
     pending = sum(1 for r in mine if r["status"] == "pending")
     html('<div class="rw-stats">'
-         + "".join(f'<div><b>{escape(str(v))}</b><span>{e(k)}</span></div>' for k, v in (
+         + "".join(f'<div class="rw-stat"><div class="rw-stat-value">{escape(str(v))}</div>'
+                   f'<div class="rw-stat-label">{e(k)}</div></div>' for k, v in (
              ("Link visits", len(visits)), ("Friends joined", len(mine)), ("Completed", done), ("In progress", pending),
              ("Earned from invitations", _naira(earned))))
          + "</div>")
@@ -281,7 +307,9 @@ def render() -> None:
     pid, month = who["profile_id"], ctx["month"]
     if account.get("membership") == "member":
         _status_line(ctx.get("enrolment"), ctx["settings"])
-        _month_card(s.events(pid, month), ctx["settings"], ctx)
+        with st.container(border=True, key="rw_progress"):
+            st.subheader("📊 " + t("Monthly rewards progress"))
+            _month_card(s.events(pid, month), ctx["settings"], ctx)
         _history(s, pid, month)
     elif account.get("membership") == "suspended":
         st.warning(t("Your participation is on hold. Please use “Send feedback” if you think this is a mistake."))

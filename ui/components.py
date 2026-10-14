@@ -17,7 +17,7 @@ from core.i18n import LANGUAGES
 from core.quiz import CATEGORIES
 
 from . import rewards_hooks, sound
-from .state import PAGES, country_formatter, formatter, navigate, open_settings, scope_label, t
+from .state import PAGES, country_formatter, formatter, navigate, open_settings, t
 
 STYLES = Path(__file__).resolve().parent.parent / "assets" / "styles.css"
 MAX_UPLOAD_BYTES = 2_000_000
@@ -28,7 +28,8 @@ def html(markup: str) -> None:
 
 
 @st.cache_resource(show_spinner=False)
-def _stylesheet() -> str:
+def _stylesheet(version: int) -> str:
+    """Cached per file version: an updated styles.css is picked up after a deploy without an app reboot."""
     return STYLES.read_text(encoding="utf-8")
 
 
@@ -89,7 +90,7 @@ GPC_SYNC = """<script data-we-gpc="1">
 
 
 def inject_styles() -> None:
-    html(f"<style>{_stylesheet()}</style>")
+    html(f"<style>{_stylesheet(STYLES.stat().st_mtime_ns)}</style>")
     st.html(THEME_SYNC + GPC_SYNC, unsafe_allow_javascript=True)  # one element: no extra layout gap
 
 
@@ -135,9 +136,10 @@ def status_chip(country: dict) -> str:
 # --------------------------------------------------------------------------- header
 
 def header() -> None:
+    """Row 1: brand and Explore · Learn · Quiz · Badges. Row 2 (account bar): Sign in with Google for visitors, or the
+    signed-in person's photo and name with 💰 Rewards, then ☰. On phones: brand and ☰, account bar, then navigation."""
     with st.container(key="app_header"):
-        show_rewards = rewards_hooks.visible()  # only when the programme is on, or for owners/testers
-        brand, nav, menu = st.columns([1.1, 1.6, .44 if show_rewards else .22], vertical_alignment="center")
+        brand, nav, account, menu = st.columns([1.1, 1.6, 1.2, .22], vertical_alignment="center")
         with brand, st.container(key="header_brand"):
             html('<div class="brand"><div class="brand-symbol" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 28 28" fill="none" '
                  'stroke="currentColor" stroke-width="1.4"><circle cx="14" cy="14" r="11"/>'
@@ -149,26 +151,64 @@ def header() -> None:
                 column.button(t(page), key=f"nav_{page}", width="stretch",
                               type="primary" if st.session_state.page == page else "secondary",
                               on_click=navigate, args=(page,))
-        with menu:
-            tools = st.container(key="header_tools", horizontal=True, gap="small") if show_rewards else st.container()
-            with tools:
-                if show_rewards:
-                    # A compact 💰 drawn by CSS; its accessible name is the (visually hidden) word "Rewards".
-                    st.button(t("Rewards"), key="rewards_menu", help=t("Rewards"), width="stretch",
-                              type="primary" if st.session_state.page == "Rewards" else "secondary",
-                              on_click=navigate, args=("Rewards",))
-                with st.container(key="header_menu"):
-                    # Shows a ☰ drawn by CSS; its accessible name is the (visually hidden) translated word "Settings".
-                    st.button(t("Settings"), key="settings_menu", help=t("Settings"), width="stretch",
-                              on_click=open_settings)
-        photo = st.session_state.profile_photo
-        avatar = (f'<img class="header-avatar" src="{escape(photo, quote=True)}" alt="">' if photo
-                  else '<span class="header-avatar default-avatar" aria-hidden="true">●</span>')
-        name = st.session_state.profile_name or t("Guest explorer")
-        html(f'<div class="profile-note">{avatar}<span>{escape(name)} · {escape(scope_label())}</span></div>')
+        with account, st.container(key="header_account", horizontal=True, vertical_alignment="center", gap="small"):
+            _account_bar()
+        with menu, st.container(key="header_menu"):
+            # Shows a ☰ drawn by CSS; its accessible name is the (visually hidden) translated word "Settings".
+            st.button(t("Settings"), key="settings_menu", help=t("Settings"), width="stretch", on_click=open_settings)
     # The flag is consumed here: the dialog survives its own reruns and closes on a full rerun.
     if st.session_state.pop("settings_open", False):
         _settings_dialog()
+
+
+def _avatar_html(who: dict, name: str) -> str:
+    """The uploaded profile photo, else the Google photo, else the first letter of the name."""
+    photo = st.session_state.profile_photo
+    if not photo:
+        picture = str(who.get("picture") or "")
+        photo = picture if picture.startswith("https://") else ""
+    if photo:
+        return (f'<img class="account-avatar" src="{escape(photo, quote=True)}" alt="" referrerpolicy="no-referrer">')
+    initial = escape((name.strip()[:1] or "?").upper())
+    return f'<span class="account-avatar account-initial" aria-hidden="true">{initial}</span>'
+
+
+def _account_bar() -> None:
+    who = accounts.identity()
+    if not who:
+        _header_sign_in()
+        return
+    name = (st.session_state.profile_name or str(who.get("name") or "")
+            or str(who.get("email") or "").split("@")[0]).strip()
+    html(f'<div class="account-chip">{_avatar_html(who, name)}<span class="account-name" title="{escape(name, quote=True)}">'
+         f'{escape(name)}</span></div>')
+    if rewards_hooks.visible():  # owners/testers while the programme is off; everyone signed in once it is on
+        st.button("💰 " + t("Rewards"), key="rewards_menu", width="content",
+                  type="primary" if st.session_state.page == "Rewards" else "secondary",
+                  on_click=navigate, args=("Rewards",))
+
+
+def _header_sign_in() -> None:
+    """Visible Google sign-in for visitors (the existing sign-in; guest progress is kept as in Settings)."""
+    ready = accounts.provider_ready("google")
+    note = (t("Sign in to save your profile and progress across visits. You can always play as a guest.") if ready
+            else t("Sign-in is not available right now. You can keep playing as a guest; progress lasts for this session."))
+    if st.session_state.get("signin_ready") == "google" and accounts.guest_has_progress():
+        cookie_script()
+        if st.button("🔑 " + t("Continue to Google"), key="header_signin_go", type="primary", width="content",
+                     disabled=not ready,
+                     help=t("Your guest progress ({points} points) will be added to your account after you sign in. "
+                            "An existing saved profile is never replaced.", points=f"{st.session_state.points:,}")):
+            if not accounts.login("google"):
+                st.toast(t("Sign-in could not start. You can keep playing as a guest."))
+        return
+    label = "🔑 " + t("Sign in with Google")
+    if accounts.guest_has_progress():
+        st.button(label, key="header_signin", type="primary", width="content", disabled=not ready, help=note,
+                  on_click=_begin_sign_in, args=("google",))
+    elif st.button(label, key="header_signin", type="primary", width="content", disabled=not ready, help=note):
+        if not accounts.login("google"):
+            st.toast(t("Sign-in could not start. You can keep playing as a guest."))
 
 
 # --------------------------------------------------------------------------- settings drawer

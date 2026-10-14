@@ -71,9 +71,12 @@ class RewardsAppTests(unittest.TestCase):
 
     def test_guest_sees_sign_in_prompt_when_enabled(self):
         at = self.app(rewards={"enabled": True}).run()
-        self.assertTrue([b for b in at.button if b.key == "rewards_menu"])
-        at.button(key="rewards_menu").click().run()
-        self.assertEqual(at.session_state["page"], "Rewards")
+        self.assertEqual([b for b in at.button if b.key == "rewards_menu"], [])   # header: Sign in, not Rewards
+        self.assertTrue([b for b in at.button if b.key == "header_signin"])
+        at.button(key="settings_menu").click().run()
+        self.assertTrue([b for b in at.button if b.key == "settings_rewards"])   # still reachable from Settings
+        at.session_state["page"] = "Rewards"
+        at.run()
         self.assertTrue(any("Sign in with Google" in i.value for i in at.info))
         self.assertTrue(any("not payable" in i.value for i in at.info))          # preview banner (payouts off)
         self.assertEqual([e.value for e in at.exception], [])
@@ -84,7 +87,7 @@ class RewardsAppTests(unittest.TestCase):
         at = self.app(who=OWNER, rewards={"enabled": False}, owner=True).run()
         self.assertTrue([b for b in at.button if b.key == "rewards_menu"])
         at.button(key="rewards_menu").click().run()
-        self.assertTrue(any("Test mode" in i.value for i in at.info))
+        self.assertTrue(any("Test mode — rewards are not payable" in w.value for w in at.warning))
         at.checkbox(key="rw_adult").check()
         at.checkbox(key="rw_resident").check()
         at.checkbox(key="rw_terms").check()
@@ -227,6 +230,53 @@ class RewardsAppTests(unittest.TestCase):
         at = self.app(who=OWNER, rewards={}, owner=True).run()
         at.button(key="settings_menu").click().run()
         self.assertTrue([b for b in at.button if b.key == "settings_rewards"])
+        self.assertEqual([e.value for e in at.exception], [])
+
+    # ---------------------------------------------------------------- header account bar
+
+    def test_header_sign_in_for_guests(self):
+        at = self.app().run()
+        signin = at.button(key="header_signin")
+        self.assertIn("Sign in with Google", signin.label)
+        self.assertTrue(signin.disabled)                        # no Google secrets in tests: shown, but disabled
+        self.assertEqual([b for b in at.button if b.key == "rewards_menu"], [])
+        html = " ".join(str(m.value) for m in at.markdown)
+        self.assertNotIn("Guest explorer", html)                # no fake name or picture
+        self.assertNotIn('class="account-chip"', html)
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_header_account_bar_when_signed_in(self):
+        who = dict(PLAYER, picture="https://lh3.googleusercontent.com/a/photo")
+        at = self.app(who=who, profile_name="Okechukwu Ugwuoke").run()
+        self.assertEqual([b for b in at.button if b.key in ("header_signin", "header_signin_go")], [])
+        chip = next(m.value for m in at.markdown if 'class="account-chip"' in str(m.value))
+        self.assertIn("Okechukwu Ugwuoke", chip)
+        self.assertIn("lh3.googleusercontent.com", chip)
+        self.assertNotIn("All countries", chip)
+        self.assertEqual([b for b in at.button if b.key == "rewards_menu"], [])   # programme off, not a tester
+        at = self.app(who=who, rewards={"tester_emails": ["player@example.com"]}).run()
+        self.assertIn("💰", at.button(key="rewards_menu").label)                 # testers see 💰 Rewards beside the name
+        self.assertTrue([b for b in at.button if b.key == "settings_menu"])
+
+    def test_signed_out_again_shows_sign_in(self):
+        at = self.app(who=PLAYER).run()
+        self.assertEqual([b for b in at.button if b.key == "header_signin"], [])
+        self.patch.stop()
+        with mock.patch("core.accounts.identity", return_value=None):
+            at.run()
+            self.assertTrue([b for b in at.button if b.key == "header_signin"])
+        self.patch.start()
+
+    def test_reward_information_cards(self):
+        store = self.store()
+        store.ensure_account(OWNER["profile_id"], None, None, False, True)
+        at = self.app(who=OWNER, rewards={}, owner=True, page="Rewards").run()
+        text = [str(m.value) for m in at.markdown] + [c.value for c in at.caption]
+        for expected in ("₦25 per day | Up to ₦500 monthly", "₦10 per quiz | Up to ₦300 monthly",
+                         "₦5 per country | Up to ₦200 monthly", "₦50 per successful referral | Up to ₦200 monthly",
+                         "Monthly earning limit: ₦1,000", "Complete a qualifying quiz or explore two countries.",
+                         "You can reach the monthly maximum without referrals."):
+            self.assertTrue(any(expected in x for x in text), expected)
         self.assertEqual([e.value for e in at.exception], [])
 
     # ---------------------------------------------------------------- owner management

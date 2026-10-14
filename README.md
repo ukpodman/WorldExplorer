@@ -186,6 +186,43 @@ accounts). After uploading:
    `records` entry next to `points`, `rounds_finished` and `stats`. Older rows without it keep working.
 5. If the footer says "Saved profile not reachable yet", nothing is written until the profile has loaded.
 
+## Header photo fix and Option A restored (2026-10-14)
+
+* **What went wrong after the first Option A deploy:** the page combined the new stylesheet with the previous
+  version's header markup (Streamlit Cloud can keep already-loaded Python modules while it picks up changed files;
+  an app reboot clears that). The previous header sized the photo only through a CSS class, `.account-avatar`, which
+  the new stylesheet no longer had, so the photo showed at its full size (96–256 px and more), stretching the header
+  and squeezing the buttons. Reproduced locally by running the previous code with the Option A stylesheet.
+* **Fix (works whichever version of the code or stylesheet a browser receives):**
+  * The account-menu photo is an `<img>` with its own `width="40" height="40"` and an inline 40px, round,
+    `object-fit:cover` style; it stays 40px even with no stylesheet at all.
+  * The photo on the header button is a fixed 34px circle (40px on phones) drawn by CSS; the picture's own size
+    never matters, and without the stylesheet only the name shows.
+  * Safety caps in the stylesheet: no image in the header or account menu can exceed 40px, and the class names
+    used by earlier versions (`.account-avatar`, `.header-avatar`) are capped at 32px.
+  * Uploaded photos are still cropped to 256×256 on upload (unchanged).
+* **After uploading this version, use “Reboot app”** in Streamlit Cloud (app menu → Reboot) so every module loads
+  from the same version.
+
+## Header: navy band and account menu (2026-10-14, Option A)
+
+* **Navy header band** across the top (Streamlit's toolbar joins it): logo · Explore Learn Quiz Badges (gold underline
+  on the active page) · account area, all on one row on computers.
+* **Signed in:** a gold-outlined 💰 Rewards pill (same visibility rules as before) and an account menu showing the photo
+  and name. The menu holds the photo, name, email and "Signed in with Google · progress saved", then My Rewards,
+  Profile and settings, Send feedback (when feedback is switched on) and **Sign out**. It opens on click or tap
+  (phones and tablets have no hover).
+* **Signed out:** a white "Sign in with Google" pill and ☰.
+* **Phones:** logo with a round 💰 and round photo button (signed in), or a full-row Sign in with ☰ (signed out), then
+  the four tabs inside the band. Tablets put the tabs on their own row under the logo.
+* **Usage-statistics question:** now one slim gold strip ("Help improve World Explorer? Share anonymous usage
+  statistics — no names, emails or answers." Allow / No thanks); on phones just the question and the two buttons.
+  It disappears once answered, as before.
+* **Less empty space above the logo:** Streamlit's toolbar strip (it only holds the ⋮ menu) is 44px instead of 60px,
+  the invisible stylesheet/script elements above the header no longer add layout gaps, and the band's padding is
+  tighter. The map now starts about 60px higher on phones and 20–30px higher on computers. On phones the consent
+  question and both buttons share one row, moving the buttons underneath only when the question would get too narrow.
+
 ## Header account bar and Rewards page cards (2026-10-14)
 
 * **Header:** row 1 is the logo and Explore · Learn · Quiz · Badges. Row 2 is a compact account bar on the right:

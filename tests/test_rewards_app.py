@@ -249,14 +249,50 @@ class RewardsAppTests(unittest.TestCase):
         who = dict(PLAYER, picture="https://lh3.googleusercontent.com/a/photo")
         at = self.app(who=who, profile_name="Okechukwu Ugwuoke").run()
         self.assertEqual([b for b in at.button if b.key in ("header_signin", "header_signin_go")], [])
-        chip = next(m.value for m in at.markdown if 'class="account-chip"' in str(m.value))
-        self.assertIn("Okechukwu Ugwuoke", chip)
-        self.assertIn("lh3.googleusercontent.com", chip)
-        self.assertNotIn("All countries", chip)
-        self.assertEqual([b for b in at.button if b.key == "rewards_menu"], [])   # programme off, not a tester
+        card = next(m.value for m in at.markdown if 'class="account-card"' in str(m.value))
+        self.assertIn("Okechukwu Ugwuoke", card)
+        self.assertIn("lh3.googleusercontent.com", card)
+        self.assertIn("player@example.com", card)
+        self.assertNotIn("All countries", card)
+        style = next(m.value for m in at.markdown if "--avatar: url(" in str(m.value))
+        self.assertIn("lh3.googleusercontent.com", style)               # the photo on the account-menu button
+        self.assertEqual([b for b in at.button if b.key in ("rewards_menu", "menu_rewards")], [])   # programme off
+        self.assertTrue([b for b in at.button if b.key == "menu_logout"])  # Sign out in the account menu
+        at.button(key="settings_menu").click().run()                      # Profile and settings opens Settings
+        self.assertTrue([b for b in at.button if b.key == "profile_logout"])
         at = self.app(who=who, rewards={"tester_emails": ["player@example.com"]}).run()
-        self.assertIn("💰", at.button(key="rewards_menu").label)                 # testers see 💰 Rewards beside the name
-        self.assertTrue([b for b in at.button if b.key == "settings_menu"])
+        self.assertIn("💰", at.button(key="rewards_menu").label)
+        at.button(key="menu_rewards").click().run()
+        self.assertEqual(at.session_state["page"], "Rewards")
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_profile_photo_size_is_fixed_by_the_markup(self):
+        """The photo in the account menu carries its own 40px size, so it cannot grow if the stylesheet is missing,
+        stale or from another version (the cause of the oversized photo after the first Option A deploy)."""
+        who = dict(PLAYER, picture="https://lh3.googleusercontent.com/a/photo=s96-c")
+        at = self.app(who=who).run()
+        card = next(m.value for m in at.markdown if 'class="account-card"' in str(m.value))
+        for needle in ('width="40"', 'height="40"', "max-width:40px", "max-height:40px", "border-radius:50%", "object-fit:cover"):
+            self.assertIn(needle, card)
+        import re
+        css = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        self.assertRegex(css, r"\.st-key-account_menu button::before \{[^}]*width:34px; height:34px; border-radius:50%")
+        self.assertRegex(css, r"\.st-key-app_header img, \.account-card img \{ max-width:40px !important; max-height:40px !important")
+        self.assertRegex(css, r"\.account-avatar, \.header-avatar \{ width:32px !important")
+
+    def test_sign_out_from_account_menu(self):
+        at = self.app(who=PLAYER).run()
+        with mock.patch("core.accounts.logout") as logout:
+            at.button(key="menu_logout").click().run()
+        logout.assert_called_once()
+
+    def test_initials_when_no_photo(self):
+        at = self.app(who=PLAYER, profile_name="Okechukwu Ugwuoke").run()
+        style = next(m.value for m in at.markdown if "--avatar: url(" in str(m.value))
+        self.assertIn("data:image/svg+xml;base64,", style)
+        import base64, re
+        svg = base64.b64decode(re.search(r"base64,([A-Za-z0-9+/=]+)", style).group(1)).decode()
+        self.assertIn(">OU<", svg)
 
     def test_signed_out_again_shows_sign_in(self):
         at = self.app(who=PLAYER).run()

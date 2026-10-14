@@ -38,6 +38,10 @@ def _stylesheet(version: int) -> str:
 # <html data-we-theme="light|dark">, which assets/styles.css uses to switch its colour tokens.
 THEME_SYNC = """<script data-we-theme-sync="1">
 (function () {
+  // Profile photos are drawn as CSS backgrounds; like the <img referrerpolicy> elsewhere, send no referrer.
+  if (!document.querySelector('meta[name="referrer"]')) {
+    var meta = document.createElement("meta"); meta.name = "referrer"; meta.content = "no-referrer"; document.head.appendChild(meta);
+  }
   if (window.__weThemeSync) { window.__weThemeSync(); return; }
   var root = document.documentElement, pending = false;
   function luminance(colour) {
@@ -136,10 +140,12 @@ def status_chip(country: dict) -> str:
 # --------------------------------------------------------------------------- header
 
 def header() -> None:
-    """Row 1: brand and Explore · Learn · Quiz · Badges. Row 2 (account bar): Sign in with Google for visitors, or the
-    signed-in person's photo and name with 💰 Rewards, then ☰. On phones: brand and ☰, account bar, then navigation."""
+    """Navy header band. Desktop: one row (brand · Explore Learn Quiz Badges · account). Signed in, the account area is
+    💰 Rewards and an account menu (photo + name) holding Rewards, Profile and settings, Send feedback and Sign out;
+    signed out, it is Sign in with Google and ☰. Phones: brand and account controls, then the navigation tabs."""
+    who = accounts.identity()
     with st.container(key="app_header"):
-        brand, nav, account, menu = st.columns([1.1, 1.6, 1.2, .22], vertical_alignment="center")
+        brand, nav, account = st.columns([1.1, 1.7, 1.2], vertical_alignment="center")
         with brand, st.container(key="header_brand"):
             html('<div class="brand"><div class="brand-symbol" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 28 28" fill="none" '
                  'stroke="currentColor" stroke-width="1.4"><circle cx="14" cy="14" r="11"/>'
@@ -152,40 +158,81 @@ def header() -> None:
                               type="primary" if st.session_state.page == page else "secondary",
                               on_click=navigate, args=(page,))
         with account, st.container(key="header_account", horizontal=True, vertical_alignment="center", gap="small"):
-            _account_bar()
-        with menu, st.container(key="header_menu"):
-            # Shows a ☰ drawn by CSS; its accessible name is the (visually hidden) translated word "Settings".
-            st.button(t("Settings"), key="settings_menu", help=t("Settings"), width="stretch", on_click=open_settings)
+            if who:
+                _account_menu(who)
+            else:
+                _header_sign_in()
+                with st.container(key="header_menu"):
+                    # Shows a ☰ drawn by CSS; its accessible name is the (visually hidden) translated word "Settings".
+                    st.button(t("Settings"), key="settings_menu", help=t("Settings"), on_click=open_settings)
     # The flag is consumed here: the dialog survives its own reruns and closes on a full rerun.
     if st.session_state.pop("settings_open", False):
         _settings_dialog()
 
 
-def _avatar_html(who: dict, name: str) -> str:
-    """The uploaded profile photo, else the Google photo, else the first letter of the name."""
-    photo = st.session_state.profile_photo
-    if not photo:
-        picture = str(who.get("picture") or "")
-        photo = picture if picture.startswith("https://") else ""
-    if photo:
-        return (f'<img class="account-avatar" src="{escape(photo, quote=True)}" alt="" referrerpolicy="no-referrer">')
-    initial = escape((name.strip()[:1] or "?").upper())
-    return f'<span class="account-avatar account-initial" aria-hidden="true">{initial}</span>'
-
-
-def _account_bar() -> None:
-    who = accounts.identity()
-    if not who:
-        _header_sign_in()
-        return
-    name = (st.session_state.profile_name or str(who.get("name") or "")
+def _display_name(who: dict) -> str:
+    return (st.session_state.profile_name or str(who.get("name") or "")
             or str(who.get("email") or "").split("@")[0]).strip()
-    html(f'<div class="account-chip">{_avatar_html(who, name)}<span class="account-name" title="{escape(name, quote=True)}">'
-         f'{escape(name)}</span></div>')
+
+
+def _avatar_url(who: dict, name: str) -> str:
+    """The uploaded profile photo, else the Google photo, else a circle with the person's initials."""
+    photo = st.session_state.profile_photo
+    if photo:
+        return photo
+    picture = str(who.get("picture") or "")
+    if picture.startswith("https://"):
+        return picture
+    initials = "".join(part[:1] for part in name.split()[:2]).upper() or "?"
+    svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#247C80"/>'
+           f'<text x="20" y="25.5" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="15" '
+           f'font-weight="700" fill="#fff">{escape(initials)}</text></svg>')
+    return "data:image/svg+xml;base64," + base64.b64encode(svg.encode()).decode()
+
+
+AVATAR_PX = 40
+
+
+def _avatar_img(url: str) -> str:
+    """A round photo whose size is fixed by its own attributes and inline style, so it can never grow, even if the
+    stylesheet is missing, stale or does not match this code (the cause of the oversized photo after a deploy)."""
+    return (f'<img class="account-card-avatar" src="{escape(url, quote=True)}" width="{AVATAR_PX}" height="{AVATAR_PX}" '
+            f'alt="" referrerpolicy="no-referrer" style="width:{AVATAR_PX}px;height:{AVATAR_PX}px;max-width:{AVATAR_PX}px;'
+            f'max-height:{AVATAR_PX}px;border-radius:50%;object-fit:cover;flex:0 0 {AVATAR_PX}px;display:block">')
+
+
+def _menu_go(page: str) -> None:
+    navigate(page)
+
+
+def _account_menu(who: dict) -> None:
+    name = _display_name(who)
+    avatar = _avatar_url(who, name).replace('"', "%22").replace("\n", "")
+    # The photo is drawn by CSS on the account-menu button (a Streamlit button label cannot hold an image), as a
+    # fixed 34px circle: its size never depends on the photo, and without the stylesheet only the name shows.
+    html(f'<style>.st-key-account_menu button {{ --avatar: url("{avatar}"); }}</style>')
     if rewards_hooks.visible():  # owners/testers while the programme is off; everyone signed in once it is on
-        st.button("💰 " + t("Rewards"), key="rewards_menu", width="content",
+        st.button("💰 " + t("Rewards"), key="rewards_menu", help=t("Rewards"),
                   type="primary" if st.session_state.page == "Rewards" else "secondary",
                   on_click=navigate, args=("Rewards",))
+    with st.popover(name, key="account_menu"):
+        email = str(who.get("email") or "")
+        saved = accounts.connection_state() == "saved"
+        html(f'<div class="account-card">{_avatar_img(_avatar_url(who, name))}<div class="account-card-text"><div class="account-card-name">{escape(name)}</div>'
+             f'<div class="account-card-email">{escape(email)}</div>'
+             f'<div class="account-card-status">{e("Signed in with Google")}'
+             f'{(" · " + e("progress saved")) if saved else ""}</div></div></div>')
+        if rewards_hooks.visible():
+            st.button("💰 " + t("My Rewards"), key="menu_rewards", width="stretch", type="tertiary",
+                      on_click=_menu_go, args=("Rewards",))
+        st.button(t("Profile and settings"), key="settings_menu", icon=":material/person:", width="stretch",
+                  type="tertiary", on_click=open_settings)
+        if analytics.config().get("enabled") and accounts.storage_ready():
+            if st.button(t("Send feedback"), key="menu_feedback", icon=":material/chat:", width="stretch", type="tertiary"):
+                st.dialog(t("Send feedback"), width="small")(_feedback_body)()
+        with st.container(key="menu_signout"):
+            if st.button(t("Sign out"), key="menu_logout", icon=":material/logout:", width="stretch", type="tertiary"):
+                accounts.logout()
 
 
 def _header_sign_in() -> None:
@@ -349,7 +396,7 @@ def consent_bar() -> None:
         return
     with st.container(key="consent_bar", horizontal=True, vertical_alignment="center"):
         html(f'<div class="consent-text"><b>{e("Help improve World Explorer?")}</b> '
-             f'{e("Allow anonymous usage statistics for our pilot: visits and finished rounds, with a random id. No names, emails or answers. You can change this in Settings.")}</div>')
+             f'<span>{e("Share anonymous usage statistics — no names, emails or answers.")}</span></div>')
         with st.container(key="consent_actions", horizontal=True):
             st.button(t("Allow"), key="consent_allow", type="primary", on_click=analytics.grant)
             st.button(t("No thanks"), key="consent_deny", on_click=analytics.deny)

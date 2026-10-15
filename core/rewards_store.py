@@ -15,17 +15,20 @@ returns the stored row so the app always shows what was really recorded.
 from __future__ import annotations
 
 import json
+import re
 import threading
 import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 
-from core import rewards
+from core import rewards, withdrawals
 from core.rewards import Settings
 
 TABLES = ("reward_program_settings", "reward_accounts", "reward_enrolments", "reward_activity_events",
           "user_referrals", "reward_referral_visits", "reward_payments", "reward_audit_log")
+CASHOUT_TABLES = ("reward_cashout_settings", "reward_cashout_requests", "reward_cashout_months",
+                  "reward_cashout_payments", "reward_owner_notifications")   # supabase/withdrawals_migration.sql
 PAGE = 1000
 
 
@@ -233,10 +236,88 @@ class RewardsStore:
 
     def clear_test_data(self, actor: str) -> None:
         """Remove owner/tester preview records (never real ones; the database refuses those)."""
+        if self.cashout_health() == "ok":   # withdrawal test records first (they refer to accounts)
+            for table in ("reward_owner_notifications", "reward_cashout_payments", "reward_cashout_months",
+                          "reward_cashout_requests"):
+                self.delete(table, {"test": True})
         for table in ("reward_payments", "reward_activity_events", "user_referrals", "reward_referral_visits",
                       "reward_enrolments"):
             self.delete(table, {"test": True})
         self.log(actor, "test_data_cleared")
+
+    # ---- cash withdrawals (supabase/withdrawals_migration.sql; the database functions decide)
+    @staticmethod
+    def _one(result):
+        if isinstance(result, list):
+            return result[0] if result else None
+        return result
+
+    def cashout_health(self) -> str:
+        """'ok', 'missing_tables' (the withdrawals migration has not been run) or 'error'."""
+        try:
+            self.select("reward_cashout_settings", {"id": 1}, limit=1)
+            return "ok"
+        except StoreError as error:
+            return "missing_tables" if "missing" in str(error) or "does not exist" in str(error) else "error"
+        except Exception:
+            return "error"
+
+    def cashout_settings(self) -> dict:
+        rows = self.select("reward_cashout_settings", {"id": 1}, limit=1)
+        return rows[0] if rows else {"live_requests": False, "min_days": withdrawals.MIN_DAYS, "owner_emails": []}
+
+    def cashout_status(self, profile_id: str, as_of: str | None = None) -> dict:
+        """Eligibility, available balance and totals for one player (as_of: simulated date, test accounts only)."""
+        return self._one(self.rpc("reward_cashout_status", {"p_profile": profile_id, "p_as_of": as_of})) or {}
+
+    def request_cashout(self, profile_id: str, legal_name: str, declarations: dict, expected_amount: int,
+                        as_of: str | None = None, flags: list | None = None) -> dict:
+        return self._one(self.rpc("reward_cashout_request", {
+            "p_profile": profile_id, "p_legal_name": legal_name, "p_declarations": declarations,
+            "p_expected_amount": int(expected_amount), "p_as_of": as_of, "p_flags": flags or []}))
+
+    def decide_cashout(self, request_id: int, action: str, actor: str, note: str | None = None,
+                       beneficiary: bool = False, eligibility: bool = False, disqualify: bool = False) -> dict:
+        return self._one(self.rpc("reward_cashout_decide", {
+            "p_id": int(request_id), "p_action": action, "p_actor": actor, "p_note": note,
+            "p_beneficiary_verified": bool(beneficiary), "p_eligibility_confirmed": bool(eligibility),
+            "p_disqualify": bool(disqualify)}))
+
+    def pay_cashout(self, request_id: int, amount: int, payment_date: str, reference: str | None, actor: str) -> dict:
+        return self._one(self.rpc("reward_cashout_pay", {
+            "p_id": int(request_id), "p_amount": int(amount), "p_payment_date": payment_date,
+            "p_reference": reference, "p_actor": actor}))
+
+    def fingerprint_cashout(self, request_id: int, fingerprint: str, actor: str) -> int:
+        return int(self._one(self.rpc("reward_cashout_set_fingerprint", {
+            "p_id": int(request_id), "p_fingerprint": fingerprint, "p_actor": actor})) or 0)
+
+    def cashout_requests(self, profile_id: str | None = None) -> list[dict]:
+        return self.select("reward_cashout_requests", {"profile_id": profile_id} if profile_id else None,
+                           order="requested_at.desc")
+
+    def cashout_request(self, request_id: int) -> dict | None:
+        rows = self.select("reward_cashout_requests", {"id": int(request_id)}, limit=1)
+        return rows[0] if rows else None
+
+    def cashout_months(self, profile_id: str | None = None) -> list[dict]:
+        return self.select("reward_cashout_months", {"profile_id": profile_id} if profile_id else None,
+                           order="month")
+
+    def cashout_payments(self, profile_id: str | None = None) -> list[dict]:
+        return self.select("reward_cashout_payments", {"profile_id": profile_id} if profile_id else None,
+                           order="recorded_at.desc")
+
+    def notifications(self, unread: bool = False) -> list[dict]:
+        return self.select("reward_owner_notifications", {"read_at": None} if unread else None,
+                           order="created_at.desc", limit=200)
+
+    def mark_notification_read(self, notification_id: int, actor: str) -> None:
+        self.update("reward_owner_notifications", {"id": int(notification_id), "read_at": None},
+                    {"read_at": _now(), "read_by": actor})
+
+    def set_email_status(self, notification_id: int, status: str) -> None:
+        self.update("reward_owner_notifications", {"id": int(notification_id)}, {"email_status": status})
 
 
 # ============================================================================ Supabase (REST, server only)
@@ -325,15 +406,24 @@ class MemoryStore(RewardsStore):
     KEYS = {"reward_program_settings": ("id",), "reward_accounts": ("profile_id",),
             "reward_enrolments": ("profile_id", "month"), "reward_activity_events": ("event_key",),
             "user_referrals": ("referred_id",), "reward_referral_visits": ("visit_key",),
-            "reward_payments": ("profile_id", "month"), "reward_audit_log": ("id",)}
+            "reward_payments": ("profile_id", "month"), "reward_audit_log": ("id",),
+            "reward_cashout_settings": ("id",), "reward_cashout_requests": ("id",),
+            "reward_cashout_months": ("request_id", "month"), "reward_cashout_payments": ("id",),
+            "reward_owner_notifications": ("id",)}
 
-    def __init__(self, settings: Settings | None = None):
+    def __init__(self, settings: Settings | None = None, owner_emails: list[str] | None = None):
         self.lock = threading.RLock()
-        self.tables: dict[str, list[dict]] = {t: [] for t in TABLES}
+        self.tables: dict[str, list[dict]] = {t: [] for t in TABLES + CASHOUT_TABLES}
         row = (settings or Settings()).as_row()
         row.update(id=1, updated_at=_now(), updated_by=None)
         self.tables["reward_program_settings"].append(row)
+        self.tables["reward_cashout_settings"].append({"id": 1, "live_requests": False, "real_payouts": False,
+                                                       "min_days": withdrawals.MIN_DAYS,
+                                                       "owner_emails": list(owner_emails or []),
+                                                       "updated_at": _now(), "updated_by": None})
         self._audit_id = 0
+        self._ids: dict[str, int] = {}
+        self._cashout_fn = False   # like the database's we.cashout flag: set only inside the withdrawal functions
 
     # ---- primitives
     def select(self, table, where=None, order=None, limit=None):
@@ -355,6 +445,20 @@ class MemoryStore(RewardsStore):
                 self._audit_id += 1
                 row.setdefault("id", self._audit_id)
                 row.setdefault("at", _now())
+            if table in CASHOUT_TABLES and table != "reward_cashout_settings":
+                if not self._cashout_fn:
+                    raise StoreError("withdrawal records change only through the withdrawal functions")
+                if "id" in self.KEYS[table] and row.get("id") is None:
+                    self._ids[table] = self._ids.get(table, 0) + 1
+                    row["id"] = self._ids[table]
+                if table == "reward_cashout_requests" and row.get("status", "pending_review") in withdrawals.OPEN and any(
+                        r["profile_id"] == row["profile_id"] and r["status"] in withdrawals.OPEN
+                        for r in self.tables[table]):
+                    raise StoreError("duplicate key (one open request per person)")
+                if table == "reward_cashout_months" and any(
+                        r["profile_id"] == row["profile_id"] and r["month"] == row["month"]
+                        and r["status"] != "released" for r in self.tables[table]):
+                    raise StoreError("duplicate key (month already covered by a withdrawal request)")
             if any(self._key(table, r) == self._key(table, row) for r in self.tables[table]):
                 if ignore_duplicates:
                     return []
@@ -377,8 +481,12 @@ class MemoryStore(RewardsStore):
             for i, old in enumerate(self.tables[table]):
                 if not _match(old, where):
                     continue
-                if table in ("reward_activity_events", "reward_audit_log"):
+                if table in ("reward_activity_events", "reward_audit_log", "reward_cashout_payments"):
                     raise StoreError("records cannot be changed")
+                if table in ("reward_cashout_requests", "reward_cashout_months") and not self._cashout_fn:
+                    raise StoreError("withdrawal records change only through the withdrawal functions")
+                if table == "reward_owner_notifications" and set(changes) - {"read_at", "read_by", "email_status"}:
+                    raise StoreError("only the read and email status of a notification can change")
                 new = dict(old, **changes)
                 if table == "reward_payments":
                     self._guard_payment(old, new)
@@ -397,7 +505,8 @@ class MemoryStore(RewardsStore):
     def delete(self, table, where):
         with self.lock:
             doomed = [r for r in self.tables[table] if _match(r, where)]
-            if table in ("reward_accounts", "reward_audit_log", "reward_program_settings") and doomed:
+            if table in ("reward_accounts", "reward_audit_log", "reward_program_settings",
+                         "reward_cashout_settings") and doomed:
                 raise StoreError("records cannot be deleted")
             if any(not r.get("test") for r in doomed):
                 raise StoreError("real records are kept and cannot be deleted")
@@ -457,6 +566,21 @@ class MemoryStore(RewardsStore):
                     or new["approved_amount"] != old["approved_amount"]
                     or new.get("payment_date") != old.get("payment_date")):
                 raise StoreError("a completed payment cannot be changed; add a remark instead")
+        if new["status"] in ("approved", "paid") and not self._cashout_fn \
+                and (old is None or old["status"] not in ("approved", "paid")) and any(
+                m["profile_id"] == new["profile_id"] and m["month"] == new["month"] and m["status"] != "released"
+                for m in self.tables["reward_cashout_months"]):
+            raise StoreError(f"month {new['month']} of this participant is covered by a withdrawal request; manage it "
+                             "under Withdrawals")
+        if not self._cashout_fn:   # = reward_payments_settlement_guard: the WD- link of a settled month is kept
+            settled = withdrawals.settled_by_withdrawal(new, self.tables["reward_cashout_months"])
+            changed = old is None or new.get("reference") != old.get("reference")
+            if settled and old is not None and changed:
+                raise StoreError(f"the reference of a payment settled by withdrawal request {old.get('reference')} "
+                                 "cannot be changed; add a remark instead")
+            if not settled and changed and withdrawals.REFERENCE_RE.match(str(new.get("reference") or "").upper()):
+                raise StoreError("references in the form WD-YYYYMM-XXXX are reserved for payments settled by a "
+                                 "withdrawal request")
         if new["approved_amount"] > earned:
             raise StoreError(f"approved amount ({new['approved_amount']}) is more than was earned ({earned})")
         if new["status"] in ("approved", "paid"):
@@ -587,6 +711,201 @@ class MemoryStore(RewardsStore):
                 out = dict(e)
         self.log(p_actor or p_profile, "withdrawn", f"{p_profile} {p_month}", {"earned": earned})
         return out
+
+    # ---- cash withdrawals (the same rules as supabase/withdrawals_migration.sql)
+    def _cashout_audit(self, table, op, old, new):
+        self._audit_id += 1
+        self.tables["reward_audit_log"].append({
+            "id": self._audit_id, "at": _now(), "actor": new.get("updated_by") or new.get("recorded_by"),
+            "action": f"{table}_{op}",
+            "target": new.get("reference") or (f"request {new['request_id']}" if new.get("request_id") else "settings"),
+            "old_value": dict(old) if old else None, "new_value": dict(new)})
+
+    def _payable_checks(self, req) -> None:
+        """Withdrawal approval never changes the player's general verification; real requests need it already
+        (the existing payment rules require it), and the reserved months must still be net verified earnings."""
+        account = self.account(req["profile_id"]) or {}
+        if not req["test"] and account.get("verification") != "verified":
+            raise StoreError("account_not_verified")
+        if withdrawals.earnings_changed(req, self.tables["reward_cashout_months"],
+                                        self.tables["reward_activity_events"], self.tables["user_referrals"]):
+            raise StoreError("earnings_changed")
+
+    def _real_payouts(self) -> bool:
+        return bool(self.tables["reward_cashout_settings"][0].get("real_payouts"))
+
+    def _owner(self, actor) -> bool:
+        owners = {str(x).strip().lower() for x in self.tables["reward_cashout_settings"][0].get("owner_emails") or []}
+        return bool(actor) and str(actor).strip().lower() in owners
+
+    def _rpc_reward_cashout_status(self, p_profile, p_as_of=None):
+        try:
+            return withdrawals.status(self.account(p_profile), self.tables["reward_cashout_settings"][0],
+                                      self.tables["reward_enrolments"], self.tables["reward_activity_events"],
+                                      self.tables["reward_cashout_months"], self.tables["reward_payments"],
+                                      self.tables["reward_cashout_requests"], self.tables["reward_cashout_payments"],
+                                      as_of=p_as_of, referrals=self.tables["user_referrals"])
+        except ValueError as error:
+            raise StoreError(str(error)) from None
+
+    def _rpc_reward_cashout_request(self, p_profile, p_legal_name, p_declarations, p_expected_amount, p_as_of=None,
+                                    p_flags=None):
+        st = self._rpc_reward_cashout_status(p_profile, p_as_of)
+        if not st.get("eligible"):
+            raise StoreError("not_eligible: " + (st.get("reasons") or ["unknown"])[0])
+        if p_expected_amount != st["amount"]:
+            raise StoreError("amount_changed")
+        if not withdrawals.legal_name_ok(p_legal_name):
+            raise StoreError("legal_name_required")
+        if not withdrawals.declarations_complete(p_declarations):
+            raise StoreError("declarations_required")
+        account = self.account(p_profile)
+        day = withdrawals.today(p_as_of)
+        taken = {r["reference"] for r in self.tables["reward_cashout_requests"]}
+        ref = withdrawals.new_reference(day)
+        while ref in taken:
+            ref = withdrawals.new_reference(day)
+        test = bool(account.get("test"))
+        now = _now()
+        row = {"reference": ref, "profile_id": p_profile, "amount": st["amount"],
+               "months": sorted(m["month"] for m in st["months"]), "legal_name": p_legal_name.strip(),
+               "declarations": dict(p_declarations, declared_at=now), "status": "pending_review",
+               "request_month": withdrawals.month_of(day), "requested_at": now, "simulated_as_of": p_as_of,
+               "flags": list(p_flags or []), "beneficiary_verified": False, "eligibility_confirmed": False,
+               "bank_fingerprint": None, "decision_note": None, "approved_by": None, "approved_at": None,
+               "decided_by": None, "decided_at": None, "paid_at": None, "test": test, "updated_at": now,
+               "updated_by": p_profile}
+        self._cashout_fn = True
+        try:
+            req = self.insert("reward_cashout_requests", row)[0]
+            for m in st["months"]:
+                self.insert("reward_cashout_months", {"request_id": req["id"], "profile_id": p_profile,
+                                                      "month": m["month"], "amount": m["amount"],
+                                                      "status": "reserved", "test": test, "updated_at": now})
+            self.insert("reward_owner_notifications", {
+                "kind": "cashout_request", "request_id": req["id"], "title": "New withdrawal request",
+                "details": {"reference": ref, "player": account.get("display_name") or account.get("email")
+                            or p_profile[:10], "amount": req["amount"], "requested_at": now,
+                            "months": req["months"]},
+                "read_at": None, "read_by": None, "email_status": "pending", "test": test})
+            self._cashout_audit("reward_cashout_requests", "insert", None, req)
+        finally:
+            self._cashout_fn = False
+        return dict(req)
+
+    def _locked_request(self, p_id, p_actor):
+        if not self._owner(p_actor):
+            raise StoreError("not_owner")
+        req = next((r for r in self.tables["reward_cashout_requests"] if r["id"] == int(p_id)), None)
+        if req is None:
+            raise StoreError("unknown_request")
+        return req
+
+    def _rpc_reward_cashout_decide(self, p_id, p_action, p_actor, p_note=None, p_beneficiary_verified=False,
+                                   p_eligibility_confirmed=False, p_disqualify=False):
+        req = self._locked_request(p_id, p_actor)
+        error = withdrawals.transition_error(req["status"], p_action, p_note, p_beneficiary_verified,
+                                             p_eligibility_confirmed)
+        if error:
+            raise StoreError(error)
+        new = withdrawals.ACTIONS[p_action]
+        reserved = sum(int(m["amount"]) for m in self.tables["reward_cashout_months"]
+                       if m["request_id"] == req["id"] and m["status"] == "reserved")
+        if new == "approved" and not req["test"] and not self._real_payouts():
+            raise StoreError("payouts_disabled")
+        if new == "approved" and reserved != req["amount"]:
+            raise StoreError("reservation_mismatch")
+        if new == "approved":
+            self._payable_checks(req)
+        old, now, note = dict(req), _now(), (p_note or "").strip() or None
+        req.update(status=new, decision_note=note or req.get("decision_note"), decided_by=p_actor, decided_at=now,
+                   updated_by=p_actor, updated_at=now)
+        if new == "approved":
+            req.update(beneficiary_verified=True, eligibility_confirmed=True, approved_by=p_actor, approved_at=now)
+
+        if new == "rejected":
+            for m in self.tables["reward_cashout_months"]:
+                if m["request_id"] == req["id"] and m["status"] == "reserved":
+                    m.update(status="disqualified" if p_disqualify else "released", updated_at=now)
+        for n in self.tables["reward_owner_notifications"]:
+            if n.get("request_id") == req["id"] and not n.get("read_at"):
+                n.update(read_at=now, read_by=p_actor)
+        self._cashout_audit("reward_cashout_requests", "update", old, req)
+        return dict(req)
+
+    def _rpc_reward_cashout_pay(self, p_id, p_amount, p_payment_date, p_reference, p_actor):
+        req = self._locked_request(p_id, p_actor)
+        if req["status"] == "paid" or any(p["request_id"] == req["id"] for p in self.tables["reward_cashout_payments"]):
+            raise StoreError("already_paid")
+        if req["status"] != "approved":
+            raise StoreError("not_approved")
+        if not req["test"] and not self._real_payouts():
+            raise StoreError("payouts_disabled")
+        if p_amount != req["amount"]:
+            raise StoreError("amount_mismatch")
+        self._payable_checks(req)
+        if not p_payment_date:
+            raise StoreError("payment_date_required")
+        pay_day = withdrawals.today(p_payment_date)
+        if not req["test"] and pay_day > withdrawals.today():
+            raise StoreError("payment_date_in_future")
+        if not req["test"] and pay_day < withdrawals.lagos_date(req["approved_at"]):
+            raise StoreError("payment_before_approval")
+        reference = (p_reference or "").strip() or None
+        if reference and not req["test"] and any(
+                (p.get("bank_reference") or "").lower() == reference.lower() and not p.get("test")
+                for p in self.tables["reward_cashout_payments"]):
+            raise StoreError("duplicate_reference")
+        now = _now()
+        self._cashout_fn = True
+        try:
+            pay = self.insert("reward_cashout_payments", {
+                "request_id": req["id"], "profile_id": req["profile_id"], "amount": req["amount"],
+                "payment_date": pay_day.isoformat(), "payment_month": withdrawals.month_of(pay_day),
+                "bank_reference": reference, "recorded_by": p_actor, "recorded_at": now, "test": req["test"]})[0]
+        finally:
+            self._cashout_fn = False
+        old = dict(req)
+        req.update(status="paid", paid_at=now, decided_by=p_actor, decided_at=now, updated_by=p_actor,
+                   updated_at=now)
+        for m in self.tables["reward_cashout_months"]:
+            if m["request_id"] == req["id"] and m["status"] == "reserved":
+                m.update(status="paid", updated_at=now)
+        if not req["test"]:   # settle each month in the existing reward_payments table (its own rules apply)
+            self._cashout_fn = True
+            try:
+                for m in sorted((m for m in self.tables["reward_cashout_months"] if m["request_id"] == req["id"]),
+                                key=lambda m: m["month"]):
+                    self.insert("reward_payments", {"profile_id": req["profile_id"], "month": m["month"],
+                                                    "test": False, "updated_by": p_actor},
+                                ignore_duplicates=True)
+                    current = self.payment(req["profile_id"], m["month"])
+                    remarks = ((current.get("remarks") + " · ") if current.get("remarks") else "") \
+                        + f"Paid through withdrawal request {req['reference']}"
+                    self.update("reward_payments", {"profile_id": req["profile_id"], "month": m["month"]},
+                                {"status": "approved", "approved_amount": m["amount"], "remarks": remarks,
+                                 "updated_by": p_actor})
+                    self.update("reward_payments", {"profile_id": req["profile_id"], "month": m["month"]},
+                                {"status": "paid", "paid_amount": m["amount"], "payment_date": pay_day.isoformat(),
+                                 "reference": req["reference"], "updated_by": p_actor})
+            finally:
+                self._cashout_fn = False
+        self._cashout_audit("reward_cashout_payments", "insert", None, pay)
+        self._cashout_audit("reward_cashout_requests", "update", old, req)
+        return dict(pay)
+
+    def _rpc_reward_cashout_set_fingerprint(self, p_id, p_fingerprint, p_actor):
+        req = self._locked_request(p_id, p_actor)
+        if not p_fingerprint or not re.fullmatch(r"[0-9a-f]{64}", str(p_fingerprint)):
+            raise StoreError("invalid_fingerprint")
+        if req["status"] in ("paid", "rejected"):
+            raise StoreError("request_closed")
+        old = dict(req)
+        req.update(bank_fingerprint=p_fingerprint, updated_by=p_actor, updated_at=_now())
+        self._cashout_audit("reward_cashout_requests", "update", old, req)
+        return len({r["profile_id"] for r in self.tables["reward_cashout_requests"]
+                    if r.get("bank_fingerprint") == p_fingerprint and r["profile_id"] != req["profile_id"]
+                    and bool(r.get("test")) == bool(req.get("test"))})
 
 
 def payable_rows(rows: list[dict]) -> list[dict]:

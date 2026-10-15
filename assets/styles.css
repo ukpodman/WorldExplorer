@@ -1061,6 +1061,35 @@ html[data-we-theme="dark"] .stApp :is(button:focus-visible, a:focus-visible, inp
 [class*="st-key-rw_card_"] [data-testid="stCaptionContainer"] p { margin:0; }
 .st-key-rw_limit { margin:.25rem 0 .5rem; }
 :is(.st-key-rw_invite, .st-key-rw_progress) { background:var(--paper); border-radius:16px !important; }
+
+/* 💳 Withdrawals (V21): green when eligible, grey while locked; compact key/value lists; test labels */
+.st-key-rw_cashout, .st-key-rw_cash_request, .st-key-rw_cash_review { background:var(--paper); border-radius:16px !important; }
+.stApp .st-key-rw_withdraw_go button[kind="primary"] { background:var(--ok-solid) !important; border:1px solid var(--ok-solid) !important;
+  color:#FFFFFF !important; min-height:48px; font-weight:700; touch-action:manipulation; }
+.stApp .st-key-rw_withdraw_go button[kind="primary"]:hover,
+.stApp .st-key-rw_withdraw_go button[kind="primary"]:focus-visible { background:#185A39 !important; border-color:#185A39 !important; }
+.st-key-rw_withdraw_go button p, .st-key-rw_withdraw_grey button p { font-weight:700; white-space:normal; }
+.st-key-rw_withdraw_grey button:disabled { background:var(--surface-3) !important; color:var(--slate) !important;
+  border-color:var(--disabled-border) !important; opacity:1 !important; min-height:48px; cursor:not-allowed; }
+.rw-cash-dl { display:grid; grid-template-columns:minmax(110px, max-content) minmax(0, 1fr); gap:4px 14px; margin:.35rem 0 .6rem; }
+.rw-cash-dl dt { color:var(--slate); font-size:.85rem; font-weight:700; }
+.rw-cash-dl dd { margin:0; color:var(--navy); font-weight:600; overflow-wrap:break-word; min-width:0; }
+.rw-cash-dl dt { overflow-wrap:break-word; min-width:0; }
+.rw-cash-dl-wide { grid-template-columns:minmax(150px, 240px) minmax(0, 1fr); }
+.rw-checklist { list-style:none; padding:0; margin:.5rem 0; display:grid; gap:4px; }
+.rw-checklist li { display:flex; gap:8px; align-items:flex-start; color:var(--navy); font-size:.92rem; line-height:1.35; }
+.rw-checklist li.todo { color:var(--slate); }
+.rw-test-label { display:inline-block; background:var(--warn-bg); border:1px solid var(--warn-border); color:var(--gold-deep);
+  font-weight:800; font-size:.76rem; letter-spacing:.04em; padding:3px 10px; border-radius:999px; margin:0 0 6px; }
+@media (max-width:480px) {   /* small phones: each label above its value, so long words in any language fit */
+  .rw-cash-dl { grid-template-columns:minmax(0, 1fr); gap:0; }
+  .rw-cash-dl dt { font-size:.78rem; }
+  .rw-cash-dl dd { margin-bottom:6px; }
+}
+@media (max-width:700px) {
+  .rw-cash-dl-wide { grid-template-columns:minmax(0, 1fr); gap:0 10px; }
+  .rw-cash-dl-wide dd { margin-bottom:6px; }
+}
 .st-key-rw_invite [data-testid="stCode"] pre { white-space:pre-wrap !important; word-break:break-all; }
 @media (max-width:700px) { .owner-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); } .owner-tile b { font-size:1.25rem; } }
 

@@ -21,6 +21,7 @@ from core.rewards_store import RewardsStore, StoreError
 
 ROOT = Path(__file__).resolve().parent.parent
 SCHEMA = ROOT / "supabase" / "rewards_schema.sql"
+MIGRATION = ROOT / "supabase" / "withdrawals_migration.sql"   # V21 cash withdrawals (loaded after the schema)
 
 
 def _bin(name: str) -> str | None:
@@ -45,6 +46,8 @@ class Cluster:
                           "create role service_role nologin bypassrls", "create database rt_template"):
             self.psql("postgres", statement)
         self.psql_file("rt_template", SCHEMA)
+        if MIGRATION.exists():
+            self.psql_file("rt_template", MIGRATION)
         self.count = 0
 
     def _as_owner(self, command: str) -> None:

@@ -44,6 +44,18 @@ def payouts_active() -> bool:
     return bool(config().get("payouts_active"))
 
 
+def withdrawals_active() -> bool:
+    """Real withdrawal requests may be submitted (owner switch, after legal review). Default off. The database has its
+    own switch as well (reward_cashout_settings.live_requests): real requests need both. Test accounts can always
+    simulate the process; their records are test records and are never payable."""
+    return bool(config().get("withdrawals_active"))
+
+
+def fingerprint_key() -> str:
+    """Server secret for keyed bank-account fingerprints ([rewards] bank_fingerprint_key, 32+ characters)."""
+    return str(config().get("bank_fingerprint_key") or "")
+
+
 def _verified_email() -> str:
     who = accounts.identity()
     if not who or who.get("email_verified") not in (True, "true", "True"):
@@ -110,6 +122,32 @@ def store(for_tester: bool | None = None) -> RewardsStore | None:
     if for_tester if for_tester is not None else tester():
         return _memory_store()
     return None
+
+
+def cashout_store(for_tester: bool | None = None) -> RewardsStore | None:
+    """The rewards store when the withdrawals migration is installed (None otherwise). In the in-memory preview the
+    owners listed in [analytics] owner_emails may decide, mirroring reward_cashout_settings.owner_emails."""
+    s = store(for_tester)
+    if s is None:
+        return None
+    if isinstance(s, MemoryStore):
+        owners = analytics.config().get("owner_emails", [])
+        s.tables["reward_cashout_settings"][0]["owner_emails"] = [owners] if isinstance(owners, str) else list(owners)
+        return s
+    cache = _health_cache()
+    key = getattr(s, "url", "store") + "#cashout"
+    hit = cache.get(key)
+    if not hit or time.time() - hit[1] >= HEALTH_TTL:
+        hit = cache[key] = (s.cashout_health(), time.time())
+    return s if hit[0] == "ok" else None
+
+
+def cashout_health() -> str:
+    """'ok', 'missing_tables' (run supabase/withdrawals_migration.sql), 'error' or 'no_storage'."""
+    s = store(for_tester=True)
+    if s is None:
+        return "no_storage"
+    return "ok" if cashout_store(for_tester=True) else s.cashout_health()
 
 
 def preview_store() -> bool:

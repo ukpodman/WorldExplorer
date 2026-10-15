@@ -3780,6 +3780,444 @@
    "Permite estadísticas de uso anónimas. Sin nombres, correos ni respuestas.",
    "允许匿名使用统计。不含姓名、邮箱或答案。",
    "Разрешите анонимную статистику использования. Без имён, адресов почты и ответов."
+  ],
+  "Withdraw your rewards": [
+   "Belohnungen auszahlen lassen",
+   "Retirar tus recompensas",
+   "提取你的奖励",
+   "Вывод вознаграждений"
+  ],
+  "Total earned": [
+   "Insgesamt verdient",
+   "Total ganado",
+   "累计获得",
+   "Всего заработано"
+  ],
+  "Available now": [
+   "Jetzt verfügbar",
+   "Disponible ahora",
+   "现在可提取",
+   "Доступно сейчас"
+  ],
+  "Pending withdrawal": [
+   "Auszahlung in Prüfung",
+   "Retiro pendiente",
+   "待处理提现",
+   "Вывод на рассмотрении"
+  ],
+  "Approved, awaiting payment": [
+   "Genehmigt, Zahlung ausstehend",
+   "Aprobado, pendiente de pago",
+   "已批准，等待付款",
+   "Одобрено, ожидает оплаты"
+  ],
+  "Remaining unpaid": [
+   "Noch nicht ausgezahlt",
+   "Pendiente de pagar",
+   "尚未支付",
+   "Ещё не выплачено"
+  ],
+  "💰 Request Withdrawal — {amount}": [
+   "💰 Auszahlung beantragen — {amount}",
+   "💰 Solicitar retiro — {amount}",
+   "💰 申请提现 — {amount}",
+   "💰 Запросить вывод — {amount}"
+  ],
+  "🔒 Withdraw": [
+   "🔒 Auszahlen",
+   "🔒 Retirar",
+   "🔒 提现",
+   "🔒 Вывести"
+  ],
+  "🔒 Withdraw — Available in 1 day": [
+   "🔒 Auszahlen — verfügbar in 1 Tag",
+   "🔒 Retirar — disponible en 1 día",
+   "🔒 提现 — 1 天后可用",
+   "🔒 Вывести — доступно через 1 день"
+  ],
+  "🔒 Withdraw — Available in {n} days": [
+   "🔒 Auszahlen — verfügbar in {n} Tagen",
+   "🔒 Retirar — disponible en {n} días",
+   "🔒 提现 — {n} 天后可用",
+   "🔒 Вывести — доступно через {n} дн."
+  ],
+  "🔒 Withdraw — Declarations missing": [
+   "🔒 Auszahlen — Erklärungen fehlen",
+   "🔒 Retirar — faltan declaraciones",
+   "🔒 提现 — 缺少声明",
+   "🔒 Вывести — не хватает подтверждений"
+  ],
+  "🔒 Withdraw — Join the programme first": [
+   "🔒 Auszahlen — zuerst am Programm teilnehmen",
+   "🔒 Retirar — primero únete al programa",
+   "🔒 提现 — 请先加入计划",
+   "🔒 Вывести — сначала вступите в программу"
+  ],
+  "🔒 Withdraw — No earnings from completed months yet": [
+   "🔒 Auszahlen — noch keine Belohnungen aus abgeschlossenen Monaten",
+   "🔒 Retirar — aún no hay ganancias de meses completos",
+   "🔒 提现 — 暂无已结束月份的收入",
+   "🔒 Вывести — пока нет заработка за завершённые месяцы"
+  ],
+  "🔒 Withdraw — Opens after the official launch": [
+   "🔒 Auszahlen — öffnet nach dem offiziellen Start",
+   "🔒 Retirar — se abre tras el lanzamiento oficial",
+   "🔒 提现 — 正式上线后开放",
+   "🔒 Вывести — откроется после официального запуска"
+  ],
+  "🔒 Withdraw — Participation on hold": [
+   "🔒 Auszahlen — Teilnahme pausiert",
+   "🔒 Retirar — participación en espera",
+   "🔒 提现 — 参与已暂停",
+   "🔒 Вывести — участие приостановлено"
+  ],
+  "Taking part in the rewards programme": [
+   "Teilnahme am Belohnungsprogramm",
+   "Participas en el programa de recompensas",
+   "已参加奖励计划",
+   "Участие в программе вознаграждений"
+  ],
+  "{n} calendar days since you first joined": [
+   "{n} Kalendertage seit deinem ersten Beitritt",
+   "{n} días naturales desde que te uniste por primera vez",
+   "首次加入后满 {n} 个自然日",
+   "{n} календарных дней с первого вступления"
+  ],
+  "eligible from {day}": [
+   "möglich ab {day}",
+   "disponible desde el {day}",
+   "{day} 起可申请",
+   "доступно с {day}"
+  ],
+  "Earnings from completed months that are not yet paid": [
+   "Noch nicht ausgezahlte Belohnungen aus abgeschlossenen Monaten",
+   "Ganancias no pagadas de meses completos",
+   "已结束月份中尚未支付的收入",
+   "Невыплаченный заработок за завершённые месяцы"
+  ],
+  "No other withdrawal request in progress": [
+   "Keine andere Auszahlung in Bearbeitung",
+   "Ninguna otra solicitud de retiro en curso",
+   "没有其他正在处理的提现申请",
+   "Нет другого запроса на вывод в обработке"
+  ],
+  "Withdrawals officially opened": [
+   "Auszahlungen offiziell geöffnet",
+   "Retiros abiertos oficialmente",
+   "提现已正式开放",
+   "Вывод официально открыт"
+  ],
+  "A withdrawal covers your whole available balance from completed months: {period}.": [
+   "Eine Auszahlung umfasst dein gesamtes verfügbares Guthaben aus abgeschlossenen Monaten: {period}.",
+   "Un retiro incluye todo tu saldo disponible de meses completos: {period}.",
+   "一次提现包含已结束月份的全部可用余额：{period}。",
+   "Вывод включает весь доступный остаток за завершённые месяцы: {period}."
+  ],
+  "This month's {amount} becomes available after the month ends (Nigeria time).": [
+   "Die {amount} aus diesem Monat werden nach Monatsende verfügbar (nigerianische Zeit).",
+   "Los {amount} de este mes estarán disponibles cuando termine el mes (hora de Nigeria).",
+   "本月的 {amount} 将在月底后可提取（尼日利亚时间）。",
+   "{amount} за этот месяц станут доступны после его окончания (по времени Нигерии)."
+  ],
+  "Withdrawal Request Submitted": [
+   "Auszahlungsantrag gesendet",
+   "Solicitud de retiro enviada",
+   "提现申请已提交",
+   "Запрос на вывод отправлен"
+  ],
+  "Your withdrawal request": [
+   "Dein Auszahlungsantrag",
+   "Tu solicitud de retiro",
+   "你的提现申请",
+   "Ваш запрос на вывод"
+  ],
+  "Reference": [
+   "Referenz",
+   "Referencia",
+   "参考编号",
+   "Номер"
+  ],
+  "Amount": [
+   "Betrag",
+   "Importe",
+   "金额",
+   "Сумма"
+  ],
+  "Earning period": [
+   "Verdienstzeitraum",
+   "Periodo de ganancias",
+   "收入期间",
+   "Период заработка"
+  ],
+  "Requested on": [
+   "Beantragt am",
+   "Solicitado el",
+   "申请日期",
+   "Дата запроса"
+  ],
+  "Request status": [
+   "Status",
+   "Estado",
+   "状态",
+   "Статус"
+  ],
+  "Pending Review": [
+   "Prüfung ausstehend",
+   "Pendiente de revisión",
+   "待审核",
+   "Ожидает проверки"
+  ],
+  "Under Review": [
+   "In Prüfung",
+   "En revisión",
+   "审核中",
+   "На проверке"
+  ],
+  "Approved — Awaiting Payment": [
+   "Genehmigt — Zahlung ausstehend",
+   "Aprobado — pendiente de pago",
+   "已批准 — 等待付款",
+   "Одобрено — ожидает оплаты"
+  ],
+  "On Hold": [
+   "Zurückgestellt",
+   "En espera",
+   "暂缓处理",
+   "Приостановлено"
+  ],
+  "Your withdrawal request has been received and is awaiting verification.": [
+   "Dein Auszahlungsantrag ist eingegangen und wird geprüft.",
+   "Hemos recibido tu solicitud de retiro y está pendiente de verificación.",
+   "你的提现申请已收到，正在等待核实。",
+   "Ваш запрос на вывод получен и ожидает проверки."
+  ],
+  "The programme owner is verifying your request.": [
+   "Die Programmleitung prüft deinen Antrag.",
+   "El responsable del programa está verificando tu solicitud.",
+   "计划负责人正在核实你的申请。",
+   "Организатор программы проверяет ваш запрос."
+  ],
+  "Your request is approved. The programme owner will send the payment to your bank account.": [
+   "Dein Antrag ist genehmigt. Die Programmleitung überweist die Zahlung auf dein Bankkonto.",
+   "Tu solicitud está aprobada. El responsable del programa enviará el pago a tu cuenta bancaria.",
+   "你的申请已批准。计划负责人将把款项转入你的银行账户。",
+   "Ваш запрос одобрен. Организатор программы переведёт оплату на ваш банковский счёт."
+  ],
+  "Your request is on hold for further checks. The programme owner will contact you.": [
+   "Dein Antrag ist für weitere Prüfungen zurückgestellt. Die Programmleitung meldet sich bei dir.",
+   "Tu solicitud está en espera para más comprobaciones. El responsable del programa se pondrá en contacto contigo.",
+   "你的申请因需进一步核查而暂缓处理。计划负责人会与你联系。",
+   "Ваш запрос приостановлен для дополнительной проверки. Организатор программы свяжется с вами."
+  ],
+  "Your request was not approved.": [
+   "Dein Antrag wurde nicht genehmigt.",
+   "Tu solicitud no fue aprobada.",
+   "你的申请未获批准。",
+   "Ваш запрос не одобрен."
+  ],
+  "The payment has been sent.": [
+   "Die Zahlung wurde überwiesen.",
+   "El pago se ha enviado.",
+   "款项已支付。",
+   "Оплата отправлена."
+  ],
+  "Note from the programme owner: {note}": [
+   "Hinweis der Programmleitung: {note}",
+   "Nota del responsable del programa: {note}",
+   "计划负责人备注：{note}",
+   "Примечание организатора: {note}"
+  ],
+  "WORLD EXPLORER — WITHDRAWAL REQUEST": [
+   "WORLD EXPLORER — AUSZAHLUNGSANTRAG",
+   "WORLD EXPLORER — SOLICITUD DE RETIRO",
+   "WORLD EXPLORER — 提现申请",
+   "WORLD EXPLORER — ЗАПРОС НА ВЫВОД"
+  ],
+  "Player": [
+   "Spieler/in",
+   "Jugador/a",
+   "玩家",
+   "Игрок"
+  ],
+  "Verified available balance": [
+   "Bestätigtes verfügbares Guthaben",
+   "Saldo disponible verificado",
+   "已核实的可用余额",
+   "Подтверждённый доступный остаток"
+  ],
+  "Eligible earning period": [
+   "Berechtigter Verdienstzeitraum",
+   "Periodo de ganancias elegible",
+   "可提现的收入期间",
+   "Период заработка к выводу"
+  ],
+  "Legal name": [
+   "Amtlicher Name",
+   "Nombre legal",
+   "法定姓名",
+   "Полное юридическое имя"
+  ],
+  "Your full name exactly as it appears on your bank account and official ID.": [
+   "Dein vollständiger Name genau wie auf deinem Bankkonto und amtlichen Ausweis.",
+   "Tu nombre completo exactamente como aparece en tu cuenta bancaria y documento oficial.",
+   "与你的银行账户和官方证件上完全一致的全名。",
+   "Ваше полное имя точно как в банковском счёте и официальном документе."
+  ],
+  "I am providing my correct legal name.": [
+   "Ich gebe meinen korrekten amtlichen Namen an.",
+   "Estoy indicando mi nombre legal correcto.",
+   "我提供的是我正确的法定姓名。",
+   "Я указываю своё правильное юридическое имя."
+  ],
+  "The receiving bank account belongs to me.": [
+   "Das Empfängerkonto gehört mir.",
+   "La cuenta bancaria receptora es mía.",
+   "收款银行账户属于我本人。",
+   "Банковский счёт для получения принадлежит мне."
+  ],
+  "I understand that the bank account beneficiary name must match my verified legal identity.": [
+   "Ich verstehe, dass der Name des Kontoinhabers mit meiner bestätigten Identität übereinstimmen muss.",
+   "Entiendo que el nombre del titular de la cuenta debe coincidir con mi identidad legal verificada.",
+   "我了解收款账户的户名必须与我经核实的法定身份一致。",
+   "Я понимаю, что имя владельца счёта должно совпадать с моей подтверждённой личностью."
+  ],
+  "I understand that false or misleading information may result in the withdrawal being placed on hold or rejected after review.": [
+   "Ich verstehe, dass falsche oder irreführende Angaben dazu führen können, dass die Auszahlung nach Prüfung zurückgestellt oder abgelehnt wird.",
+   "Entiendo que la información falsa o engañosa puede hacer que el retiro quede en espera o sea rechazado tras la revisión.",
+   "我了解，虚假或误导性信息可能导致提现在审核后被暂缓或拒绝。",
+   "Я понимаю, что ложные или вводящие в заблуждение сведения могут привести к приостановке или отклонению вывода после проверки."
+  ],
+  "Do not enter bank details here. World Explorer never asks for your bank account number, PIN or passwords in the app. The programme owner will contact you by email to verify your details and arrange the transfer.": [
+   "Gib hier keine Bankdaten ein. World Explorer fragt in der App nie nach Kontonummer, PIN oder Passwörtern. Die Programmleitung kontaktiert dich per E-Mail, um deine Angaben zu prüfen und die Überweisung zu vereinbaren.",
+   "No introduzcas datos bancarios aquí. World Explorer nunca pide en la app tu número de cuenta, PIN ni contraseñas. El responsable del programa te contactará por correo para verificar tus datos y organizar la transferencia.",
+   "请勿在此输入银行信息。World Explorer 绝不会在应用中索要你的银行账号、PIN 或密码。计划负责人会通过电子邮件联系你，核实信息并安排转账。",
+   "Не вводите здесь банковские данные. World Explorer никогда не запрашивает в приложении номер счёта, PIN-код или пароли. Организатор программы свяжется с вами по электронной почте, чтобы проверить данные и организовать перевод."
+  ],
+  "Submitting this request does not verify your identity or bank account. Every request is checked manually before any payment.": [
+   "Mit dem Absenden werden deine Identität und dein Bankkonto nicht bestätigt. Jeder Antrag wird vor einer Zahlung von Hand geprüft.",
+   "Enviar esta solicitud no verifica tu identidad ni tu cuenta bancaria. Cada solicitud se revisa manualmente antes de cualquier pago.",
+   "提交申请并不代表你的身份或银行账户已被核实。每笔申请在付款前都会人工审核。",
+   "Отправка запроса не подтверждает вашу личность или банковский счёт. Каждый запрос проверяется вручную перед оплатой."
+  ],
+  "Submit Withdrawal Request": [
+   "Auszahlungsantrag senden",
+   "Enviar solicitud de retiro",
+   "提交提现申请",
+   "Отправить запрос на вывод"
+  ],
+  "Cancel": [
+   "Abbrechen",
+   "Cancelar",
+   "取消",
+   "Отмена"
+  ],
+  "Please enter your legal name.": [
+   "Bitte gib deinen amtlichen Namen ein.",
+   "Introduce tu nombre legal.",
+   "请输入你的法定姓名。",
+   "Пожалуйста, укажите юридическое имя."
+  ],
+  "Please confirm all four statements.": [
+   "Bitte bestätige alle vier Aussagen.",
+   "Confirma las cuatro declaraciones.",
+   "请确认全部四项声明。",
+   "Пожалуйста, подтвердите все четыре утверждения."
+  ],
+  "Your available balance has changed. Please check the new amount and submit again.": [
+   "Dein verfügbares Guthaben hat sich geändert. Bitte prüfe den neuen Betrag und sende erneut.",
+   "Tu saldo disponible ha cambiado. Revisa el nuevo importe y vuelve a enviarla.",
+   "你的可用余额已变化。请核对新金额后重新提交。",
+   "Ваш доступный остаток изменился. Проверьте новую сумму и отправьте снова."
+  ],
+  "A withdrawal request is not possible right now.": [
+   "Ein Auszahlungsantrag ist gerade nicht möglich.",
+   "Ahora no es posible solicitar un retiro.",
+   "目前无法申请提现。",
+   "Запрос на вывод сейчас невозможен."
+  ],
+  "The request could not be sent. Please try again.": [
+   "Der Antrag konnte nicht gesendet werden. Bitte versuche es erneut.",
+   "No se pudo enviar la solicitud. Inténtalo de nuevo.",
+   "申请未能发送，请重试。",
+   "Не удалось отправить запрос. Попробуйте ещё раз."
+  ],
+  "Withdrawal history": [
+   "Auszahlungsverlauf",
+   "Historial de retiros",
+   "提现记录",
+   "История выводов"
+  ],
+  "paid on {day}": [
+   "ausgezahlt am {day}",
+   "pagado el {day}",
+   "{day} 已支付",
+   "выплачено {day}"
+  ],
+  "Simulation (test account only)": [
+   "Simulation (nur Testkonto)",
+   "Simulación (solo cuenta de prueba)",
+   "模拟（仅限测试账户）",
+   "Симуляция (только тестовый аккаунт)"
+  ],
+  "These tools exist only for test accounts. Everything they create is a test record and is never payable.": [
+   "Diese Werkzeuge gibt es nur für Testkonten. Alles, was sie erzeugen, ist ein Testdatensatz und wird nie ausgezahlt.",
+   "Estas herramientas solo existen para cuentas de prueba. Todo lo que crean es un registro de prueba y nunca se paga.",
+   "这些工具仅供测试账户使用。它们创建的所有内容都是测试记录，永远不会支付。",
+   "Эти инструменты есть только у тестовых аккаунтов. Всё, что они создают, — тестовые записи, которые никогда не оплачиваются."
+  ],
+  "Simulate a later date: days from today": [
+   "Späteres Datum simulieren: Tage ab heute",
+   "Simular una fecha posterior: días desde hoy",
+   "模拟以后的日期：距今天数",
+   "Симулировать более позднюю дату: дней от сегодня"
+  ],
+  "For example 31 to pass the waiting period and close the current month.": [
+   "Zum Beispiel 31, um die Wartezeit zu überspringen und den aktuellen Monat abzuschließen.",
+   "Por ejemplo, 31 para superar el periodo de espera y cerrar el mes actual.",
+   "例如输入 31，即可度过等待期并结束当前月份。",
+   "Например, 31, чтобы пройти период ожидания и закрыть текущий месяц."
+  ],
+  "Simulated date: {day}": [
+   "Simuliertes Datum: {day}",
+   "Fecha simulada: {day}",
+   "模拟日期：{day}",
+   "Симулированная дата: {day}"
+  ],
+  "Add simulated activity for this month": [
+   "Simulierte Aktivität für diesen Monat hinzufügen",
+   "Añadir actividad simulada para este mes",
+   "为本月添加模拟活动",
+   "Добавить симулированную активность за этот месяц"
+  ],
+  "{n} simulated activities recorded.": [
+   "{n} simulierte Aktivitäten gespeichert.",
+   "{n} actividades simuladas registradas.",
+   "已记录 {n} 项模拟活动。",
+   "Записано симулированных действий: {n}."
+  ],
+  "Test mode — withdrawal requests are simulations: {label}.": [
+   "Testmodus — Auszahlungsanträge sind Simulationen: {label}.",
+   "Modo de prueba — las solicitudes de retiro son simulaciones: {label}.",
+   "测试模式 — 提现申请均为模拟：{label}。",
+   "Тестовый режим — запросы на вывод являются симуляцией: {label}."
+  ],
+  "TEST RECORD — NOT PAYABLE": [
+   "TESTDATENSATZ — NICHT AUSZAHLBAR",
+   "REGISTRO DE PRUEBA — NO PAGABLE",
+   "测试记录 — 不予支付",
+   "ТЕСТОВАЯ ЗАПИСЬ — НЕ ОПЛАЧИВАЕТСЯ"
+  ],
+  "Eligibility requirements": [
+   "Voraussetzungen",
+   "Requisitos",
+   "申请条件",
+   "Условия"
+  ],
+  "Earnings from {period} are still being checked (a friend's invitation is awaiting review) and become available afterwards.": [
+   "Die Belohnungen aus {period} werden noch geprüft (eine Einladung wartet auf Prüfung) und sind danach verfügbar.",
+   "Las ganancias de {period} aún se están revisando (una invitación está pendiente de revisión) y estarán disponibles después.",
+   "{period} 的收入仍在核查中（有一份邀请正在等待审核），审核后即可提取。",
+   "Заработок за {period} ещё проверяется (приглашение ожидает проверки) и станет доступен после этого."
   ]
  }
 }

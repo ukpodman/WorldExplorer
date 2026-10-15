@@ -575,3 +575,18 @@ read from disk on each run, was already new. Old markup + new CSS = the scramble
 Fix: app.py now compares the ui/ and core/ files on disk with the loaded ones on every run and reloads them if they
 changed; the stylesheet always comes from the same version as the running code; Settings shows "Version 2026-10-14.2".
 After deploying THIS update once, use Manage app → ⋮ → Reboot app (the running server still has the old app.py).
+
+### V21 — Manual withdrawal requests (feature off for real players)
+Eligible players (joined, 30 calendar days since their first enrolment in Nigeria time, verified earnings from completed
+months, no request in progress) can request their whole available balance from 💰 My Rewards. The owner reviews it in
+Owner dashboard → 💰 Rewards & Referral Management → 💳 Withdrawals (🔔 notifications, approve / hold / reject, two-step
+"Mark as paid", accounting by earning month and payment month, CSV). Approving never moves money; the owner transfers
+the money from their own bank. Bank details are never stored (optional keyed fingerprint only).
+Files: `supabase/withdrawals_migration.sql` (additive), `core/withdrawals.py`, `core/notify.py`, `ui/withdraw_ui.py`,
+`ui/owner_withdrawals.py`; setup in `WITHDRAWALS_SETUP.md`. Real requests need `[rewards] withdrawals_active` AND the
+database `live_requests`; real approvals/payments also need `payouts_active`. All stay off. Test accounts can simulate
+everything (TEST RECORD — NOT PAYABLE). Header, sign-in, sign-out, map and existing rewards logic are unchanged.
+V21 final verification: real approvals/payments are also refused by the database (`reward_cashout_settings.real_payouts`,
+off); a paid withdrawal settles each covered month in the existing `reward_payments` table (one payment record per month,
+counted once); owner notifications refresh themselves every 30 s while the dashboard is open (only the notification
+panel re-runs); small-phone layout of the withdrawal details fixed (labels above values ≤480px).

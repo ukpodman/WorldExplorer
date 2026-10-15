@@ -11,6 +11,7 @@ from core import accounts, rewards
 from core.rewards_store import StoreError
 
 from . import rewards_hooks as hooks
+from . import withdraw_ui
 from .components import e, hero, html, sign_in_button
 from .state import t
 
@@ -311,10 +312,13 @@ def render() -> None:
             st.subheader("📊 " + t("Monthly rewards progress"))
             _month_card(s.events(pid, month), ctx["settings"], ctx)
         _history(s, pid, month)
+        withdraw_ui.section(s, who, account)
     elif account.get("membership") == "suspended":
         st.warning(t("Your participation is on hold. Please use “Send feedback” if you think this is a mistake."))
     else:
         _join_form(s, who, ctx)
+        if account.get("membership") == "withdrawn":   # earned rewards stay withdrawable after leaving
+            withdraw_ui.section(s, who, account)
     st.divider()
     _referrals(s, account, ctx)
     if account.get("membership") == "member":

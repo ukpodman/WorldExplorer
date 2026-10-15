@@ -51,6 +51,8 @@ def render() -> None:
         return
     from . import owner_rewards  # local import: only owners ever load the rewards dashboard
     st.title("Pilot dashboard")
+    from . import owner_withdrawals
+    owner_withdrawals.alert()   # refreshes itself every 30 s while the dashboard is open
     analytics_tab, rewards_tab = st.tabs(["Pilot analytics", "💰 Rewards & Referral Management"])
     with analytics_tab:
         _pilot_analytics()

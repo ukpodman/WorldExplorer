@@ -132,7 +132,7 @@ class RuleTests(unittest.TestCase):
         self.assertEqual(earning["2026-09"]["Earned (liability)"], 800)
         self.assertEqual(earning["2026-10"]["Paid"], 900)
         self.assertNotIn("2026-11", earning)                                    # not new November rewards
-        cash = withdrawals.by_payment_month(payments, [])
+        cash = withdrawals.by_payment_month(payments, [], reservations)
         self.assertEqual(cash, [{"Payment month": "2026-11", "Withdrawals paid": 1700, "Monthly reviews paid": 0,
                                  "Cash paid": 1700, "Payments": 1}])
         s = withdrawals.summary(requests, payments, events, reservations, [], 50000, "2026-09-01", "2026-11")
@@ -574,7 +574,7 @@ class Scenarios:
         earning = {r["Earning month"]: r for r in withdrawals.by_earning_month(events, s.cashout_months(),
                                                                                 s.cashout_requests(), s.payments())}
         self.assertEqual((earning[M1]["Paid"], earning[M2]["Paid"]), (650, 900))
-        cash = withdrawals.by_payment_month(s.cashout_payments(), s.payments())
+        cash = withdrawals.by_payment_month(s.cashout_payments(), s.payments(), s.cashout_months())
         self.assertEqual([(r["Payment month"], r["Cash paid"]) for r in cash], [(CUR, 1550)])
         figures = rewards.budget_figures(s.settings(), s.enrolments(M1), s.events(month=M1), s.payments(month=M1))
         self.assertEqual(figures["paid"], 650)                                # the existing Overview sees it too
@@ -733,12 +733,88 @@ class NetEarningsScenarios:
         self.assertEqual(s.cashout_status(p)["totals"]["refused"], 1600)
 
 
-class MemoryWithdrawalTests(NetEarningsScenarios, Scenarios, unittest.TestCase):
+class SettlementReferenceScenarios:
+    """A paid withdrawal is counted once, whatever later (permitted or forced) edits do to reward_payments."""
+
+    def paid_withdrawal(self, s):
+        p = self.player(s, 1)
+        req = s.request_cashout(p, "Ade Okafor", DECL, 1550)
+        s.decide_cashout(req["id"], "approve", OWNER, beneficiary=True, eligibility=True)
+        s.pay_cashout(req["id"], 1550, TODAY.isoformat(), "TRX-1", OWNER)
+        return p, req
+
+    def totals_once(self, s, p):
+        """Every figure that adds up payments shows the ₦1,550 exactly once."""
+        st = s.cashout_status(p)
+        self.assertEqual((st["totals"]["paid"], st["totals"]["unpaid"], st["totals"]["refused"]), (1550, 55, 0))
+        events, months, reviews = s.events(), s.cashout_months(), s.payments()
+        summary = withdrawals.summary(s.cashout_requests(), s.cashout_payments(), events, months, reviews, 50000,
+                                      f"{M1}-01", CUR, referrals=s.referrals())
+        self.assertEqual(summary["paid_amount"], 1550)
+        earning = {r["Earning month"]: r for r in withdrawals.by_earning_month(events, months, s.cashout_requests(),
+                                                                                reviews, s.referrals())}
+        self.assertEqual((earning[M1]["Paid"], earning[M2]["Paid"]), (650, 900))
+        cash = withdrawals.by_payment_month(s.cashout_payments(), reviews, months)
+        self.assertEqual([(r["Payment month"], r["Cash paid"], r["Payments"]) for r in cash], [(CUR, 1550, 1)])
+
+    def test_settlement_reference_is_kept_but_remarks_can_change(self):
+        s = self.setup_store()
+        p, req = self.paid_withdrawal(s)
+        for new in ("TRX-OTHER", "", None, req["reference"].lower()):
+            with self.assertRaises(StoreError) as caught:
+                s.update_payment(p, M1, {"reference": new}, OWNER)
+            self.assertIn("cannot be changed", str(caught.exception))
+        s.update_payment(p, M1, {"remarks": "Bank confirmed on the phone", "reason": "audit note"}, OWNER)
+        row = s.payment(p, M1)
+        self.assertEqual((row["reference"], row["remarks"], row["status"], row["paid_amount"]),
+                         (req["reference"], "Bank confirmed on the phone", "paid", 650))
+        self.totals_once(s, p)
+
+    def test_wd_references_are_reserved_for_withdrawal_settlements(self):
+        s = self.setup_store()
+        p = self.player(s, 2)
+        s.open_payment(p, M1, False, OWNER)
+        for fake in ("WD-202610-ABCD", "wd-202610-abcd"):
+            with self.assertRaises(StoreError) as caught:
+                s.update_payment(p, M1, {"reference": fake}, OWNER)
+            self.assertIn("reserved", str(caught.exception))
+
+    def test_existing_payment_reference_edits_still_work(self):
+        s = self.setup_store()
+        p = self.player(s, 2)
+        s.open_payment(p, M1, False, OWNER)
+        s.update_payment(p, M1, {"status": "approved", "approved_amount": 650}, OWNER)
+        s.update_payment(p, M1, {"status": "paid", "paid_amount": 650, "payment_date": TODAY.isoformat(),
+                                 "reference": "TRX-A"}, OWNER)
+        s.update_payment(p, M1, {"reference": "TRX-B", "remarks": "corrected reference"}, OWNER)   # still allowed
+        self.assertEqual(s.payment(p, M1)["reference"], "TRX-B")
+        st = s.cashout_status(p)
+        self.assertEqual(st["totals"]["paid"], 650)                         # a monthly-review payment still counts
+        self.assertEqual([m["month"] for m in st["months"]], [M2])          # and its month cannot be requested
+
+    def test_no_double_count_even_if_the_reference_is_forced_to_change(self):
+        """Even if the guard were bypassed (an administrator editing the table directly), accounting does not
+        depend on the reference text: the month stays settled by its paid withdrawal reservation."""
+        s = self.setup_store()
+        p, req = self.paid_withdrawal(s)
+        self.force_reference(s, p, M1, "CHANGED-BY-HAND")
+        self.force_reference(s, p, M2, None)
+        self.assertEqual(s.payment(p, M1)["reference"], "CHANGED-BY-HAND")
+        self.totals_once(s, p)
+        self.assertIn("no_earnings", s.cashout_status(p)["reasons"])         # still never requestable again
+
+
+class MemoryWithdrawalTests(SettlementReferenceScenarios, NetEarningsScenarios, Scenarios, unittest.TestCase):
     def make_store(self):
         return MemoryStore()
 
     def reopen(self, s):
         return s                                                              # memory: the same process
+
+    def force_reference(self, s, p, month, value):
+        for row in s.tables["reward_payments"]:
+            if row["profile_id"] == p and row["month"] == month:
+                row["reference"] = value                                      # bypasses every rule
 
     def backdate(self, s, profile, days):
         stamp = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
@@ -765,7 +841,7 @@ class MemoryWithdrawalTests(NetEarningsScenarios, Scenarios, unittest.TestCase):
 
 
 @unittest.skipUnless(pg_harness.available(), "PostgreSQL is not installed")
-class SqlWithdrawalTests(NetEarningsScenarios, Scenarios, unittest.TestCase):
+class SqlWithdrawalTests(SettlementReferenceScenarios, NetEarningsScenarios, Scenarios, unittest.TestCase):
     def make_store(self):
         if not CLUSTER:
             self.skipTest("local PostgreSQL did not start")
@@ -773,6 +849,23 @@ class SqlWithdrawalTests(NetEarningsScenarios, Scenarios, unittest.TestCase):
 
     def reopen(self, s):
         return pg_harness.PsqlStore(CLUSTER, s.db)                           # a new connection, nothing in memory
+
+    def force_reference(self, s, p, month, value):
+        literal = "null" if value is None else f"'{value}'"
+        CLUSTER.psql(s.db, "alter table public.reward_payments disable trigger user; "
+                           f"update public.reward_payments set reference = {literal} "
+                           f"where profile_id = '{p}' and month = '{month}'; "
+                           "alter table public.reward_payments enable trigger user;")   # as the database owner
+
+    def test_service_key_cannot_change_a_settlement_reference_directly(self):
+        s = self.setup_store()
+        p, req = self.paid_withdrawal(s)
+        with self.assertRaises(StoreError):
+            CLUSTER.psql(s.db, f"update public.reward_payments set reference = 'X' where profile_id = '{p}'",
+                         "service_role")
+        CLUSTER.psql(s.db, f"update public.reward_payments set remarks = 'checked' where profile_id = '{p}'",
+                     "service_role")
+        self.totals_once(s, p)
 
     def backdate(self, s, profile, days):
         CLUSTER.psql(s.db, f"update public.reward_enrolments set created_at = now() - interval '{int(days)} days' "

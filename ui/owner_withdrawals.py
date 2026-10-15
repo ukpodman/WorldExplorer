@@ -439,7 +439,7 @@ def _accounting(d: dict, include_test: bool) -> None:
                                            referrals=d["referrals"])
     _table(earning, "No earnings yet.")
     st.markdown("**By payment month** — cash actually transferred")
-    cash = withdrawals.by_payment_month(pick(d["payments"]), pick(d["reviews"]))
+    cash = withdrawals.by_payment_month(pick(d["payments"]), pick(d["reviews"]), d["months"])
     _table(cash, "No payments recorded yet.")
     c1, c2 = st.columns(2)
     with c1:

@@ -566,11 +566,21 @@ class MemoryStore(RewardsStore):
                     or new["approved_amount"] != old["approved_amount"]
                     or new.get("payment_date") != old.get("payment_date")):
                 raise StoreError("a completed payment cannot be changed; add a remark instead")
-        if new["status"] in ("approved", "paid") and not self._cashout_fn and any(
+        if new["status"] in ("approved", "paid") and not self._cashout_fn \
+                and (old is None or old["status"] not in ("approved", "paid")) and any(
                 m["profile_id"] == new["profile_id"] and m["month"] == new["month"] and m["status"] != "released"
                 for m in self.tables["reward_cashout_months"]):
             raise StoreError(f"month {new['month']} of this participant is covered by a withdrawal request; manage it "
                              "under Withdrawals")
+        if not self._cashout_fn:   # = reward_payments_settlement_guard: the WD- link of a settled month is kept
+            settled = withdrawals.settled_by_withdrawal(new, self.tables["reward_cashout_months"])
+            changed = old is None or new.get("reference") != old.get("reference")
+            if settled and old is not None and changed:
+                raise StoreError(f"the reference of a payment settled by withdrawal request {old.get('reference')} "
+                                 "cannot be changed; add a remark instead")
+            if not settled and changed and withdrawals.REFERENCE_RE.match(str(new.get("reference") or "").upper()):
+                raise StoreError("references in the form WD-YYYYMM-XXXX are reserved for payments settled by a "
+                                 "withdrawal request")
         if new["approved_amount"] > earned:
             raise StoreError(f"approved amount ({new['approved_amount']}) is more than was earned ({earned})")
         if new["status"] in ("approved", "paid"):

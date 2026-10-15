@@ -85,10 +85,13 @@ def period_label(months: list[str], language: str = "English") -> str:
 
 # --------------------------------------------------------------------------- eligibility and balance
 
-def settled_by_withdrawal(review: dict) -> bool:
-    """A reward_payments row written by "Mark as paid" on a withdrawal (its reference is the WD- reference). The money
-    is already counted once in reward_cashout_payments, so such rows are never added a second time."""
-    return bool(REFERENCE_RE.match(str(review.get("reference") or "")))
+def settled_by_withdrawal(review: dict, reservations: list[dict]) -> bool:
+    """A reward_payments row for a month that a paid withdrawal settled. The money is already counted once in
+    reward_cashout_payments, so such rows are never added a second time. Recognised by the withdrawal's paid
+    reservation (exactly as reward_cashout_settled() in the database), never by the reference text, which the existing
+    payment rules allow to be edited."""
+    return any(r.get("profile_id") == review.get("profile_id") and r.get("month") == review.get("month")
+               and r.get("status") == "paid" for r in reservations)
 
 
 def first_enrolment(enrolments: list[dict], test: bool):
@@ -150,7 +153,7 @@ def month_refused(profile_id: str, month: str, earning: dict, reservations: list
     disqualified with a withdrawal counts in full; a month a monthly review settled for less than was earned counts
     the difference; otherwise the rewards of rejected referrals."""
     review = next((p for p in reviews if p.get("profile_id") == profile_id and p.get("month") == month), None)
-    if review and not settled_by_withdrawal(review):
+    if review and not settled_by_withdrawal(review, reservations):
         if review.get("status") == "rejected":
             return earning["gross"]
         if review.get("status") in ("approved", "paid"):
@@ -235,7 +238,7 @@ def status(account: dict | None, settings: dict, enrolments: list[dict], events:
     paid = sum(int(p["amount"]) for p in payments if p.get("profile_id") == pid and bool(p.get("test")) == test) \
         + sum(int(p.get("paid_amount") or 0) for p in reviews
               if p.get("profile_id") == pid and bool(p.get("test")) == test and p.get("status") == "paid"
-              and not settled_by_withdrawal(p))
+              and not settled_by_withdrawal(p, reservations))
     refused = sum(month_refused(pid, m, earning, reservations, reviews) for m, earning in earnings.items())
     return {"eligible": not reasons, "reasons": reasons, "today": day.isoformat(), "month": current,
             "joined_on": joined_on.isoformat() if joined_on else None,
@@ -356,7 +359,7 @@ def summary(requests: list[dict], payments: list[dict], events: list[dict], rese
     awaiting = sum(int(r["amount"]) for r in requests if r.get("status") == "approved")
     cash_paid = sum(int(p["amount"]) for p in payments)
     review_paid = sum(int(p.get("paid_amount") or 0) for p in reviews
-                      if p.get("status") == "paid" and not settled_by_withdrawal(p))
+                      if p.get("status") == "paid" and not settled_by_withdrawal(p, reservations))
     earned = sum(int(e.get("amount") or 0) for e in events if int(e.get("amount") or 0) > 0)
     refused = sum(_refused_by_person_month(events, reservations, reviews, referrals or []).values())
     allocated = monthly_budget * len(programme_months(start_date, current_month))
@@ -388,7 +391,7 @@ def by_earning_month(events: list[dict], reservations: list[dict], requests: lis
             key = "Approved, awaiting payment" if status_of.get(r["request_id"]) == "approved" else "Requested"
             target[key] += int(r["amount"])
     for p in reviews:
-        if p.get("status") == "paid" and not settled_by_withdrawal(p):
+        if p.get("status") == "paid" and not settled_by_withdrawal(p, reservations):
             row(p["month"])["Paid"] += int(p.get("paid_amount") or 0)
     for (pid, month), refused in _refused_by_person_month(events, reservations, reviews, referrals or []).items():
         row(month)["Refused"] += refused
@@ -398,7 +401,7 @@ def by_earning_month(events: list[dict], reservations: list[dict], requests: lis
     return [rows[m] for m in sorted(rows, reverse=True)]
 
 
-def by_payment_month(payments: list[dict], reviews: list[dict]) -> list[dict]:
+def by_payment_month(payments: list[dict], reviews: list[dict], reservations: list[dict]) -> list[dict]:
     """Cash actually paid, by the month the owner transferred it."""
     rows: dict[str, dict] = {}
     for p in payments:
@@ -407,7 +410,7 @@ def by_payment_month(payments: list[dict], reviews: list[dict]) -> list[dict]:
         target["Withdrawals paid"] += int(p["amount"])
         target["Payments"] += 1
     for p in reviews:
-        if p.get("status") == "paid" and p.get("payment_date") and not settled_by_withdrawal(p):
+        if p.get("status") == "paid" and p.get("payment_date") and not settled_by_withdrawal(p, reservations):
             month = str(p["payment_date"])[:7]
             target = rows.setdefault(month, {"Payment month": month, "Withdrawals paid": 0, "Monthly reviews paid": 0,
                                              "Cash paid": 0, "Payments": 0})

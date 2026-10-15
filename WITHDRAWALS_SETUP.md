@@ -58,6 +58,13 @@ Nothing in this setup changes your existing tables, rewards, referrals or paymen
      existing rules for that table still apply. Your existing Payments tab and Overview figures therefore show it.
      `reward_cashout_payments` keeps the bank transfer itself, because one transfer can cover several months. Reports
      count each payment once.
+     * A month counts as settled by a withdrawal because of the withdrawal's own paid record, never because of the
+       reference text. Editing a payment can therefore never make it count twice.
+     * The WD- reference of such a month cannot be changed. You can still add remarks or a reason, and its amounts,
+       date and status stay frozen by the existing rules.
+     * Other payments cannot use a reference in the form WD-YYYYMM-XXXX.
+     * All other edits in the Payments tab work as before, including changing the reference of an ordinary monthly
+       payment.
    * **Verification stays separate.**
      * The withdrawal's own checks (eligibility confirmed, beneficiary name verified, who approved it and when) are
        stored on the request.

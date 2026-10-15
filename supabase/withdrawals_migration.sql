@@ -26,7 +26,8 @@
 --   * One record of what was paid per earning month: when a real request is marked as paid, each covered month is
 --     also settled in the EXISTING reward_payments table (status paid, reference = the WD- reference), so the
 --     existing Payments tab and budget figures include it. reward_cashout_payments keeps the bank transfer itself
---     (one transfer can cover several months).
+--     (one transfer can cover several months). Such a month is recognised by its paid reservation, never by the
+--     reference text, and its reference is protected (remarks can still be added).
 --
 -- Security model (same as the rewards tables): Row Level Security on, no access at all for the browser roles
 -- (anon, authenticated); only the server key (service_role) used by the app on the server. The app reads and
@@ -177,6 +178,15 @@ language sql stable set search_path = public as $$
    group by e.month
 $$;
 
+-- True when this person's month was settled by a paid withdrawal. Decided by the withdrawal's own reservation
+-- (reward_cashout_months, changed only by the withdrawal functions; a paid reservation can never be reopened),
+-- not by the payment reference, so later edits to reward_payments can never cause a month to be counted twice.
+create or replace function public.reward_cashout_settled(p_profile text, p_month text) returns boolean
+language sql stable set search_path = public as $$
+  select exists (select 1 from public.reward_cashout_months m
+                  where m.profile_id = p_profile and m.month = p_month and m.status = 'paid')
+$$;
+
 -- Everything the app shows on the player's withdrawal card, computed here so the database is the authority.
 -- p_as_of (a simulated Nigeria date) is accepted for test accounts only.
 create or replace function public.reward_cashout_status(p_profile text, p_as_of date default null)
@@ -267,9 +277,11 @@ begin
     from public.reward_cashout_requests where profile_id = p_profile and test = acc.test;
   select coalesce((select sum(amount) from public.reward_cashout_payments
                     where profile_id = p_profile and test = acc.test), 0)::int
-       + coalesce((select sum(paid_amount) from public.reward_payments
-                    where profile_id = p_profile and test = acc.test and status = 'paid'
-                      and coalesce(reference, '') !~ '^WD-[0-9]{6}-[2-9A-HJ-NP-Z]{4}$'), 0)::int   -- not counted twice
+       + coalesce((select sum(p.paid_amount) from public.reward_payments p
+                    where p.profile_id = p_profile and p.test = acc.test and p.status = 'paid'
+                      -- a month settled by a withdrawal is already counted in reward_cashout_payments; recognised by
+                      -- its paid reservation (never by the reference text, which the existing rules let you edit)
+                      and not public.reward_cashout_settled(p.profile_id, p.month)), 0)::int
     into paid;
   -- refused per month, one figure each: a month refused in a monthly review or disqualified with a withdrawal
   -- counts in full; a month settled by a monthly review for less than was earned counts the difference; otherwise
@@ -283,7 +295,7 @@ begin
     into refused
     from public.reward_cashout_month_earnings(p_profile, acc.test) me
     left join lateral (select p.status, p.approved_amount,
-                              coalesce(p.reference, '') ~ '^WD-[0-9]{6}-[2-9A-HJ-NP-Z]{4}$' as settled
+                              public.reward_cashout_settled(p.profile_id, p.month) as settled
                          from public.reward_payments p
                         where p.profile_id = p_profile and p.month = me.month) rv on true;
 
@@ -639,7 +651,10 @@ create trigger reward_owner_notifications_guard before insert or update or delet
 create or replace function public.reward_payments_cashout_guard() returns trigger
 language plpgsql set search_path = public as $$
 begin
-  if new.status in ('approved','paid') and coalesce(current_setting('we.cashout', true), '') <> 'on' then
+  -- only a change INTO approved or paid is checked: remarks and reasons on a month already settled stay editable
+  -- (its amounts, date and status are frozen by reward_payments_guard, its reference by the settlement guard below)
+  if new.status in ('approved','paid') and coalesce(current_setting('we.cashout', true), '') <> 'on'
+     and (tg_op = 'INSERT' or old.status not in ('approved','paid')) then
     perform pg_advisory_xact_lock(hashtext('cashout:' || new.profile_id));
     if exists (select 1 from public.reward_cashout_months m
                 where m.profile_id = new.profile_id and m.month = new.month and m.status <> 'released') then
@@ -653,6 +668,31 @@ end $$;
 drop trigger if exists reward_payments_cashout_guard on public.reward_payments;
 create trigger reward_payments_cashout_guard before insert or update on public.reward_payments
   for each row execute function public.reward_payments_cashout_guard();
+
+-- The existing rules let a paid record's reference and remarks change. For a month settled by a withdrawal the
+-- reference is the WD- reference that links it to the withdrawal, so it is kept; remarks and reasons can still be
+-- added. Other payments cannot take a WD- reference, so no record can pretend to be a withdrawal settlement.
+create or replace function public.reward_payments_settlement_guard() returns trigger
+language plpgsql set search_path = public as $$
+declare
+  settled boolean;
+begin
+  if coalesce(current_setting('we.cashout', true), '') = 'on' then return new; end if;   -- the settlement itself
+  settled := public.reward_cashout_settled(new.profile_id, new.month);
+  if settled and tg_op = 'UPDATE' and new.reference is distinct from old.reference then
+    raise exception 'the reference of a payment settled by withdrawal request % cannot be changed; add a remark instead',
+      old.reference;
+  end if;
+  if not settled and coalesce(new.reference, '') ~* '^WD-[0-9]{6}-[2-9A-HJ-NP-Z]{4}$'
+     and (tg_op = 'INSERT' or new.reference is distinct from old.reference) then
+    raise exception 'references in the form WD-YYYYMM-XXXX are reserved for payments settled by a withdrawal request';
+  end if;
+  return new;
+end $$;
+
+drop trigger if exists reward_payments_settlement_guard on public.reward_payments;
+create trigger reward_payments_settlement_guard before insert or update on public.reward_payments
+  for each row execute function public.reward_payments_settlement_guard();
 
 -- ============================================================================ audit trail
 
@@ -700,6 +740,7 @@ revoke execute on function public.reward_cashout_today(date)                    
 revoke execute on function public.reward_cashout_is_owner(text)                              from public, anon, authenticated;
 revoke execute on function public.reward_cashout_status(text, date)                          from public, anon, authenticated;
 revoke execute on function public.reward_cashout_month_earnings(text, boolean)               from public, anon, authenticated;
+revoke execute on function public.reward_cashout_settled(text, text)                         from public, anon, authenticated;
 revoke execute on function public.reward_cashout_earnings_changed(bigint)                     from public, anon, authenticated;
 revoke execute on function public.reward_cashout_request(text, text, jsonb, int, date, jsonb) from public, anon, authenticated;
 revoke execute on function public.reward_cashout_decide(bigint, text, text, text, boolean, boolean, boolean)
@@ -710,6 +751,7 @@ grant  execute on function public.reward_cashout_today(date)                    
 grant  execute on function public.reward_cashout_is_owner(text)                              to service_role;
 grant  execute on function public.reward_cashout_status(text, date)                          to service_role;
 grant  execute on function public.reward_cashout_month_earnings(text, boolean)               to service_role;
+grant  execute on function public.reward_cashout_settled(text, text)                         to service_role;
 grant  execute on function public.reward_cashout_earnings_changed(bigint)                     to service_role;
 grant  execute on function public.reward_cashout_request(text, text, jsonb, int, date, jsonb) to service_role;
 grant  execute on function public.reward_cashout_decide(bigint, text, text, text, boolean, boolean, boolean) to service_role;

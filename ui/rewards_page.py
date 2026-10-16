@@ -11,7 +11,7 @@ from core import accounts, rewards
 from core.rewards_store import StoreError
 
 from . import rewards_hooks as hooks
-from . import withdraw_ui
+from . import founding_ui, withdraw_ui
 from .components import e, hero, html, sign_in_button
 from .state import t
 
@@ -38,8 +38,10 @@ PAYMENT_TEXT = {"pending_review": "Pending review", "approved": "Approved", "pai
 
 TERMS = """**World Explorer Rewards — pilot programme rules (version {version})**
 
-1. **Who can join.** Signed-in World Explorer users who are at least 18 years old and live in Nigeria. Joining is
-   optional; everyone keeps full access to World Explorer without joining.
+1. **Who can join — World Explorer Founding 50.** Signed-in World Explorer users who are at least 18 years old and
+   live in Nigeria can apply. Only participants approved by World Explorer (at most 50 at a time) take part and earn
+   rewards; applying does not guarantee a place, and an application can be approved, placed on a waiting list or
+   declined. Applying and joining are optional; everyone keeps full access to World Explorer without them.
 2. **Provisional eligibility.** Your age and residence are self-declared and give provisional eligibility only.
    Before any payment, we will ask you to complete a verification step. If eligibility cannot be confirmed, rewards
    are not paid.
@@ -53,6 +55,8 @@ TERMS = """**World Explorer Rewards — pilot programme rules (version {version}
    new participants join a waiting list.
 6. **Review and payment.** Every month's rewards are reviewed manually. Payments are made only after approval,
    using payment details collected separately in a secure way (World Explorer does not ask for bank details).
+   A withdrawal can be requested at the earliest 30 calendar days after you first take your place following
+   approval, and only for verified earnings from completed months; every withdrawal is reviewed and paid manually.
    Rewards from activity that breaks these rules (for example automated play, duplicate accounts or self-referral)
    may be refused.
 7. **Pilot status.** Until the programme is officially launched, amounts are shown as a preview and are not
@@ -306,6 +310,16 @@ def render() -> None:
     _show_flash()
     _invited_note(ctx)
     pid, month = who["profile_id"], ctx["month"]
+    # 🌟 Founding 50: only participants the Owner approved may join and earn (test accounts may always try)
+    fs = hooks.founding_store()
+    if fs is None and not account.get("test"):
+        may_join = False
+        if account.get("membership") != "suspended":
+            founding_ui.unavailable()
+    elif fs is None or account.get("membership") == "suspended":
+        may_join = True
+    else:
+        may_join = founding_ui.section(fs, who, account)
     if account.get("membership") == "member":
         _status_line(ctx.get("enrolment"), ctx["settings"])
         with st.container(border=True, key="rw_progress"):
@@ -316,7 +330,8 @@ def render() -> None:
     elif account.get("membership") == "suspended":
         st.warning(t("Your participation is on hold. Please use “Send feedback” if you think this is a mistake."))
     else:
-        _join_form(s, who, ctx)
+        if may_join:
+            _join_form(s, who, ctx)
         if account.get("membership") == "withdrawn":   # earned rewards stay withdrawable after leaving
             withdraw_ui.section(s, who, account)
     st.divider()

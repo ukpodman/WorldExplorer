@@ -4218,6 +4218,156 @@
    "Las ganancias de {period} aún se están revisando (una invitación está pendiente de revisión) y estarán disponibles después.",
    "{period} 的收入仍在核查中（有一份邀请正在等待审核），审核后即可提取。",
    "Заработок за {period} ещё проверяется (приглашение ожидает проверки) и станет доступен после этого."
+  ],
+  "Applications are closed at the moment. Please try again later.": [
+   "Bewerbungen sind im Moment geschlossen. Bitte versuche es später erneut.",
+   "Las solicitudes están cerradas en este momento. Inténtalo de nuevo más tarde.",
+   "目前暂停接受申请。请稍后再试。",
+   "Приём заявок сейчас закрыт. Пожалуйста, попробуйте позже."
+  ],
+  "Applications for the Founding 50 open soon. You can keep using all of World Explorer for free.": [
+   "Die Bewerbungen für die Founding 50 öffnen bald. Du kannst World Explorer weiterhin komplett kostenlos nutzen.",
+   "Las solicitudes para los Founding 50 se abrirán pronto. Puedes seguir usando todo World Explorer gratis.",
+   "Founding 50 即将开放申请。你可以继续免费使用 World Explorer 的全部功能。",
+   "Приём заявок в Founding 50 скоро откроется. Вы можете и дальше бесплатно пользоваться всем World Explorer."
+  ],
+  "Apply for the Founding 50": [
+   "Für die Founding 50 bewerben",
+   "Solicitar plaza en los Founding 50",
+   "申请加入 Founding 50",
+   "Подать заявку в Founding 50"
+  ],
+  "Applying does not guarantee a place. Only approved participants earn rewards. We do not ask for bank details here.": [
+   "Eine Bewerbung garantiert keinen Platz. Nur bestätigte Teilnehmende verdienen Prämien. Wir fragen hier nicht nach Bankdaten.",
+   "Solicitar no garantiza una plaza. Solo los participantes aprobados ganan recompensas. Aquí no pedimos datos bancarios.",
+   "提交申请并不保证获得名额。只有获批的参与者才能获得奖励。我们不会在这里索取银行信息。",
+   "Заявка не гарантирует место. Вознаграждения получают только одобренные участники. Мы не запрашиваем здесь банковские данные."
+  ],
+  "Choose your state": [
+   "Wähle deinen Bundesstaat",
+   "Elige tu estado",
+   "选择你所在的州",
+   "Выберите свой штат"
+  ],
+  "Confirm your declarations below to take your place. Your 30-day withdrawal waiting period starts when you take your place.": [
+   "Bestätige unten deine Angaben, um deinen Platz einzunehmen. Deine 30-tägige Wartezeit für Auszahlungen beginnt, sobald du deinen Platz einnimmst.",
+   "Confirma tus declaraciones abajo para ocupar tu plaza. Tu periodo de espera de 30 días para retirar empieza cuando ocupas tu plaza.",
+   "请在下方确认你的声明以领取名额。你的 30 天提现等待期从你领取名额时开始计算。",
+   "Подтвердите свои заявления ниже, чтобы занять место. 30-дневный срок ожидания вывода начинается, когда вы занимаете место."
+  ],
+  "Places available": [
+   "Freie Plätze",
+   "Plazas disponibles",
+   "剩余名额",
+   "Свободные места"
+  ],
+  "Please choose your state of residence.": [
+   "Bitte wähle deinen Wohnsitz-Bundesstaat.",
+   "Elige tu estado de residencia.",
+   "请选择你居住的州。",
+   "Пожалуйста, выберите штат проживания."
+  ],
+  "Please confirm all three statements to apply.": [
+   "Bitte bestätige alle drei Aussagen, um dich zu bewerben.",
+   "Confirma las tres declaraciones para enviar tu solicitud.",
+   "请确认全部三项声明后再提交申请。",
+   "Пожалуйста, подтвердите все три утверждения, чтобы подать заявку."
+  ],
+  "Please keep your message under 300 characters.": [
+   "Bitte halte deine Nachricht unter 300 Zeichen.",
+   "Tu mensaje debe tener menos de 300 caracteres.",
+   "请将留言控制在 300 个字符以内。",
+   "Пожалуйста, уложитесь в 300 символов."
+  ],
+  "State of residence": [
+   "Wohnsitz-Bundesstaat",
+   "Estado de residencia",
+   "居住州",
+   "Штат проживания"
+  ],
+  "Thank you! Your Founding 50 application was sent. The World Explorer team will review it.": [
+   "Danke! Deine Bewerbung für die Founding 50 wurde gesendet. Das World-Explorer-Team prüft sie.",
+   "¡Gracias! Tu solicitud para los Founding 50 se ha enviado. El equipo de World Explorer la revisará.",
+   "谢谢！你的 Founding 50 申请已提交。World Explorer 团队将进行审核。",
+   "Спасибо! Ваша заявка в Founding 50 отправлена. Команда World Explorer её рассмотрит."
+  ],
+  "We are welcoming {n} founding participants in Nigeria who explore countries, complete quizzes and earn rewards. Anyone can apply; the World Explorer team reviews every application.": [
+   "Wir suchen {n} Gründungsteilnehmende in Nigeria, die Länder entdecken, Quizze abschließen und Prämien verdienen. Jede und jeder kann sich bewerben; das World-Explorer-Team prüft jede Bewerbung.",
+   "Damos la bienvenida a {n} participantes fundadores en Nigeria que exploran países, completan cuestionarios y ganan recompensas. Cualquiera puede solicitarlo; el equipo de World Explorer revisa cada solicitud.",
+   "我们正在尼日利亚招募 {n} 名创始参与者：探索国家、完成测验并赚取奖励。任何人都可以申请，World Explorer 团队会审核每一份申请。",
+   "Мы приглашаем {n} участников-основателей из Нигерии, которые изучают страны, проходят викторины и получают вознаграждения. Подать заявку может каждый; команда World Explorer рассматривает каждую заявку."
+  ],
+  "Why would you like to join? (optional)": [
+   "Warum möchtest du mitmachen? (optional)",
+   "¿Por qué te gustaría participar? (opcional)",
+   "你为什么想加入？（选填）",
+   "Почему вы хотите участвовать? (необязательно)"
+  ],
+  "World Explorer Founding 50": [
+   "World Explorer Founding 50",
+   "World Explorer Founding 50",
+   "World Explorer Founding 50（创始 50 人）",
+   "World Explorer Founding 50"
+  ],
+  "World Explorer stays free for everyone. Maps, countries, quizzes and badges never need an application.": [
+   "World Explorer bleibt für alle kostenlos. Karten, Länder, Quizze und Abzeichen brauchen nie eine Bewerbung.",
+   "World Explorer sigue siendo gratis para todos. Los mapas, países, cuestionarios e insignias nunca requieren solicitud.",
+   "World Explorer 对所有人永久免费。地图、国家、测验和徽章都无需申请。",
+   "World Explorer остаётся бесплатным для всех. Для карт, стран, викторин и значков заявка не нужна."
+  ],
+  "You are on the Founding 50 waiting list. This page will show it when a place is offered to you.": [
+   "Du stehst auf der Warteliste der Founding 50. Diese Seite zeigt es an, sobald dir ein Platz angeboten wird.",
+   "Estás en la lista de espera de los Founding 50. Esta página lo indicará cuando se te ofrezca una plaza.",
+   "你已进入 Founding 50 候补名单。一旦有名额分配给你，本页面会显示。",
+   "Вы в листе ожидания Founding 50. Эта страница покажет, когда вам предложат место."
+  ],
+  "You have already applied. Each person can apply once.": [
+   "Du hast dich bereits beworben. Jede Person kann sich einmal bewerben.",
+   "Ya has enviado una solicitud. Cada persona puede solicitarlo una vez.",
+   "你已经申请过了。每人只能申请一次。",
+   "Вы уже подали заявку. Каждый может подать заявку только один раз."
+  ],
+  "Your Founding 50 application was approved!": [
+   "Deine Bewerbung für die Founding 50 wurde angenommen!",
+   "¡Tu solicitud para los Founding 50 ha sido aprobada!",
+   "你的 Founding 50 申请已获批准！",
+   "Ваша заявка в Founding 50 одобрена!"
+  ],
+  "Your activity is recorded, but it earns rewards only after your Founding 50 application is approved.": [
+   "Deine Aktivität wird gespeichert, bringt aber erst Prämien, wenn deine Bewerbung für die Founding 50 angenommen ist.",
+   "Tu actividad se registra, pero solo genera recompensas cuando tu solicitud para los Founding 50 sea aprobada.",
+   "你的活动会被记录，但只有在 Founding 50 申请获批后才会产生奖励。",
+   "Ваша активность записывается, но вознаграждения начисляются только после одобрения заявки в Founding 50."
+  ],
+  "Your application could not be sent. Please try again.": [
+   "Deine Bewerbung konnte nicht gesendet werden. Bitte versuche es erneut.",
+   "No se pudo enviar tu solicitud. Inténtalo de nuevo.",
+   "申请未能提交。请重试。",
+   "Не удалось отправить заявку. Пожалуйста, попробуйте ещё раз."
+  ],
+  "Your application was not accepted this time. You can keep using all of World Explorer for free.": [
+   "Deine Bewerbung wurde dieses Mal nicht angenommen. Du kannst World Explorer weiterhin komplett kostenlos nutzen.",
+   "Tu solicitud no ha sido aceptada esta vez. Puedes seguir usando todo World Explorer gratis.",
+   "很遗憾，你的申请这次未获通过。你可以继续免费使用 World Explorer 的全部功能。",
+   "На этот раз ваша заявка не принята. Вы можете и дальше бесплатно пользоваться всем World Explorer."
+  ],
+  "Your application was received on {date} and is waiting for review.": [
+   "Deine Bewerbung ist am {date} eingegangen und wartet auf die Prüfung.",
+   "Tu solicitud se recibió el {date} y está pendiente de revisión.",
+   "你的申请已于 {date} 收到，正在等待审核。",
+   "Ваша заявка получена {date} и ожидает рассмотрения."
+  ],
+  "🔒 Withdraw — Founding 50 approval needed": [
+   "🔒 Auszahlen — Bestätigung für die Founding 50 nötig",
+   "🔒 Retirar — Se necesita la aprobación de los Founding 50",
+   "🔒 提现 — 需要 Founding 50 批准",
+   "🔒 Вывод — нужно одобрение Founding 50"
+  ],
+  "🧪 Test application — not payable": [
+   "🧪 Testbewerbung — nicht auszahlbar",
+   "🧪 Solicitud de prueba — no pagable",
+   "🧪 测试申请 — 不予支付",
+   "🧪 Тестовая заявка — не оплачивается"
   ]
  }
 }

@@ -10,6 +10,7 @@ from unittest import mock
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "tests"))
 APP = str(ROOT / "app.py")
 
 try:
@@ -38,6 +39,10 @@ class WithdrawalAppTests(unittest.TestCase):
         rewards_hooks._memory_store.clear()
         rewards_hooks._health_cache.clear()
         self.s = rewards_hooks._memory_store()
+        self.s.tables["reward_program_settings"][0]["public_enabled"] = True   # owner switch ON (default OFF)
+        import founding_fixtures                 # every account approved for Founding 50 (see test_founding50)
+        self.fixtures = founding_fixtures
+        founding_fixtures.auto_approve(self.s)
         self.s.save_settings(Settings(start_date=f"{M1}-01"), "owner@example.com")
 
     def app(self, who, live=True, payouts=False, page="Rewards", **rewards_cfg):
@@ -59,10 +64,7 @@ class WithdrawalAppTests(unittest.TestCase):
         if verified:                      # the owner verified eligibility in Participants (existing workflow)
             s.update_account(pid, {"verification": "verified"})
         s.enrol(pid, CUR)
-        stamp = (datetime.now(timezone.utc) - timedelta(days=days_ago)).isoformat()
-        for e in s.tables["reward_enrolments"]:
-            if e["profile_id"] == pid:
-                e["created_at"] = stamp
+        self.fixtures.backdate(s, pid, days_ago)   # the enrolment and, before it, the Founding 50 approval
         for i in range(20):
             d = f"{M2}-{1 + i:02d}"
             s.add_event(pid, "active_day", d, d, reward=True, test=test)

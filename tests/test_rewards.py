@@ -18,6 +18,7 @@ from core import rewards  # noqa: E402
 from core.rewards import Settings  # noqa: E402
 from core.rewards_store import MemoryStore, StoreError, SupabaseStore  # noqa: E402
 import pg_harness  # noqa: E402
+import founding_fixtures  # noqa: E402
 
 MONTH, DAY = "2026-10", "2026-10-13"
 CLUSTER = None
@@ -429,7 +430,8 @@ class StoreScenarios:
 
 class MemoryStoreTests(StoreScenarios, unittest.TestCase):
     def make_store(self, settings=None):
-        return MemoryStore(settings)
+        # owner switch ON and every account approved for Founding 50 in these scenarios (tested in test_founding50)
+        return founding_fixtures.auto_approve(MemoryStore(settings, public_enabled=True))
 
 
 @unittest.skipUnless(pg_harness.available(), "PostgreSQL is not installed")
@@ -438,10 +440,11 @@ class SqlStoreTests(StoreScenarios, unittest.TestCase):
         if not CLUSTER:
             self.skipTest("local PostgreSQL did not start")
         store = pg_harness.PsqlStore(CLUSTER, CLUSTER.fresh_db())
+        CLUSTER.set_public(store.db, True)   # owner switch ON for these scenarios (default OFF)
         if settings:
             row = settings.as_row()
             store.update("reward_program_settings", {"id": 1}, row)
-        return store
+        return founding_fixtures.auto_approve(store)   # every account approved for Founding 50 (see test_founding50)
 
     def test_browser_roles_have_no_access(self):
         store = self.make_store()
@@ -515,7 +518,7 @@ class SqlStoreTests(StoreScenarios, unittest.TestCase):
         for trial in range(3):
             settings = Settings(quiz_max_day=rng.choice([2, 3]), country_max_day=rng.choice([3, 5]),
                                 monthly_cap=rng.choice([600, 1000]))
-            sql, mem = self.make_store(settings), MemoryStore(settings)
+            sql, mem = self.make_store(settings), founding_fixtures.auto_approve(MemoryStore(settings, public_enabled=True))
             for store in (sql, mem):
                 self.member(store, 1)
             for i in range(160):
@@ -637,7 +640,7 @@ class OwnerAnalyticsTests(unittest.TestCase):
 
 class MemoryThreadSafety(unittest.TestCase):
     def test_parallel_awards_respect_caps(self):
-        s = MemoryStore()
+        s = founding_fixtures.auto_approve(MemoryStore(public_enabled=True))
         s.ensure_account(pid(1), None, None, True)
         s.join(pid(1), MONTH)
         threads = [threading.Thread(target=s.add_event, args=(pid(1), "quiz", f"t{i}", DAY),

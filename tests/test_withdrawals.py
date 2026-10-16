@@ -17,6 +17,7 @@ from core import rewards, withdrawals  # noqa: E402
 from core.rewards import Settings  # noqa: E402
 from core.rewards_store import MemoryStore, StoreError  # noqa: E402
 import pg_harness  # noqa: E402
+import founding_fixtures  # noqa: E402
 
 TODAY = withdrawals.today()
 CUR = withdrawals.month_of(TODAY)
@@ -806,7 +807,8 @@ class SettlementReferenceScenarios:
 
 class MemoryWithdrawalTests(SettlementReferenceScenarios, NetEarningsScenarios, Scenarios, unittest.TestCase):
     def make_store(self):
-        return MemoryStore()
+        # owner switch ON and every account approved for Founding 50 in these scenarios (tested in test_founding50)
+        return founding_fixtures.auto_approve(MemoryStore(public_enabled=True))
 
     def reopen(self, s):
         return s                                                              # memory: the same process
@@ -817,10 +819,7 @@ class MemoryWithdrawalTests(SettlementReferenceScenarios, NetEarningsScenarios, 
                 row["reference"] = value                                      # bypasses every rule
 
     def backdate(self, s, profile, days):
-        stamp = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
-        for e in s.tables["reward_enrolments"]:
-            if e["profile_id"] == profile:
-                e["created_at"] = stamp
+        founding_fixtures.backdate(s, profile, days)        # enrolments and, before them, the Founding 50 approval
 
     def test_parallel_requests_one_wins(self):
         s = self.setup_store()
@@ -845,7 +844,9 @@ class SqlWithdrawalTests(SettlementReferenceScenarios, NetEarningsScenarios, Sce
     def make_store(self):
         if not CLUSTER:
             self.skipTest("local PostgreSQL did not start")
-        return pg_harness.PsqlStore(CLUSTER, CLUSTER.fresh_db())
+        store = pg_harness.PsqlStore(CLUSTER, CLUSTER.fresh_db())
+        CLUSTER.set_public(store.db, True)   # owner switch ON for these scenarios (default OFF)
+        return founding_fixtures.auto_approve(store)   # every account approved for Founding 50 (see test_founding50)
 
     def reopen(self, s):
         return pg_harness.PsqlStore(CLUSTER, s.db)                           # a new connection, nothing in memory
@@ -868,8 +869,7 @@ class SqlWithdrawalTests(SettlementReferenceScenarios, NetEarningsScenarios, Sce
         self.totals_once(s, p)
 
     def backdate(self, s, profile, days):
-        CLUSTER.psql(s.db, f"update public.reward_enrolments set created_at = now() - interval '{int(days)} days' "
-                           f"where profile_id = '{profile}'", "service_role")
+        founding_fixtures.backdate(s, profile, days)        # enrolments and, before them, the Founding 50 approval
 
     def test_browser_roles_have_no_access(self):
         s = self.setup_store()

@@ -34,9 +34,62 @@ def config() -> dict:
         return {}
 
 
-def enabled() -> bool:
-    """The public programme is on (owner switch). Default off."""
+PUBLIC_TTL = 30   # seconds a server keeps the owner switch before reading it again
+
+
+def deployment_enabled() -> bool:
+    """The deployment-level safety switch [rewards] enabled in Streamlit secrets. Default off. While it is off, the
+    public programme stays closed whatever the Owner dashboard switch says."""
     return bool(config().get("enabled"))
+
+
+def owner_switch(refresh: bool = False) -> dict:
+    """The Owner dashboard switch stored in Supabase (reward_program_settings.public_enabled), cached briefly.
+    {'installed': False} until supabase/public_programme_migration.sql has run; it then counts as OFF."""
+    cache = _health_cache()
+    hit = cache.get("public_switch")
+    if hit and not refresh and time.time() - hit[1] < PUBLIC_TTL:
+        return hit[0]
+    try:
+        s = _supabase() if store_health() == "ok" else _memory_store()
+        status = s.public_status()
+    except Exception:
+        status = {"installed": False, "enabled": False, "error": True}
+    cache["public_switch"] = (status, time.time())
+    return status
+
+
+def enabled() -> bool:
+    """Public participation is open: BOTH the deployment safety switch and the owner's dashboard switch are on.
+    (The separate pause setting is shown on top of this; it stops new rewards and enrolments but keeps the page.)"""
+    return deployment_enabled() and bool(owner_switch().get("enabled"))
+
+
+def public_state() -> dict:
+    """What the Owner dashboard shows: 'enabled', 'paused' or 'disabled', with every switch and the reason."""
+    deployment = deployment_enabled()
+    switch = owner_switch()
+    paused = False
+    try:
+        s = store(for_tester=True)
+        paused = bool(s.settings().paused) if s else False
+    except Exception:
+        pass
+    owner = bool(switch.get("enabled"))
+    if not switch.get("installed"):
+        state, reason = "disabled", "The owner switch is not installed yet (run supabase/public_programme_migration.sql)."
+    elif not deployment:
+        state, reason = "disabled", ("Blocked by the deployment safety switch [rewards] enabled = false in Streamlit "
+                                     "secrets" + (" — the owner switch is ON but has no effect" if owner else "") + ".")
+    elif not owner:
+        state, reason = "disabled", "The owner switch is OFF."
+    elif paused:
+        state, reason = "paused", "Both switches are ON, but the programme is paused (no new rewards or enrolments)."
+    else:
+        state, reason = "enabled", "Both switches are ON and the programme is not paused."
+    return {"state": state, "reason": reason, "deployment": deployment, "owner": owner, "paused": paused,
+            "installed": bool(switch.get("installed")), "changed_at": switch.get("changed_at"),
+            "changed_by": switch.get("changed_by")}
 
 
 def payouts_active() -> bool:
@@ -152,6 +205,44 @@ def cashout_health() -> str:
 
 def preview_store() -> bool:
     return isinstance(store(), MemoryStore)
+
+
+# --------------------------------------------------------------------------- Founding 50 (approval by the Owner)
+
+def founding_store(for_tester: bool | None = None) -> RewardsStore | None:
+    """The rewards store when supabase/founding50_migration.sql is installed (the in-memory preview always has it);
+    None otherwise. Without it real players cannot apply or join (fail safe); owners see what to run."""
+    s = store(for_tester)
+    if s is None or isinstance(s, MemoryStore):
+        return s
+    cache = _health_cache()
+    key = getattr(s, "url", "store") + "#founding"
+    hit = cache.get(key)
+    if not hit or time.time() - hit[1] >= HEALTH_TTL:
+        hit = cache[key] = (s.founding_health(), time.time())
+    return s if hit[0] == "ok" else None
+
+
+def founding_health() -> str:
+    """'ok', 'missing_tables' (run supabase/founding50_migration.sql), 'error' or 'no_storage'."""
+    s = store(for_tester=True)
+    if s is None:
+        return "no_storage"
+    return "ok" if founding_store(for_tester=True) else s.founding_health()
+
+
+def founding_application(profile_id: str) -> dict | None:
+    s = founding_store()
+    return s.founding_application(profile_id) if s else None
+
+
+def founding_unseen() -> int:
+    """New Founding 50 applications the Owner has not opened yet (the in-app notification)."""
+    try:
+        s = founding_store(for_tester=True)
+        return sum(1 for a in s.founding_applications() if not a.get("seen_at")) if s else 0
+    except Exception:
+        return 0
 
 
 # --------------------------------------------------------------------------- referral links

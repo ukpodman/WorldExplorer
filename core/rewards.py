@@ -23,7 +23,7 @@ CODE_RE = re.compile(r"^WE[2-9A-HJ-NP-Z]{4}$")
 MIN_QUIZ_QUESTIONS = 5
 COUNTRIES_FOR_ACTIVE_DAY = 2
 REFERRAL_NEEDS = {"active_days": 3, "quizzes": 5, "countries": 10}
-TERMS_VERSION = "2026-10-pilot-1"
+TERMS_VERSION = "2026-10-founding50-1"
 PAYMENT_STATUSES = ("pending_review", "approved", "paid", "on_hold", "rejected")
 PAYMENT_LABELS = {"pending_review": "Pending Review", "approved": "Approved", "paid": "Paid", "on_hold": "On Hold",
                   "rejected": "Rejected"}

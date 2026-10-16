@@ -22,6 +22,8 @@ from core.rewards_store import RewardsStore, StoreError
 ROOT = Path(__file__).resolve().parent.parent
 SCHEMA = ROOT / "supabase" / "rewards_schema.sql"
 MIGRATION = ROOT / "supabase" / "withdrawals_migration.sql"   # V21 cash withdrawals (loaded after the schema)
+PUBLIC = ROOT / "supabase" / "public_programme_migration.sql"   # owner ON/OFF switch
+FOUNDING = ROOT / "supabase" / "founding50_migration.sql"       # Founding 50 approvals (loaded last)
 
 
 def _bin(name: str) -> str | None:
@@ -48,6 +50,10 @@ class Cluster:
         self.psql_file("rt_template", SCHEMA)
         if MIGRATION.exists():
             self.psql_file("rt_template", MIGRATION)
+        if PUBLIC.exists():
+            self.psql_file("rt_template", PUBLIC)
+        if FOUNDING.exists():
+            self.psql_file("rt_template", FOUNDING)
         self.count = 0
 
     def _as_owner(self, command: str) -> None:
@@ -71,6 +77,24 @@ class Cluster:
                                  "-v", "ON_ERROR_STOP=1", "-f", str(path)], capture_output=True, text=True)
         if result.returncode != 0:
             raise RuntimeError(result.stderr)
+
+    def set_public(self, db: str, enabled: bool) -> None:
+        """Switch the public programme as the database owner (tests only; the app uses the owner function)."""
+        self.psql(db, f"select set_config('we.public', 'on', false); "
+                      f"update public.reward_program_settings set public_enabled = {str(enabled).lower()} where id = 1;")
+
+    def approve(self, db: str, profile_id: str, at: str | None = None) -> None:
+        """Give a real account an approved Founding 50 application as the database owner (test fixtures only; the
+        app uses reward_founding_apply and the owner's reward_founding_decide). at: approval time (ISO)."""
+        when = literal(at) + "::timestamptz" if at else "now()"
+        self.psql(db, "select set_config('we.founding', 'on', false); "
+                      "insert into public.reward_founding_applications (profile_id, status, state, age_confirmed, "
+                      "residence_confirmed, terms_version, applied_at, first_approved_at, approved_at, decided_by, "
+                      f"seen_at, test) select profile_id, 'approved', 'Lagos', true, true, 'test', {when}, {when}, "
+                      f"{when}, 'fixture', {when}, test from public.reward_accounts where profile_id = {literal(profile_id)} "
+                      "on conflict (profile_id) do update set status = 'approved', "
+                      "first_approved_at = coalesce(reward_founding_applications.first_approved_at, excluded.first_approved_at), "
+                      "approved_at = excluded.approved_at;")
 
     def fresh_db(self) -> str:
         self.count += 1

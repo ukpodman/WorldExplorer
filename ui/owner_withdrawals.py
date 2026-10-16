@@ -22,6 +22,8 @@ from .owner_rewards import _actor, _download, _naira, _short, _table, _tiles
 DATA_TTL = 30
 NOTIFY_SECONDS = 30   # the notification panel (and only it) checks for new requests this often
 ERRORS = {
+    "founding_not_approved": "This player is not an approved Founding 50 participant (never approved, or rejected), so "
+                             "the database refuses approving or paying this withdrawal. See 🌟 Founding 50.",
     "not_owner": "Your email is not listed in reward_cashout_settings.owner_emails in the database. Add it with the "
                  "SQL in WITHDRAWALS_SETUP.md (step 3).",
     "request_closed": "This request is already closed (paid or rejected).",

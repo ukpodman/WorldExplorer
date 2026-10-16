@@ -28,7 +28,7 @@ STATUS_LABELS = {"pending_review": "Pending Review", "under_review": "Under Revi
                  "paid": "Paid"}
 ACTIONS = {"review": "under_review", "approve": "approved", "hold": "on_hold", "reject": "rejected"}
 DECLARATIONS = ("legal_name", "own_account", "name_match", "false_information")
-REASONS = ("not_joined", "suspended", "declarations", "account_on_hold", "not_enrolled", "waiting_period",
+REASONS = ("not_joined", "not_approved", "suspended", "declarations", "account_on_hold", "not_enrolled", "waiting_period",
            "no_earnings", "open_request", "not_live")
 TEST_LABEL = "TEST RECORD — NOT PAYABLE"
 MIN_DAYS = 30
@@ -94,13 +94,18 @@ def settled_by_withdrawal(review: dict, reservations: list[dict]) -> bool:
                and r.get("status") == "paid" for r in reservations)
 
 
-def first_enrolment(enrolments: list[dict], test: bool):
+def first_enrolment(enrolments: list[dict], test: bool, since=None):
     """The original rewards enrolment: the first month this person actually took part in (a waiting-list place they
-    left without taking part does not count). Never the latest login."""
-    stamps = [_dt(e["created_at"]) for e in enrolments
+    left without taking part does not count), at the moment the place was taken (enrolled_at). Never the latest login.
+    since: Founding 50 — only enrolments from that moment on count (the first approval); False = none counts."""
+    if since is False:
+        return None
+    stamps = [_dt(e.get("enrolled_at") or e["created_at"]) for e in enrolments
               if bool(e.get("test")) == test and (e.get("status") == "enrolled"
                                                   or (e.get("status") == "withdrawn"
                                                       and int(e.get("reserved_amount") or 0) > 0))]
+    if since is not None:
+        stamps = [x for x in stamps if x >= since]
     return min(stamps) if stamps else None
 
 
@@ -185,8 +190,11 @@ def public_request(row: dict | None) -> dict | None:
 
 def status(account: dict | None, settings: dict, enrolments: list[dict], events: list[dict], reservations: list[dict],
            reviews: list[dict], requests: list[dict], payments: list[dict], as_of=None,
-           now: datetime | None = None, referrals: list[dict] | None = None) -> dict:
-    """The player's withdrawal card, exactly as reward_cashout_status() computes it in the database."""
+           now: datetime | None = None, referrals: list[dict] | None = None, founding: bool = False,
+           application: dict | None = None) -> dict:
+    """The player's withdrawal card, exactly as reward_cashout_status() computes it in the database.
+    founding=True (supabase/founding50_migration.sql installed): real accounts need a Founding 50 approval and the
+    30-day wait counts from the first official enrolment after the first approval."""
     live, min_days = bool(settings.get("live_requests")), int(settings.get("min_days") or MIN_DAYS)
     if not account:
         return {"eligible": False, "reasons": ["not_joined"], "amount": 0, "months": [], "live": live, "test": False,
@@ -196,13 +204,19 @@ def status(account: dict | None, settings: dict, enrolments: list[dict], events:
         raise ValueError("simulation_for_test_accounts_only")
     day = today(as_of, now)
     current = month_of(day)
-    joined = first_enrolment([e for e in enrolments if e.get("profile_id") == pid], test)
+    since = None
+    if founding:
+        from core import founding as _founding
+        since = _founding.clock_start(application, account)
+    joined = first_enrolment([e for e in enrolments if e.get("profile_id") == pid], test, since)
     joined_on = joined.astimezone(LAGOS).date() if joined else None
     eligible_on = joined_on + timedelta(days=min_days) if joined_on else None
 
     reasons = []
     if account.get("membership") == "none" or not account.get("terms_version"):
         reasons.append("not_joined")
+    if founding and _founding.blocks_payment(application, account):
+        reasons.append("not_approved")
     if account.get("membership") == "suspended":
         reasons.append("suspended")
     if not test and not (account.get("age_confirmed") and account.get("residence_confirmed")):

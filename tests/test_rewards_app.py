@@ -9,6 +9,7 @@ from unittest import mock
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "tests"))
 APP = str(ROOT / "app.py")
 
 try:
@@ -29,6 +30,11 @@ class RewardsAppTests(unittest.TestCase):
         self.hooks = rewards_hooks
         rewards_hooks._memory_store.clear()
         rewards_hooks._health_cache.clear()
+        # the owner's public switch ON for these scenarios (default OFF); [rewards] enabled still decides per test
+        rewards_hooks._memory_store().tables["reward_program_settings"][0]["public_enabled"] = True
+        # every account approved for Founding 50 in these scenarios (the approval flow: tests/test_founding50.py)
+        import founding_fixtures
+        founding_fixtures.auto_approve(rewards_hooks._memory_store())
 
     def app(self, who=None, rewards=None, owner=False, **state):
         at = AppTest.from_file(APP, default_timeout=60)

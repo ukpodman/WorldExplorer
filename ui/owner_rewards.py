@@ -105,8 +105,26 @@ def _analytics_events() -> list[dict]:
 
 # --------------------------------------------------------------------------- sections
 
+STATE_LABEL = {"enabled": "ENABLED", "paused": "PAUSED", "disabled": "DISABLED"}
+FOUNDING_BLOCKED = ("This person is not an approved Founding 50 participant (never approved, or rejected), so the "
+                    "database refuses approving or paying their rewards. See 🌟 Founding 50.")
+FOUNDING_TILE = {"ok": None, "missing_tables": "Run supabase/founding50_migration.sql", "no_storage": "No storage",
+                 "error": "Not reachable"}
+
+
 def _status_panel(s) -> None:
-    flags = [("Programme (enabled)", "ON" if hooks.enabled() else "OFF"),
+    public = hooks.public_state()
+    founding_state = hooks.founding_health()
+    if founding_state == "ok":
+        try:
+            fs = hooks.founding_store(for_tester=True)
+            approved = sum(1 for a in fs.founding_applications("approved") if not a.get("test"))
+            founding_text = f"{approved} / {fs.settings().max_places} approved"
+        except Exception:
+            founding_text = "Not reachable"
+    else:
+        founding_text = FOUNDING_TILE.get(founding_state, founding_state)
+    flags = [("Public participation", STATE_LABEL[public["state"]]), ("Founding 50", founding_text),
              ("Payouts (payouts_active)", "ON" if hooks.payouts_active() else "OFF"),
              ("Storage", {"ok": "Supabase tables ready", "missing_tables": "Run supabase/rewards_schema.sql",
                           "no_storage": "No Supabase storage", "error": "Not reachable"}[hooks.store_health()])]
@@ -114,9 +132,9 @@ def _status_panel(s) -> None:
     if hooks.preview_store():
         st.warning("Preview mode: the rewards tables are not set up, so records are kept in this server's memory "
                    "and disappear when the app restarts. Follow REWARDS_SETUP.md to create the tables.")
-    if not hooks.enabled():
-        st.info("The public programme is switched off. Only owners and listed testers see 💰 Rewards; all their "
-                "records are test records and are never payable.")
+    if public["state"] != "enabled":
+        st.info(f"Public participation is {public['state']}: {public['reason']} Owners and listed testers can still "
+                "try 💰 Rewards; their records are test records and are never payable. Change it in Settings.")
     if not hooks.payouts_active():
         st.caption("Payouts are switched off: payments cannot be approved or marked as paid until you set "
                    "[rewards] payouts_active = true after legal and compliance review.")
@@ -395,7 +413,7 @@ def _payments(s, d: dict, include_test: bool) -> None:
                 _invalidate()
                 st.success("Payment updated (recorded in the audit log).")
             except StoreError as err:
-                st.error(str(err))
+                st.error(FOUNDING_BLOCKED if "founding_not_approved" in str(err) else str(err))
 
 
 def _referrals_tab(s, d: dict, include_test: bool) -> None:
@@ -462,8 +480,81 @@ def _fraud(d: dict, include_test: bool) -> None:
     _download("Export fraud signals (CSV)", rows, "rewards-fraud", "rw_csv_fraud")
 
 
+PUBLIC_ERRORS = {"not_owner": "Your email is not in reward_cashout_settings.owner_emails in the database, so the "
+                              "change was refused (see WITHDRAWALS_SETUP.md, step 2).",
+                 "confirmation_required": "Please tick both confirmations before switching public participation ON.",
+                 "missing": "The switch is not installed yet. Run supabase/public_programme_migration.sql first."}
+
+
+def _public_switch() -> None:
+    """🌍 Public Rewards Programme — the owner's ON/OFF switch (stored in Supabase, audited)."""
+    st.markdown("### 🌍 Public Rewards Programme")
+    p = hooks.public_state()
+    _tiles([("Public participation", STATE_LABEL[p["state"]], "what players experience now"),
+            ("Owner switch (database)", "ON" if p["owner"] else "OFF",
+             f"changed {str(p.get('changed_at') or '')[:16].replace('T', ' ')} by {p.get('changed_by')}"
+             if p.get("changed_by") else "this switch"),
+            ("Deployment safety switch", "ON" if p["deployment"] else "OFF", "[rewards] enabled in secrets"),
+            ("Programme pause", "PAUSED" if p["paused"] else "running", "separate setting below")])
+    {"enabled": st.success, "paused": st.warning, "disabled": st.info}[p["state"]](p["reason"])
+    st.caption("Public participation needs BOTH switches ON. Switching OFF stops new enrolments and new rewards for "
+               "real accounts; enrolments, earned rewards, balances, payments and history are kept. This switch never "
+               "changes payouts or withdrawals: [rewards] payouts_active, withdrawals_active and the database switches "
+               "live_requests and real_payouts stay as they are. The budget, places and monthly maximum are unchanged.")
+    if not p["installed"]:
+        st.warning(PUBLIC_ERRORS["missing"])
+        return
+    if p["owner"]:
+        if st.button("Switch public participation OFF", key="rw_public_off", type="primary"):
+            _set_public(False, False)
+        return
+    with st.form("rw_public_on_form", border=True):
+        st.markdown("**Switch public participation ON** — only after legal and compliance requirements are satisfied.")
+        legal = st.checkbox("I confirm that the legal and compliance requirements for the public rewards programme "
+                            "have been satisfied.", key="rw_public_legal")
+        payments = st.checkbox("I understand that this opens enrolment and reward earning only; real payouts and "
+                               "withdrawals stay controlled by their own switches.", key="rw_public_payments")
+        if not p["deployment"]:
+            st.caption("The deployment safety switch [rewards] enabled is OFF in Streamlit secrets, so switching ON here "
+                       "would have no effect. Set it to true first (after your review), then come back.")
+        if st.form_submit_button("Switch public participation ON", type="primary", disabled=not p["deployment"]):
+            if not (legal and payments):
+                st.error(PUBLIC_ERRORS["confirmation_required"])
+            else:
+                _set_public(True, True)
+
+
+def _set_public(value: bool, confirmed: bool) -> None:
+    if not analytics.is_owner():                          # checked again on the server; the database checks too
+        st.error("This action is only available to the owner.")
+        return
+    if value and not hooks.deployment_enabled():
+        st.error("The deployment safety switch [rewards] enabled is OFF; public participation cannot be switched ON.")
+        return
+    s = hooks.cashout_store(for_tester=True)               # the store that knows the owner list
+    if s is None:
+        st.error(PUBLIC_ERRORS["missing"])
+        return
+    try:
+        s.set_public(value, _actor(), confirmed)
+    except StoreError as error:
+        st.error(next((m for k, m in PUBLIC_ERRORS.items() if k in str(error)), str(error)))
+        return
+    hooks.owner_switch(refresh=True)
+    _invalidate()
+    st.session_state.rw_public_flash = ("Public participation switched ON." if value else
+                                        "Public participation switched OFF. Existing records and balances are kept.")
+    st.rerun()
+
+
 def _settings_tab(s, d: dict) -> None:
     settings: Settings = d["settings"]
+    flash = st.session_state.pop("rw_public_flash", None)
+    if flash:
+        st.success(flash)
+    _public_switch()
+    st.divider()
+    st.markdown("### Programme settings")
     st.caption("Changes apply from now on. Rewards already earned and places already taken are never reduced. "
                "Every change is recorded in the audit log.")
     paused = st.toggle("Pause the programme (no new rewards or enrolments; earnings are kept)", value=settings.paused,
@@ -563,24 +654,16 @@ def render() -> None:
     from . import owner_withdrawals   # 💳 Withdrawal Management (V21)
     cash = hooks.cashout_store(for_tester=True)
     waiting = owner_withdrawals.unread_count() if cash else 0     # the same unread number as the 🔔 alert
-    tabs = st.tabs([f"💳 Withdrawals ({waiting})", "Overview", "Budget", "Participants", "Payments", "Referrals",
-                    "Fraud", "Settings", "Audit log"])
-    with tabs[0]:
-        owner_withdrawals.render(include_test)
-    with tabs[1]:
-        _overview(d, month, include_test)
-    with tabs[2]:
-        _budget(s, d, month)
-    with tabs[3]:
-        _participants(s, d, include_test)
-    with tabs[4]:
-        _payments(s, d, include_test)
-    with tabs[5]:
-        _referrals_tab(s, d, include_test)
-    with tabs[6]:
-        _fraud(d, include_test)
-    with tabs[7]:
-        _settings_tab(s, d)
-    with tabs[8]:
-        _audit_tab(d)
+    from . import owner_founding      # 🌟 Founding 50 applications (Option B: only the Owner approves)
+    new_apps = owner_founding.unseen_count()
+    tabs = st.tabs([f"💳 Withdrawals ({waiting})", f"🌟 Founding 50 ({new_apps})", "Overview", "Budget",
+                    "Participants", "Payments", "Referrals", "Fraud", "Settings", "Audit log"])
+    sections = (lambda: owner_withdrawals.render(include_test), lambda: owner_founding.render(include_test),
+                lambda: _overview(d, month, include_test), lambda: _budget(s, d, month),
+                lambda: _participants(s, d, include_test), lambda: _payments(s, d, include_test),
+                lambda: _referrals_tab(s, d, include_test), lambda: _fraud(d, include_test),
+                lambda: _settings_tab(s, d), lambda: _audit_tab(d))
+    for tab, section in zip(tabs, sections):
+        with tab:
+            section()
     _test_tools(s)

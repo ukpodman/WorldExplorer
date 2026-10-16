@@ -32,6 +32,7 @@ PLAYER_STATUS = {
 BLOCKED = (  # first matching reason decides the grey button's label
     ("suspended", "🔒 Withdraw — Participation on hold"),
     ("account_on_hold", "🔒 Withdraw — Participation on hold"),
+    ("not_approved", "🔒 Withdraw — Founding 50 approval needed"),
     ("not_joined", "🔒 Withdraw — Join the programme first"),
     ("not_enrolled", "🔒 Withdraw — Join the programme first"),
     ("declarations", "🔒 Withdraw — Declarations missing"),

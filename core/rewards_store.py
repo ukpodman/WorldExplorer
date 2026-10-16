@@ -22,13 +22,14 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 
-from core import rewards, withdrawals
+from core import founding, rewards, withdrawals
 from core.rewards import Settings
 
 TABLES = ("reward_program_settings", "reward_accounts", "reward_enrolments", "reward_activity_events",
           "user_referrals", "reward_referral_visits", "reward_payments", "reward_audit_log")
 CASHOUT_TABLES = ("reward_cashout_settings", "reward_cashout_requests", "reward_cashout_months",
                   "reward_cashout_payments", "reward_owner_notifications")   # supabase/withdrawals_migration.sql
+FOUNDING_TABLES = (founding.TABLE,)                                            # supabase/founding50_migration.sql
 PAGE = 1000
 
 
@@ -103,6 +104,22 @@ class RewardsStore:
         row.update(updated_by=actor, updated_at=_now())
         self.update("reward_program_settings", {"id": 1}, row)
         return []
+
+    # ---- public programme switch (supabase/public_programme_migration.sql)
+    def public_status(self) -> dict:
+        """The owner's public programme switch: {'installed', 'enabled', 'changed_at', 'changed_by'}. 'installed' is
+        False until the migration has run (then the switch counts as OFF)."""
+        rows = self.select("reward_program_settings", {"id": 1}, limit=1)
+        row = rows[0] if rows else {}
+        if "public_enabled" not in row:
+            return {"installed": False, "enabled": False, "changed_at": None, "changed_by": None}
+        return {"installed": True, "enabled": bool(row.get("public_enabled")), "changed_at": row.get("public_changed_at"),
+                "changed_by": row.get("public_changed_by")}
+
+    def set_public(self, enabled: bool, actor: str, confirmed: bool = False) -> dict:
+        """Owner-only (checked by the database). Switching ON needs confirmed=True. Recorded in the audit log."""
+        return self._one(self.rpc("reward_set_public_programme", {"p_enabled": bool(enabled), "p_actor": actor,
+                                                                  "p_confirmed": bool(confirmed)}))
 
     # ---- accounts
     def account(self, profile_id: str) -> dict | None:
@@ -236,6 +253,8 @@ class RewardsStore:
 
     def clear_test_data(self, actor: str) -> None:
         """Remove owner/tester preview records (never real ones; the database refuses those)."""
+        if self.founding_health() == "ok":
+            self.delete(founding.TABLE, {"test": True})
         if self.cashout_health() == "ok":   # withdrawal test records first (they refer to accounts)
             for table in ("reward_owner_notifications", "reward_cashout_payments", "reward_cashout_months",
                           "reward_cashout_requests"):
@@ -244,6 +263,40 @@ class RewardsStore:
                       "reward_enrolments"):
             self.delete(table, {"test": True})
         self.log(actor, "test_data_cleared")
+
+    # ---- Founding 50 (supabase/founding50_migration.sql; the database functions decide)
+    def founding_health(self) -> str:
+        """'ok', 'missing_tables' (the Founding 50 migration has not been run) or 'error'."""
+        try:
+            self.select(founding.TABLE, {"id": 0}, limit=1)
+            return "ok"
+        except StoreError as error:
+            return "missing_tables" if "missing" in str(error) or "does not exist" in str(error) else "error"
+        except Exception:
+            return "error"
+
+    def founding_application(self, profile_id: str) -> dict | None:
+        rows = self.select(founding.TABLE, {"profile_id": profile_id}, limit=1)
+        return rows[0] if rows else None
+
+    def founding_applications(self, status: str | None = None) -> list[dict]:
+        return self.select(founding.TABLE, {"status": status} if status else None, order="applied_at")
+
+    def apply_founding(self, profile_id: str, state: str, note: str | None, adult: bool, resident: bool,
+                       terms: bool) -> dict:
+        """Submit a Founding 50 application (one per person; the database refuses duplicates)."""
+        return self._one(self.rpc("reward_founding_apply", {
+            "p_profile": profile_id, "p_state": state, "p_note": note, "p_adult": bool(adult),
+            "p_resident": bool(resident), "p_terms": bool(terms), "p_terms_version": rewards.TERMS_VERSION}))
+
+    def decide_founding(self, application_id: int, action: str, actor: str, note: str | None = None) -> dict:
+        """Owner only (checked by the database): approve, reject or waitlist."""
+        return self._one(self.rpc("reward_founding_decide", {"p_id": int(application_id), "p_action": action,
+                                                             "p_actor": actor, "p_note": note}))
+
+    def mark_founding_seen(self, actor: str, application_id: int | None = None) -> int:
+        return int(self._one(self.rpc("reward_founding_mark_seen", {
+            "p_actor": actor, "p_id": int(application_id) if application_id is not None else None})) or 0)
 
     # ---- cash withdrawals (supabase/withdrawals_migration.sql; the database functions decide)
     @staticmethod
@@ -409,13 +462,15 @@ class MemoryStore(RewardsStore):
             "reward_payments": ("profile_id", "month"), "reward_audit_log": ("id",),
             "reward_cashout_settings": ("id",), "reward_cashout_requests": ("id",),
             "reward_cashout_months": ("request_id", "month"), "reward_cashout_payments": ("id",),
-            "reward_owner_notifications": ("id",)}
+            "reward_owner_notifications": ("id",), founding.TABLE: ("id",)}
 
-    def __init__(self, settings: Settings | None = None, owner_emails: list[str] | None = None):
+    def __init__(self, settings: Settings | None = None, owner_emails: list[str] | None = None,
+                 public_enabled: bool = False):
         self.lock = threading.RLock()
-        self.tables: dict[str, list[dict]] = {t: [] for t in TABLES + CASHOUT_TABLES}
+        self.tables: dict[str, list[dict]] = {t: [] for t in TABLES + CASHOUT_TABLES + FOUNDING_TABLES}
         row = (settings or Settings()).as_row()
-        row.update(id=1, updated_at=_now(), updated_by=None)
+        row.update(id=1, updated_at=_now(), updated_by=None, public_enabled=bool(public_enabled),
+                   public_changed_at=None, public_changed_by=None)
         self.tables["reward_program_settings"].append(row)
         self.tables["reward_cashout_settings"].append({"id": 1, "live_requests": False, "real_payouts": False,
                                                        "min_days": withdrawals.MIN_DAYS,
@@ -424,6 +479,8 @@ class MemoryStore(RewardsStore):
         self._audit_id = 0
         self._ids: dict[str, int] = {}
         self._cashout_fn = False   # like the database's we.cashout flag: set only inside the withdrawal functions
+        self._public_fn = False    # like we.public: set only inside reward_set_public_programme
+        self._founding_fn = False  # like we.founding: set only inside the Founding 50 functions
 
     # ---- primitives
     def select(self, table, where=None, order=None, limit=None):
@@ -459,6 +516,14 @@ class MemoryStore(RewardsStore):
                         r["profile_id"] == row["profile_id"] and r["month"] == row["month"]
                         and r["status"] != "released" for r in self.tables[table]):
                     raise StoreError("duplicate key (month already covered by a withdrawal request)")
+            if table == founding.TABLE:
+                if not self._founding_fn:
+                    raise StoreError("Founding 50 applications change only through the Founding 50 functions")
+                if any(r["profile_id"] == row["profile_id"] for r in self.tables[table]):
+                    raise StoreError("duplicate key (one application per person)")
+                if row.get("id") is None:
+                    self._ids[table] = self._ids.get(table, 0) + 1
+                    row["id"] = self._ids[table]
             if any(self._key(table, r) == self._key(table, row) for r in self.tables[table]):
                 if ignore_duplicates:
                     return []
@@ -485,11 +550,18 @@ class MemoryStore(RewardsStore):
                     raise StoreError("records cannot be changed")
                 if table in ("reward_cashout_requests", "reward_cashout_months") and not self._cashout_fn:
                     raise StoreError("withdrawal records change only through the withdrawal functions")
+                if table == founding.TABLE and not self._founding_fn:
+                    raise StoreError("Founding 50 applications change only through the Founding 50 functions")
                 if table == "reward_owner_notifications" and set(changes) - {"read_at", "read_by", "email_status"}:
                     raise StoreError("only the read and email status of a notification can change")
                 new = dict(old, **changes)
+                if table == "reward_enrolments":
+                    self._guard_enrolment(old, new)
                 if table == "reward_payments":
                     self._guard_payment(old, new)
+                if table == "reward_program_settings" and not self._public_fn and any(
+                        new.get(k) != old.get(k) for k in ("public_enabled", "public_changed_at", "public_changed_by")):
+                    raise StoreError("the public programme switch changes only through reward_set_public_programme")
                 if table == "reward_program_settings":
                     problems = Settings.from_row(new).validate()
                     if problems:
@@ -550,6 +622,10 @@ class MemoryStore(RewardsStore):
         month_events = [e for e in self.tables["reward_activity_events"]
                         if e["profile_id"] == pid and e["month"] == month and bool(e.get("test")) == test]
         row["amount"], row["reason"] = rewards.award(row["kind"], month_events, str(row["day"]), settings, eligible)
+        if not test and row["amount"] > 0 and not self._approved(pid):    # = trigger reward_events_founding
+            row["amount"], row["reason"] = 0, "not_approved"
+        if not test and row["amount"] > 0 and not self._public_on():      # = trigger reward_events_public
+            row["amount"], row["reason"] = 0, "programme_off"
 
     def _guard_payment(self, old, new):
         new["updated_at"] = _now()
@@ -583,6 +659,9 @@ class MemoryStore(RewardsStore):
                                  "withdrawal request")
         if new["approved_amount"] > earned:
             raise StoreError(f"approved amount ({new['approved_amount']}) is more than was earned ({earned})")
+        if not new.get("test") and new["status"] in ("approved", "paid") \
+                and (old is None or old["status"] != new["status"]) and self._founding_blocks(new["profile_id"]):
+            raise StoreError("founding_not_approved")                    # = trigger reward_payments_founding
         if new["status"] in ("approved", "paid"):
             account = next((a for a in self.tables["reward_accounts"] if a["profile_id"] == new["profile_id"]), {})
             if account.get("test") or new.get("test"):
@@ -665,8 +744,12 @@ class MemoryStore(RewardsStore):
         s = self.settings()
         if s.paused:
             raise StoreError("paused")
+        if not account.get("test") and not self._approved(p_profile):   # = trigger reward_enrolments_founding
+            raise StoreError("not_approved")
+        if not account.get("test") and not self._public_on():           # = trigger reward_enrolments_public
+            raise StoreError("programme_off")
         row = {"profile_id": p_profile, "month": p_month, "reserved_amount": 0, "waitlist_position": None,
-               "test": bool(account.get("test")), "created_at": _now(), "updated_at": _now()}
+               "test": bool(account.get("test")), "created_at": _now(), "updated_at": _now(), "enrolled_at": None}
         if account.get("test"):
             row.update(status="enrolled", reserved_amount=s.monthly_cap)
         else:
@@ -677,6 +760,8 @@ class MemoryStore(RewardsStore):
             else:
                 row.update(status="waitlist",
                            waitlist_position=max([e.get("waitlist_position") or 0 for e in rows] + [0]) + 1)
+        if row["status"] == "enrolled":
+            row["enrolled_at"] = _now()
         self.tables["reward_enrolments"].append(row)
         return dict(row)
 
@@ -687,14 +772,17 @@ class MemoryStore(RewardsStore):
         members = {a["profile_id"] for a in self.tables["reward_accounts"] if a.get("membership") == "member"}
         waiting = sorted((e for e in self.tables["reward_enrolments"]
                           if e["month"] == p_month and not e.get("test") and e["status"] == "waitlist"
-                          and e["profile_id"] in members),
+                          and e["profile_id"] in members and self._approved(e["profile_id"])),
                          key=lambda e: (e.get("waitlist_position") or 0, e["created_at"]))
         moved = 0
         for e in waiting:
             _, places, used = self._usage(p_month)
             if places >= s.max_places or used + s.monthly_cap > s.monthly_budget:
                 break
-            e.update(status="enrolled", reserved_amount=s.monthly_cap, waitlist_position=None, updated_at=_now())
+            if not self._public_on():                                    # = trigger reward_enrolments_public
+                raise StoreError("programme_off")
+            e.update(status="enrolled", reserved_amount=s.monthly_cap, waitlist_position=None, updated_at=_now(),
+                     enrolled_at=_now())
             moved += 1
         if moved:
             self.log(p_actor, "waitlist_promoted", p_month, {"moved": moved})
@@ -731,6 +819,27 @@ class MemoryStore(RewardsStore):
                                         self.tables["reward_activity_events"], self.tables["user_referrals"]):
             raise StoreError("earnings_changed")
 
+    def _public_on(self) -> bool:
+        return bool(self.tables["reward_program_settings"][0].get("public_enabled"))
+
+    def _rpc_reward_set_public_programme(self, p_enabled, p_actor, p_confirmed=False):
+        if not self._owner(p_actor):
+            raise StoreError("not_owner")
+        if p_enabled is None:
+            raise StoreError("invalid_value")
+        if p_enabled and not p_confirmed:
+            raise StoreError("confirmation_required")
+        self._public_fn = True
+        try:
+            row = self.update("reward_program_settings", {"id": 1}, {
+                "public_enabled": bool(p_enabled), "public_changed_at": _now(), "public_changed_by": p_actor,
+                "updated_at": _now(), "updated_by": p_actor})[0]
+        finally:
+            self._public_fn = False
+        self.log(p_actor, "public_programme_on" if p_enabled else "public_programme_off", "settings",
+                 {"public_enabled": bool(p_enabled), "confirmed": bool(p_confirmed)})
+        return row
+
     def _real_payouts(self) -> bool:
         return bool(self.tables["reward_cashout_settings"][0].get("real_payouts"))
 
@@ -744,7 +853,8 @@ class MemoryStore(RewardsStore):
                                       self.tables["reward_enrolments"], self.tables["reward_activity_events"],
                                       self.tables["reward_cashout_months"], self.tables["reward_payments"],
                                       self.tables["reward_cashout_requests"], self.tables["reward_cashout_payments"],
-                                      as_of=p_as_of, referrals=self.tables["user_referrals"])
+                                      as_of=p_as_of, referrals=self.tables["user_referrals"], founding=True,
+                                      application=self.founding_application(p_profile))
         except ValueError as error:
             raise StoreError(str(error)) from None
 
@@ -817,6 +927,8 @@ class MemoryStore(RewardsStore):
             raise StoreError("reservation_mismatch")
         if new == "approved":
             self._payable_checks(req)
+        if new == "approved" and not req["test"] and self._founding_blocks(req["profile_id"]):
+            raise StoreError("founding_not_approved")                    # = trigger reward_cashout_founding
         old, now, note = dict(req), _now(), (p_note or "").strip() or None
         req.update(status=new, decision_note=note or req.get("decision_note"), decided_by=p_actor, decided_at=now,
                    updated_by=p_actor, updated_at=now)
@@ -844,6 +956,8 @@ class MemoryStore(RewardsStore):
         if p_amount != req["amount"]:
             raise StoreError("amount_mismatch")
         self._payable_checks(req)
+        if not req["test"] and self._founding_blocks(req["profile_id"]):
+            raise StoreError("founding_not_approved")                    # = trigger reward_cashout_founding
         if not p_payment_date:
             raise StoreError("payment_date_required")
         pay_day = withdrawals.today(p_payment_date)
@@ -906,6 +1020,91 @@ class MemoryStore(RewardsStore):
         return len({r["profile_id"] for r in self.tables["reward_cashout_requests"]
                     if r.get("bank_fingerprint") == p_fingerprint and r["profile_id"] != req["profile_id"]
                     and bool(r.get("test")) == bool(req.get("test"))})
+
+    # ---- Founding 50 (the same rules as supabase/founding50_migration.sql)
+    def _founding_row(self, profile_id):
+        return next((a for a in self.tables[founding.TABLE] if a["profile_id"] == profile_id), None)
+
+    def _approved(self, profile_id) -> bool:
+        return founding.approved(self._founding_row(profile_id), self.account(profile_id))
+
+    def _founding_blocks(self, profile_id) -> bool:
+        return founding.blocks_payment(self._founding_row(profile_id), self.account(profile_id))
+
+    def _guard_enrolment(self, old, new):
+        """= trigger reward_enrolments_founding on updates (waiting-list moves and the like)."""
+        if new.get("status") == "enrolled" and old.get("status") != "enrolled":
+            new["enrolled_at"] = _now()
+        if not new.get("test") and new.get("status") in ("enrolled", "waitlist") \
+                and new.get("status") != old.get("status") and not self._approved(new["profile_id"]):
+            raise StoreError("not_approved")
+
+    def _founding_update(self, app_id, changes):
+        self._founding_fn = True
+        try:
+            return self.update(founding.TABLE, {"id": app_id}, changes)[0]
+        finally:
+            self._founding_fn = False
+
+    def _rpc_reward_founding_apply(self, p_profile, p_state, p_note, p_adult, p_resident, p_terms,
+                                   p_terms_version):
+        account = self.account(p_profile)
+        error = founding.apply_error(account, self._founding_row(p_profile), p_state, p_note, p_adult, p_resident,
+                                     p_terms, self._public_on())
+        if error is None and not str(p_terms_version or "").strip():
+            error = "declarations_required"
+        if error:
+            raise StoreError(error)
+        now = _now()
+        self._founding_fn = True
+        try:
+            app = self.insert(founding.TABLE, {
+                "profile_id": p_profile, "status": "pending", "state": str(p_state).strip(),
+                "note": (p_note or "").strip() or None, "age_confirmed": True, "residence_confirmed": True,
+                "terms_version": str(p_terms_version).strip(), "applied_at": now, "first_approved_at": None,
+                "approved_at": None, "decided_at": None, "decided_by": None, "decision_note": None, "seen_at": None,
+                "seen_by": None, "test": bool(account.get("test")), "updated_at": now})[0]
+        finally:
+            self._founding_fn = False
+        self.log(p_profile, "founding_applied", p_profile, dict(app))
+        return app
+
+    def _rpc_reward_founding_decide(self, p_id, p_action, p_actor, p_note=None):
+        if not self._owner(p_actor):
+            raise StoreError("not_owner")
+        if p_action not in founding.ACTIONS:
+            raise StoreError("invalid_action")
+        app = next((a for a in self.tables[founding.TABLE] if a["id"] == int(p_id)), None)
+        taken = sum(1 for a in self.tables[founding.TABLE] if a["status"] == "approved" and not a.get("test"))
+        error = founding.decide_error(app, p_action, p_note, taken, self.settings().max_places)
+        if error:
+            raise StoreError(error)
+        new, note, now, before = founding.ACTIONS[p_action], (p_note or "").strip() or None, _now(), app["status"]
+        changes = {"status": new, "decided_at": now, "decided_by": p_actor,
+                   "decision_note": note or app.get("decision_note"), "seen_at": app.get("seen_at") or now,
+                   "seen_by": app.get("seen_by") or p_actor, "updated_at": now}
+        if new == "approved":
+            changes.update(approved_at=now, first_approved_at=app.get("first_approved_at") or now)
+        row = self._founding_update(app["id"], changes)
+        if before == "approved":   # the place and budget are freed; what was earned is kept
+            for e in sorted((e for e in self.tables["reward_enrolments"]
+                             if e["profile_id"] == row["profile_id"] and e["status"] != "withdrawn"
+                             and e["month"] >= rewards.month_key()),                 # past months untouched
+                            key=lambda e: e["month"]):
+                self._rpc_reward_withdraw(row["profile_id"], e["month"], p_actor)
+        self.log(p_actor, "founding_" + new, row["profile_id"], {"status": new, "note": note, "test": row["test"]})
+        self.tables["reward_audit_log"][-1]["old_value"] = {"status": before}
+        return row
+
+    def _rpc_reward_founding_mark_seen(self, p_actor, p_id=None):
+        if not self._owner(p_actor):
+            raise StoreError("not_owner")
+        n = 0
+        for a in list(self.tables[founding.TABLE]):
+            if not a.get("seen_at") and (p_id is None or a["id"] == int(p_id)):
+                self._founding_update(a["id"], {"seen_at": _now(), "seen_by": p_actor})
+                n += 1
+        return n
 
 
 def payable_rows(rows: list[dict]) -> list[dict]:

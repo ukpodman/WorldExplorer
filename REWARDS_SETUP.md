@@ -4,12 +4,16 @@ The rewards programme is **built in but switched off**. With the default setting
 recorded and nothing is payable. The rest of World Explorer behaves exactly as before. Existing tables
 (`world_explorer_profiles`, `world_explorer_events`, `world_explorer_feedback`) are not changed.
 
-There are two separate switches in the app's secrets. Both are `false` by default:
+Public participation has **two switches, and both must be ON**. They are separate from the payment switches:
 
-| Switch | What it does |
-|---|---|
-| `[rewards] enabled` | Everyone sees 💰 Rewards and can join (18+, lives in Nigeria, accepts the rules). |
-| `[rewards] payouts_active` | You can approve payments and mark them as paid. Keep this `false` until legal and compliance review is done. |
+| Switch | Where | What it does |
+|---|---|---|
+| `[rewards] enabled` | Streamlit secrets | **Deployment safety switch.** While it is `false`, the public programme stays closed, whatever the dashboard switch says. |
+| Public Rewards Programme | Owner dashboard → 💰 Rewards & Referral Management → Settings (stored in Supabase) | **Owner switch.** Everyone sees 💰 Rewards and can join (18+, lives in Nigeria, accepts the rules). Off by default. |
+| `[rewards] payouts_active` | Streamlit secrets | You can approve payments and mark them as paid. Keep this `false` until legal and compliance review is done. |
+
+The public switch never changes `payouts_active`, the withdrawal switches (`withdrawals_active`, `live_requests`,
+`real_payouts`), the budget, the places or the monthly maximum.
 
 While `enabled = false`, **owners** (`[analytics] owner_emails`) and the people in `tester_emails` can try everything.
 Their records are marked as test records. They are left out of all figures (unless you choose to include them) and the
@@ -68,8 +72,42 @@ The owner check stays as it is: a signed-in Google account with a verified email
 1. Review the programme rules in `ui/rewards_page.py` (`TERMS`, English) with your legal adviser. Update
    `rewards.TERMS_VERSION` in `core/rewards.py` when the wording changes.
 2. Check the settings in the dashboard: budget ₦50,000, 50 places, ₦1,000 per person, and the start date.
-3. Set `enabled = true`. People can now join. Amounts are shown as a "pilot preview, not payable" until step 4.
-4. When you are ready to pay, set `payouts_active = true`.
+3. Install the owner switch once, if you have not already: Supabase → SQL Editor → paste
+   `supabase/public_programme_migration.sql` → Run. It needs the two earlier SQL files, never switches anything on,
+   and can be run again safely.
+   Then install **Founding 50** the same way: `supabase/founding50_migration.sql` (see `FOUNDING50_SETUP.md`). It
+   approves nobody and changes no existing record; from then on only participants you approve can join and earn.
+4. Set `enabled = true` in Streamlit secrets (the deployment safety switch). Nothing opens yet, because the owner switch
+   is still OFF.
+5. Owner dashboard → 💰 Rewards & Referral Management → **Settings** → **🌍 Public Rewards Programme**. Tick both
+   confirmations (legal and compliance requirements are satisfied; payments stay under their own switches) and press
+   **Switch public participation ON**. People can now **apply for the Founding 50**; they join only after you approve
+   them in **🌟 Founding 50**. Amounts are shown as a "pilot preview, not payable" until step 6.
+6. When you are ready to pay, set `payouts_active = true`. Withdrawals have their own switches: see
+   `WITHDRAWALS_SETUP.md`.
+
+**The Public Rewards Programme switch in detail**
+
+* **Status.** The Settings tab shows four things: public participation as players experience it (**ENABLED**,
+  **PAUSED** or **DISABLED**, with the reason), the owner switch, the deployment safety switch and the pause.
+  Participation shows ENABLED only when both switches are ON and the programme is not paused. If `[rewards] enabled`
+  is false, the status says DISABLED and names that switch, even when the owner switch is ON, and the ON button is
+  greyed out.
+* **Who.**
+  * Only the signed-in owner sees and uses the switch.
+  * The app checks the owner on the server.
+  * The database checks the email against `reward_cashout_settings.owner_emails` (WITHDRAWALS_SETUP.md, step 2).
+  * Neither the server key nor the ordinary settings form can change the switch directly.
+* **Switching OFF** takes one click and takes effect within about 30 seconds. While it is OFF, for real accounts:
+  * new enrolments and waiting-list moves are refused;
+  * new activity is still recorded but earns ₦0;
+  * enrolments, earned rewards, balances, payments, withdrawals and history are all kept;
+  * people can still leave the programme;
+  * owner and tester simulations keep working.
+* **Pause** is a separate setting, further down the Settings tab. It stops new rewards and enrolments while the page
+  stays visible.
+* **Audit.** Every change is written to the audit log (`public_programme_on` / `public_programme_off`, with your email
+  and the time).
 
 ## How rewards are earned (default settings)
 

@@ -1103,7 +1103,68 @@ class ContinentMapTests(unittest.TestCase):
             self.assertIn(translate("North America", lang), heading)
             at.button(key="continent_back").click().run()
             self.assertEqual(at.button(key=self.btn("South America")).label, translate("South America", lang))
-            self.assertEqual(at.button(key="browse_all").label, translate("All continents", lang))
+            self.assertEqual(at.button(key="browse_all").label, translate("All", lang))
+
+    # ---- V22 colourful home: map first, colour key, one summary line, no credits box on the home page
+    def test_home_order_map_then_pills_then_one_summary_line(self):
+        import inspect
+        from ui import pages
+        src = inspect.getsource(pages.explore)
+        first_map, pills, bar = (src.find("world_map.render("), src.find("_continent_buttons()"), src.find("_explore_topbar(d)"))
+        self.assertTrue(0 <= first_map < pills < bar, (first_map, pills, bar))     # nothing above the map
+        self.assertNotIn("home-welcome", src)                                    # no decorative banner
+        at = self.new()
+        summary = self.summary(at)
+        for label in ("Day streak", "Points", "Badges"):                   # labels are visible now, under the numbers
+            self.assertIn(f'<span class="summary-label">{label}</span>', summary)
+        self.assertNotIn("Photography credits", [x.label for x in at.expander])
+
+    def test_map_colours_are_distinct_and_readable(self):
+        from ui import world_map
+        fills = world_map.FILLS
+        self.assertEqual(len(set(fills.values())), 6)
+
+        def lum(h):
+            r, g, b = (int(h[i:i + 2], 16) / 255 for i in (1, 3, 5))
+            f = lambda c: c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+            return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b)
+        for name, colour in fills.items():                                 # dark label text stays easy to read
+            self.assertGreaterEqual((lum(colour) + 0.05) / (lum("#13202E") + 0.05), 6, name)
+        for a, b in (("Europe", "Asia"), ("Africa", "Asia"), ("Europe", "Africa"), ("North America", "South America")):
+            self.assertGreater(abs(lum(fills[a]) - lum(fills[b])), 0.1, (a, b))   # neighbours differ in lightness
+        css = (Path(APP).parent / "assets" / "styles.css").read_text(encoding="utf-8")
+        for name, colour in fills.items():                                 # the pills carry the same colours
+            self.assertIn(f'.st-key-continent_btn_{name.replace(" ", "_")} button::before {{ background:{colour}; }}', css)
+
+    def test_map_zoom_and_pan_keep_proportions_and_a_whole_world_button(self):
+        from core.i18n import translate
+        from ui import world_map
+        js = world_map.JS
+        self.assertIn("function installZoom", js)
+        self.assertIn("w * base[3] / base[2]", js)                         # the zoomed view keeps the map's proportions
+        self.assertIn('class="zall"', js)                                  # one tap back to the complete world
+        self.assertIn("ev.ctrlKey || ev.metaKey", js)                      # plain scrolling still scrolls the page
+        self.assertIn("if (dragged)", js)                                  # a drag never opens a continent
+        for lang in LANGS:
+            for label in world_map.ZOOM_LABELS.values():
+                self.assertTrue(translate(label, lang), (label, lang))
+        at = self.new()
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_siberia_is_drawn_as_asia_but_russia_stays_in_europe(self):
+        from core.data import get_country
+        from ui import world_map
+        self.assertEqual(get_country("RUS")["continent"], "Europe")         # the country data is unchanged
+        x_moscow, _ = world_map._project(37.6, 55.8)
+        x_novosibirsk, _ = world_map._project(82.9, 55.0)
+        line = [world_map._project(*ll) for ll in world_map.URALS]
+        x_urals = min(x for x, y in line if 40 < y < 200)
+        self.assertLess(x_moscow, x_urals)
+        self.assertGreater(x_novosibirsk, x_urals)
+        self.assertIn("west", world_map.SPLIT)
+        self.assertIn("east", world_map.SPLIT)
+        self.assertIn("we-east", world_map.JS)                              # the eastern part is drawn as Asia
+        self.assertIn('["Asia", "url(#we-east)"]', world_map.JS)
 
 
 @unittest.skipIf(AppTest is None, "streamlit is not installed")

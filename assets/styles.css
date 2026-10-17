@@ -1308,7 +1308,7 @@ html[data-we-theme="dark"] { --band:#0A1520; --band-muted:#B9C6D2; }
   /* the map uses the full screen width on phones (the page's side padding is .9rem) */
   .stApp .st-key-explore_stage { margin:0 -.9rem; width:calc(100% + 1.8rem) !important; max-width:none !important; }
   .stApp .st-key-explore_stage .st-key-world_map_frame { border-radius:0; box-shadow:none; }
-  .stApp .st-key-world_map_frame .wm svg { border-radius:0; }
+  .stApp .st-key-world_map_frame .wm > svg { border-radius:0; }
   .stApp .st-key-continent_buttons { gap:6px !important; justify-content:flex-start; padding:2px .9rem 4px !important; scroll-padding-left:.9rem;
     mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent); -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent); }
   .stApp .st-key-continent_buttons button { min-height:40px; padding:0 11px !important; }
@@ -1336,3 +1336,43 @@ html[data-we-theme="dark"] { --band:#0A1520; --band-muted:#B9C6D2; }
   .stApp .st-key-explore_topbar > .st-key-explore_daily { flex:1 1 100% !important; max-width:100%; }
   .stApp .st-key-explore_daily button { min-height:46px; }
 }
+
+/* ---------- Explore on phones in portrait (V22 mobile) ----------
+   Only portrait phones: desktop and landscape keep the approved layout. Order: compact header and navigation, the
+   world map edge to edge, one swipeable row of continents, one compact statistics row, then a full-width Daily
+   Challenge button on one line, and a small footer kept clear of Streamlit Cloud's corner badge. */
+@media (max-width:700px) and (orientation:portrait) {
+  /* compact header */
+  .st-key-app_header { padding:2px 0 6px !important; gap:6px !important; }
+  .st-key-app_header .brand-symbol { width:34px; height:34px; border-radius:10px; }
+  .st-key-app_header .brand-name { font-size:1.12rem; }
+  .st-key-app_header :is(.st-key-rewards_menu, .st-key-header_menu, .st-key-account_menu) button { min-height:40px !important; }
+  .st-key-app_header .st-key-navigation button { min-height:38px !important; }
+  /* the map starts right under the header */
+  .stApp [data-testid="stLayoutWrapper"]:has(> .st-key-view_explore) { margin-top:-8px; }
+  .stApp .st-key-explore_home { gap:10px !important; }
+  .stApp .st-key-explore_stage { gap:10px !important; }
+  /* statistics: one even row; the challenge button: full width, one line */
+  .stApp .st-key-explore_topbar { flex-wrap:wrap !important; justify-content:center !important; padding:8px !important; gap:8px !important; border-radius:16px; }
+  .stApp .st-key-explore_topbar > .stElementContainer:has(.explore-summary) { flex:1 1 100% !important; width:100% !important; }
+  .stApp .explore-summary { width:100%; justify-content:space-between; }
+  .stApp .summary-tile { flex:1 1 0; padding:2px 4px; column-gap:5px; grid-template-columns:1fr auto auto 1fr;
+    grid-template-areas:". i v ." "l l l l"; }
+  .stApp .summary-icon { display:inline; font-size:1rem; }
+  .stApp .summary-tile b { font-size:1.05rem; }
+  .stApp .summary-label { font-size:.74rem; }
+  .stApp .st-key-explore_topbar > .st-key-explore_daily { flex:1 1 100% !important; max-width:100% !important; min-width:0; }
+  .stApp .st-key-explore_daily button { min-height:46px !important; padding:6px 14px !important; }
+  .stApp .st-key-explore_daily button :is(p, div, span) { white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; }
+  .stApp .st-key-explore_daily button p { font-size:.95rem !important; }
+  /* small footer */
+  .stApp .block-container hr { margin:10px 0 6px !important; }
+  .st-key-app_footer { flex-direction:column !important; align-items:flex-start !important; gap:0 !important; }
+  .st-key-app_footer > :first-child { flex:0 0 auto !important; width:100% !important; }
+  .st-key-app_footer [data-testid="stCaptionContainer"], .st-key-app_footer [data-testid="stCaptionContainer"] p { font-size:.78rem !important; }
+  .st-key-feedback_open { width:auto !important; }
+  .st-key-feedback_open button { min-height:36px !important; padding:0 !important; font-size:.85rem; background:transparent !important;
+    border:0 !important; box-shadow:none !important; }
+  .st-key-feedback_open button p { font-size:.85rem !important; }
+}
+

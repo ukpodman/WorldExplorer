@@ -111,9 +111,9 @@ def map_data() -> dict:
 CSS = """
 :host { display:block; }
 .wm { position:relative; width:100%; line-height:0; }
-.wm svg { display:block; width:100%; height:auto; border-radius:16px; background:#0B3D61; overflow:hidden; }
+.wm > svg { display:block; width:100%; height:auto; border-radius:16px; background:#0B3D61; overflow:hidden; }
 /* the map fills the box but never pushes the continent pills off a desktop screen (it stays whole: no cropping) */
-@media (min-width:701px) { .wm svg { max-height:max(360px, calc(100vh - 300px)); } }
+@media (min-width:701px) { .wm > svg { max-height:max(360px, calc(100vh - 300px)); } }
 .wm .land { stroke:#13202E; stroke-opacity:.45; stroke-width:.7; stroke-linejoin:round; vector-effect:non-scaling-stroke; cursor:pointer;
             transition:fill-opacity .15s ease, fill .15s ease; -webkit-tap-highlight-color:transparent; }
 .wm .land:hover { fill-opacity:1 !important; filter:brightness(1.07); }
@@ -126,8 +126,8 @@ CSS = """
 @keyframes we-rise { from { fill-opacity:0; } }
 .wm text { font-family:"Segoe UI","Inter",system-ui,-apple-system,Arial,sans-serif; font-weight:700; fill:#13202E;
            stroke:#FFFFFF; stroke-opacity:.92; stroke-linejoin:round; paint-order:stroke; text-anchor:middle; pointer-events:none; }
-.wm svg { touch-action:pan-y; }
-.wm.zoomed svg { cursor:grab; }
+.wm > svg { touch-action:pan-y; }
+.wm.zoomed > svg { cursor:grab; }
 .wm-zoom { position:absolute; right:10px; bottom:10px; display:flex; flex-direction:column; gap:6px; line-height:normal; }
 .wm-zoom button { width:40px; height:40px; border-radius:12px; border:1px solid rgba(255,255,255,.35); background:rgba(11,32,52,.82);
   color:#FFFFFF; font:600 22px/1 "Segoe UI",system-ui,-apple-system,sans-serif; display:flex; align-items:center; justify-content:center;
@@ -135,8 +135,13 @@ CSS = """
 .wm-zoom button:hover:not(:disabled) { background:rgba(20,60,92,.95); }
 .wm-zoom button:focus-visible { outline:3px solid #F2C94E; outline-offset:2px; }
 .wm-zoom button:disabled { opacity:.38; cursor:default; }
+@media (max-width:700px) and (orientation:portrait) {   /* small, so the map stays the picture */
+  .wm-zoom { left:6px !important; bottom:6px !important; gap:4px !important; }
+  .wm .wm-zoom button { width:32px; height:32px; font-size:18px; border-radius:10px; }
+}
 @media (max-width:700px) { .wm-zoom { right:auto; left:8px; bottom:8px; flex-direction:row; gap:6px; }
   .wm-zoom button { width:36px; height:36px; font-size:20px; } }
+
 @media (prefers-reduced-motion:reduce) { .wm .land { transition:none; animation:none; } }
 """
 
@@ -165,18 +170,25 @@ function installZoom(root, svg, base) {
   const MAX = 8;
   let view = base.slice(), anim = null, dragged = false;
   const pointers = new Map();
-  const zoom = () => base[2] / view[2];
+  const aspect = () => base[2] / base[3];   // the view always has the map's own shape
+  const fullW = () => Math.max(base[2], base[3] * aspect());   // the smallest view that shows the whole world
+  const zoom = () => fullW() / view[2];
   const clampView = (v) => {
-    const w = Math.min(base[2], Math.max(base[2] / MAX, v[2])), h = w * base[3] / base[2];
-    const x = Math.min(base[0] + base[2] - w, Math.max(base[0], v[0])), y = Math.min(base[1] + base[3] - h, Math.max(base[1], v[1]));
-    return [x, y, w, h];
+    const a = aspect(), w = Math.min(fullW(), Math.max(base[2] / MAX, v[2])), h = w / a;
+    const axis = (pos, size, b0, bs) => size >= bs ? b0 - (size - bs) / 2 : Math.min(b0 + bs - size, Math.max(b0, pos));
+    return [axis(v[0], w, base[0], base[2]), axis(v[1], h, base[1], base[3]), w, h];
   };
+  const whole = () => clampView([0, 0, fullW(), 0]);
   const apply = (v) => {
     view = clampView(v);
     svg.setAttribute("viewBox", view.map(n => n.toFixed(2)).join(" "));
     const zoomed = zoom() > 1.001;
     svg.style.touchAction = zoomed ? "none" : "pan-y";
     root.classList.toggle("zoomed", zoomed);
+    // the relief texture is for the overview; zoomed in (or in the viewer) it is switched off, which keeps drawing fast
+    // and avoids tiling glitches some browsers show for large filtered areas
+    const relief = svg.querySelector("g.relief");
+    if (relief) relief.setAttribute("filter", zoomed ? "none" : "url(#we-relief)");
     root.querySelector(".zout").disabled = !zoomed;
     root.querySelector(".zall").disabled = !zoomed;
     root.querySelector(".zin").disabled = zoom() >= MAX - 0.01;
@@ -190,8 +202,8 @@ function installZoom(root, svg, base) {
   };
   const zoomAt = (factor, mx, my, v) => {
     v = v || view;
-    const w = Math.min(base[2], Math.max(base[2] / MAX, v[2] / factor)), k = w / v[2];
-    return [mx - (mx - v[0]) * k, my - (my - v[1]) * k, w, w * base[3] / base[2]];
+    const w = Math.min(fullW(), Math.max(base[2] / MAX, v[2] / factor)), k = w / v[2];
+    return [mx - (mx - v[0]) * k, my - (my - v[1]) * k, w, w / aspect()];
   };
   const animate = (target) => {
     const from = view.slice(), to = clampView(target), t0 = performance.now(), ms = 260;
@@ -207,7 +219,7 @@ function installZoom(root, svg, base) {
   const centre = () => [view[0] + view[2] / 2, view[1] + view[3] / 2];
   root.querySelector(".zin").onclick = () => { const [x, y] = centre(); animate(zoomAt(2, x, y)); };
   root.querySelector(".zout").onclick = () => { const [x, y] = centre(); animate(zoomAt(0.5, x, y)); };
-  root.querySelector(".zall").onclick = () => animate(base);
+  root.querySelector(".zall").onclick = () => animate(whole());
   svg.addEventListener("wheel", (ev) => {
     if (!(ev.ctrlKey || ev.metaKey)) return;          // plain scrolling keeps scrolling the page
     ev.preventDefault();
@@ -368,10 +380,10 @@ export default function (component) {
       '<clipPath id="we-west"><path d="' + data.split.west + '"/></clipPath><clipPath id="we-east"><path d="' + data.split.east + '"/></clipPath>';
     svg.appendChild(defs);
     // the sea reaches past the frame, so a wide box (desktop) shows ocean at the sides, never empty bands
-    svg.appendChild(el("rect", { x: -700, y: vb[1], width: vb[2] + 1400, height: vb[3], fill: "url(#we-ocean)" }));
-    svg.appendChild(el("rect", { x: -700, y: vb[1], width: vb[2] + 1400, height: vb[3], filter: "url(#we-depth)", opacity: ".38", "pointer-events": "none" }));
+    svg.appendChild(el("rect", { x: -700, y: vb[1] - 900, width: vb[2] + 1400, height: vb[3] + 1800, fill: "url(#we-ocean)" }));
+    svg.appendChild(el("rect", { x: -700, y: vb[1] - 900, width: vb[2] + 1400, height: vb[3] + 1800, filter: "url(#we-depth)", opacity: ".38", "pointer-events": "none" }));
     svg.appendChild(el("path", { class: "coast", d: Object.values(cache.continents).join("") + (cache.antarctica || ""), filter: "url(#we-glow)" }));
-    const relief = el("g", { filter: "url(#we-relief)" });
+    const relief = el("g", { class: "relief", filter: "url(#we-relief)" });
     if (cache.antarctica) relief.appendChild(el("path", { d: cache.antarctica, class: "ant", fill: data.antarctica_fill }));
     for (const name of Object.keys(cache.continents)) {
       const pieces = name === "Europe" ? [["Europe", "url(#we-west)"], ["Asia", "url(#we-east)"]] : [[name, null]];

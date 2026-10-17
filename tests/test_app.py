@@ -70,7 +70,7 @@ class AppTests(unittest.TestCase):
 
     def _play_round(self, at, wrong_every=2):
         at.button(key="nav_Quiz").click().run()
-        at.selectbox(key="filter_count").select(5).run()
+        at.button_group(key="filter_count").set_value(5).run()
         at.button(key="start_quiz").click().run()
         self.assertClean(at)
         quiz = at.session_state["quiz"]
@@ -114,7 +114,7 @@ class AppTests(unittest.TestCase):
         at = self.new(page="Quiz")
         at.selectbox(key="filter_continent").select("Europe").run()
         at.selectbox(key="filter_country").select("VAT").run()
-        at.selectbox(key="filter_count").select(50).run()
+        at.button_group(key="filter_count").set_value(50).run()
         info = " ".join(i.value for i in at.info)
         self.assertIn("This round will contain", info)
         at.button(key="start_quiz").click().run()
@@ -163,12 +163,12 @@ class RefinementTests(unittest.TestCase):
     def test_quiz_filters_survive_leaving_the_page(self):
         at = self.new(page="Quiz")
         at.selectbox(key="filter_category").select("Capitals").run()
-        at.selectbox(key="filter_difficulty").select("Expert").run()
+        at.button_group(key="filter_difficulty").set_value("Expert").run()
         at.button(key="nav_Explore").click().run()
         at.button(key="nav_Badges").click().run()
         at.button(key="nav_Quiz").click().run()
         self.assertEqual(at.selectbox(key="filter_category").value, "Capitals")
-        self.assertEqual(at.selectbox(key="filter_difficulty").value, "Expert")
+        self.assertEqual(at.button_group(key="filter_difficulty").value, "Expert")
         self.assertEqual([w.value for w in at.warning], [])
 
     def test_badges_recorded_once_from_quiz_activity(self):
@@ -177,7 +177,7 @@ class RefinementTests(unittest.TestCase):
         at.run()
         self.assertEqual(at.session_state["stats"]["answered"], 0)
         at.button(key="nav_Quiz").click().run()
-        at.selectbox(key="filter_count").select(5).run()
+        at.button_group(key="filter_count").set_value(5).run()
         at.button(key="start_quiz").click().run()
         for i in range(5):
             quiz = at.session_state["quiz"]
@@ -337,7 +337,7 @@ class RefinementTests(unittest.TestCase):
 
     def test_streak_multiplier_records_and_no_double_counting(self):
         at = self.new(page="Quiz")
-        at.selectbox(key="filter_count").select(5).run()
+        at.button_group(key="filter_count").set_value(5).run()
         at.button(key="start_quiz").click().run()
         self._answer_all(at, correct=True, double=True)
         quiz = at.session_state["quiz"]
@@ -396,7 +396,7 @@ class RefinementTests(unittest.TestCase):
     def test_results_in_every_language(self):
         for lang in LANGS:
             at = self.new(page="Quiz", app_language=lang)
-            at.selectbox(key="filter_count").select(5).run()
+            at.button_group(key="filter_count").set_value(5).run()
             at.button(key="start_quiz").click().run()
             self._answer_all(at, correct=True)
             self.assertEqual([e.value for e in at.exception], [], lang)
@@ -705,16 +705,93 @@ class RefinementTests(unittest.TestCase):
             at.button(key="play_again").click().run()
             self.assertEqual((at.session_state["quiz"]["mode"], at.session_state["quiz"]["day"]), ("daily", "2026-10-11"))
 
-    def test_quiz_setup_daily_entry_for_phones_and_wider_screens(self):
-        at = self.new(page="Quiz")   # one box per layout (CSS shows one); both start the same daily round
-        self.assertEqual(at.button(key="setup_daily").label, at.button(key="intro_daily").label)
-        at.button(key="intro_daily").click().run()
+    def test_quiz_setup_daily_entry(self):
+        at = self.new(page="Quiz")   # one compact daily card at the top of the Quiz page (phones and desktops)
+        self.assertEqual(at.button(key="setup_daily").label, "Start")
+        at.button(key="setup_daily").click().run()
         self.assertEqual(at.session_state["quiz"]["mode"], "daily")
         self.assertEqual([e.value for e in at.exception], [])
 
+    # ---------------------------------------------------------------- Quiz page V23
+
+    def test_v23_setup_three_essentials_and_advanced_settings(self):
+        import inspect
+        from ui import pages
+        at = self.new(page="Quiz")
+        self.assertEqual(at.selectbox(key="filter_category").value, "Mixed")          # the existing defaults
+        self.assertEqual(at.button_group(key="filter_difficulty").value, "Medium")
+        self.assertEqual(at.button_group(key="filter_count").value, 10)
+        self.assertEqual(list(at.button_group(key="filter_difficulty").options), ["Easy", "Medium", "Difficult", "Expert"])
+        self.assertEqual([str(o) for o in at.button_group(key="filter_count").options], ["5", "10", "15", "20", "25", "50"])
+        src = inspect.getsource(pages._setup)
+        advanced = src[src.index('st.expander(t("Advanced quiz settings")'):src.index("state.remember_quiz_filters()")]
+        for key in ("filter_timer", "filter_flags", "filter_collection", "filter_continent", "filter_country"):
+            self.assertIn(f'key="{key}"', advanced)                                  # all other options kept, under Advanced
+        self.assertNotIn("How well do you know your world?", inspect.getsource(pages.quiz))   # no decorative banner
+        at.toggle(key="filter_timer").set_value(True).run()                            # options still work as before
+        at.selectbox(key="filter_category").select("Capitals").run()
+        at.button_group(key="filter_difficulty").set_value("Expert").run()
+        at.button_group(key="filter_count").set_value(5).run()
+        at.button(key="start_quiz").click().run()
+        s = at.session_state["quiz"]["settings"]
+        self.assertEqual((s["category"], s["difficulty"], s["count"], s["timer"]), ("Capitals", "Expert", 5, True))
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_v23_round_one_answer_hint_feedback_and_results(self):
+        from core import quiz as engine
+        at = self.new(page="Quiz")
+        at.button_group(key="filter_count").set_value(5).run()
+        at.button(key="start_quiz").click().run()
+        self.assertFalse(any(b.key == "start_quiz" for b in at.button))                 # setup hidden during the round
+        q = at.session_state["quiz"]
+        qn = q["questions"][0]
+        self.assertTrue(any("Question 1 of 5" in str(m.value) for m in at.markdown))
+        if len(qn["choices"]) == 4:                                                     # hint: one wrong option removed
+            at.button(key=f"hint_{q['serial']}_0").click().run()
+            self.assertEqual(at.session_state["quiz"]["hints_remaining"], engine.HINTS_PER_ROUND - 1)
+            self.assertEqual(at.button(key=f"hint_{q['serial']}_0").label, "Hint used")
+        before = at.session_state["points"]
+        right = qn["choices"].index(qn["answer"])
+        at.button(key=f"answer_{q['serial']}_0_{right}").click().run()
+        gained = at.session_state["points"] - before
+        self.assertGreater(gained, 0)
+        self.assertEqual(len(at.session_state["quiz"]["history"]), 1)
+        wrong = next(i for i, c in enumerate(qn["choices"]) if c != qn["answer"])
+        self.assertTrue(at.button(key=f"answer_{q['serial']}_0_{wrong}").disabled)        # one answer per question
+        at.run()                                                                        # a rerun (refresh) records nothing more
+        self.assertEqual((len(at.session_state["quiz"]["history"]), at.session_state["points"] - before), (1, gained))
+        self.assertTrue(any("Correct!" in str(m.value) for m in at.markdown))
+        for i in range(5):
+            qq = at.session_state["quiz"]
+            if i:
+                qi = qq["questions"][i]
+                at.button(key=f"answer_{qq['serial']}_{i}_{qi['choices'].index(qi['answer'])}").click().run()
+            at.button(key=f"next_{qq['serial']}_{i}").click().run()
+        self.assertTrue(at.session_state["quiz"]["finished"])
+        self.assertEqual(at.session_state["rounds_finished"], 1)
+        texts = " ".join(str(m.value) for m in at.markdown)
+        for label in ("Quiz complete", "Accuracy", "Correct answers", "Points earned", "Best answer streak"):
+            self.assertIn(label, texts)
+        self.assertEqual(at.button(key="change_settings").label, "Try another category")
+        at.button(key="results_explore").click().run()
+        self.assertEqual(at.session_state["page"], "Explore")
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_v23_answer_colours_follow_position_not_correctness(self):
+        import inspect
+        from ui import pages
+        src = inspect.getsource(pages._active_round)
+        self.assertIn('key=f"ans{pos}_{style}"', src)            # colour slot = position on screen
+        css = (Path(APP).parent / "assets" / "styles.css").read_text(encoding="utf-8")
+        block = css[css.index("Quiz page V23"):]
+        for n, letter in enumerate("ABCD"):
+            self.assertIn(f'[class*="st-key-ans{n}_"] button::before {{ content:"{letter}"', block)
+        self.assertIn('flex-direction:column !important', block)   # one column of answers on phones
+        self.assertNotIn("@keyframes", block)                      # no new animations
+
     def test_practise_mistakes_round_clears_correct_answers(self):
         at = self.new(page="Quiz")
-        at.selectbox(key="filter_count").select(5).run()
+        at.button_group(key="filter_count").set_value(5).run()
         at.button(key="start_quiz").click().run()
         self._finish(at, [False, False, True, True, True])
         self.assertEqual(len(at.session_state["mistakes"]), 2)

@@ -1365,7 +1365,9 @@ html[data-we-theme="dark"] { --band:#0A1520; --band-muted:#B9C6D2; }
   .stApp .st-key-explore_daily button { min-height:46px !important; padding:6px 14px !important; }
   .stApp .st-key-explore_daily button :is(p, div, span) { white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; }
   .stApp .st-key-explore_daily button p { font-size:.95rem !important; }
-  /* small footer */
+  /* small footer, ending close after the content (64 px still clears Streamlit Cloud's corner badge) */
+  .stApp .block-container:has(.st-key-view_explore) { padding-bottom:calc(64px + env(safe-area-inset-bottom,0px)) !important; }
+  .stApp .block-container [data-testid="stLayoutWrapper"]:has(> .st-key-app_footer) ~ [data-testid="stElementContainer"]:has(> [data-testid="stHtml"] > script:first-child) { display:none !important; }
   .stApp .block-container hr { margin:10px 0 6px !important; }
   .st-key-app_footer { flex-direction:column !important; align-items:flex-start !important; gap:0 !important; }
   .st-key-app_footer > :first-child { flex:0 0 auto !important; width:100% !important; }

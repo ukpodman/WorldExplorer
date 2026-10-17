@@ -188,7 +188,7 @@ function installZoom(root, svg, base) {
     // the relief texture is for the overview; zoomed in (or in the viewer) it is switched off, which keeps drawing fast
     // and avoids tiling glitches some browsers show for large filtered areas
     const relief = svg.querySelector("g.relief");
-    if (relief) relief.setAttribute("filter", zoomed ? "none" : "url(#we-relief)");
+    if (relief && !root.__weLite) relief.setAttribute("filter", zoomed ? "none" : "url(#we-relief)");
     root.querySelector(".zout").disabled = !zoomed;
     root.querySelector(".zall").disabled = !zoomed;
     root.querySelector(".zin").disabled = zoom() >= MAX - 0.01;
@@ -263,9 +263,15 @@ function installZoom(root, svg, base) {
     }
   };
   const up = (ev) => { pointers.delete(ev.pointerId); if (pointers.size < 2) last = null; };
-  window.addEventListener("pointermove", move, { passive: false });
-  window.addEventListener("pointerup", up);
-  window.addEventListener("pointercancel", up);
+  // The page-wide pointer listeners are added once per page; they always drive the map that is shown now. (Adding them
+  // for every new map kept each earlier map alive and added three more listeners per return to Explore.)
+  window.__weZoomNow = { move, up };
+  if (!window.__weZoomListeners) {
+    window.__weZoomListeners = true;
+    window.addEventListener("pointermove", (ev) => window.__weZoomNow && window.__weZoomNow.move(ev), { passive: false });
+    window.addEventListener("pointerup", (ev) => window.__weZoomNow && window.__weZoomNow.up(ev));
+    window.addEventListener("pointercancel", (ev) => window.__weZoomNow && window.__weZoomNow.up(ev));
+  }
   svg.addEventListener("click", (ev) => { if (dragged) { ev.stopPropagation(); ev.preventDefault(); dragged = false; } }, true);
   apply(base);
 }
@@ -363,6 +369,10 @@ export default function (component) {
     const W = cache.viewbox[2], H = cache.viewbox[3];
     const vb = [0, -16, W, H + 16 + 4];    // just enough room for the Arctic Ocean name; Antarctica's name sits on the ice
     const svg = el("svg", { viewBox: vb.join(" "), preserveAspectRatio: "xMidYMid meet", role: "img" });
+    // Phones and touch screens get the light version: no texture filters (sea-floor shading, land relief, coastal
+    // glow), which are the costly part to draw on mobile GPUs. Colours, labels and taps are identical.
+    const lite = window.matchMedia("(max-width:700px), (pointer:coarse)").matches;
+    root.__weLite = lite;
     const defs = el("defs", {});
     defs.innerHTML =
       '<linearGradient id="we-ocean" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E4A72"/><stop offset=".55" stop-color="#0B3D61"/><stop offset="1" stop-color="#082F4D"/></linearGradient>' +
@@ -381,9 +391,11 @@ export default function (component) {
     svg.appendChild(defs);
     // the sea reaches past the frame, so a wide box (desktop) shows ocean at the sides, never empty bands
     svg.appendChild(el("rect", { x: -700, y: vb[1] - 900, width: vb[2] + 1400, height: vb[3] + 1800, fill: "url(#we-ocean)" }));
-    svg.appendChild(el("rect", { x: -700, y: vb[1] - 900, width: vb[2] + 1400, height: vb[3] + 1800, filter: "url(#we-depth)", opacity: ".38", "pointer-events": "none" }));
-    svg.appendChild(el("path", { class: "coast", d: Object.values(cache.continents).join("") + (cache.antarctica || ""), filter: "url(#we-glow)" }));
-    const relief = el("g", { class: "relief", filter: "url(#we-relief)" });
+    if (!lite) svg.appendChild(el("rect", { x: -700, y: vb[1] - 900, width: vb[2] + 1400, height: vb[3] + 1800, filter: "url(#we-depth)", opacity: ".38", "pointer-events": "none" }));
+    const coast = el("path", { class: "coast", d: Object.values(cache.continents).join("") + (cache.antarctica || "") });
+    if (!lite) coast.setAttribute("filter", "url(#we-glow)");
+    svg.appendChild(coast);
+    const relief = el("g", lite ? { class: "relief" } : { class: "relief", filter: "url(#we-relief)" });
     if (cache.antarctica) relief.appendChild(el("path", { d: cache.antarctica, class: "ant", fill: data.antarctica_fill }));
     for (const name of Object.keys(cache.continents)) {
       const pieces = name === "Europe" ? [["Europe", "url(#we-west)"], ["Asia", "url(#we-east)"]] : [[name, null]];
@@ -439,7 +451,11 @@ export default function (component) {
       });
     };
     root.__weFit = fit;
-    if (window.ResizeObserver) new ResizeObserver(fit).observe(svg);
+    if (window.ResizeObserver) {   // one observer for the map on the page (an earlier map's observer is let go)
+      if (window.__weResize) window.__weResize.disconnect();
+      window.__weResize = new ResizeObserver(fit);
+      window.__weResize.observe(svg);
+    }
     fit();
   }
   // Fresh handlers each render, so a click always reports through the current component instance.

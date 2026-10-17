@@ -1156,6 +1156,18 @@ class ContinentMapTests(unittest.TestCase):
         at = self.new()
         self.assertEqual([e.value for e in at.exception], [])
 
+    def test_map_stays_light_and_does_not_pile_up_listeners(self):
+        from ui import world_map
+        js = world_map.JS
+        # phones and touch screens draw without the costly texture filters (desktop keeps them)
+        self.assertIn('matchMedia("(max-width:700px), (pointer:coarse)")', js)
+        self.assertIn('if (!lite) coast.setAttribute("filter", "url(#we-glow)")', js)
+        # page-wide pointer listeners once per page, not once per return to Explore; one resize observer
+        self.assertIn("if (!window.__weZoomListeners)", js)
+        self.assertNotIn('window.addEventListener("pointermove", move', js)
+        self.assertIn("window.__weResize.disconnect()", js)
+        self.assertNotIn("new ResizeObserver(fit).observe(svg)", js)
+
     def test_phone_portrait_layout_is_isolated(self):
         css = (Path(APP).parent / "assets" / "styles.css").read_text(encoding="utf-8")
         block = css.split("/* ---------- Explore on phones in portrait (V22 mobile)", 1)[1]
@@ -1169,7 +1181,7 @@ class ContinentMapTests(unittest.TestCase):
     def test_footer_tells_the_truth_about_saving(self):
         src = (Path(APP)).read_text(encoding="utf-8")
         self.assertIn('"guest": "Progress is kept until you reload or close this page"', src)   # a refresh starts afresh
-        self.assertIn('"saved": "Saved to your account"', src)
+        self.assertIn('"saved": "Progress saved to your account"', src)   # only after a confirmed save
         self.assertNotIn("progress lasts for this browser session", src)
         at = self.new()
         self.assertTrue(any("Progress is kept until you reload or close this page" in c.value for c in at.caption))

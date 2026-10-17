@@ -122,7 +122,7 @@ class SignedInProfileTests(unittest.TestCase):
         table = FakeTable({USER["profile_id"]: old})
         at = self.visit(table)
         self.assertEqual((at.session_state["points"], at.session_state["rounds_finished"]), (1200, 4))
-        self.assertIn("Saved to your account", self.footer(at))
+        self.assertIn("Progress saved to your account", self.footer(at))
         self.finish_daily(at, [True, True, False, True, True])
         saved = table.rows[USER["profile_id"]]
         self.assertEqual(saved["rounds_finished"], 5)
@@ -146,7 +146,7 @@ class SignedInProfileTests(unittest.TestCase):
         self.assertGreater(at.session_state["points"], 100)                       # play continues
         table.fail_writes = False
         at.button(key="nav_Badges").click().run()                                 # any next page update retries
-        self.assertIn("Saved to your account", self.footer(at))
+        self.assertIn("Progress saved to your account", self.footer(at))
         self.assertEqual(table.rows[USER["profile_id"]]["points"], at.session_state["points"])
 
     def test_unreachable_profile_is_never_overwritten(self):

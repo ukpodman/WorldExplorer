@@ -41,7 +41,7 @@ _load_fresh_code()
 from core import accounts, analytics, cookies  # noqa: E402  (set_page_config must run first)
 from core.data import COUNTRIES  # noqa: E402
 from ui import rewards_hooks, state  # noqa: E402
-from ui.components import consent_bar, feedback_button, header, inject_styles  # noqa: E402
+from ui.components import feedback_button, header, inject_styles  # noqa: E402
 from ui.pages import ROUTES  # noqa: E402
 
 FOOTER = {
@@ -49,7 +49,7 @@ FOOTER = {
     "no_storage": "Signed in · progress is kept until you reload or close this page",
     "loading_failed": "Saved profile not reachable yet · nothing has been overwritten",
     "save_failed": "Latest changes not saved online yet",
-    "saved": "Saved to your account",
+    "saved": "Progress saved to your account",
 }
 
 
@@ -63,7 +63,7 @@ def main() -> None:
     state.apply_pending_preferences()
     inject_styles()
     header()
-    consent_bar()
+    # No consent banner: the optional usage statistics are chosen in Settings → Privacy (off until allowed there).
     notice = st.session_state.pop("handoff_notice", None)
     if notice:  # shown once after "Save your progress with Google"
         st.success(state.t("Your guest progress was added to your account: +{points} points.",

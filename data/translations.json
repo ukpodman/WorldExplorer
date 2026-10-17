@@ -4410,6 +4410,12 @@
    "Sesión iniciada · el progreso se conserva hasta que recargues o cierres esta página",
    "已登录 · 进度会保留到你刷新或关闭此页面为止",
    "Вход выполнен · прогресс сохраняется, пока вы не обновите или не закроете страницу"
+  ],
+  "Progress saved to your account": [
+   "Fortschritt in deinem Konto gespeichert",
+   "Progreso guardado en tu cuenta",
+   "进度已保存至账户",
+   "Прогресс сохранён в вашем аккаунте"
   ]
  }
 }

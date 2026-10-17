@@ -377,12 +377,28 @@ class AppAnalyticsTests(unittest.TestCase):
             at.button(key=f"answer_{q['serial']}_{i}_{qn['choices'].index(pick)}").click().run()
             at.button(key=f"next_{q['serial']}_{i}").click().run()
 
+    def allow(self, at):
+        """Opt in the only way there is now: Settings → Privacy → Share anonymous usage statistics."""
+        at.button(key="settings_menu").click().run()
+        at.toggle(key="privacy_statistics").set_value(True).run()
+        return at
+
+    def test_no_banner_and_nothing_recorded_without_opting_in(self):
+        rows = []
+        at = self.new(lambda url, key, table, row: rows.append(row))
+        self.assertEqual([b for b in at.button if b.key in ("consent_allow", "consent_deny")], [])   # no banner
+        self.assertFalse(any("Help improve World Explorer?" in str(m.value) for m in at.markdown))
+        at.button(key="explore_daily").click().run()
+        self.finish(at, [True] * 5)
+        self.assertEqual(rows, [])                                     # never asked, never allowed: nothing recorded
+        self.assertIsNone(at.session_state["an_consent"])
+        self.assertEqual([e.value for e in at.exception], [])
+
     def test_rounds_are_counted_once_by_mode(self):
         rows = []
         at = self.new(lambda url, key, table, row: rows.append(row))
-        self.assertEqual(rows, [])                                     # asks first, records nothing
-        self.assertTrue(at.button(key="consent_allow"))
-        at.button(key="consent_allow").click().run()
+        self.assertEqual(rows, [])                                     # records nothing until allowed
+        self.allow(at)
         at.button(key="explore_daily").click().run()
         at.button(key="explore_daily").click().run() if at.session_state["page"] == "Explore" else None
         self.finish(at, [True, False, True, True, False])
@@ -412,7 +428,7 @@ class AppAnalyticsTests(unittest.TestCase):
         def broken(*args):
             raise OSError("down")
         at = self.new(broken)
-        at.button(key="consent_allow").click().run()
+        self.allow(at)
         at.button(key="explore_daily").click().run()
         self.finish(at, [True] * 5)
         self.assertEqual(at.session_state["rounds_finished"], 1)

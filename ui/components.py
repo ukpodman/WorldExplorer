@@ -418,7 +418,8 @@ def _sign_in_body(provider: str, label: str, key: str, disabled: bool, kind: str
 # --------------------------------------------------------------------------- usage statistics (pilot)
 
 def consent_bar() -> None:
-    """One compact question, shown until the visitor answers (only when the owner switched measurement on)."""
+    """The former consent banner. Not shown any more (the map comes first); visitors choose the optional usage
+    statistics in Settings → Privacy, and nothing is recorded until they allow it there."""
     if not analytics.needs_choice():
         return
     with st.container(key="consent_bar", horizontal=True, vertical_alignment="center"):

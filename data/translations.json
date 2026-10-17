@@ -4416,6 +4416,204 @@
    "Progreso guardado en tu cuenta",
    "进度已保存至账户",
    "Прогресс сохранён в вашем аккаунте"
+  ],
+  "100 points × difficulty": [
+   "100 Punkte × Schwierigkeit",
+   "100 puntos × dificultad",
+   "100 分 × 难度系数",
+   "100 очков × сложность"
+  ],
+  "A perfect round. Well done!": [
+   "Eine perfekte Runde. Gut gemacht!",
+   "Una ronda perfecta. ¡Bien hecho!",
+   "完美的一轮，干得好！",
+   "Идеальный раунд. Отлично!"
+  ],
+  "Advanced quiz settings": [
+   "Erweiterte Quiz-Einstellungen",
+   "Ajustes avanzados del quiz",
+   "高级测验设置",
+   "Дополнительные настройки викторины"
+  ],
+  "Answer streak": [
+   "Antwortserie",
+   "Racha de respuestas",
+   "连续答对",
+   "Серия ответов"
+  ],
+  "Best answer streak": [
+   "Beste Antwortserie",
+   "Mejor racha de respuestas",
+   "最长连续答对",
+   "Лучшая серия ответов"
+  ],
+  "Capitals, flags, currencies, languages and the places in between. Every question comes from a sourced fact, in a new mix each round.": [
+   "Hauptstädte, Flaggen, Währungen, Sprachen und alles dazwischen. Jede Frage beruht auf einer belegten Tatsache, in jeder Runde neu gemischt.",
+   "Capitales, banderas, monedas, idiomas y todo lo demás. Cada pregunta se basa en un dato con fuente, en una mezcla nueva en cada ronda.",
+   "首都、国旗、货币、语言，以及其间的一切。每道题都来自有出处的事实，每轮重新组合。",
+   "Столицы, флаги, валюты, языки и всё, что между ними. Каждый вопрос основан на факте с источником, в каждом раунде — новый набор."
+  ],
+  "Current quiz": [
+   "Aktuelles Quiz",
+   "Quiz actual",
+   "当前测验",
+   "Текущая викторина"
+  ],
+  "Each removes one wrong answer (−25 if correct).": [
+   "Jeder entfernt eine falsche Antwort (−25 bei richtiger Antwort).",
+   "Cada una elimina una respuesta incorrecta (−25 si aciertas).",
+   "每次去掉一个错误选项（答对时 −25）。",
+   "Каждая убирает один неверный ответ (−25 при верном ответе)."
+  ],
+  "Easy ×1, Medium ×1.25, Difficult ×1.5, Expert ×2.": [
+   "Leicht ×1, Mittel ×1,25, Schwer ×1,5, Experte ×2.",
+   "Fácil ×1, Media ×1,25, Difícil ×1,5, Experto ×2.",
+   "简单 ×1，中等 ×1.25，困难 ×1.5，专家 ×2。",
+   "Лёгкий ×1, Средний ×1,25, Сложный ×1,5, Эксперт ×2."
+  ],
+  "Explore countries": [
+   "Länder entdecken",
+   "Explorar países",
+   "探索国家",
+   "Исследовать страны"
+  ],
+  "Good effort. Every round teaches something new.": [
+   "Gut versucht. Jede Runde bringt etwas Neues.",
+   "Buen intento. Cada ronda enseña algo nuevo.",
+   "不错的尝试，每一轮都能学到新东西。",
+   "Хорошая попытка. Каждый раунд учит чему-то новому."
+  ],
+  "Great round. You know your world.": [
+   "Starke Runde. Du kennst deine Welt.",
+   "Gran ronda. Conoces tu mundo.",
+   "很棒的一轮，你很了解这个世界。",
+   "Отличный раунд. Вы знаете свой мир."
+  ],
+  "Hints left": [
+   "Hinweise übrig",
+   "Pistas restantes",
+   "剩余提示",
+   "Осталось подсказок"
+  ],
+  "Need a hint?": [
+   "Brauchst du einen Hinweis?",
+   "¿Necesitas una pista?",
+   "需要提示吗？",
+   "Нужна подсказка?"
+  ],
+  "Opens quiz setup with your current settings.": [
+   "Öffnet die Quiz-Einstellungen mit deinen aktuellen Einstellungen.",
+   "Abre la configuración del quiz con tus ajustes actuales.",
+   "打开测验设置，保留当前设置。",
+   "Открывает настройки викторины с текущими параметрами."
+  ],
+  "Points earned": [
+   "Erzielte Punkte",
+   "Puntos ganados",
+   "获得的分数",
+   "Заработано очков"
+  ],
+  "Points this round": [
+   "Punkte in dieser Runde",
+   "Puntos de esta ronda",
+   "本轮得分",
+   "Очки за раунд"
+  ],
+  "Question {n} of {total}": [
+   "Frage {n} von {total}",
+   "Pregunta {n} de {total}",
+   "第 {n} 题，共 {total} 题",
+   "Вопрос {n} из {total}"
+  ],
+  "Quiz complete": [
+   "Quiz abgeschlossen",
+   "Quiz completado",
+   "测验完成",
+   "Викторина завершена"
+  ],
+  "Ready when you are": [
+   "Bereit, wenn du es bist",
+   "Listo cuando tú lo estés",
+   "准备好就开始吧",
+   "Начнём, когда будете готовы"
+  ],
+  "Removes one wrong answer · −25 if correct · {n} of {total} left": [
+   "Entfernt eine falsche Antwort · −25 bei richtiger Antwort · {n} von {total} übrig",
+   "Elimina una respuesta incorrecta · −25 si aciertas · quedan {n} de {total}",
+   "去掉一个错误选项 · 答对时 −25 · 剩余 {n}/{total}",
+   "Убирает один неверный ответ · −25 при верном ответе · осталось {n} из {total}"
+  ],
+  "Round progress": [
+   "Rundenfortschritt",
+   "Progreso de la ronda",
+   "本轮进度",
+   "Прогресс раунда"
+  ],
+  "Set up your quiz": [
+   "Stelle dein Quiz zusammen",
+   "Configura tu quiz",
+   "设置你的测验",
+   "Настройте викторину"
+  ],
+  "Show hint": [
+   "Hinweis zeigen",
+   "Mostrar pista",
+   "显示提示",
+   "Показать подсказку"
+  ],
+  "Streaks up to ×3": [
+   "Serien bis ×3",
+   "Rachas hasta ×3",
+   "连续答对最高 ×3",
+   "Серии до ×3"
+  ],
+  "The 3rd correct answer in a row earns double, the 5th triple.": [
+   "Die 3. richtige Antwort in Folge zählt doppelt, die 5. dreifach.",
+   "La 3.ª respuesta correcta seguida vale el doble; la 5.ª, el triple.",
+   "连续第 3 次答对得双倍，第 5 次得三倍。",
+   "3-й верный ответ подряд даёт вдвое больше, 5-й — втрое."
+  ],
+  "Three choices, then play. Everything else is under Advanced.": [
+   "Drei Entscheidungen, dann geht es los. Alles andere findest du unter Erweitert.",
+   "Tres elecciones y a jugar. Todo lo demás está en Avanzado.",
+   "三个选择，然后开始。其他选项在“高级”中。",
+   "Три параметра — и вперёд. Всё остальное в разделе «Дополнительно»."
+  ],
+  "Try another category": [
+   "Andere Kategorie versuchen",
+   "Probar otra categoría",
+   "换个类别试试",
+   "Попробовать другую категорию"
+  ],
+  "Your quiz: {category} · {difficulty} · {n} questions": [
+   "Dein Quiz: {category} · {difficulty} · {n} Fragen",
+   "Tu quiz: {category} · {difficulty} · {n} preguntas",
+   "你的测验：{category} · {difficulty} · {n} 道题",
+   "Ваша викторина: {category} · {difficulty} · {n} вопросов"
+  ],
+  "{badges} badges": [
+   "{badges} Abzeichen",
+   "{badges} insignias",
+   "{badges} 枚徽章",
+   "{badges} значков"
+  ],
+  "{correct} of {total}": [
+   "{correct} von {total}",
+   "{correct} de {total}",
+   "{correct}/{total}",
+   "{correct} из {total}"
+  ],
+  "{n} hints per round": [
+   "{n} Hinweise pro Runde",
+   "{n} pistas por ronda",
+   "每轮 {n} 次提示",
+   "{n} подсказки за раунд"
+  ],
+  "{points} points": [
+   "{points} Punkte",
+   "{points} puntos",
+   "{points} 分",
+   "{points} очков"
   ]
  }
 }

@@ -54,7 +54,7 @@ class RewardsAppTests(unittest.TestCase):
 
     def finish_quiz(self, at, count=5):
         at.button(key="nav_Quiz").click().run()
-        at.selectbox(key="filter_count").select(count).run()
+        at.button_group(key="filter_count").set_value(count).run()
         at.button(key="start_quiz").click().run()
         for i in range(count):
             quiz = at.session_state["quiz"]

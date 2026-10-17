@@ -1,15 +1,11 @@
-World Explorer V22 - homepage finalisation and performance
-Based on GitHub production main 06b6ccd (Merge pull request #4). Copy each file to the same path in the repository.
+World Explorer V23 - Quiz page redesign
+Based on GitHub production main e39cdf9 (Merge pull request #5). Copy each file to the same path in the repository.
 
-app.py                     footer: "Progress saved to your account" only after a confirmed account save; no consent banner call
-assets/styles.css          phones in portrait: compact space below the footer (64 px, clear of the Cloud badge)
-data/translations.json     production strings unchanged + "Progress saved to your account" in all five languages
-ui/components.py           consent banner documented as no longer shown (choice stays in Settings > Privacy)
-ui/world_map.py            phones/touch screens draw the map without texture filters; pointer listeners and the resize
-                           observer set up once per page (no build-up when returning to Explore)
-tests/test_app.py          tests for the above
-tests/test_analytics.py    no banner, nothing recorded until allowed in Settings > Privacy
-tests/test_reliability.py  new footer wording in the save/restore tests
+ui/pages.py                Quiz page only (setup, active question, feedback, results); Explore, Learn and Badges untouched
+assets/styles.css          Quiz page styles (light and dark, phones and desktop); other pages unchanged
+data/translations.json     all production strings unchanged + 33 new Quiz strings in all five languages
+tests/test_app.py          quiz tests for the new layout (setup, round, hint, one answer per question, results)
+tests/test_rewards_app.py  uses the new Questions buttons in one test
 
-Not changed: authentication, Supabase persistence logic, database schemas and migrations, Founding 50, rewards,
-withdrawals, payouts, security settings, .streamlit/config.toml.
+Not changed: quiz engine (core/quiz.py), state and scoring (ui/state.py), daily challenges, badges, Google sign-in,
+Supabase saving, Founding 50, rewards, withdrawals, Owner Dashboard, database migrations, .streamlit/config.toml.

@@ -45,8 +45,8 @@ from ui.components import consent_bar, feedback_button, header, inject_styles  #
 from ui.pages import ROUTES  # noqa: E402
 
 FOOTER = {
-    "guest": "Progress lasts for this browser session",
-    "no_storage": "Signed in · progress lasts for this browser session",
+    "guest": "Progress is kept until you reload or close this page",
+    "no_storage": "Signed in · progress is kept until you reload or close this page",
     "loading_failed": "Saved profile not reachable yet · nothing has been overwritten",
     "save_failed": "Latest changes not saved online yet",
     "saved": "Saved to your account",

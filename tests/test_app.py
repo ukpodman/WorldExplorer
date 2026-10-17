@@ -1141,15 +1141,43 @@ class ContinentMapTests(unittest.TestCase):
         from ui import world_map
         js = world_map.JS
         self.assertIn("function installZoom", js)
-        self.assertIn("w * base[3] / base[2]", js)                         # the zoomed view keeps the map's proportions
+        self.assertIn("h = w / a", js)                                     # the view's shape always matches the screen box,
+        self.assertIn('preserveAspectRatio: "xMidYMid meet"', js)          # so the map is never stretched
         self.assertIn('class="zall"', js)                                  # one tap back to the complete world
         self.assertIn("ev.ctrlKey || ev.metaKey", js)                      # plain scrolling still scrolls the page
         self.assertIn("if (dragged)", js)                                  # a drag never opens a continent
+        self.assertIn("animate(whole())", js)                              # the globe returns to the complete world
+        for gone in ("zexp", "wm-close", "wm-full", "setExpanded"):         # no full-screen viewer any more
+            self.assertNotIn(gone, js + world_map.CSS)
+        self.assertNotIn(".wm svg", world_map.CSS)                         # styles never reach the small button icons
         for lang in LANGS:
             for label in world_map.ZOOM_LABELS.values():
                 self.assertTrue(translate(label, lang), (label, lang))
         at = self.new()
         self.assertEqual([e.value for e in at.exception], [])
+
+    def test_phone_portrait_layout_is_isolated(self):
+        css = (Path(APP).parent / "assets" / "styles.css").read_text(encoding="utf-8")
+        block = css.split("/* ---------- Explore on phones in portrait (V22 mobile)", 1)[1]
+        self.assertIn("@media (max-width:700px) and (orientation:portrait)", block)   # desktop/landscape untouched
+        for rule in (".st-key-explore_daily { flex:1 1 100% !important",              # full-width challenge button
+                     "white-space:nowrap !important",                                   # on one line
+                     ".st-key-app_footer { flex-direction:column !important"):          # small footer, left aligned
+            self.assertIn(rule.split(" {")[0], block)
+        self.assertIn("flex-wrap:nowrap !important", css.split(".stApp .st-key-continent_buttons {", 1)[1][:200])
+
+    def test_footer_tells_the_truth_about_saving(self):
+        src = (Path(APP)).read_text(encoding="utf-8")
+        self.assertIn('"guest": "Progress is kept until you reload or close this page"', src)   # a refresh starts afresh
+        self.assertIn('"saved": "Saved to your account"', src)
+        self.assertNotIn("progress lasts for this browser session", src)
+        at = self.new()
+        self.assertTrue(any("Progress is kept until you reload or close this page" in c.value for c in at.caption))
+
+    def test_phone_statistics_centre_icon_and_number(self):
+        css = (Path(APP).parent / "assets" / "styles.css").read_text(encoding="utf-8")
+        block = css.split("/* ---------- Explore on phones in portrait (V22 mobile)", 1)[1]
+        self.assertIn('grid-template-areas:". i v ." "l l l l"', block)
 
     def test_siberia_is_drawn_as_asia_but_russia_stays_in_europe(self):
         from core.data import get_country

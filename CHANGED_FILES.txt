@@ -1,0 +1,6 @@
+M	app.py
+M	assets/styles.css
+M	data/translations.json
+M	tests/test_app.py
+M	ui/pages.py
+M	ui/world_map.py

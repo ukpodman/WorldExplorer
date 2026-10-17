@@ -17,10 +17,12 @@ import streamlit as st
 
 MAP_FILE = Path(__file__).resolve().parent.parent / "assets" / "world_map.json"
 STACK_MAX_WIDTH = 900  # px; at or below this width the Explore columns stack (keep in sync with assets/styles.css)
-# Continent fills: light tints of the app palette (teal, ivory, gold), all with dark text contrast for labels.
-FILLS = {"North America": "#BFDCD6", "South America": "#E7CF9C", "Europe": "#9ED6D2", "Africa": "#EBDDB8",
-         "Asia": "#7FC4BF", "Oceania": "#F2E4BE"}
-SELECTED_FILL = "#E2B55A"
+# Continent fills: six clearly different, cheerful colours. Every map label (dark text, white halo) keeps at least
+# 6:1 contrast, and neighbours differ in lightness as well as hue, so they stay apart with colour blindness too.
+FILLS = {"North America": "#A2DC86", "South America": "#EC8838", "Europe": "#B98AEB", "Africa": "#F2C94E",
+         "Asia": "#F7E9A0", "Oceania": "#F4919F"}
+SELECTED_FILL = ""          # a chosen continent keeps its colour and gets a white outline (the others dim)
+ANTARCTICA_FILL = "#E6EEF3"
 # Small original emblems, one per continent (24 x 24 units, drawn in ivory and gold on a navy badge). They are
 # generic pictures, not maps or trademarks: peaks and a pine, a palm, a castle tower, a baobab, a pagoda, sun and waves.
 EMBLEMS = {
@@ -59,8 +61,8 @@ def emblem_svg(continent: str, size: int = 44) -> str:
 
 
 # Ocean names drawn on the map (longitude, latitude of the label), projected like the outlines.
-OCEANS = {"Arctic Ocean": [(-5, 79.5)], "Atlantic Ocean": [(-38, 27)], "Pacific Ocean": [(-140, 2), (168, 14)],
-          "Indian Ocean": [(77, -22)], "Southern Ocean": [(30, -57)]}
+OCEANS = {"Arctic Ocean": [(-2, 84.6)], "Atlantic Ocean": [(-36, 22)], "Pacific Ocean": [(-140, 2), (168, 14)],
+          "Indian Ocean": [(74, -30)], "Southern Ocean": [(30, -57)]}
 
 
 def _project(lon: float, lat: float) -> tuple[float, float]:
@@ -81,6 +83,25 @@ def _project(lon: float, lat: float) -> tuple[float, float]:
 
 OCEAN_POINTS = {name: [_project(*ll) for ll in points] for name, points in OCEANS.items()}
 
+# Russia belongs to Europe in the country data, but east of the Ural mountains it is drawn in Asia's colour (and a tap
+# there opens Asia), so Europe appears at its real size. Approximate line: Urals, Ural river, Caspian, Caucasus.
+URALS = [(66, 84), (66, 76), (64.5, 69.5), (60, 68), (59.2, 64), (59, 60), (58.6, 56), (59.5, 52.5), (58, 51), (54, 50.2),
+         (52, 48), (51.5, 46.8), (49.5, 45.5), (47.5, 42.5), (47, 30)]
+
+
+def _split_paths() -> dict:
+    pts = [_project(*ll) for ll in URALS]
+    line = " L".join(f"{x},{y}" for x, y in pts)
+    last_y, first_x = pts[-1][1], pts[0][0]
+    return {"west": f"M{line} L-20,{last_y} L-20,-40 L{first_x},-40 Z",
+            # east of the line, plus Russia's far east, which Natural Earth I wraps round to the left edge
+            "east": f"M{line} L1020,{last_y} L1020,-40 L{first_x},-40 Z M-20,-40 L260,-40 L260,140 L-20,140 Z"}
+
+
+SPLIT = _split_paths()
+LABEL_AT = {"Asia": list(_project(98, 50))}
+ZOOM_LABELS = {"in": "Zoom in", "out": "Zoom out", "all": "Show the whole world"}   # Asia's label sits in the middle of its (now larger) area
+
 
 @st.cache_resource(show_spinner=False)
 def map_data() -> dict:
@@ -90,36 +111,152 @@ def map_data() -> dict:
 CSS = """
 :host { display:block; }
 .wm { position:relative; width:100%; line-height:0; }
-.wm svg { display:block; width:100%; height:auto; border-radius:14px; background:#163F57; touch-action:manipulation; }
+.wm svg { display:block; width:100%; height:auto; border-radius:16px; background:#0B3D61; overflow:hidden; }
 /* the map fills the box but never pushes the continent pills off a desktop screen (it stays whole: no cropping) */
-@media (min-width:701px) { .wm svg { max-height:max(340px, calc(100vh - 340px)); } }
-.wm .land { stroke:#1B4A63; stroke-width:.6; stroke-linejoin:round; vector-effect:non-scaling-stroke; cursor:pointer;
+@media (min-width:701px) { .wm svg { max-height:max(360px, calc(100vh - 300px)); } }
+.wm .land { stroke:#13202E; stroke-opacity:.45; stroke-width:.7; stroke-linejoin:round; vector-effect:non-scaling-stroke; cursor:pointer;
             transition:fill-opacity .15s ease, fill .15s ease; -webkit-tap-highlight-color:transparent; }
-.wm .land:hover { fill-opacity:1 !important; filter:brightness(1.06); }
-.wm.has-sel .land:not(.sel) { fill-opacity:.55; }
-.wm .land.sel { stroke-width:1; }
-.wm .ant { fill:#2B5670; stroke:#1B4A63; stroke-width:.6; vector-effect:non-scaling-stroke; pointer-events:none; }
-.wm .grid { stroke:#FFFFFF; stroke-opacity:.06; fill:none; vector-effect:non-scaling-stroke; pointer-events:none; }
-.wm .coast { fill:none; stroke:#8FD3CD; stroke-opacity:.28; stroke-width:5; stroke-linejoin:round; vector-effect:non-scaling-stroke; pointer-events:none; }
-.wm .waves { fill:none; stroke:#CFE8E4; stroke-opacity:.16; stroke-linecap:round; vector-effect:non-scaling-stroke; pointer-events:none; }
-.wm .compass { pointer-events:none; opacity:.8; }
-.wm .oceans text { font-style:italic; font-weight:500; fill:#CFE8E4; fill-opacity:.62; stroke:none; letter-spacing:.04em; }
-.wm .emb { cursor:pointer; transform-box:fill-box; transform-origin:center; transition:transform .18s ease; -webkit-tap-highlight-color:transparent; }
-.wm .emb:hover { transform:scale(1.12); }
-.wm .emb .ring { fill:none; stroke:#E2B55A; stroke-width:1.4; opacity:0; transform-box:fill-box; transform-origin:center; }
-.wm .emb.sel .ring { animation:we-ring 1.8s ease-out infinite; }
-.wm.has-sel .emb:not(.sel) { opacity:.6; }
+.wm .land:hover { fill-opacity:1 !important; filter:brightness(1.07); }
+.wm.has-sel .land:not(.sel) { fill-opacity:.45; }
+.wm .land.sel { stroke:#FFFFFF; stroke-opacity:1; stroke-width:2.2; }
+.wm .ant { stroke:#9FB6C4; stroke-width:.6; vector-effect:non-scaling-stroke; pointer-events:none; }
+.wm .coast { fill:none; stroke:#7FD3E8; stroke-opacity:.22; stroke-width:4.5; stroke-linejoin:round; vector-effect:non-scaling-stroke; pointer-events:none; }
+.wm .oceans text { font-style:italic; font-weight:500; fill:#CDE9F5; fill-opacity:.82; stroke:none; letter-spacing:.02em; }
 .wm .land { animation:we-rise .5s ease-out both; }
-@keyframes we-ring { 0% { opacity:.9; transform:scale(1); } 100% { opacity:0; transform:scale(1.6); } }
 @keyframes we-rise { from { fill-opacity:0; } }
-.wm text { font-family:"Segoe UI","Inter",system-ui,-apple-system,Arial,sans-serif; font-weight:700; fill:#17283B;
-           stroke:#F7F4ED; stroke-linejoin:round; paint-order:stroke; text-anchor:middle; pointer-events:none; }
-@media (prefers-reduced-motion:reduce) { .wm .land, .wm .emb { transition:none; animation:none; } .wm .emb.sel .ring { animation:none; opacity:.9; } }
+.wm text { font-family:"Segoe UI","Inter",system-ui,-apple-system,Arial,sans-serif; font-weight:700; fill:#13202E;
+           stroke:#FFFFFF; stroke-opacity:.92; stroke-linejoin:round; paint-order:stroke; text-anchor:middle; pointer-events:none; }
+.wm svg { touch-action:pan-y; }
+.wm.zoomed svg { cursor:grab; }
+.wm-zoom { position:absolute; right:10px; bottom:10px; display:flex; flex-direction:column; gap:6px; line-height:normal; }
+.wm-zoom button { width:40px; height:40px; border-radius:12px; border:1px solid rgba(255,255,255,.35); background:rgba(11,32,52,.82);
+  color:#FFFFFF; font:600 22px/1 "Segoe UI",system-ui,-apple-system,sans-serif; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; padding:0; box-shadow:0 2px 8px rgba(0,0,0,.25); -webkit-tap-highlight-color:transparent; }
+.wm-zoom button:hover:not(:disabled) { background:rgba(20,60,92,.95); }
+.wm-zoom button:focus-visible { outline:3px solid #F2C94E; outline-offset:2px; }
+.wm-zoom button:disabled { opacity:.38; cursor:default; }
+@media (max-width:700px) { .wm-zoom { right:auto; left:8px; bottom:8px; flex-direction:row; gap:6px; }
+  .wm-zoom button { width:36px; height:36px; font-size:20px; } }
+@media (prefers-reduced-motion:reduce) { .wm .land { transition:none; animation:none; } }
 """
 
 JS = r"""
 const NS = "http://www.w3.org/2000/svg";
 function el(name, attrs) { const n = document.createElementNS(NS, name); for (const k in attrs) n.setAttribute(k, attrs[k]); return n; }
+
+function setLabel(t, text, narrow, size) {
+  // Two-word names go on two lines on small maps ("North / America"), like a printed atlas.
+  t.setAttribute("data-text", text);
+  while (t.firstChild) t.removeChild(t.firstChild);
+  const words = text.split(" ");
+  if (!narrow || words.length !== 2) { t.textContent = text; return; }
+  const x = t.getAttribute("x");
+  words.forEach((word, i) => {
+    const s = document.createElementNS(NS, "tspan");
+    s.setAttribute("x", x); s.setAttribute("dy", i ? (size * 1.05).toFixed(1) : (-size * 0.45).toFixed(1));
+    s.textContent = word; t.appendChild(s);
+  });
+}
+
+function installZoom(root, svg, base) {
+  // Smooth zoom and pan without distortion: the viewBox keeps the map's own proportions. Pinch (touch), Ctrl/⌘ +
+  // wheel or a trackpad pinch (desktop), the + / − buttons; drag to pan once zoomed. At the whole-world view one
+  // finger still scrolls the page. A drag never counts as a tap on a continent.
+  const MAX = 8;
+  let view = base.slice(), anim = null, dragged = false;
+  const pointers = new Map();
+  const zoom = () => base[2] / view[2];
+  const clampView = (v) => {
+    const w = Math.min(base[2], Math.max(base[2] / MAX, v[2])), h = w * base[3] / base[2];
+    const x = Math.min(base[0] + base[2] - w, Math.max(base[0], v[0])), y = Math.min(base[1] + base[3] - h, Math.max(base[1], v[1]));
+    return [x, y, w, h];
+  };
+  const apply = (v) => {
+    view = clampView(v);
+    svg.setAttribute("viewBox", view.map(n => n.toFixed(2)).join(" "));
+    const zoomed = zoom() > 1.001;
+    svg.style.touchAction = zoomed ? "none" : "pan-y";
+    root.classList.toggle("zoomed", zoomed);
+    root.querySelector(".zout").disabled = !zoomed;
+    root.querySelector(".zall").disabled = !zoomed;
+    root.querySelector(".zin").disabled = zoom() >= MAX - 0.01;
+    if (root.__weFit) root.__weFit();
+  };
+  const toMap = (cx, cy) => {
+    const m = svg.getScreenCTM();
+    if (!m) return [view[0] + view[2] / 2, view[1] + view[3] / 2];
+    const p = new DOMPoint(cx, cy).matrixTransform(m.inverse());
+    return [p.x, p.y];
+  };
+  const zoomAt = (factor, mx, my, v) => {
+    v = v || view;
+    const w = Math.min(base[2], Math.max(base[2] / MAX, v[2] / factor)), k = w / v[2];
+    return [mx - (mx - v[0]) * k, my - (my - v[1]) * k, w, w * base[3] / base[2]];
+  };
+  const animate = (target) => {
+    const from = view.slice(), to = clampView(target), t0 = performance.now(), ms = 260;
+    if (anim) cancelAnimationFrame(anim);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { apply(to); return; }
+    const step = (now) => {
+      const p = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - p, 3);
+      apply(from.map((f, i) => f + (to[i] - f) * e));
+      anim = p < 1 ? requestAnimationFrame(step) : null;
+    };
+    anim = requestAnimationFrame(step);
+  };
+  const centre = () => [view[0] + view[2] / 2, view[1] + view[3] / 2];
+  root.querySelector(".zin").onclick = () => { const [x, y] = centre(); animate(zoomAt(2, x, y)); };
+  root.querySelector(".zout").onclick = () => { const [x, y] = centre(); animate(zoomAt(0.5, x, y)); };
+  root.querySelector(".zall").onclick = () => animate(base);
+  svg.addEventListener("wheel", (ev) => {
+    if (!(ev.ctrlKey || ev.metaKey)) return;          // plain scrolling keeps scrolling the page
+    ev.preventDefault();
+    const [x, y] = toMap(ev.clientX, ev.clientY);
+    apply(zoomAt(Math.exp(-ev.deltaY * 0.01), x, y));
+  }, { passive: false });
+  let last = null;
+  svg.addEventListener("pointerdown", (ev) => {
+    pointers.set(ev.pointerId, [ev.clientX, ev.clientY]);
+    dragged = false;
+    last = null;
+  });
+  const move = (ev) => {
+    if (!pointers.has(ev.pointerId)) return;
+    const prev = pointers.get(ev.pointerId);
+    pointers.set(ev.pointerId, [ev.clientX, ev.clientY]);
+    if (pointers.size >= 2) {
+      const [a, b] = Array.from(pointers.values());
+      const dist = Math.hypot(a[0] - b[0], a[1] - b[1]), mid = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+      if (last) {
+        const [mx, my] = toMap(mid[0], mid[1]);
+        apply(zoomAt(dist / last.dist, mx, my));
+        const [nx, ny] = toMap(last.mid[0], last.mid[1]), [cx, cy] = toMap(mid[0], mid[1]);
+        apply([view[0] - (cx - nx), view[1] - (cy - ny), view[2], view[3]]);
+      }
+      last = { dist, mid };
+      dragged = true;
+      ev.preventDefault();
+      return;
+    }
+    if (zoom() <= 1.001) return;                       // whole world: let the page scroll
+    const m = svg.getScreenCTM(), dx = ev.clientX - prev[0], dy = ev.clientY - prev[1];
+    if (!m) return;
+    if (Math.abs(dx) + Math.abs(dy) > 0) {
+      if (!dragged) {
+        const start = prev;
+        dragged = Math.hypot(ev.clientX - start[0], ev.clientY - start[1]) > 3 || dragged;
+      }
+      apply([view[0] - dx / m.a, view[1] - dy / m.d, view[2], view[3]]);
+      if (Math.abs(dx) + Math.abs(dy) > 2) dragged = true;
+    }
+  };
+  const up = (ev) => { pointers.delete(ev.pointerId); if (pointers.size < 2) last = null; };
+  window.addEventListener("pointermove", move, { passive: false });
+  window.addEventListener("pointerup", up);
+  window.addEventListener("pointercancel", up);
+  svg.addEventListener("click", (ev) => { if (dragged) { ev.stopPropagation(); ev.preventDefault(); dragged = false; } }, true);
+  apply(base);
+}
 
 function viewState() { return window.__weView || (window.__weView = { open: false, ret: null }); }
 function visible(selector) {
@@ -211,81 +348,90 @@ export default function (component) {
   if (!root) {
     root = document.createElement("div");
     root.className = "wm";
-    const vb = cache.viewbox;
+    const W = cache.viewbox[2], H = cache.viewbox[3];
+    const vb = [0, -16, W, H + 16 + 4];    // just enough room for the Arctic Ocean name; Antarctica's name sits on the ice
     const svg = el("svg", { viewBox: vb.join(" "), preserveAspectRatio: "xMidYMid meet", role: "img" });
     const defs = el("defs", {});
-    const grad = el("radialGradient", { id: "we-ocean", cx: "50%", cy: "42%", r: "70%" });
-    grad.appendChild(el("stop", { offset: "0", "stop-color": "#2B6E8A" }));
-    grad.appendChild(el("stop", { offset: "1", "stop-color": "#143A52" }));
-    defs.appendChild(grad);
+    defs.innerHTML =
+      '<linearGradient id="we-ocean" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E4A72"/><stop offset=".55" stop-color="#0B3D61"/><stop offset="1" stop-color="#082F4D"/></linearGradient>' +
+      // sea-floor texture: soft lighter patches like depth shading
+      '<filter id="we-depth" x="0" y="0" width="100%" height="100%" filterUnits="objectBoundingBox">' +
+      '<feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="3" seed="11"/>' +
+      '<feColorMatrix values="0 0 0 0 0.55  0 0 0 0 0.82  0 0 0 0 1  1.1 0 0 0 -0.5"/></filter>' +
+      // land relief: a gentle hill-shade texture over the flat colour
+      '<filter id="we-relief" x="-2%" y="-2%" width="104%" height="104%">' +
+      '<feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="4" result="n"/>' +
+      '<feDiffuseLighting in="n" surfaceScale="2.2" lighting-color="#FFFFFF" result="l"><feDistantLight azimuth="225" elevation="52"/></feDiffuseLighting>' +
+      '<feComponentTransfer in="l" result="s"><feFuncR type="linear" slope=".32" intercept=".72"/><feFuncG type="linear" slope=".32" intercept=".72"/><feFuncB type="linear" slope=".32" intercept=".72"/></feComponentTransfer>' +
+      '<feBlend in="SourceGraphic" in2="s" mode="multiply" result="b"/><feComposite in="b" in2="SourceGraphic" operator="in"/></filter>' +
+      '<filter id="we-glow" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="2.2"/></filter>' +
+      '<clipPath id="we-west"><path d="' + data.split.west + '"/></clipPath><clipPath id="we-east"><path d="' + data.split.east + '"/></clipPath>';
     svg.appendChild(defs);
-    svg.appendChild(el("rect", { x: 0, y: 0, width: vb[2], height: vb[3], fill: "url(#we-ocean)" }));
-    let grid = "";
-    for (let y = 64; y < vb[3]; y += 64) grid += "M0 " + y + "H" + vb[2];
-    for (let x = 125; x < vb[2]; x += 125) grid += "M" + x + " 0V" + vb[3];
-    svg.appendChild(el("path", { d: grid, class: "grid" }));
-    // A few soft wave strokes in open ocean (Pacific, Atlantic, Indian Ocean); purely decorative.
-    const wave = (x, y) => "M" + x + " " + y + "q8 -6 16 0t16 0";
-    svg.appendChild(el("path", { class: "waves", d: [wave(60, 250), wave(90, 268), wave(430, 270), wave(410, 300), wave(650, 330), wave(690, 350), wave(880, 220)].join(""), "stroke-width": 1.4 }));
-    // Compass rose in the South Pacific.
-    const compass = el("g", { class: "compass", transform: "translate(120 395)", "aria-hidden": "true" });
-    compass.appendChild(el("circle", { r: 15, fill: "none", stroke: "#E2B55A", "stroke-opacity": ".55", "stroke-width": 1 }));
-    compass.appendChild(el("path", { d: "M0 -20L3.5 -3.5L20 0L3.5 3.5L0 20L-3.5 3.5L-20 0L-3.5 -3.5Z", fill: "#E2B55A", "fill-opacity": ".75" }));
-    compass.appendChild(el("path", { d: "M0 -20L3.5 -3.5L0 0Z M20 0L3.5 3.5L0 0Z M0 20L-3.5 3.5L0 0Z M-20 0L-3.5 -3.5L0 0Z", fill: "#F7F4ED", "fill-opacity": ".85" }));
-    const north = el("text", { y: -24, class: "compass-n" }); north.textContent = "N"; compass.appendChild(north);
-    svg.appendChild(compass);
-    if (cache.antarctica) svg.appendChild(el("path", { d: cache.antarctica, class: "ant" }));
-    svg.appendChild(el("path", { class: "coast", d: Object.values(cache.continents).join("") }));
+    // the sea reaches past the frame, so a wide box (desktop) shows ocean at the sides, never empty bands
+    svg.appendChild(el("rect", { x: -700, y: vb[1], width: vb[2] + 1400, height: vb[3], fill: "url(#we-ocean)" }));
+    svg.appendChild(el("rect", { x: -700, y: vb[1], width: vb[2] + 1400, height: vb[3], filter: "url(#we-depth)", opacity: ".38", "pointer-events": "none" }));
+    svg.appendChild(el("path", { class: "coast", d: Object.values(cache.continents).join("") + (cache.antarctica || ""), filter: "url(#we-glow)" }));
+    const relief = el("g", { filter: "url(#we-relief)" });
+    if (cache.antarctica) relief.appendChild(el("path", { d: cache.antarctica, class: "ant", fill: data.antarctica_fill }));
     for (const name of Object.keys(cache.continents)) {
-      const p = el("path", { d: cache.continents[name], class: "land", "data-continent": name });
-      p.appendChild(el("title", {}));
-      p.addEventListener("click", () => setTriggerValue("select", name));
-      svg.appendChild(p);
+      const pieces = name === "Europe" ? [["Europe", "url(#we-west)"], ["Asia", "url(#we-east)"]] : [[name, null]];
+      for (const [owner, clip] of pieces) {
+        const p = el("path", { d: cache.continents[name], class: "land", "data-continent": owner });
+        if (clip) p.setAttribute("clip-path", clip);
+        p.appendChild(el("title", {}));
+        p.addEventListener("click", () => setTriggerValue("select", owner));
+        relief.appendChild(p);
+      }
     }
+    svg.appendChild(relief);
     svg.appendChild(el("g", { class: "oceans", "aria-hidden": "true" }));
     const labels = el("g", { class: "labels", "aria-hidden": "true" });
     for (const name of Object.keys(cache.labels)) {
-      const [x, y] = cache.labels[name];
-      const t = el("text", { x: x, y: y, "data-continent": name });
-      labels.appendChild(t);
+      const [x, y] = (data.label_at || {})[name] || cache.labels[name];
+      labels.appendChild(el("text", { x: x, y: y, "data-continent": name }));
     }
+    const antLabel = el("text", { class: "ant-label", x: W / 2, y: H - 4 });
+    labels.appendChild(antLabel);
     svg.appendChild(labels);
-    const emblems = el("g", { class: "emblems" });
-    for (const name of Object.keys(cache.labels)) {
-      const g = el("g", { class: "emb", "data-continent": name });
-      g.innerHTML = '<circle class="ring" cx="12" cy="12" r="13"/><circle cx="12" cy="12" r="13" fill="#17283B" stroke="#E2B55A" stroke-width="1.4"/>' + ((data.emblems || {})[name] || "");
-      emblems.appendChild(g);
-    }
-    svg.appendChild(emblems);
     root.appendChild(svg);
+    // Zoom controls: always one tap back to the complete world.
+    const controls = document.createElement("div");
+    controls.className = "wm-zoom";
+    controls.innerHTML = '<button type="button" class="zin" aria-label="' + (data.zoom_labels || {}).in + '" title="' + (data.zoom_labels || {}).in + '">+</button>' +
+      '<button type="button" class="zout" aria-label="' + (data.zoom_labels || {}).out + '" title="' + (data.zoom_labels || {}).out + '">\u2212</button>' +
+      '<button type="button" class="zall" aria-label="' + (data.zoom_labels || {}).all + '" title="' + (data.zoom_labels || {}).all + '">' +
+      '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><ellipse cx="12" cy="12" rx="3.6" ry="8.5"/><path d="M3.5 12h17"/></svg></button>';
+    root.appendChild(controls);
     parentElement.appendChild(root);
+    installZoom(root, svg, vb);
     const fit = () => {
       const w = svg.getBoundingClientRect().width || 1;
-      const scale = w / vb[2];
-      const px = w < 380 ? 9.5 : w < 560 ? 11 : w < 760 ? 12.5 : 13.5;
-      svg.querySelectorAll(".labels text").forEach(t => { t.setAttribute("font-size", (px / scale).toFixed(1)); t.setAttribute("stroke-width", (3 / scale).toFixed(1)); });
-      // Emblems sit just above their label: 18 px on phones, up to 28 px on large maps; hidden on very small maps.
-      const icon = w < 300 ? 0 : w < 420 ? 18 : w < 640 ? 22 : 28;
-      svg.querySelectorAll(".emb").forEach(g => {
-        const [x, y] = cache.labels[g.getAttribute("data-continent")];
-        const s = icon / 28 / scale;
-        g.style.display = icon ? "" : "none";
-        g.setAttribute("transform", "translate(" + (x - 12 * s).toFixed(1) + " " + (y - (px * 1.05) / scale - 26 * s).toFixed(1) + ") scale(" + s.toFixed(3) + ")");
+      const ctm = svg.getScreenCTM();
+      const scale = (ctm && ctm.a) || (w / vb[2]);   // screen pixels per map unit (follows the zoom)
+      const px = w < 380 ? 12 : w < 560 ? 13 : w < 760 ? 14.5 : 16;
+      root.__weNarrow = w < 560;
+      svg.querySelectorAll(".labels text").forEach(t => {
+        t.setAttribute("font-size", (px / scale).toFixed(1)); t.setAttribute("stroke-width", (3.4 / scale).toFixed(1));
+        setLabel(t, t.getAttribute("data-text") || "", root.__weNarrow, px / scale);
       });
-      svg.querySelectorAll(".oceans text").forEach(t => { t.setAttribute("font-size", ((w < 420 ? 8 : w < 760 ? 10.5 : 12.5) / scale).toFixed(1)); });
-      svg.querySelector(".oceans").style.display = w < 330 ? "none" : "";
-      const c = svg.querySelector(".compass");
-      c.style.display = w < 420 ? "none" : "";
-      const n = svg.querySelector(".compass-n");
-      n.setAttribute("font-size", 9); n.setAttribute("stroke-width", 0); n.setAttribute("fill", "#E2B55A");
+      const og = svg.querySelector(".oceans");
+      og.style.display = w < 300 ? "none" : "";
+      og.querySelectorAll("text").forEach(t => {
+        t.setAttribute("font-size", ((w < 420 ? 9.5 : w < 760 ? 11.5 : 13.5) / scale).toFixed(1));
+        t.setAttribute("x", t.getAttribute("data-x"));
+        try {   // keep every ocean name inside the frame
+          const b = t.getBBox(), pad = 6 / scale;
+          if (b.x < pad) t.setAttribute("x", (+t.getAttribute("data-x") + pad - b.x).toFixed(1));
+          else if (b.x + b.width > vb[2] - pad) t.setAttribute("x", (+t.getAttribute("data-x") - (b.x + b.width - vb[2] + pad)).toFixed(1));
+        } catch (e) {}
+      });
     };
     root.__weFit = fit;
     if (window.ResizeObserver) new ResizeObserver(fit).observe(svg);
     fit();
   }
   // Fresh handlers each render, so a click always reports through the current component instance.
-  root.querySelectorAll(".land, .emb").forEach(p => { p.onclick = () => setTriggerValue("select", p.getAttribute("data-continent")); });
-  root.querySelectorAll(".emb").forEach(g => g.classList.toggle("sel", g.getAttribute("data-continent") === data.selected));
+  root.querySelectorAll(".land").forEach(p => { p.onclick = () => setTriggerValue("select", p.getAttribute("data-continent")); });
   root.style.display = data.hidden ? "none" : "";
   const svg = root.querySelector("svg");
   svg.setAttribute("aria-label", data.aria_label || "");
@@ -294,17 +440,20 @@ export default function (component) {
     const name = p.getAttribute("data-continent");
     const sel = name === data.selected;
     p.classList.toggle("sel", sel);
-    p.setAttribute("fill", sel ? data.selected_fill : (data.fills[name] || "#CCCCCC"));
+    p.setAttribute("fill", sel && data.selected_fill ? data.selected_fill : (data.fills[name] || "#CCCCCC"));
     p.querySelector("title").textContent = (data.labels && data.labels[name]) || name;
   });
   const og = root.querySelector(".oceans");
   if (og && og.getAttribute("data-sig") !== JSON.stringify(data.oceans || [])) {  // ocean names (translated)
     og.setAttribute("data-sig", JSON.stringify(data.oceans || []));
     og.innerHTML = "";
-    for (const [name, x, y] of (data.oceans || [])) { const t = el("text", { x: x, y: y }); t.textContent = name; og.appendChild(t); }
-    if (root.__weFit) root.__weFit();
+    for (const [name, x, y] of (data.oceans || [])) { const t = el("text", { x: x, y: y, "data-x": x }); t.textContent = name; og.appendChild(t); }
   }
-  root.querySelectorAll(".labels text").forEach(t => { t.textContent = (data.labels && data.labels[t.getAttribute("data-continent")]) || ""; });
+  root.querySelectorAll(".labels text").forEach(t => {
+    const text = t.classList.contains("ant-label") ? (data.antarctica_label || "") : ((data.labels && data.labels[t.getAttribute("data-continent")]) || "");
+    if (t.getAttribute("data-text") !== text) setLabel(t, text, !!root.__weNarrow, +t.getAttribute("font-size") || 14);
+  });
+  if (root.__weFit) root.__weFit();
 }
 """
 
@@ -315,11 +464,14 @@ def _need_map() -> None:
 
 
 def render(selected: str | None, labels: dict[str, str], aria_label: str, *, on_select, on_close, hidden: bool = False,
-           view: str | None = None, detail: str | None = None, oceans: dict[str, str] | None = None) -> None:
+           view: str | None = None, detail: str | None = None, oceans: dict[str, str] | None = None,
+           antarctica_label: str = "Antarctica", zoom_labels: dict[str, str] | None = None) -> None:
     """Draw the map. The outlines (about 100 kB) are sent once per browser session; the page caches them."""
     ss = st.session_state
     payload = {"selected": selected, "labels": labels, "aria_label": aria_label, "fills": FILLS,
-               "selected_fill": SELECTED_FILL, "stack_max": STACK_MAX_WIDTH, "hidden": hidden, "emblems": EMBLEMS,
+               "selected_fill": SELECTED_FILL, "stack_max": STACK_MAX_WIDTH, "hidden": hidden,
+               "split": SPLIT, "label_at": LABEL_AT, "antarctica_fill": ANTARCTICA_FILL,
+               "antarctica_label": antarctica_label, "zoom_labels": zoom_labels or ZOOM_LABELS,
                "view_open": bool(view), "view_key": view, "detail": detail,
                "oceans": [[(oceans or {}).get(name, name), x, y] for name, pts in OCEAN_POINTS.items() for x, y in pts]}
     if not ss.get("world_map_sent"):

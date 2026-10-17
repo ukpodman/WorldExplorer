@@ -18,7 +18,7 @@ from core.data import (AREAS, COLLECTIONS, WORLD, COUNTRIES, DEFAULT_COLLECTION,
 from core.quiz import CATEGORIES, DIFFICULTIES, QUESTION_COUNTS, currency_label
 
 from . import owner, rewards_hooks, rewards_page, sound, state, world_map
-from .components import e, hero, html, photo_credits, status_chip
+from .components import e, hero, html, status_chip
 from .state import country_formatter, country_label, formatter, parts, t
 
 CONTINENTS_LIST = list(AREAS[1:])
@@ -282,7 +282,8 @@ def _practise_button(key: str) -> None:
 
 
 def _explore_topbar(d: dict) -> None:
-    """One slim bar: real day streak, points and badges, and the Daily Challenge (Start / Continue / Replay)."""
+    """One line under the map: real day streak, points and badges (number above its label), and the Daily Challenge
+    (Start / Continue / Replay)."""
     ss = st.session_state
     status = badge_engine.evaluate(ss.stats, ss.points, ss.rounds_finished)
     earned = sum(1 for b in status if b["earned"])
@@ -305,10 +306,11 @@ def _continent_badge(continent: str) -> dict:
 
 
 def _continent_buttons() -> None:
-    """Continent pills under the map: "All continents" and the six continents (same as tapping the map)."""
+    """Continent pills under the map: "All" and the six continents, each with its map colour as a dot (CSS), so the
+    pills double as the map's key. Same as tapping the map."""
     with st.container(key="continent_buttons", horizontal=True):
-        st.button(t("All continents"), key="browse_all", on_click=state.explore_select, args=(WORLD,),
-                  help=t("Opens the country list without a continent filter."))
+        st.button(t("All"), key="browse_all", on_click=state.explore_select, args=(WORLD,), icon=":material/public:",
+                  help=t("All continents") + " · " + t("Opens the country list without a continent filter."))
         for continent in CONTINENTS_LIST:
             st.button(t(continent), key=f"continent_btn_{continent.replace(' ', '_')}",
                       on_click=state.explore_select, args=(continent,),
@@ -330,7 +332,6 @@ def explore() -> None:
     selection = state.explore_selection()
     current = state.explore_country(selection)
     with st.container(key="explore_home"):
-        _explore_topbar(d)
         showing_country = bool(current) and state.explore_detail_open()  # phones: one panel at a time
         stage_key = "explore_stage" if not selection else ("explore_stage_country" if showing_country else "explore_stage_list")
         with st.container(key=stage_key):  # the one exploration box: the map, or the countries, never both
@@ -343,7 +344,8 @@ def explore() -> None:
                                  t("World map. Use the continent buttons below to choose a continent."),
                                  on_select=_map_select, on_close=state.explore_close, hidden=bool(selection),
                                  view=selection, detail=current if showing_country else None,
-                                 oceans={o: t(o) for o in world_map.OCEANS})
+                                 oceans={o: t(o) for o in world_map.OCEANS}, antarctica_label=t("Antarctica"),
+                                 zoom_labels={k: t(v) for k, v in world_map.ZOOM_LABELS.items()})
             if selection:
                 with st.container(key="stage_body"):
                     left, right = st.columns([1, 1.15], gap="medium")
@@ -356,7 +358,7 @@ def explore() -> None:
                             _selection_overview(selection)
             else:
                 _continent_buttons()
-    photo_credits()
+        _explore_topbar(d)   # streak, points, badges and the Daily Challenge: one line under the map
 
 
 # --------------------------------------------------------------------------- Learn

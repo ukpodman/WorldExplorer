@@ -1007,13 +1007,7 @@ html[data-we-theme="dark"] .stApp :is(button:focus-visible, a:focus-visible, inp
 @media (min-width:701px) { .st-key-country_back { display:none !important; } }
 
 @media (max-width:1100px) { .detail-facts { grid-template-columns:minmax(0,1fr); } .detail-photo-frame img { max-height:150px; } }
-@media (max-width:900px) {
-  .st-key-explore_topbar { flex-wrap:wrap !important; justify-content:space-between; }
-  .explore-summary { justify-content:flex-start; }
-}
 @media (max-width:700px) {
-  .st-key-explore_topbar .stButton { flex:1 1 100% !important; width:100% !important; }
-  .st-key-explore_topbar .stButton :is(div, button) { width:100% !important; }
   :is(.st-key-explore_stage, .st-key-explore_stage_list, .st-key-explore_stage_country) { padding:8px !important; border-radius:16px; }
   .st-key-continent_buttons { gap:6px !important; }
   .st-key-continent_buttons button { padding:0 12px !important; }
@@ -1259,8 +1253,86 @@ html[data-we-theme="dark"] { --band:#0A1520; --band-muted:#B9C6D2; }
 /* ---------- Explore on phones: the world map first ---------- */
 @media (max-width:700px) {
   .st-key-explore_home { gap:10px !important; }
-  .st-key-explore_home > [data-testid="stLayoutWrapper"]:has(> .st-key-explore_topbar) { order:2; }
-  .st-key-explore_home > [data-testid="stLayoutWrapper"]:has(> :is(.st-key-explore_stage, .st-key-explore_stage_list, .st-key-explore_stage_country)) { order:1; }
   .st-key-explore_stage { padding:4px !important; margin:0 -8px; border-radius:14px; }
   .st-key-explore_stage .st-key-world_map_frame { border-radius:11px; }
+}
+
+/* ---------- Explore home: colourful, map first (V22) ----------
+   The map is the page: no box around it, deep-blue ocean, six cheerful continent colours. Under it the continent
+   pills (each with its map colour as a dot, so they double as the key), then ONE line with streak, points, badges
+   and the Daily Challenge on a calm navy panel (the same in light and dark mode). */
+.stApp .st-key-explore_stage { background:transparent !important; border:0 !important; box-shadow:none !important;
+  padding:0 !important; gap:12px !important; }
+.stApp .st-key-world_map_frame { background:#0B3A5C; border-radius:16px; box-shadow:0 10px 28px rgba(8,30,50,.25); }
+
+/* one row: swipe sideways on phones (no visible scrollbar); centred when it fits */
+.stApp .st-key-continent_buttons { flex-wrap:nowrap !important; justify-content:safe center; gap:8px !important; padding:2px 2px 4px;
+  overflow-x:auto; overflow-y:hidden; scrollbar-width:none; -webkit-overflow-scrolling:touch; scroll-snap-type:x proximity; }
+.stApp .st-key-continent_buttons::-webkit-scrollbar { display:none; }
+.stApp .st-key-continent_buttons .stButton { flex:0 0 auto !important; width:auto !important; scroll-snap-align:start; }
+.stApp .st-key-continent_buttons button { min-height:42px; padding:0 15px !important; border-radius:999px !important;
+  background:var(--paper) !important; border:1px solid var(--line) !important; color:var(--navy) !important; }
+.stApp .st-key-continent_buttons button p { font-size:.92rem !important; font-weight:600 !important; }
+.stApp .st-key-continent_buttons button:hover { border-color:var(--teal) !important; }
+.stApp .st-key-continent_buttons [class*="st-key-continent_btn_"] button::before { content:""; width:12px; height:12px;
+  border-radius:50%; flex:0 0 auto; margin-right:8px; box-shadow:0 0 0 1.5px rgba(19,32,46,.25); }
+.stApp .st-key-continent_btn_Africa button::before { background:#F2C94E; }
+.stApp .st-key-continent_btn_Asia button::before { background:#F7E9A0; }
+.stApp .st-key-continent_btn_Europe button::before { background:#B98AEB; }
+.stApp .st-key-continent_btn_North_America button::before { background:#A2DC86; }
+.stApp .st-key-continent_btn_South_America button::before { background:#EC8838; }
+.stApp .st-key-continent_btn_Oceania button::before { background:#F4919F; }
+.stApp .st-key-browse_all button { border:1.5px solid var(--teal) !important; }
+
+.stApp .st-key-explore_topbar { background:#13263B; border:1px solid #2A4562; border-radius:18px; padding:10px 10px 10px 8px !important;
+  justify-content:space-between !important; align-items:center; flex-wrap:nowrap !important; gap:10px !important;
+  box-shadow:0 8px 22px rgba(8,30,50,.18); }
+.stApp .explore-summary { flex-wrap:nowrap; justify-content:flex-start; gap:0; }
+.stApp .summary-tile { display:grid; grid-template-columns:auto auto; grid-template-areas:"i v" "l l"; column-gap:6px; row-gap:1px;
+  align-items:center; justify-items:center; height:auto; padding:2px 16px; border:0; border-radius:0; background:transparent; color:#F2F5F8; }
+.stApp .summary-tile + .summary-tile { border-left:1px solid #2E4A66; }
+.stApp .summary-icon { grid-area:i; font-size:1.15rem; }
+.stApp .summary-tile b { grid-area:v; font-size:1.12rem; color:#FFFFFF; }
+.stApp .summary-label { grid-area:l; position:static; width:auto; height:auto; overflow:visible; clip:auto; clip-path:none;
+  font-size:.78rem; color:#B7C5D2; }
+.stApp .st-key-explore_topbar > .stElementContainer:has(.explore-summary) { flex:0 0 auto !important; width:auto !important; }
+.stApp .st-key-explore_topbar > .st-key-explore_daily { flex:0 1 auto !important; width:auto !important; min-width:104px; }
+.stApp .st-key-explore_daily .stButton, .stApp .st-key-explore_daily .stButton > div, .stApp .st-key-explore_daily button { width:100% !important; max-width:100% !important; }
+.stApp .st-key-explore_daily button :is(p, div, span) { white-space:normal !important; overflow:visible !important; text-overflow:clip !important; }
+.stApp .st-key-explore_daily button { min-height:52px; border-radius:14px !important; padding:6px 18px !important; white-space:normal;
+  background:linear-gradient(180deg,#239089,#1B726E) !important; border:1px solid #4DB6AC !important; color:#FFFFFF !important;
+  box-shadow:0 4px 12px rgba(27,114,110,.35); }
+.stApp .st-key-explore_daily button p { color:#FFFFFF !important; font-weight:700 !important; line-height:1.15 !important; text-align:center; }
+.stApp .st-key-explore_daily button:hover { filter:brightness(1.07); }
+@media (max-width:700px) {
+  /* the map uses the full screen width on phones (the page's side padding is .9rem) */
+  .stApp .st-key-explore_stage { margin:0 -.9rem; width:calc(100% + 1.8rem) !important; max-width:none !important; }
+  .stApp .st-key-explore_stage .st-key-world_map_frame { border-radius:0; box-shadow:none; }
+  .stApp .st-key-world_map_frame .wm svg { border-radius:0; }
+  .stApp .st-key-continent_buttons { gap:6px !important; justify-content:flex-start; padding:2px .9rem 4px !important; scroll-padding-left:.9rem;
+    mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent); -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent); }
+  .stApp .st-key-continent_buttons button { min-height:40px; padding:0 11px !important; }
+  .stApp .st-key-continent_buttons button p { font-size:.84rem !important; }
+  .stApp .st-key-explore_topbar { padding:8px 8px 8px 4px !important; gap:6px !important; }
+  .stApp .summary-tile { padding:2px 7px; column-gap:4px; }
+  .stApp .summary-tile b { font-size:1rem; }
+  .stApp .summary-icon { font-size:1rem; }
+  .stApp .summary-label { font-size:.72rem; }
+  .stApp .st-key-explore_topbar > .st-key-explore_daily { flex:1 1 0 !important; }
+  .stApp .st-key-explore_daily button { padding:6px 10px !important; min-height:50px; }
+  .stApp .st-key-explore_daily button p { font-size:.88rem !important; }
+}
+@media (max-width:420px) {
+  .stApp .summary-tile { padding:2px 5px; column-gap:3px; }
+  .stApp .summary-label { font-size:.68rem; }
+  .stApp .summary-icon { font-size:.9rem; }
+  .stApp .summary-tile b { font-size:.95rem; }
+  .stApp .st-key-explore_daily button { padding:6px 8px !important; }
+  .stApp .st-key-explore_daily button p { font-size:.84rem !important; }
+}
+@media (max-width:370px) {   /* the narrowest phones: the challenge button gets its own line, full width */
+  .stApp .st-key-explore_topbar { flex-wrap:wrap !important; justify-content:center !important; padding:8px !important; }
+  .stApp .explore-summary { justify-content:center; }
+  .stApp .st-key-explore_topbar > .st-key-explore_daily { flex:1 1 100% !important; max-width:100%; }
+  .stApp .st-key-explore_daily button { min-height:46px; }
 }

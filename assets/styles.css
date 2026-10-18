@@ -1379,29 +1379,38 @@ html[data-we-theme="dark"] { --band:#0A1520; --band-muted:#B9C6D2; }
 
 
 /* ---------- Quiz page V23: the question is the star (scoped to the Quiz page) ----------
-   Answer colours belong to the position on screen (A rose, B amber, C mint, D lavender), never to the answer: the
-   engine shuffles the choices. Results are marked with a symbol and words; colour is only a secondary cue. */
+   Answer cards are neutral; only the letter badge has a colour (A blue, B violet, C amber, D slate), which belongs to
+   the position on screen, never to the answer: the engine shuffles the choices. Results are marked with colour, a
+   border style, a symbol and words (see "Answer colours" below). */
 .st-key-view_quiz {
-  --qa-0:#FCE9EE; --qa-0-line:#F1C3D0; --qa-0-badge:#B83A5A;
-  --qa-1:#FDF2DC; --qa-1-line:#EFD7A2; --qa-1-badge:#94600F;
-  --qa-2:#E4F4EC; --qa-2-line:#BCE0CC; --qa-2-badge:#16744C;
-  --qa-3:#EFEBFB; --qa-3-line:#D4CAF3; --qa-3-badge:#6447C7;
+  --qa-0:#FFFFFF; --qa-0-line:#CFC8B9; --qa-0-badge:#2F5DA8;
+  --qa-1:#FFFFFF; --qa-1-line:#CFC8B9; --qa-1-badge:#6B4FBB;
+  --qa-2:#FFFFFF; --qa-2-line:#CFC8B9; --qa-2-badge:#9A5A0B;
+  --qa-3:#FFFFFF; --qa-3-line:#CFC8B9; --qa-3-badge:#4A5568;
+  --qa-badge-fg:#FFFFFF; --qa-fade:#8A929C; --qa-ok:#1E7A46; --qa-ok-fg:#FFFFFF; --qa-ok-text:#14532D;
+  --qa-bad:#B42318; --qa-bad-fg:#FFFFFF; --qa-bad-text:#7A1A12;
   --q-panel:#EEF5F7; --q-panel-line:#D6E6EA; --q-hint:#F7F9FC; --q-hint-line:#DCE5EE;
   --q-gold:#FBF3E2; --q-gold-line:#F0DDB4; --q-teal:#EAF4F3; --q-teal-line:#C9E0DE; --q-lilac:#EFEBFB; --q-lilac-line:#D6CCF4;
   --q-mint:#E4F4EC; --q-gold-text:#76551A; --q-teal-text:#1C6467; --q-lilac-text:#6447C7; --q-mint-text:#16744C;
   --q-ok-panel:#EEF7F1; --q-bad-panel:#FBEDEA; --q-warn-panel:#FBF3E2;
 }
 html[data-we-theme="dark"] .st-key-view_quiz {
-  --qa-0:#3A2230; --qa-0-line:#6B3A4E; --qa-1:#3A2F18; --qa-1-line:#6E5A2E;
-  --qa-2:#173A2B; --qa-2-line:#2F6A4B; --qa-3:#2A2545; --qa-3-line:#4F4785;
+  --qa-0:#182B40; --qa-0-line:#36536F; --qa-1:#182B40; --qa-1-line:#36536F;
+  --qa-2:#182B40; --qa-2-line:#36536F; --qa-3:#182B40; --qa-3-line:#36536F;
+  --qa-0-badge:#86ABF2; --qa-1-badge:#B9A2F6; --qa-2-badge:#EDB45E; --qa-3-badge:#B7C2CF;
+  --qa-badge-fg:#0E1A26; --qa-fade:#4A5D73; --qa-ok:#4CC38A; --qa-ok-fg:#0B1F16; --qa-ok-text:#D2F5E2;
+  --qa-bad:#F2837B; --qa-bad-fg:#2A0E10; --qa-bad-text:#FFDAD7;
   --q-panel:#1A3049; --q-panel-line:#2B4A66; --q-hint:#16263A; --q-hint-line:#2B4A66;
   --q-gold:#352B17; --q-gold-line:#6E5A2E; --q-teal:#173C42; --q-teal-line:#2F6064; --q-lilac:#2A2545; --q-lilac-line:#4F4785;
   --q-mint:#173A2B; --q-gold-text:#E3C27F; --q-teal-text:#7FD0CC; --q-lilac-text:#C3B6F5; --q-mint-text:#7DD8A4;
   --q-ok-panel:#133325; --q-bad-panel:#3A1C1A; --q-warn-panel:#352B17;
 }
 @media (prefers-color-scheme:dark) { html:not([data-we-theme]) .st-key-view_quiz {
-  --qa-0:#3A2230; --qa-0-line:#6B3A4E; --qa-1:#3A2F18; --qa-1-line:#6E5A2E;
-  --qa-2:#173A2B; --qa-2-line:#2F6A4B; --qa-3:#2A2545; --qa-3-line:#4F4785;
+  --qa-0:#182B40; --qa-0-line:#36536F; --qa-1:#182B40; --qa-1-line:#36536F;
+  --qa-2:#182B40; --qa-2-line:#36536F; --qa-3:#182B40; --qa-3-line:#36536F;
+  --qa-0-badge:#86ABF2; --qa-1-badge:#B9A2F6; --qa-2-badge:#EDB45E; --qa-3-badge:#B7C2CF;
+  --qa-badge-fg:#0E1A26; --qa-fade:#4A5D73; --qa-ok:#4CC38A; --qa-ok-fg:#0B1F16; --qa-ok-text:#D2F5E2;
+  --qa-bad:#F2837B; --qa-bad-fg:#2A0E10; --qa-bad-text:#FFDAD7;
   --q-panel:#1A3049; --q-panel-line:#2B4A66; --q-hint:#16263A; --q-hint-line:#2B4A66;
   --q-gold:#352B17; --q-gold-line:#6E5A2E; --q-teal:#173C42; --q-teal-line:#2F6064; --q-lilac:#2A2545; --q-lilac-line:#4F4785;
   --q-mint:#173A2B; --q-gold-text:#E3C27F; --q-teal-text:#7FD0CC; --q-lilac-text:#C3B6F5; --q-mint-text:#7DD8A4;
@@ -1461,7 +1470,7 @@ html[data-we-theme="dark"] .st-key-view_quiz {
 .st-key-round_bar > :first-child { flex:1 1 0 !important; min-width:0 !important; }
 .round-line { display:flex; align-items:baseline; gap:10px; min-width:0; }
 .round-line .round-summary { margin:0; font-size:.95rem; font-weight:500; color:var(--slate); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.st-key-quiz_settings button { min-height:40px; border-radius:12px; }
+.st-key-quiz_settings_menu button, .st-key-quiz_settings button { min-height:40px; border-radius:12px; }
 .q-progress { display:flex; flex-direction:column; gap:10px; color:var(--navy); margin-bottom:.4rem; }
 .q-progress-top { display:flex; align-items:center; gap:16px; }
 .q-count { flex:1 1 auto; font-size:1.15rem; }
@@ -1486,11 +1495,11 @@ html[data-we-theme="dark"] .st-key-view_quiz {
 .st-key-answers_grid { gap:14px !important; }
 .st-key-answers_grid [data-testid="stHorizontalBlock"] { gap:14px !important; }
 .st-key-view_quiz .st-key-answers_grid [class*="st-key-ans"] button {
-  position:relative; min-height:76px; width:100%; justify-content:flex-start; text-align:left; border-radius:16px; padding:12px 18px 12px 76px;
+  position:relative; min-height:76px; width:100%; justify-content:flex-start; text-align:left; border-radius:16px; padding:12px 18px 12px 84px;
   color:var(--navy); transition:transform .12s ease, box-shadow .12s ease; }
 .st-key-answers_grid [class*="st-key-ans"] button p { font-size:1.15rem !important; font-weight:600 !important; line-height:1.3; white-space:normal; overflow-wrap:anywhere; text-align:left; color:var(--navy); }
 .st-key-answers_grid [class*="st-key-ans"] button::before { position:absolute; left:16px; top:50%; transform:translateY(-50%); width:44px; height:44px;
-  border-radius:12px; display:grid; place-items:center; font-weight:800; font-size:1.15rem; color:#FFFFFF; }
+  border-radius:12px; display:grid; place-items:center; font-weight:800; font-size:1.15rem; color:var(--qa-badge-fg); }
 .st-key-answers_grid [class*="st-key-ans0_"] button { background:var(--qa-0) !important; border:1px solid var(--qa-0-line) !important; }
 .st-key-answers_grid [class*="st-key-ans0_"] button::before { content:"A"; background:var(--qa-0-badge); }
 .st-key-answers_grid [class*="st-key-ans1_"] button { background:var(--qa-1) !important; border:1px solid var(--qa-1-line) !important; }
@@ -1501,17 +1510,48 @@ html[data-we-theme="dark"] .st-key-view_quiz {
 .st-key-answers_grid [class*="st-key-ans3_"] button::before { content:"D"; background:var(--qa-3-badge); }
 .st-key-answers_grid [class*="st-key-ans"] button:not(:disabled):hover { transform:translateY(-1px); box-shadow:0 6px 16px rgba(23,40,59,.10); }
 .st-key-answers_grid [class*="st-key-ans"] button:focus-visible { outline:3px solid #E2B55A !important; outline-offset:2px; }
-.st-key-answers_grid [class*="_neutral_answer"] button:disabled { opacity:.5; }
-.st-key-answers_grid [class*="_neutral_answer"] button:disabled p { color:var(--navy) !important; }
+/* the other answers fade: grey badge and muted text (kept readable: no transparency) */
+.st-key-answers_grid [class*="_neutral_answer"] button:disabled { opacity:1; }
+.st-key-answers_grid [class*="_neutral_answer"] button:disabled p { color:var(--slate) !important; font-weight:500 !important; }
 .st-key-answers_grid button > div, .st-key-answers_grid button [data-testid="stMarkdownContainer"] { justify-content:flex-start !important; text-align:left !important; width:100%; }
 .st-key-view_quiz [class*="st-key-quizcat_"] { gap:16px !important; }
 .st-key-answers_grid [class*="_hidden_answer"] button:disabled { background:var(--neutral-done) !important; border:1px dashed var(--neutral-done-border) !important; }
 .st-key-answers_grid [class*="_hidden_answer"] button:disabled::before { background:#7D838C; }
 .st-key-answers_grid [class*="_hidden_answer"] button:disabled p { color:var(--slate) !important; font-weight:500 !important; }
-.st-key-answers_grid [class*="_correct_answer"] button:disabled { background:var(--ok-bg) !important; border:2px solid var(--ok-solid) !important; opacity:1; }
-.st-key-answers_grid [class*="_correct_answer"] button:disabled p { color:var(--ok) !important; font-weight:700 !important; }
-.st-key-answers_grid [class*="_wrong_answer"] button:disabled { background:var(--bad-bg) !important; border:2px solid var(--bad-solid) !important; opacity:1; }
-.st-key-answers_grid [class*="_wrong_answer"] button:disabled p { color:var(--bad) !important; font-weight:700 !important; }
+/* Answer colours (approved design): neutral cards whose letter badge alone has a colour (never red or green), plus a
+   small shape beside it so positions can be told apart without colour. After answering: the right answer green with a
+   solid border, a ✓ badge and a label; a wrong choice red with a dashed border, a ✕ badge and a label; the rest fade. */
+.st-key-answers_grid [class*="st-key-ans"] button::after { position:absolute; left:66px; top:50%; transform:translateY(-50%); font-size:10px; line-height:1; }
+.st-key-answers_grid [class*="st-key-ans0_"] button::after { content:"●"; color:var(--qa-0-badge); }
+.st-key-answers_grid [class*="st-key-ans1_"] button::after { content:"■"; color:var(--qa-1-badge); }
+.st-key-answers_grid [class*="st-key-ans2_"] button::after { content:"▲"; color:var(--qa-2-badge); }
+.st-key-answers_grid [class*="st-key-ans3_"] button::after { content:"◆"; color:var(--qa-3-badge); }
+.st-key-answers_grid [class*="_neutral_answer"] button:disabled::before { background:var(--qa-fade); }
+.st-key-answers_grid [class*="_neutral_answer"] button:disabled::after, .st-key-answers_grid [class*="_hidden_answer"] button:disabled::after { color:var(--qa-fade); }
+.st-key-answers_grid [class*="_correct_answer"] button:disabled { background:var(--ok-bg) !important; border:2px solid var(--qa-ok) !important; opacity:1; }
+.st-key-answers_grid [class*="_correct_answer"] button:disabled::before { content:"✓"; background:var(--qa-ok); color:var(--qa-ok-fg); }
+.st-key-answers_grid [class*="_correct_answer"] button:disabled::after { color:var(--qa-ok); }
+.st-key-answers_grid [class*="_correct_answer"] button:disabled p { color:var(--qa-ok-text) !important; font-weight:700 !important; }
+.st-key-answers_grid [class*="_wrong_answer"] button:disabled { background:var(--bad-bg) !important; border:2px dashed var(--qa-bad) !important; opacity:1; }
+.st-key-answers_grid [class*="_wrong_answer"] button:disabled::before { content:"✕"; background:var(--qa-bad); color:var(--qa-bad-fg); }
+.st-key-answers_grid [class*="_wrong_answer"] button:disabled::after { color:var(--qa-bad); }
+.st-key-answers_grid [class*="_wrong_answer"] button:disabled p { color:var(--qa-bad-text) !important; font-weight:700 !important; }
+.st-key-answers_grid :is([class*="_correct_answer"], [class*="_wrong_answer"]) button p { width:100%; display:flex; flex-wrap:wrap; align-items:center; column-gap:10px; row-gap:4px; }
+.st-key-answers_grid :is([class*="_correct_answer"], [class*="_wrong_answer"]) button code { margin-left:auto; padding:3px 10px; border-radius:999px;
+  font-family:inherit; font-size:.78rem; font-weight:700; line-height:1.4; white-space:nowrap; border:0; }
+.st-key-answers_grid [class*="_correct_answer"] button code { background:var(--qa-ok) !important; color:var(--qa-ok-fg) !important; }
+.st-key-answers_grid [class*="_wrong_answer"] button code { background:var(--qa-bad) !important; color:var(--qa-bad-fg) !important; }
+.answer-key { display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; margin:10px 0 0; font-size:.8rem; color:var(--slate); }
+.answer-key span { width:18px; height:18px; border-radius:5px; display:inline-grid; place-items:center; font-size:.7rem; font-weight:800; }
+.answer-key .key-ok { background:var(--qa-ok); color:var(--qa-ok-fg); } .answer-key .key-bad { background:var(--qa-bad); color:var(--qa-bad-fg); margin-left:8px; }
+/* Quiz settings: a compact floating panel (popover), usable down to 320px. */
+[data-testid="stPopoverBody"]:has(.pop-head) { width:min(340px, calc(100vw - 24px)) !important; max-width:calc(100vw - 24px) !important; }
+.pop-head { display:flex; align-items:center; gap:8px; font-size:1.05rem; color:var(--navy); }
+.pop-head .we-pop-close { margin-left:auto; width:40px; height:40px; border-radius:10px; border:1px solid var(--line); background:var(--surface-2);
+  color:var(--navy); font-size:1rem; cursor:pointer; display:grid; place-items:center; }
+.pop-head .we-pop-close:focus-visible { outline:3px solid #E2B55A; outline-offset:2px; }
+.pop-note { margin:4px 0 0; font-size:.85rem; color:var(--slate); }
+[data-testid="stElementContainer"]:has(.we-music-marker), [data-testid="stElementContainer"]:has(script[data-we-music-pref]) { display:none !important; }
 .st-key-hint_row { background:var(--q-hint); border:1px solid var(--q-hint-line); border-radius:16px; padding:12px 16px !important; gap:14px !important; flex-wrap:nowrap !important; }
 .st-key-hint_row > :first-child { flex:1 1 0 !important; min-width:0 !important; }
 .st-key-hint_row > :last-child { flex:0 0 auto !important; width:auto !important; }
@@ -1567,8 +1607,7 @@ html[data-we-theme="dark"] .st-key-view_quiz {
   .round-line { flex-direction:column; gap:1px; }
   .round-line .round-label { font-size:.66rem; }
   .round-line .round-summary { font-size:.9rem; font-weight:600; color:var(--navy); max-width:100%; }
-  .st-key-quiz_settings button { width:44px; height:44px; min-height:44px; padding:0 !important; }
-  .st-key-quiz_settings button p { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+  .st-key-quiz_settings_menu button { min-height:44px; padding:0 .7rem !important; }
   .q-progress-top { gap:8px; }
   .q-count { font-size:1rem; }
   .q-chips { gap:6px; }
@@ -1583,9 +1622,10 @@ html[data-we-theme="dark"] .st-key-view_quiz {
   .st-key-answers_grid, .st-key-answers_grid [data-testid="stHorizontalBlock"] { gap:10px !important; }
   .st-key-answers_grid [data-testid="stHorizontalBlock"] { flex-direction:column !important; flex-wrap:nowrap !important; }
   .st-key-answers_grid [data-testid="stColumn"] { width:100% !important; flex:1 1 auto !important; min-width:100% !important; }
-  .st-key-view_quiz .st-key-answers_grid [class*="st-key-ans"] button { min-height:60px; padding:8px 12px 8px 62px !important; border-radius:14px;
+  .st-key-view_quiz .st-key-answers_grid [class*="st-key-ans"] button { min-height:60px; padding:8px 12px 8px 70px !important; border-radius:14px;
     justify-content:flex-start !important; text-align:left !important; }
   .st-key-answers_grid [class*="st-key-ans"] button::before { left:12px; width:38px; height:38px; border-radius:11px; font-size:1.05rem; }
+  .st-key-answers_grid [class*="st-key-ans"] button::after { left:54px; font-size:8px; }
   .st-key-answers_grid [class*="st-key-ans"] button p { font-size:1.05rem !important; }
   .st-key-hint_row { padding:8px 10px 8px 12px !important; gap:10px !important; }
   .hint-text { font-size:.82rem; gap:8px; }

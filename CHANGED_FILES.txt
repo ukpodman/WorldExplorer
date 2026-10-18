@@ -1,20 +1,22 @@
-World Explorer V23 - unfinished quizzes are kept, and light/dark mode colours always match
-Based on GitHub production main 28cc56e (Merge pull request #7). Copy each file to the same path in the repository.
+World Explorer V23 - clearer answer colours, a floating Quiz settings panel and optional relaxing background music
+Based on GitHub production main 28199e0 (Merge pull request #8). Copy each file to the same path in the repository.
 
-ui/components.py          theme script: a comment contained "<img", so Streamlit's HTML cleaner dropped the whole
-                          script; the page then followed the device theme instead of the theme Streamlit shows
-core/active_round.py      NEW: saves/restores the unfinished round (exact questions, answers, score, streak, hints,
-                          settings; timed rounds keep counting while away); invalid saved data is ignored
-core/accounts.py          the unfinished round is saved in the same profile JSON and the same request as points
-                          (no new table, no migration, same server-only access)
-ui/state.py               restore once per session; Continue / Start a new quiz
-ui/pages.py               "Your quiz is waiting!" card (Explore, Quiz setup); confirmation before a new quiz
-                          replaces an unfinished one
-app.py                    calls the restore after the profile is loaded
-assets/styles.css         the card (theme colours only)
-data/translations.json    7 new texts in all five languages (all existing texts unchanged)
-tests/test_app.py         scripts must survive Streamlit's HTML cleaner
-tests/test_reliability.py resume in a new session, no double answers, confirmation, timed rounds, outage, bad data
+ui/music.py               NEW: the background-music switch's browser player. Original music made in the browser
+                          (no audio files); off by default; one player per tab, kept outside Streamlit's redraws so
+                          reruns and Next never restart it; plays only on the Quiz page, pauses at once when leaving
+                          the page, switching tabs or backgrounding; respects browser autoplay rules
+ui/pages.py               neutral answer cards with labelled results ("✓ Correct answer", "✓ Your answer · Correct",
+                          "✕ Your answer · Wrong") and a colour key under the feedback; "Quiz settings" is now a
+                          compact floating panel (closed by default, opening it never reruns or restarts the quiz)
+                          holding the music switch and "Change quiz setup"; the switch is also under Advanced quiz
+                          settings before a round
+ui/state.py               music_on default: off
+core/accounts.py          music_on saved with the profile like the sound-effects setting (true/false only)
+assets/styles.css         answer colours (light and dark), result marks, the floating panel down to 320px wide
+data/translations.json    9 new texts in all five languages (all existing texts unchanged)
+tests/test_music.py       NEW: music off by default, one save per switch, round and its saving untouched, choice
+                          restored with Continue Quiz, guests, answer labels, player script survives the HTML cleaner
 
-Not changed: quiz engine and scoring, hints, daily challenges, badges, Google sign-in, Founding 50, rewards,
-withdrawals and payouts, database schema and security, .streamlit/config.toml.
+Not changed: quiz engine and scoring, hints, timer, daily challenges, badges, unfinished-quiz recovery, Google
+sign-in and profile names, Founding 50, rewards, withdrawals and payouts, database schema and security, Explore,
+Learn, Badges, .streamlit/config.toml.

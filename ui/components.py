@@ -56,7 +56,9 @@ def _current_stylesheet() -> str:
 # <html data-we-theme="light|dark">, which assets/styles.css uses to switch its colour tokens.
 THEME_SYNC = """<script data-we-theme-sync="1">
 (function () {
-  // Profile photos are drawn as CSS backgrounds; like the <img referrerpolicy> elsewhere, send no referrer.
+  // Profile photos are drawn as CSS backgrounds; like the image referrerpolicy elsewhere, send no referrer.
+  // (No less-than sign followed by a letter or digit anywhere in this script: Streamlit's HTML cleaner then drops
+  // the whole script, and the page would follow the device theme instead of the theme Streamlit shows.)
   if (!document.querySelector('meta[name="referrer"]')) {
     var meta = document.createElement("meta"); meta.name = "referrer"; meta.content = "no-referrer"; document.head.appendChild(meta);
   }

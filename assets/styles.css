@@ -1608,3 +1608,22 @@ html[data-we-theme="dark"] .st-key-view_quiz {
 .st-key-view_quiz [data-testid="stElementContainer"]:has(> [data-testid="stHtml"] script) { display:none !important; }  /* one-off scroll helpers take no space */
 .st-key-hint_row :is([data-testid="stMarkdownContainer"], [data-testid="stHtml"], [data-testid="stElementContainer"]) { margin-bottom:0 !important; }
 .hint-text { padding:2px 0; }
+
+/* "Your quiz is waiting!" (an unfinished round saved with the account): compact, theme colours only */
+:is(.st-key-explore_continue, .st-key-setup_continue) { background:var(--paper); border:1px solid var(--chip-gold-border); border-left-width:1px;
+  border-radius:16px; padding:12px 16px !important; gap:10px 16px !important; flex-wrap:wrap !important; box-shadow:var(--shadow); }
+:is(.st-key-explore_continue, .st-key-setup_continue) > :first-child { flex:1 1 260px !important; min-width:0 !important; }
+:is(.st-key-explore_continue, .st-key-setup_continue) > :last-child { flex:0 1 auto !important; width:auto !important; }
+.st-key-setup_continue { background:var(--surface-2); box-shadow:none; }
+.continue-text { color:var(--navy); line-height:1.35; }
+.continue-text b { display:block; font-size:1.02rem; }
+.continue-text span { display:block; font-size:.88rem; color:var(--slate); margin-top:2px; }
+:is(.st-key-explore_continue_actions, .st-key-setup_continue_actions) { gap:8px !important; flex-wrap:wrap !important; }
+:is(.st-key-explore_continue_actions, .st-key-setup_continue_actions) button { min-height:44px; border-radius:12px; font-weight:700; }
+@media (max-width:700px) {
+  :is(.st-key-explore_continue_actions, .st-key-setup_continue_actions) { width:100% !important; }
+  :is(.st-key-explore_continue_actions, .st-key-setup_continue_actions) > * { flex:1 1 0 !important; min-width:0 !important; }
+  :is(.st-key-explore_continue_actions, .st-key-setup_continue_actions) button { width:100%; }
+}
+:is(.st-key-explore_continue, .st-key-setup_continue) :is([data-testid="stMarkdownContainer"], [data-testid="stHtml"], [data-testid="stElementContainer"]) { margin-bottom:0 !important; }
+:is(.st-key-explore_continue_actions, .st-key-setup_continue_actions) button p { white-space:normal !important; line-height:1.2; text-align:center; }

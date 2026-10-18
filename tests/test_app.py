@@ -952,6 +952,26 @@ class AccountTests(unittest.TestCase):
 
 
 @unittest.skipIf(AppTest is None, "streamlit is not installed")
+class ScriptCleanerTests(unittest.TestCase):
+    """Streamlit's HTML cleaner drops a whole <script> that contains "<" followed by a letter, digit, "/" or "!"
+    inside it. The theme script was dropped that way, so the page followed the device theme instead of the theme
+    Streamlit showed (white on cream / dark on navy when they differed)."""
+
+    def _inner(self, markup):
+        return markup.split(">", 1)[1].rsplit("</script>", 1)[0]
+
+    def test_scripts_survive_the_html_cleaner(self):
+        import re
+        from ui import components
+        for name in ("THEME_SYNC", "GPC_SYNC"):
+            for part in getattr(components, name).split("<script")[1:]:
+                self.assertIsNone(re.search(r"<[A-Za-z0-9/!]", self._inner("<script" + part)), name)
+        src = (Path(APP).parent / "ui" / "pages.py").read_text(encoding="utf-8")
+        body = src[src.index("def _bring_into_view"):src.index("def _active_round")]
+        script = body[body.index("<script>") + 8:body.index("</script>")]
+        self.assertIsNone(re.search(r"<[A-Za-z0-9/!]", script))
+
+
 class ContinentMapTests(unittest.TestCase):
     """The Explore home: real summary, Daily Challenge, interactive continent map, buttons and details panel."""
     CONTINENTS = ("Africa", "Asia", "Europe", "North America", "South America", "Oceania")

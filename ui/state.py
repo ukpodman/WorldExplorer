@@ -304,6 +304,51 @@ def resume_round(group: str) -> None:
     ss.show_setup, ss.page = False, "Quiz"
 
 
+def restore_active_round() -> None:
+    """Once per session, after the signed-in profile was loaded: bring back an unfinished round saved earlier
+    (core/active_round.py). It is offered with "Continue your quiz"; nothing is scored again."""
+    from core import active_round
+    ss = st.session_state
+    if "saved_active_round" not in ss:
+        return
+    data = ss.pop("saved_active_round")
+    if ss.get("quiz") and not ss.quiz["finished"]:
+        return                      # this session already has its own round: keep it
+    current, parked = active_round.unpack(data)
+    rounds = [r for r in [current, *parked.values()] if r]
+    if not rounds:
+        return
+    ss.quiz_serial = max([ss.get("quiz_serial", 0)] + [r["serial"] for r in rounds])
+    ss.parked_rounds = {**parked, **ss.get("parked_rounds", {})}
+    for r in rounds:               # the feedback of the shown answer was already played in the earlier session
+        if r.get("event"):
+            for key in ("sounds_played", "effects_shown"):
+                ss.setdefault(key, []).append(r["event"]["id"])
+    if current:
+        ss.quiz = current
+        ss.show_setup = True        # the Quiz page shows "Your quiz is waiting!" first
+        ss.round_waiting = True
+
+
+def continue_round() -> None:
+    st.session_state.round_waiting = False
+    st.session_state.show_setup = False
+    st.session_state.page = "Quiz"
+
+
+def review_new_quiz() -> None:
+    """From "Your quiz is waiting!": open quiz setup; starting a new quiz there asks for confirmation first."""
+    st.session_state.round_waiting = False
+    st.session_state.show_setup = True
+    st.session_state.page = "Quiz"
+
+
+def unfinished_regular_round():
+    """The unfinished regular round that a new regular round would replace (daily and practice rounds are kept)."""
+    q = st.session_state.get("quiz")
+    return q if q and not q["finished"] and q.get("mode", "regular") == "regular" and (q["history"] or q["index"]) else None
+
+
 def parked_rounds() -> dict:
     return {g: q for g, q in st.session_state.get("parked_rounds", {}).items() if q and not q["finished"]}
 

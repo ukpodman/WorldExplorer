@@ -44,6 +44,9 @@ def _load(include_feedback: bool) -> tuple[list, list]:
     return events, feedback
 
 
+REWARDS_TAB = "💰 Rewards & Referral Management"
+
+
 def render() -> None:
     if not analytics.is_owner():
         # Same message whether the page exists or not; no data is loaded.
@@ -55,11 +58,15 @@ def render() -> None:
     owner_withdrawals.alert()   # refreshes itself every 30 s while the dashboard is open
     from . import owner_founding
     owner_founding.alert()      # new Founding 50 applications (in-app notification), refreshes itself as well
-    analytics_tab, rewards_tab = st.tabs(["Pilot analytics", "💰 Rewards & Referral Management"])
+    # Only the open tab is drawn: Rewards & Referral Management reads about 30 tables/rows sets from Supabase, which
+    # used to run on every visit and every rerun of the dashboard even while Pilot analytics was shown.
+    analytics_tab, rewards_tab = st.tabs(["Pilot analytics", REWARDS_TAB], key="owner_tab", on_change="rerun")
     with analytics_tab:
-        _pilot_analytics()
+        if analytics_tab.open is not False:
+            _pilot_analytics()
     with rewards_tab:
-        owner_rewards.render()
+        if rewards_tab.open:
+            owner_rewards.render()
 
 
 def _pilot_analytics() -> None:

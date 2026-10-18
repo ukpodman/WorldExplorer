@@ -777,6 +777,34 @@ class RefinementTests(unittest.TestCase):
         self.assertEqual(at.session_state["page"], "Explore")
         self.assertEqual([e.value for e in at.exception], [])
 
+    def test_v23_next_question_advances_once_and_redraws_only_the_quiz(self):
+        import inspect
+        from ui import pages
+        src = inspect.getsource(pages._active_round)
+        self.assertIn("on_click=state.next_question, args=(serial, index)", src)       # one run per Next click
+        self.assertIn("hint_slot, feedback_slot, script_slot = st.empty(), st.empty(), st.empty()", src)   # fixed positions
+        self.assertLess(src.index("_round_progress(quiz)"), src.index("_bring_into_view"))   # nothing inserted on top
+        at = self.new(page="Quiz")
+        at.button_group(key="filter_count").set_value(5).run()
+        at.button(key="start_quiz").click().run()
+        for i in range(4):
+            q = at.session_state["quiz"]; qn = q["questions"][i]
+            at.button(key=f"answer_{q['serial']}_{i}_{qn['choices'].index(qn['answer'])}").click().run()
+            at.button(key=f"next_{q['serial']}_{i}").click().run()
+            self.assertEqual(at.session_state["quiz"]["index"], i + 1)                   # exactly one question further
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_page_change_uses_the_other_slot_and_same_page_reruns_keep_it(self):
+        at = self.new()
+        self.assertEqual((at.session_state["view_page"], at.session_state["view_slot"]), ("Explore", 0))
+        at.run()
+        self.assertEqual(at.session_state["view_slot"], 0)                                 # same page: same slot
+        at.button(key="nav_Quiz").click().run()
+        self.assertEqual((at.session_state["view_page"], at.session_state["view_slot"]), ("Quiz", 1))
+        at.button(key="nav_Learn").click().run()
+        self.assertEqual((at.session_state["view_page"], at.session_state["view_slot"]), ("Learn", 0))
+        self.assertEqual([e.value for e in at.exception], [])
+
     def test_v23_answer_colours_follow_position_not_correctness(self):
         import inspect
         from ui import pages

@@ -474,16 +474,16 @@
 /* Category accents are restrained and always paired with an icon and the category name. Each colour
    gives >= 4.5:1 as text on white and on its own soft tint. */
 [class*="st-key-quizcat_"] { --cat:var(--teal-dark); --cat-soft:var(--teal-soft); }
-.st-key-quizcat_capitals { --cat:#1C6467; --cat-soft:#E3EFEE; }
-.st-key-quizcat_flags { --cat:#83601F; --cat-soft:#F5ECDA; }
-.st-key-quizcat_currency { --cat:#2C6A3D; --cat-soft:#E5F1E7; }
-.st-key-quizcat_languages { --cat:#9C4330; --cat-soft:#F8E9E4; }
-.st-key-quizcat_landmarks { --cat:#65479A; --cat-soft:#EFEAF7; }
-.st-key-quizcat_identification { --cat:#2C5987; --cat-soft:#E6EEF6; }
-.st-key-quizcat_geography { --cat:#3A6273; --cat-soft:#E5EEF1; }
-.st-key-quizcat_continents { --cat:#56651F; --cat-soft:#EEF1E1; }
-.st-key-quizcat_truefalse { --cat:#86395F; --cat-soft:#F6E8EF; }
-.st-key-quizcat_leaders { --cat:#8A3838; --cat-soft:#F7E7E7; }
+[class*="st-key-quizcat_"]:has(.cat-capitals) { --cat:#1C6467; --cat-soft:#E3EFEE; }
+[class*="st-key-quizcat_"]:has(.cat-flags) { --cat:#83601F; --cat-soft:#F5ECDA; }
+[class*="st-key-quizcat_"]:has(.cat-currency) { --cat:#2C6A3D; --cat-soft:#E5F1E7; }
+[class*="st-key-quizcat_"]:has(.cat-languages) { --cat:#9C4330; --cat-soft:#F8E9E4; }
+[class*="st-key-quizcat_"]:has(.cat-landmarks) { --cat:#65479A; --cat-soft:#EFEAF7; }
+[class*="st-key-quizcat_"]:has(.cat-identification) { --cat:#2C5987; --cat-soft:#E6EEF6; }
+[class*="st-key-quizcat_"]:has(.cat-geography) { --cat:#3A6273; --cat-soft:#E5EEF1; }
+[class*="st-key-quizcat_"]:has(.cat-continents) { --cat:#56651F; --cat-soft:#EEF1E1; }
+[class*="st-key-quizcat_"]:has(.cat-truefalse) { --cat:#86395F; --cat-soft:#F6E8EF; }
+[class*="st-key-quizcat_"]:has(.cat-leaders) { --cat:#8A3838; --cat-soft:#F7E7E7; }
 [class*="st-key-quizcat_"] .st-key-question_card { border-top:4px solid var(--cat) !important; }
 .stApp [class*="st-key-quizcat_"] [data-testid="stProgressBarTrack"] > div { background-color:var(--cat) !important; }
 .cat-chip { display:inline-flex; align-items:center; gap:6px; color:var(--cat); background:var(--cat-soft); border-radius:20px;
@@ -748,16 +748,16 @@ html[data-we-theme="dark"] {
     color-scheme:dark;
   }
 }
-html[data-we-theme="dark"] .st-key-quizcat_capitals { --cat:#7FD0CC; --cat-soft:#173C42; }
-html[data-we-theme="dark"] .st-key-quizcat_flags { --cat:#E3C27F; --cat-soft:#3A3020; }
-html[data-we-theme="dark"] .st-key-quizcat_currency { --cat:#8FD6A0; --cat-soft:#183424; }
-html[data-we-theme="dark"] .st-key-quizcat_languages { --cat:#F2A48F; --cat-soft:#3D2019; }
-html[data-we-theme="dark"] .st-key-quizcat_landmarks { --cat:#C3A9F0; --cat-soft:#2E2443; }
-html[data-we-theme="dark"] .st-key-quizcat_identification { --cat:#9DC2EE; --cat-soft:#1C2F47; }
-html[data-we-theme="dark"] .st-key-quizcat_geography { --cat:#9FC6D6; --cat-soft:#1B3340; }
-html[data-we-theme="dark"] .st-key-quizcat_continents { --cat:#C5D486; --cat-soft:#2A3218; }
-html[data-we-theme="dark"] .st-key-quizcat_truefalse { --cat:#EDA3C9; --cat-soft:#3A1F2E; }
-html[data-we-theme="dark"] .st-key-quizcat_leaders { --cat:#F0A3A3; --cat-soft:#3A1E1E; }
+html[data-we-theme="dark"] [class*="st-key-quizcat_"]:has(.cat-capitals) { --cat:#7FD0CC; --cat-soft:#173C42; }
+html[data-we-theme="dark"] [class*="st-key-quizcat_"]:has(.cat-flags) { --cat:#E3C27F; --cat-soft:#3A3020; }
+html[data-we-theme="dark"] [class*="st-key-quizcat_"]:has(.cat-currency) { --cat:#8FD6A0; --cat-soft:#183424; }
+html[data-we-theme="dark"] [class*="st-key-quizcat_"]:has(.cat-languages) { --cat:#F2A48F; --cat-soft:#3D2019; }
+html[data-we-theme="dark"] [class*="st-key-quizcat_"]:has(.cat-landmarks) { --cat:#C3A9F0; --cat-soft:#2E2443; }
+html[data-we-theme="dark"] [class*="st-key-quizcat_"]:has(.cat-identification) { --cat:#9DC2EE; --cat-soft:#1C2F47; }
+html[data-we-theme="dark"] [class*="st-key-quizcat_"]:has(.cat-geography) { --cat:#9FC6D6; --cat-soft:#1B3340; }
+html[data-we-theme="dark"] [class*="st-key-quizcat_"]:has(.cat-continents) { --cat:#C5D486; --cat-soft:#2A3218; }
+html[data-we-theme="dark"] [class*="st-key-quizcat_"]:has(.cat-truefalse) { --cat:#EDA3C9; --cat-soft:#3A1F2E; }
+html[data-we-theme="dark"] [class*="st-key-quizcat_"]:has(.cat-leaders) { --cat:#F0A3A3; --cat-soft:#3A1E1E; }
 /* Light-only decorative tints get dark equivalents; flags, photos, medals and illustrations keep their colours. */
 html[data-we-theme="dark"] [class*="st-key-learn_flag_panel_"] { background:linear-gradient(135deg,#1B2D42,#22374E) !important; border-color:var(--line); }
 html[data-we-theme="dark"] .perfect-banner { background:linear-gradient(90deg,#3A3020,#2C2617); border-color:var(--chip-gold-border); color:var(--gold-deep); }

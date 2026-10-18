@@ -44,6 +44,8 @@ class RewardsAppTests(unittest.TestCase):
             at.secrets["analytics"] = {"owner_emails": ["owner@example.com"]}
         for k, v in state.items():
             at.session_state[k] = v
+        if state.get("page") == "Owner":   # the owner opens the rewards tab (the dashboard draws only the open tab)
+            at.session_state["owner_tab"] = "💰 Rewards & Referral Management"
         self.patch = mock.patch("core.accounts.identity", return_value=dict(who) if who else None)
         self.patch.start()
         self.addCleanup(self.patch.stop)
@@ -394,6 +396,30 @@ class RewardsAppTests(unittest.TestCase):
         self.assertEqual((paid["status"], paid["paid_amount"], paid["reference"], paid["updated_by"]),
                          ("paid", 30, "TRX-9", "owner@example.com"))
         self.assertTrue(any(a["action"] == "reward_payments_update" for a in store.audit()))
+
+    def test_dashboard_draws_only_the_open_tab(self):
+        from unittest import mock as _m
+        from core import rewards_store
+        calls = []
+        orig = rewards_store.MemoryStore.select
+        def counted(store, table, *a, **k):
+            calls.append(table)
+            return orig(store, table, *a, **k)
+        with _m.patch.object(rewards_store.MemoryStore, "select", counted):
+            at = self.app(who=OWNER, rewards={"enabled": True}, owner=True)
+            at.session_state["page"] = "Owner"
+            at.run()                                                                    # opens on Pilot analytics
+            self.assertEqual([e.value for e in at.exception], [])
+            self.assertIn("Pilot dashboard", [t.value for t in at.title])
+            self.assertNotIn("💰 Rewards & Referral Management", [s.value for s in at.subheader])
+            on_analytics = len(calls)
+            calls.clear()
+            at.session_state["owner_tab"] = "💰 Rewards & Referral Management"
+            at.run()
+            self.assertIn("💰 Rewards & Referral Management", [s.value for s in at.subheader])
+            self.assertGreater(len(calls), on_analytics)                               # the rewards data load only here
+        player = self.app(who=PLAYER, rewards={"enabled": True}, page="Owner").run()     # access check unchanged
+        self.assertNotIn("Pilot dashboard", [t.value for t in player.title])
 
     def test_owner_settings_and_pause(self):
         at = self.owner_app({})

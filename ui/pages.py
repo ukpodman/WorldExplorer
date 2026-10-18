@@ -824,20 +824,24 @@ def _active_round() -> None:
     slug, icon = CATEGORY_STYLES.get(q["kind"], ("geography", "🧭"))
     fresh = quiz["resolved"] and _fresh(quiz["event"]["id"])
     new_question = not quiz["resolved"] and _fresh(f"question:{serial}:{index}")
-    with st.container(key=f"quizcat_{slug}"):
-        if new_question:   # after Start or Next: the question is on screen, from its top
-            _bring_into_view(".st-key-quiz_play", "start", f"q{serial}-{index}")
+    # Every part of the question keeps the same position from one question to the next (optional parts sit in their
+    # own fixed slots), so Streamlit updates the elements in place. When positions shifted, the previous question's
+    # answers and feedback were redrawn as new elements and the old ones stayed on screen until the run ended: the
+    # box that flashed under the new question.
+    # A fixed key: the category colour comes from the category tag (CSS :has), so a new category does not rebuild it.
+    with st.container(key="quizcat_q"):
         _round_progress(quiz)
         with st.container(key="question_card"):
-            html(f'<div class="q-tags"><span class="cat-chip"><span aria-hidden="true">{icon}</span> {e(q["kind"])}</span>'
+            html(f'<div class="q-tags"><span class="cat-chip cat-{slug}"><span aria-hidden="true">{icon}</span> {e(q["kind"])}</span>'
                  f'<span class="diff-chip"><span class="q-ico">{QUIZ_ICONS["bars"]}</span>{e(quiz["settings"]["difficulty"])}</span></div>')
-            if limit is not None:
-                if quiz["resolved"]:
-                    st.caption(t("Answer recorded"))
-                else:
-                    remaining = max(0, math.ceil(limit - engine.elapsed(quiz)))
-                    st.caption(t("Time remaining: {n} seconds", n=remaining))
-                    st.progress(remaining / limit)
+            if limit is not None:   # timed rounds only (the same for the whole round)
+                with st.empty().container():
+                    if quiz["resolved"]:
+                        st.caption(t("Answer recorded"))
+                    else:
+                        remaining = max(0, math.ceil(limit - engine.elapsed(quiz)))
+                        st.caption(t("Time remaining: {n} seconds", n=remaining))
+                        st.progress(remaining / limit)
             st.subheader(parts(q["prompt"]))
             if q.get("flag"):
                 with st.container(key="quiz_flag"):
@@ -846,7 +850,10 @@ def _active_round() -> None:
         # screen, never to the answer: the engine shuffles the choices. Two per row on wider screens, one column on
         # phones (CSS). After answering, the right answer and your answer are marked with a symbol and words.
         with st.container(key="answers_grid"):
-            for row in range(0, len(q["choices"]), 2):
+            for row in (0, 2):
+                if row >= len(q["choices"]):   # True/False: the second row's slot is emptied (no leftover row)
+                    st.empty()
+                    continue
                 for column, choice in zip(st.columns(2), q["choices"][row:row + 2]):
                     pos = q["choices"].index(choice)
                     style, label = "neutral_answer", t(choice)
@@ -862,8 +869,9 @@ def _active_round() -> None:
                         st.button(label, key=f"answer_{serial}_{index}_{pos}", width="stretch",
                                   disabled=quiz["resolved"] or choice in quiz["hidden_options"],
                                   on_click=state.answer, args=(choice, serial, index))
+        hint_slot, feedback_slot, script_slot = st.empty(), st.empty(), st.empty()   # fixed slots, filled or left empty
         if not quiz["resolved"] and len(q["choices"]) == 4:
-            with st.container(key="hint_row", horizontal=True, vertical_alignment="center"):
+            with hint_slot.container(key="hint_row", horizontal=True, vertical_alignment="center"):
                 html(f'<div class="hint-text"><span class="q-ico">{QUIZ_ICONS["bulb"]}</span><span><b>{e("Need a hint?")}</b> '
                      f'{e("Removes one wrong answer · −25 if correct · {n} of {total} left", n=quiz["hints_remaining"], total=engine.HINTS_PER_ROUND)}</span></div>')
                 st.button(t("Hint used") if quiz["hint_used"] else t("Show hint"), key=f"hint_{serial}_{index}",
@@ -872,19 +880,33 @@ def _active_round() -> None:
         if quiz["resolved"]:
             record = quiz["history"][-1]
             head_html, body_html = _feedback(quiz, q, record, fresh)
-            sound.play_event(quiz["event"])
             final = index + 1 == total
             tone = "correct" if record["correct"] else "timeout" if record["timed_out"] else "wrong"
-            with st.container(key=f"quiz_feedback_{tone}"):
+            with feedback_slot.container(key=f"quiz_feedback_{tone}"):
                 html(head_html)
                 with st.container(key="quiz_next_action"):
-                    if st.button(t("View results" if final else "Next question →"), type="primary",
-                                 width="stretch", key=f"next_{serial}_{index}"):
-                        state.next_question(serial, index)
-                        st.rerun()  # full rerun: results and the timer schedule live outside this fragment
+                    label = t("View results" if final else "Next question →")
+                    if final:
+                        # The results card lives outside this quiz section, so the last question reloads the page.
+                        if st.button(label, type="primary", width="stretch", key=f"next_{serial}_{index}"):
+                            state.next_question(serial, index)
+                            st.rerun()
+                    else:
+                        # One click = one question: the callback advances exactly once (it checks serial and index)
+                        # and only this quiz section is redrawn, not the whole page.
+                        st.button(label, type="primary", width="stretch", key=f"next_{serial}_{index}",
+                                  on_click=state.next_question, args=(serial, index))
                 html(body_html)
-                if fresh:   # after answering: Next on screen
-                    _bring_into_view(".st-key-quiz_next_action button", "center", f"a{serial}-{index}")
+                sound.play_event(quiz["event"])
+        if fresh:          # after answering: Next on screen
+            with script_slot:
+                _bring_into_view(".st-key-quiz_next_action button", "center", f"a{serial}-{index}")
+        elif new_question:  # after Start or Next: the question on screen, from its top
+            with script_slot:
+                _bring_into_view(".st-key-quiz_play", "start", f"q{serial}-{index}")
+    # Answers and Next redraw only this section, so the profile is saved here too (the same existing save, which writes
+    # only when something changed), exactly as often as before.
+    accounts.save_profile()
 
 
 def _review_entry(i: int, record: dict) -> None:

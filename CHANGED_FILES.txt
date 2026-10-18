@@ -1,11 +1,15 @@
-World Explorer V23 - Quiz page redesign
-Based on GitHub production main e39cdf9 (Merge pull request #5). Copy each file to the same path in the repository.
+World Explorer V23 - fix quiz flash and slow page changes
+Based on GitHub production main f4fdf78 (Merge pull request #6). Copy each file to the same path in the repository.
 
-ui/pages.py                Quiz page only (setup, active question, feedback, results); Explore, Learn and Badges untouched
-assets/styles.css          Quiz page styles (light and dark, phones and desktop); other pages unchanged
-data/translations.json     all production strings unchanged + 33 new Quiz strings in all five languages
-tests/test_app.py          quiz tests for the new layout (setup, round, hint, one answer per question, results)
-tests/test_rewards_app.py  uses the new Questions buttons in one test
+app.py                       two page slots: the previous page is cleared as soon as the new page starts (no mixed pages)
+ui/pages.py                  quiz section: Next redraws only the quiz (one run per click), fixed positions for every part,
+                             the existing profile save also runs after answers in the quiz section
+ui/owner.py                  Pilot dashboard draws only the open top-level tab (same tabs, same owner-only check)
+assets/styles.css            category colours read from the category tag (the quiz section keeps one fixed name)
+tests/test_app.py            new tests: one question per Next, page slots
+tests/test_rewards_app.py    new test: only the open dashboard tab is drawn; helper opens the rewards tab
+tests/test_withdrawals_app.py, tests/test_founding50.py, tests/test_public_switch.py
+                             test helpers open the Rewards & Referral Management tab (as the owner does)
 
-Not changed: quiz engine (core/quiz.py), state and scoring (ui/state.py), daily challenges, badges, Google sign-in,
-Supabase saving, Founding 50, rewards, withdrawals, Owner Dashboard, database migrations, .streamlit/config.toml.
+Not changed: quiz engine and scoring, daily challenges, hints, badges, Google sign-in, Supabase saving logic,
+Founding 50, rewards, withdrawals and payouts, database migrations, translations, .streamlit/config.toml.

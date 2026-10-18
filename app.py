@@ -70,7 +70,16 @@ def main() -> None:
                            points=f"{notice['points']:,}") if notice["existing"]
                    else state.t("Your progress is now saved to your account."), icon="✅")
     page = st.session_state.page if st.session_state.page in ROUTES else "Explore"
-    with st.container(key=f"view_{page.lower()}"):
+    # Two page slots. After a page change the new page is drawn in the other slot and the slot of the previous page is
+    # emptied in the same run, as soon as the run gets there (right after the header). Streamlit otherwise keeps the
+    # previous page's elements on screen (faded) until the new page has finished, which mixed two pages while a slow
+    # page (the Pilot dashboard) was loading. Same-page reruns keep their slot, so nothing is rebuilt for them.
+    ss = st.session_state
+    if ss.get("view_page") != page:
+        ss.view_slot = (1 - ss.view_slot) if "view_page" in ss else 0
+        ss.view_page = page
+    slots = (st.empty(), st.empty())
+    with slots[ss.view_slot].container(key=f"view_{page.lower()}"):
         ROUTES[page]()
     st.divider()
     accounts.save_profile()

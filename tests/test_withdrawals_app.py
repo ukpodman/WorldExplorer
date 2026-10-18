@@ -51,6 +51,8 @@ class WithdrawalAppTests(unittest.TestCase):
                                  "payouts_active": payouts, **rewards_cfg}
         at.secrets["analytics"] = {"owner_emails": ["owner@example.com"]}
         at.session_state["page"] = page
+        if page == "Owner":   # the owner opens the rewards tab (the dashboard draws only the open tab)
+            at.session_state["owner_tab"] = "💰 Rewards & Referral Management"
         patch = mock.patch("core.accounts.identity", return_value=dict(who))
         patch.start()
         self.addCleanup(patch.stop)

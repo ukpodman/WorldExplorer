@@ -213,8 +213,17 @@ def _request(profile_id: str, payload: dict | None = None):
     return json.loads(raw) if raw else None
 
 
+def _payload(ss=None) -> dict:
+    """What is saved: the profile fields plus any unfinished quiz round (core/active_round.py), in one JSON value."""
+    from . import active_round
+    ss = st.session_state if ss is None else ss
+    data = {k: ss.get(k) for k in PROFILE_KEYS}
+    data["active_round"] = active_round.pack(ss)
+    return data
+
+
 def _fingerprint() -> str:
-    return json.dumps({k: st.session_state.get(k) for k in PROFILE_KEYS}, sort_keys=True)
+    return json.dumps(_payload(), sort_keys=True, default=str)
 
 
 def connection_state() -> str:
@@ -256,6 +265,8 @@ def restore_profile(now: float | None = None) -> None:
         return
     stored = rows[0].get("profile") if rows and isinstance(rows[0], dict) else {}
     saved = sanitize_profile(stored)
+    # an unfinished round saved earlier; ui/state.restore_active_round() checks it and offers to continue it
+    st.session_state.saved_active_round = stored.get("active_round") if isinstance(stored, dict) else None
     claim = _find_handoff()
     pending = None
     if claim:
@@ -297,7 +308,7 @@ def save_profile() -> None:
                 _save_transfer(who["profile_id"], pending)
             fingerprint = _fingerprint()
         else:
-            _request(who["profile_id"], {k: st.session_state.get(k) for k in PROFILE_KEYS})
+            _request(who["profile_id"], _payload())
         st.session_state.profile_saved_fingerprint = fingerprint
         st.session_state.profile_save_error = False
     except Exception:
@@ -329,7 +340,7 @@ def _save_transfer(profile_id: str, pending: dict) -> None:
         ss.update(merge_progress(rebuilt, earned))
         ss.transfers = (fresh.get("transfers", []) + [pending["id"]])[-MAX_TRANSFERS:]
         _rebase(pending, fresh_progress, rebuilt)
-    _request(profile_id, {k: ss.get(k) for k in PROFILE_KEYS})
+    _request(profile_id, _payload(ss))
     ss.pop("pending_transfer", None)
     _finish_handoff(pending["id"])
     ss.handoff_notice = {"points": pending["points"], "rounds": pending["rounds"], "existing": pending["existing"]}

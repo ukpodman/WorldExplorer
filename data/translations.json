@@ -4614,6 +4614,48 @@
    "{points} puntos",
    "{points} 分",
    "{points} очков"
+  ],
+  "Continue quiz": [
+   "Quiz fortsetzen",
+   "Continuar el quiz",
+   "继续测验",
+   "Продолжить викторину"
+  ],
+  "Keep my quiz": [
+   "Mein Quiz behalten",
+   "Conservar mi quiz",
+   "保留我的测验",
+   "Оставить мою викторину"
+  ],
+  "Start a new quiz": [
+   "Neues Quiz starten",
+   "Empezar un quiz nuevo",
+   "开始新的测验",
+   "Начать новую викторину"
+  ],
+  "Yes, start a new quiz": [
+   "Ja, neues Quiz starten",
+   "Sí, empezar un quiz nuevo",
+   "是的，开始新的测验",
+   "Да, начать новую викторину"
+  ],
+  "Your quiz is waiting!": [
+   "Dein Quiz wartet auf dich!",
+   "¡Tu quiz te espera!",
+   "你的测验正在等你！",
+   "Ваша викторина ждёт!"
+  ],
+  "{points} points earned so far": [
+   "{points} Punkte bisher erzielt",
+   "{points} puntos ganados hasta ahora",
+   "目前已获得 {points} 分",
+   "Уже заработано очков: {points}"
+  ],
+  "Start a new quiz? Your unfinished quiz (question {n} of {total}) will end. The points you earned in it stay in your total.": [
+   "Neues Quiz starten? Dein unvollendetes Quiz (Frage {n} von {total}) wird beendet. Die darin erzielten Punkte bleiben in deiner Gesamtsumme.",
+   "¿Empezar un quiz nuevo? Tu quiz sin terminar (pregunta {n} de {total}) se cerrará. Los puntos que ganaste en él se quedan en tu total.",
+   "要开始新的测验吗？你未完成的测验（第 {n} 题，共 {total} 题）将结束。其中已获得的分数会保留在你的总分中。",
+   "Начать новую викторину? Незавершённая викторина (вопрос {n} из {total}) будет завершена. Заработанные в ней очки останутся в вашем итоге."
   ]
  }
 }

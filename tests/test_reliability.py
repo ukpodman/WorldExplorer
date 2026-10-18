@@ -4,7 +4,9 @@ and what players see when saving or loading is unavailable.
 Google sign-in and Supabase are replaced by stand-ins (a fixed verified identity and an in-memory table), so these
 tests show the app's own behaviour — not that the live Google client or the live Supabase project are configured.
 """
+import json
 import sys
+import time
 import types
 import unittest
 from datetime import date
@@ -162,3 +164,133 @@ class SignedInProfileTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+@unittest.skipIf(AppTest is None, "streamlit is not installed")
+class UnfinishedRoundTests(unittest.TestCase):
+    """An unfinished round survives a refresh, a closed browser or a lost connection (a new session) for signed-in
+    players: it is saved with the profile and offered as "Your quiz is waiting!"."""
+
+    def visit(self, table, day=date(2026, 10, 11)):
+        at = AppTest.from_file(APP, default_timeout=60)
+        at.secrets["profiles"] = STORAGE
+        patches = [mock.patch("core.accounts.identity", lambda: dict(USER)),
+                   mock.patch("core.accounts._request", table.request),
+                   mock.patch("core.daily.utc_today", return_value=day)]
+        for p in patches:
+            p.start()
+        self.addCleanup(lambda: [p.stop() for p in patches])
+        return at.run()
+
+    def start(self, at, count=20, timer=False):
+        at.button(key="nav_Quiz").click().run()
+        at.button_group(key="filter_count").set_value(count).run()
+        if timer:
+            at.toggle(key="filter_timer").set_value(True).run()
+        at.button(key="start_quiz").click().run()
+
+    def play(self, at, n, start=0):
+        for i in range(start, start + n):
+            answer(at, i, i % 3 != 0)
+            q = at.session_state["quiz"]
+            at.button(key=f"next_{q['serial']}_{i}").click().run()
+
+    def test_round_resumes_in_a_new_session_at_the_same_question(self):
+        table = FakeTable({})
+        at = self.visit(table)
+        self.start(at)
+        self.play(at, 10)
+        quiz = at.session_state["quiz"]
+        before = (quiz["index"], quiz["score"], quiz["correct"], quiz["streak"], quiz["hints_remaining"],
+                  [q["answer"] for q in quiz["questions"]], at.session_state["points"])
+        saved = table.rows[USER["profile_id"]]["active_round"]["current"]
+        self.assertEqual((saved["index"], len(saved["history"])), (10, 10))           # saved after each step
+        again = self.visit(table)                                                    # refresh / browser restart
+        self.assertTrue(again.session_state["round_waiting"])
+        self.assertIn("Your quiz is waiting!", " ".join(str(m.value) for m in again.markdown))
+        again.button(key="explore_continue_go").click().run()
+        q = again.session_state["quiz"]
+        after = (q["index"], q["score"], q["correct"], q["streak"], q["hints_remaining"],
+                 [x["answer"] for x in q["questions"]], again.session_state["points"])
+        self.assertEqual(before, after)                                               # same round, same points
+        self.assertTrue(any("Question 11 of 20" in str(m.value) for m in again.markdown))
+        points = again.session_state["points"]
+        again.run(); again.run()                                                      # reruns add nothing
+        self.assertEqual(again.session_state["points"], points)
+        self.play(again, 10, start=10)                                                # finish it
+        self.assertTrue(again.session_state["quiz"]["finished"])
+        self.assertEqual(again.session_state["rounds_finished"], 1)                   # counted once
+        self.assertIsNone(table.rows[USER["profile_id"]]["active_round"])             # nothing left to resume
+        self.assertEqual([e.value for e in again.exception], [])
+
+    def test_answered_question_is_not_answered_again_after_a_refresh(self):
+        table = FakeTable({})
+        at = self.visit(table)
+        self.start(at, count=5)
+        answer(at, 0, True)                                                           # answered, Next not pressed
+        points = at.session_state["points"]
+        again = self.visit(table)
+        again.button(key="explore_continue_go").click().run()
+        q = again.session_state["quiz"]
+        self.assertTrue(q["resolved"])
+        self.assertEqual((len(q["history"]), again.session_state["points"]), (1, points))
+        self.assertTrue(all(b.disabled for b in again.button if b.key and b.key.startswith(f"answer_{q['serial']}_0_")))
+
+    def test_new_quiz_over_an_unfinished_one_needs_confirmation(self):
+        table = FakeTable({})
+        at = self.visit(table)
+        self.start(at, count=10)
+        self.play(at, 3)
+        again = self.visit(table)
+        again.button(key="explore_continue_new").click().run()                        # opens setup
+        serial = again.session_state["quiz"]["serial"]
+        again.button(key="start_quiz").click().run()
+        self.assertEqual(again.session_state["quiz"]["serial"], serial)              # not replaced yet
+        self.assertTrue(any("will end" in w.value for w in again.warning))
+        again.button(key="confirm_new_no").click().run()
+        self.assertEqual(again.session_state["quiz"]["index"], 3)                     # kept
+        again.button(key="start_quiz").click().run()
+        again.button(key="confirm_new_yes").click().run()
+        self.assertNotEqual(again.session_state["quiz"]["serial"], serial)           # replaced only after "yes"
+        self.assertEqual(again.session_state["quiz"]["index"], 0)
+
+    def test_timed_round_keeps_counting_while_away(self):
+        from core import active_round
+        table = FakeTable({})
+        at = self.visit(table)
+        self.start(at, count=5, timer=True)
+        data = table.rows[USER["profile_id"]]["active_round"]
+        self.assertIsNotNone(data["current"]["presented_wall"])
+        # 25 seconds later (the limit is 20 s on Medium): the question counts as timed out, no extra time
+        later = time.time() + 25
+        quiz, _ = active_round.unpack(data, now_mono=time.monotonic(), now_wall=later)
+        from core import quiz as engine
+        self.assertGreaterEqual(engine.elapsed(quiz), 24)
+        engine.expire_if_due(quiz)
+        self.assertTrue(quiz["resolved"] and quiz["history"][-1]["timed_out"])
+
+    def test_outage_never_erases_the_saved_round(self):
+        table = FakeTable({})
+        at = self.visit(table)
+        self.start(at, count=10)
+        self.play(at, 4)
+        saved = json.loads(json.dumps(table.rows[USER["profile_id"]]))
+        table.fail_reads = True
+        down = self.visit(table)                                                      # Supabase unreachable
+        self.assertNotIn("Progress saved to your account", " ".join(c.value for c in down.caption))
+        down.button(key="nav_Quiz").click().run()
+        self.assertEqual(table.rows[USER["profile_id"]], saved)                       # nothing overwritten
+        table.fail_reads = False
+        back = self.visit(table)
+        self.assertTrue(back.session_state["round_waiting"])
+        self.assertEqual(back.session_state["quiz"]["index"], 4)
+
+    def test_broken_saved_round_is_ignored_safely(self):
+        from core import active_round
+        self.assertEqual(active_round.unpack({"v": 1, "current": {"questions": "x"}}), (None, {}))
+        self.assertEqual(active_round.unpack("garbage"), (None, {}))
+        table = FakeTable({USER["profile_id"]: {"points": 50, "active_round": {"v": 1, "current": {"index": 3}}}})
+        at = self.visit(table)
+        self.assertFalse(at.session_state.get("round_waiting", False))
+        self.assertEqual(at.session_state["points"], 50)
+        self.assertEqual([e.value for e in at.exception], [])

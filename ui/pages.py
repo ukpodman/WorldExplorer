@@ -332,6 +332,7 @@ def explore() -> None:
     selection = state.explore_selection()
     current = state.explore_country(selection)
     with st.container(key="explore_home"):
+        _continue_card("explore")
         showing_country = bool(current) and state.explore_detail_open()  # phones: one panel at a time
         stage_key = "explore_stage" if not selection else ("explore_stage_country" if showing_country else "explore_stage_list")
         with st.container(key=stage_key):  # the one exploration box: the map, or the countries, never both
@@ -592,6 +593,31 @@ QUIZ_ICONS = {
 }
 
 
+def _continue_card(key: str) -> None:
+    """ "Your quiz is waiting!" — after a refresh, a closed browser or a lost connection, the unfinished round saved
+    with the account is offered here (Explore and Quiz). Continuing restores it exactly; nothing is scored again."""
+    ss = st.session_state
+    q = ss.get("quiz")
+    if not (ss.get("round_waiting") and q and not q["finished"]):
+        return
+    s, mode = q["settings"], q.get("mode", "regular")
+    if mode in ("daily", "daily_replay"):
+        what = t("Daily challenge")
+    elif mode == "practice":
+        what = t("Practising mistakes")
+    else:
+        what = f"{t(s['category'])} · {t(s['difficulty'])}"
+    number = min(q["index"] + 1 + (1 if q["resolved"] else 0), len(q["questions"]))
+    title = e("Your quiz is waiting!")
+    progress = e("Question {n} of {total}", n=number, total=len(q["questions"]))
+    earned = e("{points} points earned so far", points="{:,}".format(q["score"]))
+    with st.container(key=f"{key}_continue", horizontal=True, vertical_alignment="center"):
+        html(f'<div class="continue-text"><b>🎮 {title}</b><span>{escape(what)} · {progress} · ⭐ {earned}</span></div>')
+        with st.container(key=f"{key}_continue_actions", horizontal=True):
+            st.button(t("Continue quiz"), key=f"{key}_continue_go", type="primary", on_click=state.continue_round)
+            st.button(t("Start a new quiz"), key=f"{key}_continue_new", on_click=state.review_new_quiz)
+
+
 def _daily_box(box_key: str, button_key: str) -> None:
     """Compact Daily Challenge card: title, status line and one Start / Continue / Replay button."""
     d = _daily_status()
@@ -646,7 +672,8 @@ def _setup() -> dict:
         html(f'<div class="setup-title"><b>{e("Set up your quiz")}</b>'
              f'<span>{e("Three choices, then play. Everything else is under Advanced.")}</span></div>')
         active = ss.quiz
-        if active and not active["finished"]:
+        _continue_card("setup")
+        if active and not active["finished"] and not ss.get("round_waiting"):
             if active.get("mode", "regular") == "regular":
                 st.info(t("You have a round in progress. Starting a new quiz replaces it; use “Return to current round” to continue it."))
             else:
@@ -692,10 +719,28 @@ def _setup() -> dict:
         elif round_size < count:
             st.info(t("This round will contain {n} questions, without repeating the same question.", n=round_size))
         with st.container(key="start_box"):
+            waiting = state.unfinished_regular_round()
             if st.button(t("Start quiz"), key="start_quiz", type="primary", width="stretch", disabled=not round_size,
                          icon=":material/play_arrow:"):
-                state.start_round(settings)
-                st.rerun()
+                if waiting is None:
+                    state.start_round(settings)
+                    st.rerun()
+                ss.confirm_new_quiz = True      # an unfinished round would be replaced: ask first
+            if waiting is not None and ss.get("confirm_new_quiz"):
+                with st.container(key="confirm_new"):
+                    n = waiting["index"] + 1 + (1 if waiting["resolved"] else 0)
+                    st.warning(t("Start a new quiz? Your unfinished quiz (question {n} of {total}) will end. The points "
+                                 "you earned in it stay in your total.", n=min(n, len(waiting["questions"])),
+                                 total=len(waiting["questions"])))
+                    yes, no = st.columns(2)
+                    if yes.button(t("Yes, start a new quiz"), key="confirm_new_yes", type="primary", width="stretch"):
+                        ss.confirm_new_quiz = False
+                        ss.round_waiting = False
+                        state.start_round(settings)
+                        st.rerun()
+                    if no.button(t("Keep my quiz"), key="confirm_new_no", width="stretch"):
+                        ss.confirm_new_quiz = False
+                        st.rerun()
             if ss.quiz and not ss.quiz["finished"]:
                 st.button(t("Return to current round"), width="stretch", on_click=state.close_setup, key="return_round")
         st.caption(t("Up to {n} questions · no repeated facts in the same round.", n=count))

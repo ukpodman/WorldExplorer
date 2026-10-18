@@ -58,6 +58,7 @@ def main() -> None:
     analytics.init_session()
     rewards_hooks.capture_referral()  # keeps a ?ref= invitation through Google sign-in
     accounts.restore_profile()
+    state.restore_active_round()  # an unfinished round saved with the account: offered as "Continue your quiz"
     rewards_hooks.after_sign_in()  # once per session; does nothing while the programme is off
     analytics.log_visit()  # once per session; only with the visitor's permission
     state.apply_pending_preferences()

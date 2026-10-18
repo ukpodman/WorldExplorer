@@ -1,15 +1,20 @@
-World Explorer V23 - fix quiz flash and slow page changes
-Based on GitHub production main f4fdf78 (Merge pull request #6). Copy each file to the same path in the repository.
+World Explorer V23 - unfinished quizzes are kept, and light/dark mode colours always match
+Based on GitHub production main 28cc56e (Merge pull request #7). Copy each file to the same path in the repository.
 
-app.py                       two page slots: the previous page is cleared as soon as the new page starts (no mixed pages)
-ui/pages.py                  quiz section: Next redraws only the quiz (one run per click), fixed positions for every part,
-                             the existing profile save also runs after answers in the quiz section
-ui/owner.py                  Pilot dashboard draws only the open top-level tab (same tabs, same owner-only check)
-assets/styles.css            category colours read from the category tag (the quiz section keeps one fixed name)
-tests/test_app.py            new tests: one question per Next, page slots
-tests/test_rewards_app.py    new test: only the open dashboard tab is drawn; helper opens the rewards tab
-tests/test_withdrawals_app.py, tests/test_founding50.py, tests/test_public_switch.py
-                             test helpers open the Rewards & Referral Management tab (as the owner does)
+ui/components.py          theme script: a comment contained "<img", so Streamlit's HTML cleaner dropped the whole
+                          script; the page then followed the device theme instead of the theme Streamlit shows
+core/active_round.py      NEW: saves/restores the unfinished round (exact questions, answers, score, streak, hints,
+                          settings; timed rounds keep counting while away); invalid saved data is ignored
+core/accounts.py          the unfinished round is saved in the same profile JSON and the same request as points
+                          (no new table, no migration, same server-only access)
+ui/state.py               restore once per session; Continue / Start a new quiz
+ui/pages.py               "Your quiz is waiting!" card (Explore, Quiz setup); confirmation before a new quiz
+                          replaces an unfinished one
+app.py                    calls the restore after the profile is loaded
+assets/styles.css         the card (theme colours only)
+data/translations.json    7 new texts in all five languages (all existing texts unchanged)
+tests/test_app.py         scripts must survive Streamlit's HTML cleaner
+tests/test_reliability.py resume in a new session, no double answers, confirmation, timed rounds, outage, bad data
 
-Not changed: quiz engine and scoring, daily challenges, hints, badges, Google sign-in, Supabase saving logic,
-Founding 50, rewards, withdrawals and payouts, database migrations, translations, .streamlit/config.toml.
+Not changed: quiz engine and scoring, hints, daily challenges, badges, Google sign-in, Founding 50, rewards,
+withdrawals and payouts, database schema and security, .streamlit/config.toml.

@@ -18,6 +18,7 @@ from core.data import (AREAS, COLLECTIONS, WORLD, COUNTRIES, DEFAULT_COLLECTION,
 from core.quiz import CATEGORIES, DIFFICULTIES, QUESTION_COUNTS, currency_label
 
 from . import music, owner, rewards_hooks, rewards_page, sound, state, world_map
+from . import school as school_ui
 from .components import e, hero, html, status_chip
 from .state import country_formatter, country_label, formatter, parts, t
 
@@ -498,9 +499,82 @@ def _source_lines(c: dict, leader: dict | None) -> None:
         st.markdown(f"[{t('Capital-role source')}]({c['capital_source']})")
 
 
+LEARN_TABS = {"world": "🌍 World Geography", "school": "📚 School Learning"}
+
+
+def _keep_learn_tab() -> None:
+    st.session_state.learn_tab_saved = st.session_state.get("learn_tab") or "world"
+
+
 def learn() -> None:
+    """Learn has two parts: 🌍 World Geography (the country collection) and 📚 School Learning (ui/school.py).
+    The choice is remembered for the visit; World Geography is the default."""
     hero("The country collection", "Get to know the world.",
          "Build your knowledge, one country at a time. The details make all the difference.", variant="compact")
+    ss = st.session_state
+    if ss.get("learn_tab") not in LEARN_TABS:
+        ss.learn_tab = ss.get("learn_tab_saved") if ss.get("learn_tab_saved") in LEARN_TABS else "world"
+    with st.container(key="learn_tabs"):
+        st.segmented_control(t("Learn"), list(LEARN_TABS), key="learn_tab", required=True, label_visibility="collapsed",
+                             format_func=lambda k: LEARN_TABS[k].split(" ", 1)[0] + " " + t(LEARN_TABS[k].split(" ", 1)[1]),
+                             on_change=_keep_learn_tab, width="stretch")
+    if ss.learn_tab == "school":
+        school_ui.render()
+        return
+    _world_learn()
+
+
+def _learn_search_pick(country_id: str) -> None:
+    ss = st.session_state
+    ss.learn_search = ""
+    if country_id not in state.learn_ids():
+        ss.learn_continent = ss.learn_continent_pick = "All"
+    state.learn(country_id)
+
+
+def _learn_continent_changed() -> None:
+    ss = st.session_state
+    ss.learn_continent = ss.get("learn_continent_pick") or "All"
+    ids = state.learn_ids()
+    if ss.get("learn_country") not in ids and ids:
+        ss.learn_country = ids[0]
+
+
+def _learn_finder() -> None:
+    """Phone-friendly finding: a search box (country, official name or capital) with tappable results, and continent
+    filter chips that scroll sideways on phones. The chips only narrow Learn's own list (and Previous / Next)."""
+    ss = st.session_state
+    scope = state.scoped_countries()
+    continents = [x for x in CONTINENTS_LIST if any(x in c["continents"] for c in scope)]
+    with st.container(key="learn_finder"):
+        query = st.text_input(t("Search countries or capitals"), key="learn_search", label_visibility="collapsed",
+                              placeholder=t("Search countries or capitals") + "…", icon=":material/search:")
+        needle = query.strip().casefold()
+        if needle:
+            found = [c for c in scope if any(needle in n.casefold() for n in
+                     [c["name"], t(c["name"]), c.get("official_name", "")] + [x["name"] for x in c["capitals"]])]
+            found.sort(key=lambda c: (not t(c["name"]).casefold().startswith(needle), t(c["name"])))
+            if not found:
+                st.caption(t("No country or capital matches your search."))
+            with st.container(key="learn_results"):
+                for c in found[:6]:
+                    capitals = " · ".join(x["name"] for x in c["capitals"])
+                    st.button(f'{t(c["name"])}' + (f" — {capitals}" if capitals else ""), key=f"learn_hit_{c['id']}",
+                              width="stretch", on_click=_learn_search_pick, args=(c["id"],))
+        if len(continents) > 1:
+            if ss.get("learn_continent") not in ["All"] + continents:
+                ss.learn_continent = "All"
+            if ss.get("learn_continent_pick") not in ["All"] + continents:
+                ss.learn_continent_pick = ss.learn_continent
+            st.pills(t("Filter by continent"), ["All"] + continents, key="learn_continent_pick", required=True,
+                     format_func=lambda x: t("All continents") if x == "All" else t(x), label_visibility="collapsed",
+                     on_change=_learn_continent_changed)
+        else:
+            ss.learn_continent = "All"
+
+
+def _world_learn() -> None:
+    _learn_finder()
     ids = state.learn_ids()
     requested = st.session_state.get("learn_country")
     if get_country(requested) and requested not in ids:

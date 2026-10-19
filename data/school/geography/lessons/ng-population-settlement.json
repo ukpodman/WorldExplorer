@@ -1,0 +1,451 @@
+{
+  "id": "ng-population-settlement",
+  "number": 4,
+  "title": "Population and Settlement",
+  "short": "Population and settlement",
+  "minutes": 35,
+  "syllabus": [
+    "WAEC Geography, Regional Geography of Nigeria: population; Part B: world population, settlement",
+    "NERDC-based schemes: Population of Nigeria; Population; Settlements; Settlement interactions; Town/Village"
+  ],
+  "objectives": [
+    "state Nigeria's population size and explain how it is measured;",
+    "describe and explain the distribution of population in Nigeria;",
+    "discuss the effects of rapid population growth and migration;",
+    "classify settlements by size, pattern and function, with Nigerian examples;",
+    "explain the problems of urbanisation and suggest solutions."
+  ],
+  "intro": [
+    "Nigeria has the largest population in Africa, and it is growing quickly. Where people live, why they live there and how settlements grow are central questions in human geography. This lesson connects population with the physical setting you have already studied and with the economic activities you will study next."
+  ],
+  "sections": [
+    {
+      "id": "size",
+      "title": "Population size and census",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "A **census** is an official count of all the people in a country at a particular time, together with information such as age, sex and occupation. In Nigeria censuses are conducted by the **National Population Commission (NPC)**."
+        },
+        {
+          "type": "list",
+          "items": [
+            "The **1991 census** counted about 89 million people.",
+            "The **2006 census** counted **140,431,790** people — the most recent census.",
+            "Since then the population has been **estimated**: United Nations estimates put it at about 228 million in 2023, and World Bank figures are similar or higher. Treat all figures after 2006 as estimates."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Nigeria's population is **youthful**: a large share — over 40 per cent by UN estimates — is under 15 years old. More than half of Nigerians are now estimated to live in urban areas. Accurate censuses are difficult because of the country's size, poor access to some rural areas, and disputes because population figures affect political representation and the sharing of revenue."
+        }
+      ]
+    },
+    {
+      "id": "distribution",
+      "title": "Distribution of population",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Population in Nigeria is **unevenly distributed**. **Population density** is the number of people per square kilometre of land."
+        },
+        {
+          "type": "figure",
+          "src": "nigeria_population",
+          "caption": "Simplified pattern of densely and sparsely populated areas.",
+          "credit": "Map data: Natural Earth (public domain). Areas generalised for learning."
+        },
+        {
+          "type": "cards",
+          "items": [
+            {
+              "title": "Densely populated",
+              "tone": "warn",
+              "text": "The south-west (Lagos, Ibadan and the Yoruba cities), the south-east (around Onitsha, Owerri and Aba) and the Kano–Katsina–Zaria area in the north."
+            },
+            {
+              "title": "Sparsely populated",
+              "tone": "teal",
+              "text": "Much of the Middle Belt, the Chad Basin in the north-east, parts of the Niger Delta swamps and rugged highland areas."
+            }
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Factors affecting distribution"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Physical factors**: fertile soils and reliable rainfall attract farmers; swamps, rugged relief and very dry areas discourage settlement; the presence of water supports towns; diseases such as those spread by the tsetse fly historically discouraged settlement in parts of the Middle Belt.",
+            "**Economic factors**: industries, ports, mining and trade attract people, for example Lagos, Port Harcourt and Kano.",
+            "**Historical and political factors**: old kingdoms and cities such as Kano, Ile-Ife and Benin became population centres; past slave raiding reduced population in parts of the Middle Belt; government decisions such as building Abuja created new centres."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "growth",
+      "title": "Growth, migration and their effects",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Nigeria's population grows mainly through **natural increase**: births are much higher than deaths. High fertility, early marriage, the value placed on large families and improved health care contribute to rapid growth."
+        },
+        {
+          "type": "cards",
+          "items": [
+            {
+              "title": "Possible advantages",
+              "tone": "ok",
+              "text": "A large labour force, a large home market for goods and services, and potential for innovation and economic growth if people are educated and employed."
+            },
+            {
+              "title": "Problems",
+              "tone": "warn",
+              "text": "Pressure on schools, hospitals, housing and jobs; a high dependency ratio; overcrowding in cities; pressure on land and forests."
+            }
+          ]
+        },
+        {
+          "type": "p",
+          "text": "**Migration** is the movement of people from one place to another to live or work. In Nigeria the most important type is **rural–urban migration**, as young people move to cities in search of jobs, education and better services (**pull factors**), leaving behind poverty, lack of amenities and limited farm work (**push factors**). Seasonal migration also occurs, for example when people from the north move south during the dry season."
+        }
+      ]
+    },
+    {
+      "id": "settlement",
+      "title": "Settlement types and patterns",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "A **settlement** is a place where people live and carry out their activities. Settlements are classified as **rural** (villages and hamlets, mostly engaged in farming, fishing or other primary activities) or **urban** (towns and cities, mostly engaged in manufacturing, trade and services)."
+        },
+        {
+          "type": "figure",
+          "src": "settlement_patterns",
+          "caption": "Three settlement patterns.",
+          "credit": "Diagram drawn for World Explorer."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Nucleated**: houses clustered together, often around a market, water source or road junction; common in many parts of Yorubaland and the north for security and shared services.",
+            "**Dispersed**: houses scattered among farms; common in parts of the south-east and on large farmlands.",
+            "**Linear**: houses built along a road, river, railway or coast."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "The **site** of a settlement is the land it is built on (for example a hilltop, river bank or island); its **situation** is its position in relation to the surrounding area (for example at a river crossing or on a major route). Lagos grew on an island and lagoon site with an excellent situation for a port."
+        }
+      ]
+    },
+    {
+      "id": "urban",
+      "title": "Functions of towns and urban problems",
+      "blocks": [
+        {
+          "type": "table",
+          "head": [
+            "Function",
+            "Examples"
+          ],
+          "rows": [
+            [
+              "Administrative",
+              "Abuja (federal capital), state capitals"
+            ],
+            [
+              "Commercial (trade)",
+              "Onitsha, Kano, Lagos, Aba"
+            ],
+            [
+              "Industrial",
+              "Lagos, Kano, Kaduna, Port Harcourt"
+            ],
+            [
+              "Port",
+              "Lagos, Port Harcourt, Warri, Calabar"
+            ],
+            [
+              "Educational",
+              "Nsukka, Zaria, Ile-Ife"
+            ],
+            [
+              "Mining",
+              "Jos (tin), Enugu (coal, historically)"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Settlements interact through trade, migration, transport, communication and services. Larger towns provide services such as hospitals, universities and specialised markets for the villages around them, forming a **settlement hierarchy** from hamlets to cities."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Urban problems**: housing shortages and slums (for example Makoko in Lagos), traffic congestion, unemployment, inadequate water and electricity, poor waste disposal and flooding.",
+            "**Possible solutions**: urban planning and housing schemes, better public transport, rural development to reduce migration, waste management and drainage improvement, and job creation."
+          ]
+        }
+      ]
+    }
+  ],
+  "definitions": [
+    [
+      "Census",
+      "An official count of the population of a country at a particular time."
+    ],
+    [
+      "Population density",
+      "The number of people living per square kilometre of land."
+    ],
+    [
+      "Natural increase",
+      "Births minus deaths in a population over a period."
+    ],
+    [
+      "Dependency ratio",
+      "The number of dependants (young and old) compared with the working-age population."
+    ],
+    [
+      "Migration",
+      "The movement of people from one place to another to live or work."
+    ],
+    [
+      "Urbanisation",
+      "The increase in the proportion of a country's population living in towns and cities."
+    ],
+    [
+      "Site and situation",
+      "Site: the land a settlement is built on. Situation: its position relative to its surroundings."
+    ]
+  ],
+  "worked": [
+    {
+      "title": "Calculating population density",
+      "problem": "A local government area has a population of 360,000 and an area of 1,200 km². Calculate its population density.",
+      "steps": [
+        "Population density = population ÷ area.",
+        "360,000 ÷ 1,200 = **300 people per km²**.",
+        "Always give the unit: people per square kilometre."
+      ],
+      "note": "Practice figures for the method."
+    }
+  ],
+  "exam_tips": [
+    "For distribution questions, describe the pattern first (where dense, where sparse, with named areas) before explaining factors.",
+    "Separate physical, economic and historical factors in your answer; examiners reward clear organisation.",
+    "State clearly that post-2006 population figures are estimates."
+  ],
+  "checks": [
+    {
+      "q": "When was Nigeria's most recent census and what population did it record?",
+      "a": "2006: 140,431,790 people."
+    },
+    {
+      "q": "Name two densely populated areas of Nigeria and give one reason for each.",
+      "a": "The south-west (trade, industry and Lagos's port) and the Kano area (fertile soils, long history of trade and city life). The south-east is also accepted (fertile land, long-settled farming communities)."
+    },
+    {
+      "q": "What is the difference between a settlement's site and its situation?",
+      "a": "Site is the land it is built on; situation is its position relative to the surrounding area, such as routes and rivers."
+    }
+  ],
+  "summary": [
+    "Nigeria's last census (2006) counted 140,431,790 people; recent estimates exceed 220 million. The population is youthful and increasingly urban.",
+    "Dense areas: the south-west, the south-east and the Kano–Katsina–Zaria area. Sparse areas: much of the Middle Belt and the Chad Basin.",
+    "Distribution reflects physical, economic and historical factors; rapid growth brings both opportunities and pressures.",
+    "Settlements are rural or urban, with nucleated, dispersed or linear patterns, and towns have administrative, commercial, industrial and other functions."
+  ],
+  "practice": [
+    {
+      "id": "po1",
+      "q": "Nigeria's 2006 census recorded a population of about",
+      "options": [
+        "88 million",
+        "140 million",
+        "180 million",
+        "228 million"
+      ],
+      "answer": 1,
+      "explanation": "The 2006 census counted 140,431,790 people.",
+      "section": "size"
+    },
+    {
+      "id": "po2",
+      "q": "Which body conducts censuses in Nigeria?",
+      "options": [
+        "INEC",
+        "National Population Commission",
+        "Central Bank of Nigeria",
+        "NIMET"
+      ],
+      "answer": 1,
+      "explanation": "The National Population Commission (NPC) is responsible for censuses.",
+      "section": "size"
+    },
+    {
+      "id": "po3",
+      "q": "Which of these areas is densely populated?",
+      "options": [
+        "The Chad Basin",
+        "The Kano–Katsina–Zaria area",
+        "The Middle Belt",
+        "The Mambilla Plateau"
+      ],
+      "answer": 1,
+      "explanation": "The area around Kano is one of Nigeria's most densely populated.",
+      "section": "distribution"
+    },
+    {
+      "id": "po4",
+      "q": "Population density is calculated as",
+      "options": [
+        "area ÷ population",
+        "population × area",
+        "population ÷ area",
+        "births − deaths"
+      ],
+      "answer": 2,
+      "explanation": "Density = number of people ÷ land area (people per km²).",
+      "section": "distribution"
+    },
+    {
+      "id": "po5",
+      "q": "Which is a pull factor in rural–urban migration?",
+      "options": [
+        "Lack of amenities in villages",
+        "Better job opportunities in cities",
+        "Poor harvests",
+        "Land shortage in villages"
+      ],
+      "answer": 1,
+      "explanation": "Pull factors attract people to the destination, such as jobs and services in cities.",
+      "section": "growth"
+    },
+    {
+      "id": "po6",
+      "q": "Houses clustered closely around a market or junction form a",
+      "options": [
+        "dispersed settlement",
+        "linear settlement",
+        "nucleated settlement",
+        "isolated settlement"
+      ],
+      "answer": 2,
+      "explanation": "A nucleated pattern has houses grouped together.",
+      "section": "settlement"
+    },
+    {
+      "id": "po7",
+      "q": "Houses built along a road or river form a",
+      "options": [
+        "linear pattern",
+        "radial pattern",
+        "dispersed pattern",
+        "nucleated pattern"
+      ],
+      "answer": 0,
+      "explanation": "Linear settlements stretch along a route or water body.",
+      "section": "settlement"
+    },
+    {
+      "id": "po8",
+      "q": "Nsukka and Zaria are best known for their",
+      "options": [
+        "mining function",
+        "port function",
+        "educational function",
+        "military function"
+      ],
+      "answer": 2,
+      "explanation": "Both are major university towns.",
+      "section": "urban"
+    },
+    {
+      "id": "po9",
+      "q": "The main way Nigeria's population grows is through",
+      "options": [
+        "immigration",
+        "natural increase",
+        "emigration",
+        "urbanisation"
+      ],
+      "answer": 1,
+      "explanation": "Births greatly exceed deaths, giving a high rate of natural increase.",
+      "section": "growth"
+    },
+    {
+      "id": "po10",
+      "q": "Which is a common problem of rapid urbanisation in Lagos?",
+      "options": [
+        "Too few people",
+        "Traffic congestion",
+        "Lack of markets",
+        "Too much farmland"
+      ],
+      "answer": 1,
+      "explanation": "Rapid growth causes congestion, slums and pressure on services.",
+      "section": "urban"
+    },
+    {
+      "id": "po11",
+      "q": "The land on which a settlement is built is its",
+      "options": [
+        "situation",
+        "site",
+        "hinterland",
+        "hierarchy"
+      ],
+      "answer": 1,
+      "explanation": "Site refers to the actual land; situation is the position relative to surroundings.",
+      "section": "settlement"
+    },
+    {
+      "id": "po12",
+      "q": "Which is one reason why parts of the Middle Belt are sparsely populated?",
+      "options": [
+        "Too much industry",
+        "Historical slave raiding and tsetse fly",
+        "Very high rainfall",
+        "Lack of land"
+      ],
+      "answer": 1,
+      "explanation": "Past slave raids and the tsetse fly historically discouraged settlement in parts of the Middle Belt.",
+      "section": "distribution"
+    }
+  ],
+  "structured": [
+    {
+      "q": "(a) Describe the distribution of population in Nigeria. (b) Explain three factors responsible for this distribution.",
+      "marks": 15,
+      "model": [
+        "(a) Population is unevenly distributed. Dense concentrations occur in the south-west (Lagos, Ibadan and other Yoruba cities), the south-east (around Onitsha, Owerri and Aba) and the Kano–Katsina–Zaria area in the north. Sparse areas include much of the Middle Belt, the Chad Basin in the north-east, swampy parts of the Niger Delta and rugged highlands.",
+        "(b) 1. Fertile soils and adequate rainfall support dense farming populations, as in the south-east and around Kano. 2. Economic opportunities in industry, trade and ports attract people to cities such as Lagos and Port Harcourt. 3. Historical factors: old cities and kingdoms such as Kano and Ile-Ife became centres of population, while slave raiding and the tsetse fly reduced population in parts of the Middle Belt."
+      ],
+      "points": [
+        "Up to 6 marks for (a), with named areas.",
+        "3 marks for each factor in (b), explained with an example."
+      ]
+    },
+    {
+      "q": "(a) What is rural–urban migration? (b) Explain two causes and two effects of rural–urban migration in Nigeria.",
+      "marks": 10,
+      "model": [
+        "(a) The movement of people from villages to towns and cities to live and work.",
+        "(b) Causes: people are attracted by jobs, education and better amenities in cities (pull factors), and pushed by poverty and lack of services in rural areas (push factors). Effects: overcrowding, slums and unemployment in cities; loss of young labour and reduced farm output in rural areas."
+      ],
+      "points": [
+        "(a) 2 marks; (b) 2 marks for each cause and effect."
+      ]
+    }
+  ],
+  "references": [
+    {
+      "title": "Demographics of Nigeria (2006 census, UN and World Bank estimates, age structure, urbanisation)",
+      "url": "https://en.wikipedia.org/wiki/Demographics_of_Nigeria"
+    }
+  ]
+}

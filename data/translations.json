@@ -4710,6 +4710,30 @@
    "Cambiar configuración del cuestionario",
    "更改测验设置",
    "Изменить параметры викторины"
+  ],
+  "World Geography": [
+   "Weltgeografie",
+   "Geografía mundial",
+   "世界地理",
+   "География мира"
+  ],
+  "School Learning": [
+   "Schulstoff",
+   "Aprendizaje escolar",
+   "学校学习",
+   "Школьное обучение"
+  ],
+  "Filter by continent": [
+   "Nach Kontinent filtern",
+   "Filtrar por continente",
+   "按大洲筛选",
+   "Фильтр по континенту"
+  ],
+  "No country or capital matches your search.": [
+   "Kein Land und keine Hauptstadt passt zu deiner Suche.",
+   "Ningún país ni capital coincide con tu búsqueda.",
+   "没有符合搜索的国家或首都。",
+   "Нет стран или столиц, соответствующих поиску."
   ]
  }
 }

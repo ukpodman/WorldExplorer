@@ -1,22 +1,33 @@
-World Explorer V23 - clearer answer colours, a floating Quiz settings panel and optional relaxing background music
-Based on GitHub production main 28199e0 (Merge pull request #8). Copy each file to the same path in the repository.
+World Explorer V24: Learn redesign (🌍 World Geography | 📚 School Learning) with Nigerian SSS Geography
+Based on GitHub production main 6857bd4 (Merge pull request #9). Copy each file to the same path in the repository.
+NOT merged, NOT deployed, no database change applied.
 
-ui/music.py               NEW: the background-music switch's browser player. Original music made in the browser
-                          (no audio files); off by default; one player per tab, kept outside Streamlit's redraws so
-                          reruns and Next never restart it; plays only on the Quiz page, pauses at once when leaving
-                          the page, switching tabs or backgrounding; respects browser autoplay rules
-ui/pages.py               neutral answer cards with labelled results ("✓ Correct answer", "✓ Your answer · Correct",
-                          "✕ Your answer · Wrong") and a colour key under the feedback; "Quiz settings" is now a
-                          compact floating panel (closed by default, opening it never reruns or restarts the quiz)
-                          holding the music switch and "Change quiz setup"; the switch is also under Advanced quiz
-                          settings before a round
-ui/state.py               music_on default: off
-core/accounts.py          music_on saved with the profile like the sound-effects setting (true/false only)
-assets/styles.css         answer colours (light and dark), result marks, the floating panel down to 320px wide
-data/translations.json    9 new texts in all five languages (all existing texts unchanged)
-tests/test_music.py       NEW: music off by default, one save per switch, round and its saving untouched, choice
-                          restored with Continue Quiz, guests, answer labels, player script survives the HTML cleaner
+ui/pages.py               Learn: two subtabs (World Geography default; the choice is remembered for the visit). World
+                          Geography gains a phone-friendly search (name, official name or capital) with tappable
+                          results and continent chips. All existing Learn controls and keys are unchanged.
+ui/state.py               learn_ids() follows Learn's continent chip (never empty); opening a country from Explore,
+                          neighbours or quiz review always returns to World Geography and clears a chip that hides it
+ui/school.py              NEW: School Learning screens (home, subject topics, lesson reader with contents / jump list,
+                          Previous/Next page and lesson, Mark complete, revision list, practice with the V23 answer
+                          cards, results, progress dashboard). English only. No rewards, points, badges or quiz code.
+core/school.py            NEW: subjects, curricula, lessons (validated), pages, reading progress, revision reasons,
+                          practice engine (10 of 12 questions, shuffled, double-answer safe)
+core/school_store.py      NEW: saving to the dedicated school_ tables, off unless [school] progress_storage =
+                          "supabase" AND the profile storage is configured
+data/school/              NEW: subjects.json (Geography available; Nigerian History, Citizenship and Heritage Studies
+                          planned), geography/curriculum.json (34 WAEC topics, 7 with lessons), geography/lessons/*.json
+                          (7 lessons), geography/figures/*.svg (9 diagrams), geography/CURRICULUM_ALIGNMENT.md
+tools/build_school_figures.py  NEW: rebuilds the diagrams from Natural Earth 1:10m (public domain)
+assets/styles.css         Learn subtabs and finder, School Learning styles, light and dark diagram colours, quiz answer
+                          card styles shared with School practice (the Quiz page's look is unchanged)
+data/translations.json    4 new texts in all five languages (World Geography, School Learning, continent filter, no
+                          search result). All existing texts are unchanged.
+tests/test_school.py      NEW: content, progress, practice, storage switch, Learn subtabs, search and filter, a guest
+                          flow with no points, and the migration on a local PostgreSQL
+supabase/school_learning_migration.sql  NEW, PROPOSED, NOT APPLIED: two dedicated tables, RLS on, server key only
+SCHOOL_LEARNING_SETUP.md  NEW: exact structure, security and the step-by-step migration plan for approval
+README.md, CHANGED_FILES.txt   documentation
 
-Not changed: quiz engine and scoring, hints, timer, daily challenges, badges, unfinished-quiz recovery, Google
-sign-in and profile names, Founding 50, rewards, withdrawals and payouts, database schema and security, Explore,
-Learn, Badges, .streamlit/config.toml.
+Not changed: quiz engine, scoring and Quiz V23 page, background music, Explore, Badges, Google sign-in, accounts and
+profile saving, Founding 50, referrals, rewards, withdrawals and payouts, existing database schema and SQL files,
+.streamlit/config.toml, secrets.

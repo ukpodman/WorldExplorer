@@ -1,0 +1,81 @@
+{
+  "subject": "geography",
+  "version": 1,
+  "status_note": "Topic structure checked against the WAEC (WASSCE) Geography syllabus as published in a third-party copy of the official text, and against schemes of work that describe themselves as following the NERDC senior secondary curriculum. The official NERDC curriculum document was not available to us. World Explorer is not approved or endorsed by WAEC or NERDC.",
+  "review_status": "pending",
+  "sections": [
+    {
+      "id": "practical",
+      "title": "Practical geography and map work",
+      "waec": "Part A: map work, statistical maps and diagrams, GIS (GIS is examined for Nigeria only)",
+      "topics": [
+        {"id": "map-reading", "title": "Map reading: scale, distance, reduction and enlargement"},
+        {"id": "relief-representation", "title": "Direction, bearing and representation of relief"},
+        {"id": "map-interpretation", "title": "Interpretation of physical and cultural features on maps"},
+        {"id": "statistical-maps", "title": "Statistical maps and diagrams"},
+        {"id": "gis-concepts", "title": "GIS: concepts and components"},
+        {"id": "gis-data", "title": "GIS data, satellite remote sensing and applications"}
+      ]
+    },
+    {
+      "id": "physical",
+      "title": "Physical geography",
+      "waec": "Part A: the earth in space, rocks, tectonic and denudational processes, landforms, weather and climate, climate change (Nigeria only), the environment",
+      "topics": [
+        {"id": "earth-in-space", "title": "The earth in space: solar system, rotation, revolution, latitude, longitude and time"},
+        {"id": "earth-structure-rocks", "title": "Structure of the earth and rocks"},
+        {"id": "internal-processes", "title": "Earth's internal processes: earth movements, vulcanicity and earthquakes"},
+        {"id": "landforms", "title": "Landforms: mountains, plains and lowlands"},
+        {"id": "weathering-mass-movement", "title": "Denudation: weathering and mass movement"},
+        {"id": "agents-of-erosion", "title": "Running water, groundwater, wind and waves: processes and landforms"},
+        {"id": "weather", "title": "Weather: elements, instruments and the weather station"},
+        {"id": "climate-classification", "title": "Climate: controls, types and classification (Greek and Köppen)"},
+        {"id": "climate-change", "title": "Climate change"},
+        {"id": "environmental-resources", "title": "Environmental resources: renewable and non-renewable"},
+        {"id": "environmental-problems", "title": "Environmental problems, hazards and conservation"}
+      ]
+    },
+    {
+      "id": "human",
+      "title": "Human and economic geography",
+      "waec": "Part B: world population, settlement, transportation, industry, trade, tourism",
+      "topics": [
+        {"id": "world-population", "title": "World population"},
+        {"id": "settlement", "title": "Settlement: rural and urban, functions and interactions"},
+        {"id": "transportation", "title": "Transportation"},
+        {"id": "industry", "title": "Industry"},
+        {"id": "trade", "title": "Trade"},
+        {"id": "tourism", "title": "Tourism"}
+      ]
+    },
+    {
+      "id": "regional",
+      "title": "Regional geography of Nigeria",
+      "waec": "Part C (Nigeria): broad outline, physical setting, population, resources, agriculture, transportation, communication, industry, trade, tourism, development and environmental issues, ECOWAS, geopolitical issues",
+      "topics": [
+        {"id": "ng-physical-setting", "title": "Location and Physical Setting of Nigeria", "lesson": true},
+        {"id": "ng-climate", "title": "Climate of Nigeria", "lesson": true},
+        {"id": "ng-vegetation-soils", "title": "Vegetation and Soils of Nigeria", "lesson": true},
+        {"id": "ng-population-settlement", "title": "Population and Settlement", "lesson": true},
+        {"id": "ng-resources-agriculture", "title": "Natural Resources and Agriculture", "lesson": true},
+        {"id": "ng-transport-industry", "title": "Transport, Communication and Industrial Development", "lesson": true},
+        {"id": "ng-trade-tourism-environment", "title": "Trade, Tourism and Environmental Issues", "lesson": true},
+        {"id": "ecowas", "title": "ECOWAS"},
+        {"id": "geopolitical-issues", "title": "Geopolitical issues"},
+        {"id": "local-geography", "title": "Local geography: your town or village and local government area"}
+      ]
+    },
+    {
+      "id": "fieldwork",
+      "title": "Fieldwork",
+      "waec": "Part D: one fieldwork study (land use, market survey, traffic flow, journey to work or local erosion), assessed in school",
+      "topics": [
+        {"id": "fieldwork", "title": "Planning and reporting a fieldwork study"}
+      ]
+    }
+  ],
+  "not_for_nigeria": [
+    "Elementary surveying, hydrosphere, vegetation and soil (as world topics) are marked in the WAEC syllabus for Ghana, Sierra Leone, Liberia and The Gambia. Nigeria's vegetation and soils are covered in Lesson 3 as part of Nigeria's physical setting.",
+    "The regional geography of Ghana, Sierra Leone, Liberia, Senegambia and the selected topics on Africa are examined for those countries, not for Nigerian candidates."
+  ]
+}

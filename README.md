@@ -67,10 +67,13 @@ core/
   rewards_store.py         rewards storage: Supabase REST (server only) and an in-memory preview store
   facts.py                 the sourced "Did you know?" fact after each answer
   learn.py                 Learn helpers: country stepping, neighbours by collection, size comparison
+  school.py                School Learning content, reading progress and topic practice (pure Python)
+  school_store.py          School Learning saved progress (dedicated tables; off until approved, see SCHOOL_LEARNING_SETUP.md)
 ui/
   state.py                 session state and round callbacks
   components.py            header, hero, settings drawer (profile, sign-in help, places, sound)
-  pages.py                 Explore, Learn, Quiz, Badges
+  pages.py                 Explore, Learn (🌍 World Geography | 📚 School Learning), Quiz, Badges
+  school.py                School Learning screens: home, topics, lesson reader, practice, progress
   world_map.py             interactive continent map on Explore (custom component, bundled outlines)
   owner.py                 private owner dashboard (server-side owner check)
   owner_rewards.py         owner "💰 Rewards & Referral Management" tab
@@ -83,6 +86,8 @@ data/
   photos.json              curated destination photos with licences
   translations.json        interface strings for every language
   reference/               UN reference list, corrections, carried-over facts, coverage report
+  school/                  School Learning: subjects.json, geography/curriculum.json, lessons/*.json, figures/*.svg,
+                           CURRICULUM_ALIGNMENT.md (English only; educational review pending)
 assets/
   styles.css               all styling (palette and accessibility notes at the top)
   flags.json               244 flag images (WebP, base64) in one file
@@ -151,7 +156,8 @@ Country data: [mledoze/countries](https://github.com/mledoze/countries), ODbL 1.
 database in `data/` is distributed under the same licence. Flags come from the same repository
 but are not covered by the ODbL (see `COVERAGE.md`). Photo credits are listed in the app and in
 `data/photos.json`. Landmarks link to the UNESCO World Heritage List. Map outlines: [Natural Earth](https://www.naturalearthdata.com/)
-(public domain; "Made with Natural Earth"), simplified for the Explore map.
+(public domain; "Made with Natural Earth"), simplified for the Explore map. School Learning diagrams are drawn by
+`tools/build_school_figures.py` from Natural Earth 1:10m countries, states, rivers and lakes (public domain).
 
 ## Scoring rules
 
@@ -185,6 +191,22 @@ accounts). After uploading:
 4. In Supabase (Table editor → `world_explorer_profiles`) your row's `profile` JSON should now contain a
    `records` entry next to `points`, `rounds_finished` and `stats`. Older rows without it keep working.
 5. If the footer says "Saved profile not reachable yet", nothing is written until the profile has loaded.
+
+## Learn V24: 🌍 World Geography | 📚 School Learning (2026-10-19)
+
+* **World Geography** (default): the country collection, plus a phone-friendly search (country, official name or
+  capital, with tappable results) and continent chips that also narrow Previous / Next.
+* **School Learning**: Nigerian SSS Geography, organised by the WAEC syllabus. Seven full lessons on the regional
+  geography of Nigeria, each with objectives, notes, theme-adaptive maps and charts, definitions, worked examples, exam
+  tips, quick checks, a summary, exam-style questions with model answers, references and 10-question practice. Reading
+  position, Completed (after the last page) and the revision list are separate. English only. Marked "Educational
+  review pending". Not approved or endorsed by WAEC or NERDC (see `data/school/geography/CURRICULUM_ALIGNMENT.md`).
+* Guests can read and practise with no account. Saving progress to accounts uses two new dedicated tables. These are
+  **not created yet** and await approval: see `SCHOOL_LEARNING_SETUP.md`.
+* School Learning never gives points, badges, streaks, rewards or money, and it is separate from the World Geography
+  Quiz.
+* Add a subject or lesson: add a JSON file under `data/school/` (see `core/school.py` for the schema). No interface
+  code changes are needed.
 
 ## Phones: two-row header, account menu and map first (2026-10-14)
 

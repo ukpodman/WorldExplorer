@@ -88,13 +88,25 @@ def navigate(page: str) -> None:
 
 
 def learn(country_id: str) -> None:
-    st.session_state.learn_country = country_id
+    """Open a country in Learn → World Geography (clearing Learn's continent chip if it would hide the country)."""
+    ss = st.session_state
+    ss.learn_country = country_id
+    country = get_country(country_id)
+    if (ss.get("learn_continent") or "All") != "All" and (not country or ss.learn_continent not in country["continents"]):
+        ss.learn_continent = ss.learn_continent_pick = "All"
+    ss.learn_tab = ss.learn_tab_saved = "world"
     navigate("Learn")
 
 
 def learn_ids() -> list[str]:
-    """Country order for Learn: the exploration scope, in the same order as the dropdown."""
-    return [c["id"] for c in scoped_countries()]
+    """Country order for Learn: the exploration scope, in the same order as the dropdown, narrowed by Learn's own
+    continent chips when one is chosen (never empty: an unmatched filter shows the whole scope)."""
+    places = scoped_countries()
+    continent = st.session_state.get("learn_continent") or "All"
+    if continent != "All":
+        narrowed = [c for c in places if continent in c["continents"]]
+        places = narrowed or places
+    return [c["id"] for c in places]
 
 
 def learn_step(delta: int) -> None:

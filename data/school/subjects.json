@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "note": "School Learning subjects. Content is English only. Status 'available' subjects have a curriculum file; 'planned' subjects are shown as coming later.",
+  "subjects": [
+    {"id": "geography", "title": "Geography", "level": "SSS 1–3 · WAEC preparation", "status": "available",
+     "summary": "Physical, human and regional geography, starting with the regional geography of Nigeria.",
+     "curriculum": "geography/curriculum.json", "colour": "#1F5F7A", "icon": "globe"},
+    {"id": "nigerian-history", "title": "Nigerian History", "level": "Primary–JSS 3 (compulsory since 2025/26)", "status": "planned",
+     "summary": "Planned as a later subject, in the same lesson format.", "colour": "#7A3E5C", "icon": "book"},
+    {"id": "citizenship-heritage", "title": "Citizenship and Heritage Studies", "level": "SSS (new subject from 2025/26)", "status": "planned",
+     "summary": "Planned as a later subject, in the same lesson format.", "colour": "#3F7A55", "icon": "shield"}
+  ]
+}

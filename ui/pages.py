@@ -17,7 +17,7 @@ from core.data import (AREAS, COLLECTIONS, WORLD, COUNTRIES, DEFAULT_COLLECTION,
                        get_countries, get_country, load_political_records)
 from core.quiz import CATEGORIES, DIFFICULTIES, QUESTION_COUNTS, currency_label
 
-from . import owner, rewards_hooks, rewards_page, sound, state, world_map
+from . import music, owner, rewards_hooks, rewards_page, sound, state, world_map
 from .components import e, hero, html, status_chip
 from .state import country_formatter, country_label, formatter, parts, t
 
@@ -702,6 +702,7 @@ def _setup() -> dict:
                 ss.filter_country = "all"
             country_id = two.selectbox(t("Country"), ids, key="filter_country",
                                        format_func=country_formatter(t("All Countries")))
+            _music_switch("setup")
         state.remember_quiz_filters()
 
         settings = {"continent": continent, "country_id": country_id, "category": category, "difficulty": difficulty,
@@ -842,7 +843,9 @@ def _feedback(quiz, q, record, fresh: bool) -> tuple[str, str]:
                  + (f'<span class="feedback-chips">{badge}</span>' if badge else "") + '</div></div>')
     body_html = (f'<div class="feedback feedback-{tone} feedback-body">'
                  f'<p class="feedback-explain">{escape(parts(q["explanation"]))} {source}</p>{fact_html}'
-                 + "".join(f'<p class="feedback-note">{n}</p>' for n in notes) + "</div>")
+                 + "".join(f'<p class="feedback-note">{n}</p>' for n in notes)
+                 + f'<p class="answer-key"><span class="key-ok" aria-hidden="true">✓</span>{e("Solid green border = correct answer")}'
+                   f'<span class="key-bad" aria-hidden="true">✕</span>{e("Dashed red border = wrong answer")}</p></div>')
     return head_html, body_html
 
 
@@ -891,9 +894,10 @@ def _active_round() -> None:
             if q.get("flag"):
                 with st.container(key="quiz_flag"):
                     _flag(get_country(q["flag"]), 360, t("Flag to identify. No text description is available for flag images."))
-        # Four colourful answer cards (A rose, B amber, C mint, D lavender). The colour belongs to the position on
-        # screen, never to the answer: the engine shuffles the choices. Two per row on wider screens, one column on
-        # phones (CSS). After answering, the right answer and your answer are marked with a symbol and words.
+        # Four neutral answer cards; only the letter badge has a colour (blue, violet, amber, slate: never red or
+        # green, so no card looks right or wrong before answering). Two per row on wider screens, one column on
+        # phones (CSS). After answering, only the right answer (green, solid border, ✓ and a label) and a wrong
+        # choice (red, dashed border, ✕ and a label) keep colour; the others fade.
         with st.container(key="answers_grid"):
             for row in (0, 2):
                 if row >= len(q["choices"]):   # True/False: the second row's slot is emptied (no leftover row)
@@ -903,9 +907,10 @@ def _active_round() -> None:
                     pos = q["choices"].index(choice)
                     style, label = "neutral_answer", t(choice)
                     if quiz["resolved"] and choice == q["answer"]:
-                        style, label = "correct_answer", f"✓ {t(choice)} — {t('Correct answer')}"
+                        tag = "✓ " + (t("Your answer · Correct") if choice == quiz["selected"] else t("Correct answer"))
+                        style, label = "correct_answer", f"{t(choice)} `{tag}`"
                     elif quiz["resolved"] and choice == quiz["selected"]:
-                        style, label = "wrong_answer", f"✕ {t(choice)} — {t('Your answer')}"
+                        style, label = "wrong_answer", f"{t(choice)} `✕ {t('Your answer · Wrong')}`"
                     elif choice in quiz["hidden_options"]:
                         style, label = "hidden_answer", t("Removed by hint")
                     if fresh and style in ("correct_answer", "wrong_answer"):
@@ -1183,8 +1188,30 @@ def _results(quiz) -> None:
                 _review_entry(i, record)
 
 
+def _music_changed(where: str) -> None:
+    ss = st.session_state
+    ss.music_on = bool(ss.get(f"music_switch_{where}"))
+    ss.music_token = ss.get("music_token", 0) + 1
+
+
+@st.fragment
+def _music_switch(where: str) -> None:
+    """The background-music switch. A partial redraw: switching it never reruns the page or the question."""
+    ss = st.session_state
+    key = f"music_switch_{where}"
+    ss[key] = music.enabled()
+    st.toggle(t("Relaxing background music"), key=key, on_change=_music_changed, args=(where,),
+              help=t("Soft, calm music while you play. Off by default; plays only on the Quiz page and pauses when you leave it or switch apps."))
+    token = ss.get("music_token", 0)
+    if token and ss.get("music_told") != token:
+        ss.music_told = token
+        music.tell_player(ss.music_on, token)
+        accounts.save_profile()   # the existing save: one write, only because the choice changed
+
+
 def quiz() -> None:
     current = st.session_state.quiz
+    music.player()
     _quiz_top()
     if not current or st.session_state.show_setup:
         # Before a round: the compact setup on the left, a welcoming start panel on the right (no question yet).
@@ -1210,8 +1237,15 @@ def quiz() -> None:
                 heading = e("Current quiz")
                 line = f'{escape(label)} · {e(s["difficulty"])} · {e(s["category"])} · ' + (e("Timed") if s["timer"] else e("Untimed"))
             html(f'<div class="round-line"><span class="round-label">{heading}</span><span class="round-summary">{line}</span></div>')
-            st.button(t("Quiz settings"), key="quiz_settings", on_click=state.open_setup, icon=":material/tune:",
-                      help=t("Opens quiz setup. Your current round is kept until you start a new one."))
+            # A compact floating panel, closed by default. Opening and closing it happen in the browser only (no
+            # rerun), so the round is never redrawn or restarted by it.
+            with st.popover(t("Quiz settings"), icon=":material/tune:", key="quiz_settings_menu"):
+                html(f'<div class="pop-head"><b>{e("Quiz settings")}</b><button type="button" class="we-pop-close" '
+                     f'aria-label="{e("Close quiz settings")}">✕</button></div>'
+                     f'<p class="pop-note">{e("Opening or closing this panel never restarts your quiz.")}</p>')
+                _music_switch("play")
+                st.button(t("Change quiz setup"), key="quiz_settings", on_click=state.open_setup, icon=":material/tune:",
+                          width="stretch", help=t("Opens quiz setup. Your current round is kept until you start a new one."))
         if current["finished"]:
             _results(current)
         else:

@@ -33,7 +33,7 @@ from .i18n import LANGUAGES
 PROFILE_KEYS = ("profile_name", "profile_photo", "app_language", "scope_mode", "scope_continent",
                 "scope_country", "scope_collection", "points", "rounds_finished", "recent", "recent_facts",
                 "sound_enabled", "sound_volume", "stats", "records", "size_reference", "daily", "mistakes",
-                "transfers")
+                "transfers", "music_on")
 SCOPE_MODES = ("All countries", "One continent", "One country")
 PHOTO_PREFIX = "data:image/jpeg;base64,"
 MAX_PHOTO_CHARS = 500_000
@@ -71,7 +71,7 @@ def sanitize_profile(values) -> dict:
             ok = v in AREAS
         elif key == "scope_collection":
             ok = v in COLLECTIONS
-        elif key == "sound_enabled":
+        elif key in ("sound_enabled", "music_on"):
             ok = isinstance(v, bool)
         elif key == "sound_volume":
             ok = isinstance(v, int) and not isinstance(v, bool) and 0 <= v <= 100

@@ -4656,6 +4656,60 @@
    "¿Empezar un quiz nuevo? Tu quiz sin terminar (pregunta {n} de {total}) se cerrará. Los puntos que ganaste en él se quedan en tu total.",
    "要开始新的测验吗？你未完成的测验（第 {n} 题，共 {total} 题）将结束。其中已获得的分数会保留在你的总分中。",
    "Начать новую викторину? Незавершённая викторина (вопрос {n} из {total}) будет завершена. Заработанные в ней очки останутся в вашем итоге."
+  ],
+  "Your answer · Correct": [
+   "Deine Antwort · Richtig",
+   "Tu respuesta · Correcta",
+   "你的答案 · 正确",
+   "Ваш ответ · Верно"
+  ],
+  "Your answer · Wrong": [
+   "Deine Antwort · Falsch",
+   "Tu respuesta · Incorrecta",
+   "你的答案 · 错误",
+   "Ваш ответ · Неверно"
+  ],
+  "Solid green border = correct answer": [
+   "Durchgehender grüner Rand = richtige Antwort",
+   "Borde verde continuo = respuesta correcta",
+   "绿色实线边框 = 正确答案",
+   "Сплошная зелёная рамка = правильный ответ"
+  ],
+  "Dashed red border = wrong answer": [
+   "Gestrichelter roter Rand = falsche Antwort",
+   "Borde rojo discontinuo = respuesta incorrecta",
+   "红色虚线边框 = 错误答案",
+   "Пунктирная красная рамка = неверный ответ"
+  ],
+  "Close quiz settings": [
+   "Quiz-Einstellungen schließen",
+   "Cerrar ajustes del cuestionario",
+   "关闭测验设置",
+   "Закрыть настройки викторины"
+  ],
+  "Opening or closing this panel never restarts your quiz.": [
+   "Das Öffnen oder Schließen dieses Bereichs startet dein Quiz nie neu.",
+   "Abrir o cerrar este panel nunca reinicia tu cuestionario.",
+   "打开或关闭此面板不会重新开始你的测验。",
+   "Открытие или закрытие этой панели никогда не перезапускает викторину."
+  ],
+  "Relaxing background music": [
+   "Entspannende Hintergrundmusik",
+   "Música de fondo relajante",
+   "舒缓的背景音乐",
+   "Расслабляющая фоновая музыка"
+  ],
+  "Soft, calm music while you play. Off by default; plays only on the Quiz page and pauses when you leave it or switch apps.": [
+   "Sanfte, ruhige Musik beim Spielen. Standardmäßig aus; läuft nur auf der Quiz-Seite und pausiert, wenn du sie verlässt oder die App wechselst.",
+   "Música suave y tranquila mientras juegas. Desactivada por defecto; solo suena en la página del cuestionario y se pausa al salir o cambiar de aplicación.",
+   "游戏时播放轻柔舒缓的音乐。默认关闭；仅在测验页面播放，离开页面或切换应用时暂停。",
+   "Мягкая спокойная музыка во время игры. По умолчанию выключена; звучит только на странице викторины и ставится на паузу, когда вы уходите со страницы или переключаете приложение."
+  ],
+  "Change quiz setup": [
+   "Quiz-Einrichtung ändern",
+   "Cambiar configuración del cuestionario",
+   "更改测验设置",
+   "Изменить параметры викторины"
   ]
  }
 }

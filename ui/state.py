@@ -22,7 +22,7 @@ DEFAULTS = {
     "scope_mode": "All countries", "scope_continent": "World", "scope_country": "all",
     "scope_collection": DEFAULT_COLLECTION,
     "points": 0, "rounds_finished": 0, "recent": [], "recent_facts": [],
-    "sound_enabled": False, "sound_volume": 40,
+    "sound_enabled": False, "sound_volume": 40, "music_on": False,
     "quiz": None, "quiz_serial": 0, "show_setup": False, "review_mode": "missed",
     "explore_page": 0, "profile_save_error": False, "size_reference": "",
 }

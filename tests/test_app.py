@@ -1025,7 +1025,8 @@ class ContinentMapTests(unittest.TestCase):
             at.button(key=self.btn(continent)).click().run()
             self.assertEqual(at.session_state["explore_selected"], continent)
             self.assertEqual(at.session_state["page"], "Explore")
-            self.assertNotIn(self.btn(continent), [b.key for b in at.button])      # the browser replaced the map view
+            # Project Atlas: the map and its pills stay in the panel; the open continent's pill is marked
+            self.assertEqual(at.button(key=self.btn(continent)).proto.type, "primary")
             heading = next(m.value for m in at.markdown if 'class="continent-title"' in m.value)
             self.assertIn(continent, heading)
             current = at.session_state["quiz"]
@@ -1235,8 +1236,11 @@ class ContinentMapTests(unittest.TestCase):
         import inspect
         from ui import pages
         src = inspect.getsource(pages.explore)
-        first_map, pills, bar = (src.find("world_map.render("), src.find("_continent_buttons()"), src.find("_explore_topbar(d)"))
-        self.assertTrue(0 <= first_map < pills < bar, (first_map, pills, bar))     # nothing above the map
+        # Project Atlas: the heading (title + search) comes first, then the map, its pills, and the summary line
+        heading, first_map, pills, bar = (src.find("_explore_heading("), src.find("_explore_map("), src.find("_continent_buttons()"),
+                                          src.find("_explore_topbar(d)"))
+        self.assertTrue(0 <= heading < first_map < pills < bar, (heading, first_map, pills, bar))
+        self.assertIn("world_map.render(", inspect.getsource(pages._explore_map))
         self.assertNotIn("home-welcome", src)                                    # no decorative banner
         at = self.new()
         summary = self.summary(at)
@@ -1330,6 +1334,48 @@ class ContinentMapTests(unittest.TestCase):
         self.assertIn("east", world_map.SPLIT)
         self.assertIn("we-east", world_map.JS)                              # the eastern part is drawn as Asia
         self.assertIn('["Asia", "url(#we-east)"]', world_map.JS)
+
+    # ---- Project Atlas (Premium Digital Atlas V2) Explore
+    def test_heading_search_opens_all_countries_filtered(self):
+        at = self.new()
+        self.assertTrue(any('class="atlas-title"' in m.value and "Where would you like to go?" in m.value for m in at.markdown))
+        at.text_input(key="explore_find").input("Bern").run()
+        ss = at.session_state
+        self.assertEqual((ss["explore_selected"], ss["explore_search"], ss["explore_page"]), ("World", "Bern", 0))
+        self.assertEqual([b.key for b in at.button if b.key and b.key.startswith("discover_")], ["discover_CHE"])
+        self.assertNotIn("explore_find", [x.key for x in at.text_input])       # the list has its own search now
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_continent_keeps_the_map_in_the_panel_and_zooms_to_it(self):
+        from ui import world_map
+        seen = []
+        real = world_map.render
+        with mock.patch.object(world_map, "render", side_effect=lambda *a, **k: (seen.append(k), real(*a, **k))[1]):
+            at = self.new()
+            at.button(key=self.btn("Africa")).click().run()
+        self.assertFalse(seen[-1]["hidden"], "the map must stay visible while the countries are shown")
+        self.assertEqual(seen[-1]["focus"], "Africa")
+        self.assertIn("Africa", world_map.FOCUS_BOXES)
+        self.assertEqual(len([b for b in at.button if b.key and b.key.startswith("discover_")]), 10)
+        self.assertEqual([e.value for e in at.exception], [])
+
+    def test_every_country_row_shows_its_flag_left_of_the_name(self):
+        at = self.new(explore_selected="Europe")
+        rows = [m.value for m in at.markdown if 'class="row-copy"' in m.value]
+        self.assertEqual(len(rows), 10)
+        for row in rows:
+            self.assertLess(row.index('class="row-flag"'), row.index('class="row-name"'), row[:120])
+            self.assertIn('src="data:image/webp;base64,', row)
+
+    def test_chosen_country_takes_the_lists_place(self):
+        at = self.new(explore_selected="Africa")
+        at.button(key="discover_NGA").click().run()
+        self.assertTrue(at.session_state["explore_detail_open"])
+        self.assertTrue(any('class="detail-name"' in m.value for m in at.markdown))
+        at.button(key="country_back").click().run()
+        self.assertFalse(at.session_state["explore_detail_open"])
+        self.assertEqual(at.button(key="discover_NGA").proto.type, "primary")
+        self.assertEqual([e.value for e in at.exception], [])
 
 
 @unittest.skipIf(AppTest is None, "streamlit is not installed")

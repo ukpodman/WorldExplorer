@@ -12,3 +12,7 @@ textColor = "#E8EDF2"
 
 [client]
 toolbarMode = "viewer"
+
+[server]
+# Project Atlas: serves ./static (the self-hosted Source Serif 4 heading font, SIL OFL) at app/static/. No remote fonts.
+enableStaticServing = true

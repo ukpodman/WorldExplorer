@@ -1013,9 +1013,7 @@ html[data-we-theme="dark"] .stApp :is(button:focus-visible, a:focus-visible, inp
   .st-key-continent_buttons button p { font-size:.86rem !important; }
   .st-key-stage_body [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"]) { flex-direction:column !important; gap:0 !important; }
   .st-key-stage_body [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"]) > [data-testid="stColumn"] { width:100% !important; flex:1 1 auto !important; min-width:0 !important; }
-  /* one panel at a time inside the box */
-  .st-key-explore_stage_list [data-testid="stColumn"]:has(.st-key-stage_detail) { display:none !important; }
-  .st-key-explore_stage_country [data-testid="stColumn"]:has(.st-key-stage_list) { display:none !important; }
+  /* one panel at a time: see assets/atlas.css (the country takes the list's place at every width) */
   .st-key-stage_detail { border-left:0; padding:4px !important; }
   .stApp .detail-name { font-size:1.3rem !important; }
   .detail-facts { grid-template-columns:repeat(2,minmax(0,1fr)); }

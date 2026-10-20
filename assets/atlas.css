@@ -1,0 +1,119 @@
+/* =====================================================================================================================
+   Project Atlas — Premium Digital Atlas V2, Explore page (layer loaded after styles.css).
+   Colours come from the existing tokens (navy, teal, ivory, gold; redefined for dark mode in styles.css).
+   Breakpoints: > 900 px map and list side by side · <= 900 px stacked (map, pills, list) · <= 380 px compact.
+   ===================================================================================================================== */
+@font-face { font-family:"Source Serif 4"; font-weight:600; font-style:normal; font-display:swap;
+  src:url("app/static/fonts/SourceSerif4-Semibold.woff2") format("woff2"); }
+:root { --serif:"Source Serif 4", Georgia, "Times New Roman", serif; }
+
+/* ---------- heading: overline, atlas title, search ---------- */
+.st-key-explore_heading { justify-content:space-between; align-items:flex-end; gap:12px 24px !important; flex-wrap:wrap !important; padding:2px 2px 0; }
+.st-key-explore_heading > :first-child { flex:1 1 320px !important; min-width:0 !important; width:auto !important; }
+.st-key-explore_heading > .stTextInput, .st-key-explore_heading > [data-testid="stElementContainer"]:has(.stTextInput) { flex:0 1 380px !important; width:auto !important; min-width:220px; }
+.atlas-head { display:flex; flex-direction:column; gap:4px; }
+.atlas-overline { font-size:.74rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--gold-text); }
+.stApp h1.atlas-title { font-family:var(--serif) !important; font-weight:600 !important; font-size:clamp(1.6rem, 1.05rem + 1.9vw, 2.45rem) !important;
+  line-height:1.12; letter-spacing:-.015em; color:var(--navy); margin:0 !important; padding:0 !important; }
+.atlas-head [data-testid="stHeaderActionElements"] { display:none !important; }
+.st-key-explore_find [data-testid="stTextInputRootElement"] { min-height:48px; border-radius:12px !important; }
+.st-key-explore_find input { font-size:1rem !important; }
+
+/* ---------- the panel ---------- */
+:is(.st-key-explore_stage, .st-key-explore_stage_list, .st-key-explore_stage_country) { padding:14px !important; border-radius:20px; }
+.st-key-stage_map { gap:12px !important; }
+.st-key-world_map_frame { border-radius:16px; }
+/* continent open: map beside the list; the map column stays in view while the list scrolls */
+:is(.st-key-explore_stage_list, .st-key-explore_stage_country) [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"] .st-key-stage_map) { align-items:flex-start; gap:20px; }
+@media (min-width:901px) {
+  :is(.st-key-explore_stage_list, .st-key-explore_stage_country) [data-testid="stColumn"]:has(> [data-testid="stVerticalBlock"] > .st-key-stage_map),
+  :is(.st-key-explore_stage_list, .st-key-explore_stage_country) [data-testid="stColumn"]:has(.st-key-stage_map) {
+    position:sticky; top:calc(var(--toolbar-h) + 12px); align-self:flex-start; }
+}
+
+/* ---------- continent pills (the map's key); the open one is navy ---------- */
+.st-key-continent_buttons { justify-content:flex-start; }
+.st-key-explore_stage .st-key-continent_buttons { justify-content:safe center; }
+/* wider than a phone: the pills wrap onto a second line instead of hiding behind a sideways scroll */
+@media (min-width:701px) { .stApp .st-key-stage_map .st-key-continent_buttons { flex-wrap:wrap !important; overflow:visible !important; }
+  .stApp :is(.st-key-explore_stage_list, .st-key-explore_stage_country) .st-key-continent_buttons { justify-content:flex-start; } }
+.stApp .st-key-continent_buttons button[kind="primary"] { background:var(--ink) !important; border:1px solid var(--ink) !important; color:#fff !important; }
+.stApp .st-key-continent_buttons button[kind="primary"] p, .stApp .st-key-continent_buttons button[kind="primary"] [data-testid="stIconMaterial"] { color:#fff !important; }
+.stApp .st-key-continent_buttons button[kind="primary"]::before { box-shadow:0 0 0 2px rgba(255,255,255,.85); }
+html[data-we-theme="dark"] .stApp .st-key-continent_buttons button[kind="primary"] { background:#F7F4ED !important; border-color:#F7F4ED !important; }
+html[data-we-theme="dark"] .stApp .st-key-continent_buttons button[kind="primary"] :is(p, [data-testid="stIconMaterial"]) { color:#17283B !important; }
+
+/* ---------- the list side ---------- */
+.st-key-stage_panel { gap:10px !important; min-width:0; }
+.st-key-stage_list, .st-key-stage_detail { gap:10px !important; border:0 !important; padding:0 !important; height:auto; }
+/* one at a time: the chosen country takes the list's place (every width) */
+.st-key-explore_stage_country .st-key-stage_list { display:none !important; }
+.st-key-explore_stage_list .st-key-stage_detail { display:none !important; }
+.st-key-country_back { display:block !important; }
+.st-key-country_back button { color:var(--teal-dark) !important; }
+.st-key-country_back button p { color:var(--teal-dark) !important; }
+
+.st-key-browser_head { padding:0 0 2px; }
+.stApp .stage-title .continent-title { font-family:var(--serif) !important; font-weight:600 !important; font-size:1.45rem !important; }
+.st-key-continent_overview { gap:12px !important; flex-wrap:wrap !important; align-items:center; background:var(--surface-2);
+  border:1px solid var(--line); border-radius:14px; padding:10px 12px !important; }
+.st-key-continent_overview > :first-child { flex:1 1 200px !important; min-width:0 !important; width:auto !important; }
+.st-key-continent_overview .st-key-continent_quiz { flex:0 0 auto; width:auto !important; }
+.st-key-continent_overview .st-key-continent_quiz button { min-height:44px !important; padding:0 16px !important; width:auto !important; }
+.overview-strip .detail-empty { display:block; text-align:left; padding:0; }
+.overview-strip .detail-empty p { margin:0; max-width:none; font-size:.9rem; }
+.overview-strip .overview-badge { margin:0; padding:0; border:0; background:transparent; max-width:none; align-items:stretch; gap:4px;
+  display:grid; grid-template-columns:1fr auto; column-gap:8px; }
+.overview-strip .overview-badge > b { font-size:.92rem; }
+.overview-strip .overview-badge .award-state { justify-self:end; }
+.overview-strip .overview-badge .head-track, .overview-strip .overview-badge .overview-progress { grid-column:1 / -1; }
+.overview-strip .overview-progress { font-size:.8rem; }
+
+.st-key-explore_rows { border-top:0; gap:6px !important; }
+[class*="st-key-country_row_"] { border:1px solid var(--line); border-radius:12px; background:var(--paper); min-height:60px; padding:8px 44px 8px 10px !important; }
+[class*="st-key-country_row_"]:hover { border-radius:12px; border-color:var(--teal); background:var(--teal-soft); }
+[class*="st-key-country_row_"][class*="_on"] { border-color:var(--teal); border-radius:12px; }
+.row-flag { width:40px; height:27px; border-radius:4px; }
+.row-name { font-size:1rem; }
+
+/* ---------- the country (in the list's place) ---------- */
+.stApp .detail-name { font-family:var(--serif) !important; font-weight:600 !important; font-size:1.75rem !important; }
+.st-key-detail_learn, .st-key-detail_learn .stButton { width:auto !important; }
+.st-key-detail_learn button { width:auto !important; white-space:nowrap; padding:0 16px !important; border:0 !important; background:transparent !important; }
+.st-key-detail_learn button :is(p, [data-testid="stIconMaterial"]) { color:var(--teal-dark) !important; }
+.st-key-stage_detail .detail-facts { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.st-key-stage_detail .detail-photo-frame img { max-height:200px; }
+
+/* ---------- tablets and phones: stacked (map, pills, list) ---------- */
+@media (max-width:900px) {
+  :is(.st-key-explore_stage_list, .st-key-explore_stage_country) [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"] .st-key-stage_map) {
+    flex-direction:column !important; gap:14px !important; }
+  :is(.st-key-explore_stage_list, .st-key-explore_stage_country) [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"] .st-key-stage_map) > [data-testid="stColumn"] {
+    width:100% !important; flex:1 1 auto !important; min-width:0 !important; }
+  .st-key-continent_buttons, .st-key-explore_stage .st-key-continent_buttons { justify-content:safe center; }
+/* wider than a phone: the pills wrap onto a second line instead of hiding behind a sideways scroll */
+@media (min-width:701px) { .stApp .st-key-stage_map .st-key-continent_buttons { flex-wrap:wrap !important; overflow:visible !important; }
+  .stApp :is(.st-key-explore_stage_list, .st-key-explore_stage_country) .st-key-continent_buttons { justify-content:flex-start; } }
+}
+@media (max-width:700px) {
+  .stApp .st-key-continent_buttons, .stApp .st-key-explore_stage .st-key-continent_buttons { justify-content:flex-start !important; }
+  .st-key-explore_heading { gap:10px !important; }
+  .st-key-explore_heading > .stTextInput, .st-key-explore_heading > [data-testid="stElementContainer"]:has(.stTextInput) { flex:1 1 100% !important; min-width:0; }
+  :is(.st-key-explore_stage, .st-key-explore_stage_list, .st-key-explore_stage_country) { padding:8px !important; border-radius:16px; }
+  /* phones: the pills scroll sideways in one row, so the list starts right under the map */
+  :is(.st-key-explore_stage_list, .st-key-explore_stage_country) .st-key-continent_buttons { flex-wrap:nowrap !important; overflow-x:auto; justify-content:flex-start;
+    scrollbar-width:none; padding:2px 2px 4px; margin:0 -2px; }
+  :is(.st-key-explore_stage_list, .st-key-explore_stage_country) .st-key-continent_buttons::-webkit-scrollbar { display:none; }
+  .stApp .detail-name { font-size:1.4rem !important; }
+  /* Previous · 1 / 6 · Next stay on one line (an older card-grid rule flattened this row on phones) */
+  .stApp .st-key-explore_grid .st-key-explore_pagination { display:flex !important; flex-direction:row !important; flex-wrap:nowrap !important;
+    justify-content:space-between !important; align-items:center; width:100% !important; }
+  .stApp .st-key-explore_grid .st-key-explore_pagination > * { flex:0 0 auto !important; width:auto !important; }
+  .st-key-continent_overview .st-key-continent_quiz, .st-key-continent_overview .st-key-continent_quiz button { width:100% !important; }
+  .st-key-continent_overview > :first-child { flex:1 1 100% !important; }
+}
+@media (max-width:380px) {
+  .stApp h1.atlas-title { font-size:1.45rem !important; }
+  .st-key-stage_detail .detail-facts { grid-template-columns:minmax(0,1fr); }
+}
+@media (prefers-reduced-motion:reduce) { [class*="st-key-country_row_"] { transition:none; } }

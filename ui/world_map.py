@@ -4,9 +4,9 @@ The outlines come from assets/world_map.json (Natural Earth, public domain; buil
 coloured by the app's own continent classification. Clicking a continent only selects it: it never starts a quiz or
 touches a round. The continent buttons under the map are the keyboard and screen-reader route to the same choice.
 
-While a continent is open the map stays mounted but hidden, and the same script looks after focus: it moves focus to
-the continent heading (bringing it into view on phones), returns to the map with Escape, and puts focus back on the
-continent's button when the map returns.
+While a continent is open the map stays in the panel, zoomed to that continent (Project Atlas), and the same script
+looks after focus: it moves focus to the continent heading (bringing it into view on phones), returns to the world
+view with Escape, and puts focus back on the continent's button when the world view returns.
 """
 from __future__ import annotations
 
@@ -99,6 +99,21 @@ def _split_paths() -> dict:
 
 
 SPLIT = _split_paths()
+
+# Project Atlas: choosing a continent zooms the map to it (longitude west, east, latitude south, north).
+FOCUS_BOUNDS = {"Africa": (-20, 55, -36, 38), "Europe": (-25, 45, 34, 71), "Asia": (25, 150, -11, 60),
+                "North America": (-170, -50, 6, 78), "South America": (-85, -33, -56, 13), "Oceania": (110, 180, -48, 2)}
+
+
+def _focus_box(bounds: tuple[float, float, float, float]) -> list[float]:
+    """The bounds as an x, y, width, height box in map units (sampled, because the projection bends the edges)."""
+    west, east, south, north = bounds
+    pts = [_project(west + (east - west) * i / 8, south + (north - south) * j / 8) for i in range(9) for j in range(9)]
+    xs, ys = [p[0] for p in pts], [p[1] for p in pts]
+    return [min(xs), min(ys), round(max(xs) - min(xs), 1), round(max(ys) - min(ys), 1)]
+
+
+FOCUS_BOXES = {name: _focus_box(b) for name, b in FOCUS_BOUNDS.items()}
 LABEL_AT = {"Asia": list(_project(98, 50))}
 ZOOM_LABELS = {"in": "Zoom in", "out": "Zoom out", "all": "Show the whole world"}   # Asia's label sits in the middle of its (now larger) area
 
@@ -113,7 +128,9 @@ CSS = """
 .wm { position:relative; width:100%; line-height:0; }
 .wm > svg { display:block; width:100%; height:auto; border-radius:16px; background:#0B3D61; overflow:hidden; }
 /* the map fills the box but never pushes the continent pills off a desktop screen (it stays whole: no cropping) */
-@media (min-width:701px) { .wm > svg { max-height:max(360px, calc(100vh - 300px)); } }
+@media (min-width:701px) { .wm > svg { max-height:max(360px, calc(100vh - 330px)); } }
+/* a continent is open (map beside the list on wide screens): a taller frame, the zoomed continent fills it */
+@media (min-width:901px) { .wm.tall > svg { height:clamp(320px, calc(100vh - 300px), 620px); max-height:none; } }
 .wm .land { stroke:#13202E; stroke-opacity:.45; stroke-width:.7; stroke-linejoin:round; vector-effect:non-scaling-stroke; cursor:pointer;
             transition:fill-opacity .15s ease, fill .15s ease; -webkit-tap-highlight-color:transparent; }
 .wm .land:hover { fill-opacity:1 !important; filter:brightness(1.07); }
@@ -220,6 +237,15 @@ function installZoom(root, svg, base) {
   root.querySelector(".zin").onclick = () => { const [x, y] = centre(); animate(zoomAt(2, x, y)); };
   root.querySelector(".zout").onclick = () => { const [x, y] = centre(); animate(zoomAt(0.5, x, y)); };
   root.querySelector(".zall").onclick = () => animate(whole());
+  root.__weWhole = () => animate(whole());
+  root.__weGo = (box) => {   // zoom to a continent so it fills the frame (a little padded), map proportions kept
+    const a = aspect(), r = svg.getBoundingClientRect(), ca = r.height > 0 ? r.width / r.height : a;
+    let w;
+    if (ca <= a) w = Math.max(box[2], box[3] * ca) * 1.12;          // taller frame: the width decides
+    else w = Math.max(box[3], box[2] / ca) * 1.12 * a;              // wider frame: the height decides
+    const h = w / a;
+    animate([box[0] + box[2] / 2 - w / 2, box[1] + box[3] / 2 - h / 2, w, h]);
+  };
   svg.addEventListener("wheel", (ev) => {
     if (!(ev.ctrlKey || ev.metaKey)) return;          // plain scrolling keeps scrolling the page
     ev.preventDefault();
@@ -303,14 +329,15 @@ function syncDetail(data) {
   const s = viewState();
   const before = s.detail;
   s.detail = data.detail || null;
-  if (before === s.detail || !window.matchMedia("(max-width:700px)").matches) return;
+  if (before === s.detail) return;
   let tries = 0;
   (function settle() {
     const target = s.detail ? visible(".st-key-stage_detail .detail-name") : visible(".st-key-discover_" + before + " button");
     if (target) {
       target.focus({ preventScroll: true });
-      const box = visible("[class*='st-key-explore_stage']");
-      if (box && box.getBoundingClientRect().top < 0) box.scrollIntoView({ block: "start" });
+      const panel = visible(".st-key-stage_panel") || visible("[class*='st-key-explore_stage']");
+      const top = panel ? panel.getBoundingClientRect().top : 0;
+      if (panel && (top < 0 || top > window.innerHeight - 120)) panel.scrollIntoView({ block: "start" });
       return;
     }
     if (tries++ < 40) setTimeout(settle, 50);
@@ -461,6 +488,16 @@ export default function (component) {
   // Fresh handlers each render, so a click always reports through the current component instance.
   root.querySelectorAll(".land").forEach(p => { p.onclick = () => setTriggerValue("select", p.getAttribute("data-continent")); });
   root.style.display = data.hidden ? "none" : "";
+  root.classList.toggle("tall", !!data.tall);
+  const focusKey = data.focus_key || "";
+  if (root.__weFocusKey !== focusKey) {   // zoom to the chosen continent; back to the whole world when it closes
+    const first = root.__weFocusKey === undefined;
+    root.__weFocusKey = focusKey;
+    // phones keep the whole world (a zoomed map would catch one-finger scrolling on a small screen)
+    const phone = window.matchMedia("(max-width:700px)").matches;
+    if (focusKey && data.focus_box && !phone && root.__weGo) requestAnimationFrame(() => root.__weGo(data.focus_box));
+    else if (!first && root.__weWhole) root.__weWhole();
+  }
   const svg = root.querySelector("svg");
   svg.setAttribute("aria-label", data.aria_label || "");
   root.classList.toggle("has-sel", !!data.selected);
@@ -493,14 +530,15 @@ def _need_map() -> None:
 
 def render(selected: str | None, labels: dict[str, str], aria_label: str, *, on_select, on_close, hidden: bool = False,
            view: str | None = None, detail: str | None = None, oceans: dict[str, str] | None = None,
-           antarctica_label: str = "Antarctica", zoom_labels: dict[str, str] | None = None) -> None:
+           antarctica_label: str = "Antarctica", zoom_labels: dict[str, str] | None = None, focus: str | None = None) -> None:
     """Draw the map. The outlines (about 100 kB) are sent once per browser session; the page caches them."""
     ss = st.session_state
     payload = {"selected": selected, "labels": labels, "aria_label": aria_label, "fills": FILLS,
                "selected_fill": SELECTED_FILL, "stack_max": STACK_MAX_WIDTH, "hidden": hidden,
                "split": SPLIT, "label_at": LABEL_AT, "antarctica_fill": ANTARCTICA_FILL,
                "antarctica_label": antarctica_label, "zoom_labels": zoom_labels or ZOOM_LABELS,
-               "view_open": bool(view), "view_key": view, "detail": detail,
+               "view_open": bool(view), "view_key": view, "detail": detail, "tall": bool(view),
+               "focus_key": focus if focus in FOCUS_BOXES else None, "focus_box": FOCUS_BOXES.get(focus),
                "oceans": [[(oceans or {}).get(name, name), x, y] for name, pts in OCEAN_POINTS.items() for x, y in pts]}
     if not ss.get("world_map_sent"):
         payload["map"] = map_data()

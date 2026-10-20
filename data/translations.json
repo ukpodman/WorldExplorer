@@ -4752,6 +4752,24 @@
    "Mapa que muestra la ubicación de {name}",
    "显示{name}位置的地图",
    "Карта с расположением: {name}"
+  ],
+  "six continents": [
+   "sechs Kontinente",
+   "seis continentes",
+   "六大洲",
+   "шесть континентов"
+  ],
+  "Where would you like to go?": [
+   "Wohin möchtest du reisen?",
+   "¿Adónde te gustaría ir?",
+   "你想去哪里？",
+   "Куда бы вы хотели отправиться?"
+  ],
+  "Search any country or capital": [
+   "Land oder Hauptstadt suchen",
+   "Busca un país o una capital",
+   "搜索任意国家或首都",
+   "Найдите любую страну или столицу"
   ]
  }
 }

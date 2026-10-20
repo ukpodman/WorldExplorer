@@ -20,6 +20,8 @@ from . import rewards_hooks, sound
 from .state import PAGES, country_formatter, formatter, navigate, open_settings, t
 
 STYLES = Path(__file__).resolve().parent.parent / "assets" / "styles.css"
+# Project Atlas layer, loaded after styles.css (kept separate so the base stylesheet is not rewritten in one change).
+ATLAS_STYLES = STYLES.with_name("atlas.css")
 MAX_UPLOAD_BYTES = 2_000_000
 
 
@@ -28,25 +30,30 @@ def html(markup: str) -> None:
 
 
 @st.cache_resource(show_spinner=False)
-def _stylesheet(version: int) -> str:
+def _stylesheet(version: tuple[int, int]) -> str:
     """Cached per file version: an updated styles.css is picked up after a deploy without an app reboot."""
-    return STYLES.read_text(encoding="utf-8")
+    return _read_styles()
+
+
+def _read_styles() -> str:
+    atlas = ATLAS_STYLES.read_text(encoding="utf-8") if ATLAS_STYLES.exists() else ""
+    return STYLES.read_text(encoding="utf-8") + "\n" + atlas
 
 
 # Shown at the bottom of Settings so a deployed app can be checked against the delivered version.
-UI_BUILD = "2026-10-14.2"
+UI_BUILD = "2026-10-20.atlas-explore-1"
 # The code and the stylesheet must always come from the same version. If this module on disk is newer than the copy
 # that is running (the server has not loaded the new Python yet), keep using the stylesheet that matches the running
 # code rather than mixing old markup with new styles, which is what scrambled the phone header after a deploy.
 _CODE_MTIME = Path(__file__).stat().st_mtime_ns
-_CSS_AT_IMPORT = STYLES.read_text(encoding="utf-8")
+_CSS_AT_IMPORT = _read_styles()
 
 
 def _current_stylesheet() -> str:
     try:
         if Path(__file__).stat().st_mtime_ns != _CODE_MTIME:
             return _CSS_AT_IMPORT
-        return _stylesheet(STYLES.stat().st_mtime_ns)
+        return _stylesheet((STYLES.stat().st_mtime_ns, ATLAS_STYLES.stat().st_mtime_ns if ATLAS_STYLES.exists() else 0))
     except OSError:
         return _CSS_AT_IMPORT
 

@@ -33,10 +33,11 @@ def _flag(country: dict, width: int, alt: str) -> None:
 
 
 # --------------------------------------------------------------------------- Explore
-# Explore is one large box. Map view: the world map fills it, with the six continent buttons and "Browse all
-# countries". Choosing a continent (map or button) replaces the map, inside the same box, with that continent's
-# countries: a list on the left (flag, name and a small arrow) with a compact search, and on the right the country
-# being discovered. On phones the list and the country take turns in the box. One selection state drives everything;
+# Project Atlas (Premium Digital Atlas V2). A heading ("Where would you like to go?") with a search for any country,
+# then one large panel. World view: the interactive map fills the panel, with the continent pills (the map's key)
+# underneath. Choosing a continent (map, pill or search) keeps the map in the panel, zoomed to that continent, and
+# opens its countries beside it (desktop/tablet) or under it (phones): a list with the flag left of each name, and the
+# chosen country in the same place as the list (with a way back to the list). One selection state drives everything;
 # nothing here starts a quiz or touches an unfinished round.
 
 def _turn_page(delta: int) -> None:
@@ -142,6 +143,7 @@ def _list_head(selection: str) -> None:
 
 def _country_list(selection: str, current: str | None) -> None:
     _list_head(selection)
+    _selection_overview(selection)
     entries = _filtered(_browser_places(selection), selection)
     with st.container(key="explore_grid"):
         if not entries:
@@ -222,20 +224,23 @@ def _country_detail(c: dict, selection: str) -> None:
 
 
 def _selection_overview(selection: str) -> None:
-    """The right side before a country is chosen: the continent's count, real badge progress and its quiz."""
+    """A compact strip above the list: real badge progress for the continent and its quiz."""
     continent = selection if selection in CONTINENTS_LIST else None
-    art = world_map.emblem_svg(continent, 64) if continent else world_map.globe_svg(64)
-    badge_html = ""
-    if continent:
-        b = _continent_badge(continent)
-        badge_html = (f'<div class="overview-badge"><b>{escape(_badge_name(b))}</b>'
-                      f'<span class="award-state {"earned" if b["earned"] else ""}">{e("Earned") if b["earned"] else e("In progress")}</span>'
-                      f'<span class="head-track" role="progressbar" aria-valuemin="0" aria-valuemax="{b["target"]}" aria-valuenow="{b["value"]}">'
-                      f'<span style="width:{100 * b["value"] / b["target"]:.0f}%"></span></span>'
-                      f'<span class="overview-progress">{e("{value} of {target} correct answers about {continent}", value=b["value"], target=b["target"], continent=continent)}</span></div>')
-    html(f'<div class="detail-empty">{art}<div class="overview-name">{escape(_selection_title(selection))}</div>'
-         f'<div class="continent-count">{escape(_count_text(selection))}</div>{badge_html}'
-         f'<p>{e("Choose a country in the list to discover it here.")}</p></div>')
+    with st.container(key="continent_overview", horizontal=True, vertical_alignment="center"):
+        if continent:
+            b = _continent_badge(continent)
+            html(f'<div class="overview-strip"><div class="detail-empty"><div class="overview-badge"><b>{escape(_badge_name(b))}</b>'
+                 f'<span class="award-state {"earned" if b["earned"] else ""}">{e("Earned") if b["earned"] else e("In progress")}</span>'
+                 f'<span class="head-track" role="progressbar" aria-valuemin="0" aria-valuemax="{b["target"]}" aria-valuenow="{b["value"]}">'
+                 f'<span style="width:{100 * b["value"] / b["target"]:.0f}%"></span></span>'
+                 f'<span class="overview-progress">{e("{value} of {target} correct answers about {continent}", value=b["value"], target=b["target"], continent=continent)}</span></div></div></div>')
+        else:
+            html(f'<div class="overview-strip"><div class="detail-empty"><p>{e("Choose a country in the list to discover it here.")}</p></div></div>')
+        _continent_quiz_button(selection)
+
+
+def _continent_quiz_button(selection: str) -> None:
+    continent = selection if selection in CONTINENTS_LIST else None
     st.button(t("Quiz {name}", name=t(continent)) if continent else t("Quiz all countries"), key="continent_quiz",
               type="primary", icon=":material/help:", width="stretch", on_click=state.quiz_continent, args=(selection,),
               help=t("Opens the quiz setup with {continent} selected.", continent=continent) if continent
@@ -308,14 +313,43 @@ def _continent_badge(continent: str) -> dict:
 
 def _continent_buttons() -> None:
     """Continent pills under the map: "All" and the six continents, each with its map colour as a dot (CSS), so the
-    pills double as the map's key. Same as tapping the map."""
+    pills double as the map's key. Same as tapping the map. They stay under the map while a continent is open, so
+    another continent is one tap away; the open one is marked (primary)."""
+    selection = state.explore_selection()
     with st.container(key="continent_buttons", horizontal=True):
         st.button(t("All"), key="browse_all", on_click=state.explore_select, args=(WORLD,), icon=":material/public:",
+                  type="primary" if selection == WORLD else "secondary",
                   help=t("All continents") + " · " + t("Opens the country list without a continent filter."))
         for continent in CONTINENTS_LIST:
             st.button(t(continent), key=f"continent_btn_{continent.replace(' ', '_')}",
                       on_click=state.explore_select, args=(continent,),
+                      type="primary" if selection == continent else "secondary",
                       help=t("Show the countries of {continent}", continent=continent))
+
+
+def _find_everywhere() -> None:
+    """The heading's search: opens the list of all countries, already filtered by what was typed."""
+    ss = st.session_state
+    query = (ss.get("explore_find") or "").strip()
+    ss.explore_find = ""
+    if not query:
+        return
+    state.explore_select(WORLD)
+    ss.explore_country = None
+    ss.explore_search = query
+    ss.explore_page = 0
+    state.remember_explore_filters()
+
+
+def _explore_heading(selection: str | None) -> None:
+    """Overline, the atlas title and (on the world view) a search for any country or capital."""
+    with st.container(key="explore_heading", horizontal=True, vertical_alignment="bottom"):
+        html(f'<div class="atlas-head map-heading"><div class="atlas-overline">{escape(_count_text(WORLD))} · {e("six continents")}</div>'
+             f'<h1 class="atlas-title">{e("Where would you like to go?")}</h1></div>')
+        if not selection:
+            st.text_input(t("Search any country or capital"), key="explore_find", on_change=_find_everywhere,
+                          placeholder=t("Search any country or capital"), label_visibility="collapsed",
+                          icon=":material/search:")
 
 
 def _selection_title(selection: str) -> str:
@@ -328,39 +362,46 @@ def _map_select() -> None:
     state.explore_select(world_map.selected_value())
 
 
+def _explore_map(selection: str | None, current: str | None, showing_country: bool) -> None:
+    continent = selection if selection in CONTINENTS_LIST else None
+    with st.container(key="world_map_frame"):
+        world_map.render(continent, {c: t(c) for c in CONTINENTS_LIST},
+                         t("World map. Use the continent buttons below to choose a continent."),
+                         on_select=_map_select, on_close=state.explore_close, hidden=False,
+                         view=selection, detail=current if showing_country else None, focus=continent,
+                         oceans={o: t(o) for o in world_map.OCEANS}, antarctica_label=t("Antarctica"),
+                         zoom_labels={k: t(v) for k, v in world_map.ZOOM_LABELS.items()})
+
+
 def explore() -> None:
     d = _daily_status()
     selection = state.explore_selection()
     current = state.explore_country(selection)
     with st.container(key="explore_home"):
         _continue_card("explore")
-        showing_country = bool(current) and state.explore_detail_open()  # phones: one panel at a time
+        _explore_heading(selection)
+        showing_country = bool(current) and state.explore_detail_open()  # the country takes the list's place
         stage_key = "explore_stage" if not selection else ("explore_stage_country" if showing_country else "explore_stage_list")
-        with st.container(key=stage_key):  # the one exploration box: the map, or the countries, never both
+        with st.container(key=stage_key):  # the one exploration panel: the map always, plus the countries when open
             notice = st.session_state.pop("explore_notice", None) if selection else None
             if notice:
                 st.info(notice, icon=":material/info:")
-            # The map stays mounted (hidden while countries are shown) so going back is instant and focus returns.
-            with st.container(key="world_map_frame_hidden" if selection else "world_map_frame"):
-                world_map.render(selection if selection in CONTINENTS_LIST else None, {c: t(c) for c in CONTINENTS_LIST},
-                                 t("World map. Use the continent buttons below to choose a continent."),
-                                 on_select=_map_select, on_close=state.explore_close, hidden=bool(selection),
-                                 view=selection, detail=current if showing_country else None,
-                                 oceans={o: t(o) for o in world_map.OCEANS}, antarctica_label=t("Antarctica"),
-                                 zoom_labels={k: t(v) for k, v in world_map.ZOOM_LABELS.items()})
-            if selection:
-                with st.container(key="stage_body"):
-                    left, right = st.columns([1, 1.15], gap="medium")
-                    with left, st.container(key="stage_list"):
-                        _country_list(selection, current)
-                    with right, st.container(key="stage_detail"):
-                        if current:
-                            _country_detail(get_country(current), selection)
-                        else:
-                            _selection_overview(selection)
+            if not selection:
+                with st.container(key="stage_map"):
+                    _explore_map(selection, current, showing_country)  # the map fills the whole panel
+                    _continent_buttons()
             else:
-                _continent_buttons()
-        _explore_topbar(d)   # streak, points, badges and the Daily Challenge: one line under the map
+                map_side, list_side = st.columns([1.5, 1], gap="medium")
+                with map_side, st.container(key="stage_map"):
+                    _explore_map(selection, current, showing_country)
+                    _continent_buttons()
+                with list_side, st.container(key="stage_panel"):
+                    with st.container(key="stage_list"):
+                        _country_list(selection, current)
+                    if current:
+                        with st.container(key="stage_detail"):
+                            _country_detail(get_country(current), selection)
+        _explore_topbar(d)   # streak, points, badges and the Daily Challenge: one line under the panel
 
 
 # --------------------------------------------------------------------------- Learn

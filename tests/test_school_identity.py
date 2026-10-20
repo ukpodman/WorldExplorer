@@ -180,6 +180,101 @@ class IdentityTests(unittest.TestCase):
         self.clean(at)
         self.assertNotIn("ng-climate", (at.session_state["school_progress"].get(GEO) or {}))
 
+    # ------------------------------------------------------------------ Round 2 (independent review) additions
+    def offer_shown(self, at):
+        return any("as a guest on this device" in m.value for m in at.markdown)
+
+    def mine(self, at):
+        return sorted((at.session_state["school_progress"].get(GEO) or {}).keys())
+
+    def test_full_cycle_a_out_b_out_guest_then_a(self):
+        """A → sign out → B → sign out → guest → A, all in one browser session."""
+        self.who.profile_id = A
+        at = self.session()
+        self.study(at, "ng-climate")
+        self.who.profile_id = None
+        at.run()
+        self.who.profile_id = B
+        at.run()
+        self.assertEqual(self.mine(at), [], "B sees A's progress")
+        self.study(at, "ng-vegetation-soils")
+        self.who.profile_id = None
+        at.run()
+        self.assertEqual(self.mine(at), [], "the guest sees B's progress")
+        self.study(at, "ng-population-settlement")
+        self.who.profile_id = A
+        at.run()
+        self.clean(at)
+        self.assertEqual(self.fake.lessons_of(A), ["ng-climate"], "another identity's lesson reached A's account")
+        self.assertEqual(self.fake.lessons_of(B), ["ng-vegetation-soils"], "another identity's lesson reached B's account")
+        self.assertEqual(self.mine(at), ["ng-climate"], "A's session shows lessons that are not A's")
+        self.assertTrue(self.offer_shown(at), "the guest's own progress should be offered (not added) to A")
+        offer = at.session_state["school_guest_offer"].get(GEO, {})
+        self.assertEqual(sorted(offer), ["ng-population-settlement"], "the offer holds progress from other identities")
+
+    def test_not_now_hides_the_offer_and_adds_nothing(self):
+        at = self.session()                              # guest, this visit only (no device copy)
+        self.study(at, "ng-climate")
+        self.who.profile_id = A                          # signs in within the same browser session
+        at.run()
+        self.assertTrue(self.offer_shown(at))
+        at.button(key="sl_offer_later").click().run()
+        self.clean(at)
+        self.assertFalse(self.offer_shown(at), "Not now did not hide the offer")
+        self.assertEqual(self.fake.lessons_of(A), [], "Not now imported the guest progress")
+        at.run()
+        self.assertFalse(self.offer_shown(at), "the offer came back on the next rerun of the same visit")
+
+    def test_stale_offer_is_not_shown_to_the_next_account(self):
+        """Guest studies → A signs in, chooses Not now → A signs out → B signs in: B must not inherit that offer."""
+        at = self.session()
+        self.study(at, "ng-climate")
+        self.who.profile_id = A
+        at.run()
+        at.button(key="sl_offer_later").click().run()
+        self.who.profile_id = None                       # A signs out; the next guest studies nothing
+        at.run()
+        self.who.profile_id = B
+        at.run()
+        self.clean(at)
+        self.assertFalse(self.offer_shown(at), "B was offered an earlier guest's progress")
+        held = at.session_state["school_guest_offer"] if "school_guest_offer" in at.session_state else {}
+        self.assertFalse((held or {}).get(GEO), "a stale offer is still held in the session")
+        self.assertEqual(self.fake.lessons_of(B), [])
+        self.assertEqual(self.fake.lessons_of(A), [])
+
+    def test_declined_offer_is_not_imported_after_switching_accounts(self):
+        """Even if B clicks Add, nothing from an earlier transition can be imported into B."""
+        at = self.session()
+        self.study(at, "ng-climate")
+        self.who.profile_id = A
+        at.run()
+        at.button(key="sl_offer_later").click().run()
+        self.who.profile_id = B                          # straight from A to B
+        at.run()
+        if any(b.key == "sl_import_guest" for b in at.button):
+            at.button(key="sl_import_guest").click().run()
+        self.assertEqual(self.fake.lessons_of(B), [], "an offer created for A was imported into B")
+
+
+class OfferUnitTests(unittest.TestCase):
+    """The offer is filtered to the selected subject and is empty for guests."""
+
+    def test_offer_is_per_subject_and_never_for_guests(self):
+        from ui import school as ui
+        ss = AttrDict(school_subject=GEO, school_guest_offer={GEO: {"ng-climate": {"page": 1}}, "history-test": {"h-1": {"page": 1}}})
+        real_ids = ui.school.lesson_ids
+        ids = mock.patch.object(ui.school, "lesson_ids", side_effect=lambda s: [] if s == "history-test" else real_ids(s))
+        ids.start()
+        self.addCleanup(ids.stop)
+        with mock.patch.object(ui, "SS", ss), mock.patch.object(ui.accounts, "identity", return_value={"profile_id": A}):
+            self.assertEqual(list(ui._offer()), ["ng-climate"])
+            ss["school_subject"] = "history-test"
+            self.assertEqual(ui._offer(), {}, "unknown lessons of another subject leak into the offer")
+        with mock.patch.object(ui, "SS", ss), mock.patch.object(ui.accounts, "identity", return_value=None):
+            ss["school_subject"] = GEO
+            self.assertEqual(ui._offer(), {}, "a guest is offered their own progress")
+
 
 class AttrDict(dict):
     __getattr__ = dict.get

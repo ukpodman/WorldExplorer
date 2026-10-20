@@ -596,6 +596,26 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(self.cluster.psql(self.base_db, "select count(*) from pg_policies where tablename like 'school_%'"), "0")
         self.cluster.psql(self.base_db, f"insert into school_lesson_progress (user_id, subject, lesson_id) values ('{USER}', 'geography', 'ng-climate') on conflict do nothing", "service_role")
 
+    def test_base_rerun_after_optional_policies_closes_browser_access(self):
+        """Round 2: if the optional token policies were applied earlier and the base file is run again, the base
+        revokes the browser-role grants. The five policies remain in the catalogue but cannot be used without grants."""
+        E = pg_harness.StoreError
+        db = self.cluster.fresh_db()
+        self.cluster.psql(db, AUTH_STUB)
+        base = ROOT / "supabase" / "school_learning_migration.sql"
+        self.cluster.psql_file(db, base)
+        self.cluster.psql_file(db, ROOT / "supabase" / "school_learning_user_token_policies.sql")
+        self.cluster.psql_file(db, base)                                   # base re-run (server mode chosen later)
+        self.assertEqual(self.cluster.psql(db, "select count(*) from pg_policies where tablename like 'school_%'"), "5")
+        claims = f"select set_config('request.jwt.claims', '{{\"we_profile_id\":\"{USER}\"}}', false); "
+        for sql in ("select * from school_lesson_progress", "select * from school_practice_attempts"):
+            with self.assertRaises(E):
+                self.cluster.psql(db, claims + sql, "authenticated")
+        grants = self.cluster.psql(db, "select count(*) from information_schema.role_table_grants where table_name like 'school_%' "
+                                       "and grantee in ('anon', 'authenticated', 'PUBLIC')")
+        self.assertEqual(grants, "0")
+        self.cluster.psql(db, f"insert into school_lesson_progress (user_id, subject, lesson_id) values ('{USER}', 'geography', 'ng-climate')", "service_role")
+
     def test_public_key_has_no_access(self):
         E = pg_harness.StoreError
         for sql in ("select * from school_lesson_progress", "select * from school_practice_attempts",

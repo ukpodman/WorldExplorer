@@ -99,6 +99,12 @@ def _ensure_owner() -> None:
     if previous == owner:
         return
     if previous is not None:
+        # An offer belongs only to the guest → account step that created it. Any other identity change (account →
+        # guest, account → another account, or a later guest → account step) drops it, so a declined or postponed
+        # offer can never be shown to, or imported into, a different account. A device copy is re-read for the new
+        # identity by _device_restore and is offered with its "someone else may have used this device" warning.
+        SS.pop("school_guest_offer", None)
+        SS.pop("school_offer_on_device", None)
         if previous == "guest" and any(SS.get("school_progress", {}).values()):
             SS.school_guest_offer = SS.school_progress
         SS.school_progress = {}

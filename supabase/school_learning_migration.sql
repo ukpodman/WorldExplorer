@@ -3,7 +3,7 @@
 -- Run once in Supabase → SQL Editor only after approval (see SCHOOL_LEARNING_SETUP.md). It only ADDS two new tables
 -- whose names start with school_, their indexes and their security policies. It does not read, change or reference
 -- world_explorer_profiles, any reward_* / withdrawal / referral / Founding 50 table, points, badges or quiz statistics.
--- Non-destructive and safe to run again: "if not exists" everywhere, policies are dropped and re-created by name.
+-- Non-destructive and safe to run again ("if not exists" everywhere). This base file creates no policies.
 --
 -- Data kept (privacy by design — students may be under 18): the one-way account id (the same SHA-256 id the profile
 -- table uses; never an e-mail, name, school or date of birth), lesson ids, reading position, completion, revision
@@ -17,6 +17,9 @@
 --     it unless that mode is approved (see SCHOOL_LEARNING_SETUP.md).
 --   * service_role (the existing server key): full access, as for the existing tables (access = "server" mode).
 --   * Practice attempts can be added and read, never edited.
+--   * If the optional token-policies file was run earlier, running this base file again revokes the anon/authenticated
+--     grants; the five policies stay in the catalogue but are unusable without grants (tested in test_school.py). To
+--     remove them as well, follow the "Undo" note at the top of the optional file (drop the five named policies).
 
 begin;
 

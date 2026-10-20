@@ -112,7 +112,7 @@ def _ensure_owner() -> None:
         SS.school_view = "home"
         SS.school_device_on = False
         for key in ("school_loaded_keys", "school_store_error", "school_retry_at", "school_device_checked",
-                    "school_offer_hidden", "sl_device"):
+                    "school_offer_hidden", "school_import_result", "sl_device"):
             SS.pop(key, None)
     SS.school_owner = owner
 
@@ -219,13 +219,52 @@ def _offer() -> dict:
 
 
 def _import_guest() -> None:
-    """The student chose to add their guest progress: newer records win, each lesson saved like any other change."""
+    """The student chose to add their guest progress. Newer (or equal, i.e. a retry) records are added to this visit's
+    progress and saved to the account. The guest offer and the device backup are removed ONLY after every save to the
+    account has succeeded; otherwise both are kept and the student is told exactly where the progress now is."""
     subject_id = SS.school_subject
-    for lesson_id, rec in _offer().items():
+    offer = _offer()
+    if not offer:
+        return
+    chosen = {}
+    for lesson_id, rec in offer.items():
         here = progress(subject_id).get(lesson_id)
-        if not here or str(rec.get("updated_at", "")) > str(here.get("updated_at", "")):
-            _put(subject_id, lesson_id, dict(rec))
-    _forget_guest()
+        if not here or str(rec.get("updated_at", "")) >= str(here.get("updated_at", "")):
+            chosen[lesson_id] = dict(rec)
+            progress(subject_id)[lesson_id] = dict(rec)
+    who = _who()
+    if not who or not school_store.enabled():
+        status = "session"                     # account saving is switched off: usable for this visit only
+    elif not _loaded(subject_id):
+        status = "error"                       # the account could not be loaded, so nothing can be saved yet
+    else:
+        saved = [_save_to_account(subject_id, lesson_id, rec) for lesson_id, rec in chosen.items()]
+        status = "saved" if all(saved) else "error"
+    SS.school_import_result = {"status": status, "count": len(offer), "device": bool(SS.get("school_offer_on_device"))}
+    if status == "saved":
+        _forget_guest()
+    elif status == "session":
+        _hide_offer()                          # added for this visit; the device backup (if any) is kept
+    # "error": the offer stays visible so "Add to my progress" can be tried again; the device backup is kept
+
+
+def _import_notice() -> None:
+    """One-time, accurate feedback after "Add to my progress"."""
+    res = SS.pop("school_import_result", None)
+    if not res:
+        return
+    n = res["count"]
+    lessons = f'{n} lesson{"s" if n != 1 else ""}'
+    if res["status"] == "saved":
+        st.success(f"Guest progress added to your account ({lessons})."
+                   + (" The guest copy on this device has been removed." if res["device"] else ""))
+    elif res["status"] == "session":
+        st.info(f"Guest progress ({lessons}) added for this visit only. Saving to accounts is switched off, "
+                "so it is not stored in your account." + (" The guest copy is still kept on this device." if res["device"] else ""))
+    else:
+        st.warning(f"Your guest progress ({lessons}) could not be saved to your account right now. It is in your progress "
+                   "for this visit" + (", and the guest copy is still kept on this device" if res["device"] else "")
+                   + ". Choose “Add to my progress” again to retry.")
 
 
 def _forget_guest() -> None:
@@ -270,9 +309,10 @@ def _restore(subject_id: str) -> None:
         here = mine.get(lesson_id)
         if not here or str(clean.get("updated_at", "")) >= str(here.get("updated_at", "")):
             mine[lesson_id] = clean
-    for lesson_id, here in mine.items():   # this same account's changes made before the load succeeded (never a guest's:
+    for lesson_id, here in mine.items():   # this same account's changes made before the load succeeded, including guest
         if lesson_id not in saved or str(here.get("updated_at", "")) > str(saved[lesson_id].get("updated_at", "")):
-            newer_here.append(lesson_id)   # _ensure_owner empties the session when the identity changes)
+            newer_here.append(lesson_id)   # lessons it explicitly chose to add (_ensure_owner empties the session on any
+                                           # identity change, so nothing from another identity is ever here)
     SS.setdefault("school_loaded_keys", set()).add(f"{marker}:{subject_id}")
     SS.school_store_error = False
     for lesson_id in newer_here:
@@ -293,14 +333,23 @@ def _put(subject_id: str, lesson_id: str, rec: dict) -> None:
     progress(subject_id)[lesson_id] = rec
     if before == rec:
         return
-    who = _who()
-    if who and school_store.enabled() and _loaded(subject_id):
-        try:
-            school_store.save(who["profile_id"], subject_id, lesson_id, rec)
-            SS.school_store_error = False
-        except Exception:
-            SS.school_store_error = True
+    _save_to_account(subject_id, lesson_id, rec)
     _device_write()
+
+
+def _save_to_account(subject_id: str, lesson_id: str, rec: dict) -> bool | None:
+    """Save one lesson to the signed-in student's account. None: account saving is not active (guest, switched off, or
+    the account is not loaded yet); True: school_store.save() succeeded; False: it raised (school_store_error is set)."""
+    who = _who()
+    if not who or not school_store.enabled() or not _loaded(subject_id):
+        return None
+    try:
+        school_store.save(who["profile_id"], subject_id, lesson_id, rec)
+    except Exception:
+        SS.school_store_error = True
+        return False
+    SS.school_store_error = False
+    return True
 
 
 # --------------------------------------------------------------------------- navigation (button callbacks)
@@ -454,6 +503,7 @@ def _levels(levels: list[str]) -> str:
 
 def _guest_offer_box() -> None:
     """Explicit, separate import of guest progress after signing in. Nothing is added unless the student chooses."""
+    _import_notice()
     offer = _offer()
     if not offer:
         return

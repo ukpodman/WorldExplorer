@@ -151,6 +151,39 @@ class ImportSafetyTests(unittest.TestCase):
         self.assertEqual(self.notices(at), "", "A's import message was shown to B")
         self.assertEqual(self.jar.values.get(COOKIE), backup, "the device backup should remain until someone decides")
 
+    def test_all_guest_records_older_than_the_account_adds_nothing_and_says_so(self):
+        self.guest_with_device_backup()
+        newer = {"page": 5, "furthest": 5, "updated_at": "2999-01-01T00:00:00+00:00"}
+        self.fake.progress[(A, GEO, "ng-climate")] = dict(newer)    # the account already has newer progress
+        at = self.sign_in(A)
+        at.button(key="sl_import_guest").click().run()
+        self.clean(at)
+        self.assertEqual(self.fake.progress[(A, GEO, "ng-climate")], newer, "older guest progress overwrote the account")
+        msg = self.notices(at)
+        self.assertNotIn("added to your account", msg.lower(), "claimed an import although nothing was added")
+        self.assertIn("Nothing was added", msg)
+        self.assertIn("already has newer progress", msg)
+        self.assertNotIn(COOKIE, self.jar.values, "the account is confirmed newer, so the outdated backup may go")
+        self.assertFalse(self.offer_shown(at))
+
+    def test_mixed_import_counts_only_the_lessons_actually_added(self):
+        at = self.session()                              # guest studies two lessons, device backup on
+        at.button(key="sl_open_geography").click().run()
+        for lesson_id in ("ng-climate", "ng-vegetation-soils"):
+            at.button(key=f"sl_read_{lesson_id}").click().run()
+            at.button(key="sl_next_page").click().run()
+            at.button(key="sl_back_topics").click().run()
+        at.toggle(key="sl_device").set_value(True).run()
+        self.fake.progress[(A, GEO, "ng-climate")] = {"page": 5, "furthest": 5, "updated_at": "2999-01-01T00:00:00+00:00"}
+        at = self.sign_in(A)
+        at.button(key="sl_import_guest").click().run()
+        self.clean(at)
+        self.assertEqual(self.fake.lessons_of(A), ["ng-climate", "ng-vegetation-soils"])
+        self.assertEqual(self.fake.progress[(A, GEO, "ng-climate")]["updated_at"], "2999-01-01T00:00:00+00:00")
+        msg = self.notices(at)
+        self.assertIn("added to your account (1 lesson)", msg)
+        self.assertIn("1 lesson was skipped", msg)
+
     def test_discard_removes_the_backup_and_imports_nothing(self):
         self.guest_with_device_backup()
         at = self.sign_in(A)

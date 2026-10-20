@@ -240,7 +240,8 @@ def _import_guest() -> None:
     else:
         saved = [_save_to_account(subject_id, lesson_id, rec) for lesson_id, rec in chosen.items()]
         status = "saved" if all(saved) else "error"
-    SS.school_import_result = {"status": status, "count": len(offer), "device": bool(SS.get("school_offer_on_device"))}
+    SS.school_import_result = {"status": status, "count": len(offer), "added": len(chosen),
+                               "device": bool(SS.get("school_offer_on_device"))}
     if status == "saved":
         _forget_guest()
     elif status == "session":
@@ -253,16 +254,26 @@ def _import_notice() -> None:
     res = SS.pop("school_import_result", None)
     if not res:
         return
-    n = res["count"]
-    lessons = f'{n} lesson{"s" if n != 1 else ""}'
-    if res["status"] == "saved":
-        st.success(f"Guest progress added to your account ({lessons})."
+    def lessons(k: int) -> str:
+        return f'{k} lesson{"s" if k != 1 else ""}'
+    n, added = res["count"], res.get("added", res["count"])
+    skipped = n - added
+    newer = "your account" if res["status"] == "saved" else "your progress"
+    skip_note = (f" {lessons(skipped)} {'was' if skipped == 1 else 'were'} skipped because {newer} already has newer progress."
+                 if skipped and added else "")
+    if res["status"] in ("saved", "session") and not added:
+        st.info(f"Nothing was added: {newer} already has newer progress for {'this lesson' if n == 1 else f'all {n} lessons'}."
+                + (" The outdated guest copy on this device has been removed." if res["status"] == "saved" and res["device"]
+                   else " The guest copy is still kept on this device." if res["device"] else ""))
+    elif res["status"] == "saved":
+        st.success(f"Guest progress added to your account ({lessons(added)})." + skip_note
                    + (" The guest copy on this device has been removed." if res["device"] else ""))
     elif res["status"] == "session":
-        st.info(f"Guest progress ({lessons}) added for this visit only. Saving to accounts is switched off, "
-                "so it is not stored in your account." + (" The guest copy is still kept on this device." if res["device"] else ""))
+        st.info(f"Guest progress ({lessons(added)}) added for this visit only. Saving to accounts is switched off, "
+                "so it is not stored in your account." + skip_note
+                + (" The guest copy is still kept on this device." if res["device"] else ""))
     else:
-        st.warning(f"Your guest progress ({lessons}) could not be saved to your account right now. It is in your progress "
+        st.warning(f"Your guest progress ({lessons(n)}) could not be saved to your account right now. It is in your progress "
                    "for this visit" + (", and the guest copy is still kept on this device" if res["device"] else "")
                    + ". Choose “Add to my progress” again to retry.")
 

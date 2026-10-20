@@ -12,9 +12,9 @@
 -- Security:
 --   * Row Level Security ON for both tables.
 --   * anon (the public browser key): NO access at all.
---   * authenticated: only rows whose user_id equals the "we_profile_id" claim of the request's token. The app's server
---     signs such a token for the signed-in student (access = "user_token"). Supabase Auth's own sign-in tokens never
---     carry this top-level claim, so they match no rows.
+--   * authenticated: NO access in this base migration (recommended "server" mode). An OPTIONAL, separate file,
+--     supabase/school_learning_user_token_policies.sql, adds per-student policies for the "user_token" mode; do not run
+--     it unless that mode is approved (see SCHOOL_LEARNING_SETUP.md).
 --   * service_role (the existing server key): full access, as for the existing tables (access = "server" mode).
 --   * Practice attempts can be added and read, never edited.
 
@@ -69,50 +69,25 @@ alter table public.school_practice_attempts enable row level security;
 revoke all on public.school_lesson_progress   from public, anon, authenticated;
 revoke all on public.school_practice_attempts from public, anon, authenticated;
 
-grant select, insert, update          on public.school_lesson_progress   to authenticated;
-grant select, insert                  on public.school_practice_attempts to authenticated;
 grant select, insert, update, delete  on public.school_lesson_progress   to service_role;
 grant select, insert, delete          on public.school_practice_attempts to service_role;   -- attempts are never edited
-
-drop policy if exists school_progress_own_select on public.school_lesson_progress;
-drop policy if exists school_progress_own_insert on public.school_lesson_progress;
-drop policy if exists school_progress_own_update on public.school_lesson_progress;
-drop policy if exists school_attempts_own_select on public.school_practice_attempts;
-drop policy if exists school_attempts_own_insert on public.school_practice_attempts;
-
-create policy school_progress_own_select on public.school_lesson_progress for select to authenticated
-  using (user_id = coalesce(auth.jwt() ->> 'we_profile_id', ''));
-create policy school_progress_own_insert on public.school_lesson_progress for insert to authenticated
-  with check (user_id = coalesce(auth.jwt() ->> 'we_profile_id', ''));
-create policy school_progress_own_update on public.school_lesson_progress for update to authenticated
-  using (user_id = coalesce(auth.jwt() ->> 'we_profile_id', ''))
-  with check (user_id = coalesce(auth.jwt() ->> 'we_profile_id', ''));
-create policy school_attempts_own_select on public.school_practice_attempts for select to authenticated
-  using (user_id = coalesce(auth.jwt() ->> 'we_profile_id', ''));
-create policy school_attempts_own_insert on public.school_practice_attempts for insert to authenticated
-  with check (user_id = coalesce(auth.jwt() ->> 'we_profile_id', ''));
 
 commit;
 
 -- ============================================================================ verification (run after the migration)
 -- 1. Both tables exist with RLS on (expect two rows, both true):
 --      select relname, relrowsecurity from pg_class where relname in ('school_lesson_progress', 'school_practice_attempts');
--- 2. The policies (expect five rows, all for the authenticated role):
---      select tablename, policyname, roles, cmd from pg_policies where tablename like 'school_%' order by 1, 2;
--- 3. The public browser key has no privileges (expect zero rows):
+-- 2. No policies and no browser-role privileges in server mode (expect zero rows for both):
+--      select tablename, policyname from pg_policies where tablename like 'school_%';
 --      select grantee, table_name, privilege_type from information_schema.role_table_grants
---      where table_name like 'school_%' and grantee in ('anon', 'PUBLIC');
+--      where table_name like 'school_%' and grantee in ('anon', 'authenticated', 'PUBLIC');
+-- 3. The server role can write and read (run in a transaction and roll back):
+--      begin; set local role service_role;
+--      insert into public.school_lesson_progress (user_id, subject, lesson_id) values (repeat('a', 64), 'geography', 'ng-climate');
+--      select count(*) from public.school_lesson_progress;   -- expect 1
+--      rollback;
 -- 4. Nothing else was changed (expect the same row counts as before the migration, e.g.):
 --      select count(*) from public.world_explorer_profiles;
--- 5. A test write as one student cannot be read as another (run in a transaction and roll back):
---      begin;
---      set local role authenticated;
---      select set_config('request.jwt.claims', '{"role":"authenticated","we_profile_id":"' || repeat('a', 64) || '"}', true);
---      insert into public.school_lesson_progress (user_id, subject, lesson_id) values (repeat('a', 64), 'geography', 'ng-climate');
---      select set_config('request.jwt.claims', '{"role":"authenticated","we_profile_id":"' || repeat('b', 64) || '"}', true);
---      select count(*) from public.school_lesson_progress;   -- expect 0
---      rollback;
-
 -- ============================================================================ rollback (removes ONLY School Learning data)
 -- First remove the [school] section from Streamlit secrets (the app then stops using the tables), then:
 --   drop table if exists public.school_practice_attempts;

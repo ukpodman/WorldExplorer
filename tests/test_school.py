@@ -525,6 +525,12 @@ class MigrationTests(unittest.TestCase):
         sql = ROOT / "supabase" / "school_learning_migration.sql"
         cls.cluster.psql_file(cls.db, sql)
         cls.cluster.psql_file(cls.db, sql)   # safe to run twice
+        cls.base_db = cls.db                 # base migration only (recommended "server" mode)
+        cls.db = cls.cluster.fresh_db()      # base + optional per-student policies ("user_token" mode)
+        cls.cluster.psql(cls.db, AUTH_STUB)
+        cls.cluster.psql_file(cls.db, sql)
+        cls.cluster.psql_file(cls.db, ROOT / "supabase" / "school_learning_user_token_policies.sql")
+        cls.cluster.psql_file(cls.db, ROOT / "supabase" / "school_learning_user_token_policies.sql")
 
     @classmethod
     def tearDownClass(cls):
@@ -537,9 +543,10 @@ class MigrationTests(unittest.TestCase):
         return self.cluster.psql(self.db, sql, role)
 
     def test_adds_only_the_two_school_tables(self):
-        after = self.q("select count(*) from pg_tables where schemaname = 'public'")
+        after = self.cluster.psql(self.base_db, "select count(*) from pg_tables where schemaname = 'public'")
         self.assertEqual(int(after), int(self.before) + 2)
         text = (ROOT / "supabase" / "school_learning_migration.sql").read_text(encoding="utf-8")
+        text += (ROOT / "supabase" / "school_learning_user_token_policies.sql").read_text(encoding="utf-8")
         body = "\n".join(line for line in text.splitlines() if not line.lstrip().startswith("--"))
         self.assertEqual(sorted(set(re.findall(r"public\.(\w+)", body))), ["school_lesson_progress", "school_practice_attempts"])
         self.assertNotRegex(body.lower(), r"\b(drop table|truncate|delete from|alter table public\.(?!school_))")
@@ -578,6 +585,16 @@ class MigrationTests(unittest.TestCase):
         # a token without the claim (for example a Supabase Auth sign-in) sees nothing
         self.assertEqual(self.q("select set_config('request.jwt.claims', '{\"role\":\"authenticated\",\"sub\":\"x\"}', false); "
                                 "select count(*) from school_lesson_progress", "authenticated").splitlines()[-1], "0")
+
+    def test_server_mode_base_migration_gives_browser_roles_nothing(self):
+        E = pg_harness.StoreError
+        for role in ("anon", "authenticated"):
+            for sql in ("select * from school_lesson_progress", "select * from school_practice_attempts",
+                        f"insert into school_lesson_progress (user_id, subject, lesson_id) values ('{USER}', 'geography', 'z')"):
+                with self.assertRaises(E):
+                    self.cluster.psql(self.base_db, (f"select set_config('request.jwt.claims', '{{\"we_profile_id\":\"{USER}\"}}', false); " if role == "authenticated" else "") + sql, role)
+        self.assertEqual(self.cluster.psql(self.base_db, "select count(*) from pg_policies where tablename like 'school_%'"), "0")
+        self.cluster.psql(self.base_db, f"insert into school_lesson_progress (user_id, subject, lesson_id) values ('{USER}', 'geography', 'ng-climate') on conflict do nothing", "service_role")
 
     def test_public_key_has_no_access(self):
         E = pg_harness.StoreError

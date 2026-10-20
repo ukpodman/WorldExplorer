@@ -78,6 +78,39 @@ def _who() -> dict | None:
     return accounts.identity()
 
 
+def _owner() -> str:
+    """Whose progress the session holds: the signed-in account's one-way id, or "guest"."""
+    who = _who()
+    return who["profile_id"] if who else "guest"
+
+
+def _loaded(subject_id: str) -> bool:
+    """The signed-in student's saved progress for this subject has been loaded (tracked per account AND subject)."""
+    who = _who()
+    return bool(who) and f'{who["profile_id"]}:{subject_id}' in SS.get("school_loaded_keys", set())
+
+
+def _ensure_owner() -> None:
+    """Progress belongs to one identity. When the identity changes in this browser session (sign-in, sign-out or a
+    different account), nothing studied under the previous identity is carried over: an account's progress stays in
+    that account, and a guest's progress is only *offered* for import (see _guest_offer_box), never added silently."""
+    owner = _owner()
+    previous = SS.get("school_owner")
+    if previous == owner:
+        return
+    if previous is not None:
+        if previous == "guest" and any(SS.get("school_progress", {}).values()):
+            SS.school_guest_offer = SS.school_progress
+        SS.school_progress = {}
+        SS.school_practice = None
+        SS.school_view = "home"
+        SS.school_device_on = False
+        for key in ("school_loaded_keys", "school_store_error", "school_retry_at", "school_device_checked",
+                    "school_offer_hidden", "sl_device"):
+            SS.pop(key, None)
+    SS.school_owner = owner
+
+
 def storage_mode() -> str:
     """'guest' (not signed in), 'session' (signed in, saving switched off), 'saved' or 'error'."""
     who = _who()
@@ -85,12 +118,13 @@ def storage_mode() -> str:
         return "guest"
     if not school_store.enabled():
         return "session"
-    return "error" if SS.get("school_store_error") or SS.get("school_loaded") != who["profile_id"] else "saved"
+    return "error" if SS.get("school_store_error") or not _loaded(SS.get("school_subject", "geography")) else "saved"
 
 
-# ---- progress kept on this device (opt-in, for guests and whenever account saving is unavailable)
-# A small first-party cookie with lesson positions and scores only (no name, e-mail or account id). The student
-# switches it on; switching it off deletes the cookie. It is per browser and per device, and browsers may clear it.
+# ---- progress kept on this device (opt-in, guests only)
+# A small first-party cookie with lesson positions and scores only (no name, e-mail or account id). A guest switches it
+# on; switching it off deletes the cookie. It is per browser and per device, and browsers may clear it. It is never
+# merged into an account automatically: a signed-in student is asked whether to add it (or to discard it).
 DEVICE_FIELDS = ("page", "furthest", "completed", "revision", "best", "last", "attempts", "answered", "correct", "version")
 
 
@@ -142,12 +176,20 @@ def device_unpack(value: str | None) -> tuple[str, dict]:
 
 
 def _device_restore() -> None:
-    """Once per session: bring back progress kept on this device (only if the student switched it on before)."""
+    """Once per session: a guest gets back the progress kept on this device; a signed-in student is only offered it."""
     if SS.get("school_device_checked"):
         return
     SS.school_device_checked = True
     subject_id, saved = device_unpack(cookies.read(DEVICE_COOKIE))
     if not saved:
+        return
+    if _owner() != "guest":
+        offer = SS.setdefault("school_guest_offer", {})
+        mine = offer.setdefault(subject_id, {})
+        for lesson_id, rec in saved.items():
+            if lesson_id not in mine or str(rec.get("updated_at", "")) >= str(mine[lesson_id].get("updated_at", "")):
+                mine[lesson_id] = rec
+        SS.school_offer_on_device = True
         return
     SS.school_device_on = True
     mine = SS.school_progress.setdefault(subject_id, {})
@@ -158,8 +200,36 @@ def _device_restore() -> None:
 
 
 def _device_write() -> None:
-    if SS.get("school_device_on") and storage_mode() != "saved":
+    if SS.get("school_device_on") and _owner() == "guest":
         cookies.write(DEVICE_COOKIE, device_pack(progress(SS.school_subject)), DEVICE_DAYS * 86400)
+
+
+def _offer() -> dict:
+    """Guest progress (from this session before signing in, or from this device) waiting for the student's decision."""
+    if _owner() == "guest" or SS.get("school_offer_hidden"):
+        return {}
+    return {k: v for k, v in (SS.get("school_guest_offer") or {}).get(SS.get("school_subject", "geography"), {}).items()
+            if k in school.lesson_ids(SS.get("school_subject", "geography"))}
+
+
+def _import_guest() -> None:
+    """The student chose to add their guest progress: newer records win, each lesson saved like any other change."""
+    subject_id = SS.school_subject
+    for lesson_id, rec in _offer().items():
+        here = progress(subject_id).get(lesson_id)
+        if not here or str(rec.get("updated_at", "")) > str(here.get("updated_at", "")):
+            _put(subject_id, lesson_id, dict(rec))
+    _forget_guest()
+
+
+def _forget_guest() -> None:
+    SS.pop("school_guest_offer", None)
+    if SS.pop("school_offer_on_device", False):
+        cookies.write(DEVICE_COOKIE, "", 0)
+
+
+def _hide_offer() -> None:
+    SS.school_offer_hidden = True
 
 
 def _device_toggle() -> None:
@@ -176,7 +246,7 @@ def _restore(subject_id: str) -> None:
     if not who or not school_store.enabled():
         return
     marker = who["profile_id"]
-    if SS.get("school_loaded") == marker or time.time() < SS.get("school_retry_at", 0.0):
+    if _loaded(subject_id) or time.time() < SS.get("school_retry_at", 0.0):
         return
     try:
         saved = school_store.load(marker, subject_id)
@@ -194,10 +264,10 @@ def _restore(subject_id: str) -> None:
         here = mine.get(lesson_id)
         if not here or str(clean.get("updated_at", "")) >= str(here.get("updated_at", "")):
             mine[lesson_id] = clean
-    for lesson_id, here in mine.items():   # studied in this visit before signing in or before the load succeeded
+    for lesson_id, here in mine.items():   # this same account's changes made before the load succeeded (never a guest's:
         if lesson_id not in saved or str(here.get("updated_at", "")) > str(saved[lesson_id].get("updated_at", "")):
-            newer_here.append(lesson_id)
-    SS.school_loaded = marker
+            newer_here.append(lesson_id)   # _ensure_owner empties the session when the identity changes)
+    SS.setdefault("school_loaded_keys", set()).add(f"{marker}:{subject_id}")
     SS.school_store_error = False
     for lesson_id in newer_here:
         try:
@@ -218,7 +288,7 @@ def _put(subject_id: str, lesson_id: str, rec: dict) -> None:
     if before == rec:
         return
     who = _who()
-    if who and school_store.enabled() and SS.get("school_loaded") == who["profile_id"]:
+    if who and school_store.enabled() and _loaded(subject_id):
         try:
             school_store.save(who["profile_id"], subject_id, lesson_id, rec)
             SS.school_store_error = False
@@ -307,7 +377,7 @@ def _next(token: int, index: int) -> None:
             asked = [a["id"] for a in session["answers"]]
             _put(subject_id, lesson_id, school.record_practice(progress(subject_id).get(lesson_id), mark, asked, len(asked)))
             who = _who()
-            if who and school_store.enabled() and SS.get("school_loaded") == who["profile_id"]:
+            if who and school_store.enabled() and _loaded(subject_id):
                 try:
                     school_store.record_attempt(who["profile_id"], subject_id, lesson_id, mark, len(session["items"]), session["answers"],
                                                 school.lesson(subject_id, lesson_id).get("version", 1))
@@ -336,9 +406,8 @@ def _storage_note(with_device: bool = True) -> None:
         "guest": ("You are learning as a guest. Your progress is kept on this device (switch below)." if device else
                   "You are learning as a guest. Your progress is kept only while this browser tab is open, unless you "
                   "switch on “Keep my progress on this device”."),
-        "session": ("Saving School Learning progress to accounts is not switched on yet. Your progress is kept on this device."
-                    if device else "Saving School Learning progress to accounts is not switched on yet, so your progress is kept "
-                                   "for this visit only, unless you keep it on this device."),
+        "session": "Saving School Learning progress to accounts is not switched on yet, so your progress is kept for this "
+                   "visit only.",
         "saved": "Your School Learning progress is saved to your account, separately from quiz points and rewards, so you can "
                  "continue on another device.",
         "error": "We could not reach your saved School Learning progress just now. Your progress in this visit is kept, and we will "
@@ -346,7 +415,7 @@ def _storage_note(with_device: bool = True) -> None:
     }[mode]
     with st.container(key="sl_store_box"):
         html(f'<p class="sl-store sl-store-{mode}">{escape(text)}</p>')
-        if with_device and mode in ("guest", "session"):
+        if with_device and mode == "guest":
             SS.sl_device = device
             st.toggle("Keep my progress on this device", key="sl_device", on_change=_device_toggle,
                       help="Stores your lesson positions and practice scores in a small cookie in this browser: no name, e-mail or "
@@ -377,6 +446,24 @@ def _levels(levels: list[str]) -> str:
     return "".join(_chip(x, "level") for x in levels)
 
 
+def _guest_offer_box() -> None:
+    """Explicit, separate import of guest progress after signing in. Nothing is added unless the student chooses."""
+    offer = _offer()
+    if not offer:
+        return
+    names = ", ".join(f'{school.lesson(SS.school_subject, i)["number"]}. {school.lesson(SS.school_subject, i)["short"]}'
+                      for i in sorted(offer, key=lambda i: school.lesson(SS.school_subject, i)["number"]))
+    where = "your account" if storage_mode() in ("saved", "error") else "your progress for this visit"
+    with st.container(key="sl_guest_offer"):
+        html(f'<div class="sl-offer"><b>You studied {len(offer)} lesson{"s" if len(offer) != 1 else ""} as a guest on this device</b>'
+             f'<span class="sl-muted"> ({escape(names)}).</span><p class="sl-muted">Add that progress to {escape(where)}? '
+             'Nothing is added unless you choose. If someone else used this device as a guest, choose “Discard”.</p></div>')
+        with st.container(key="sl_offer_actions", horizontal=True):
+            st.button("Add to my progress", key="sl_import_guest", type="primary", icon=":material/download_done:", on_click=_import_guest)
+            st.button("Discard guest progress", key="sl_discard_guest", icon=":material/delete:", on_click=_forget_guest)
+            st.button("Not now", key="sl_offer_later", on_click=_hide_offer)
+
+
 # --------------------------------------------------------------------------- home: school → subjects
 
 def _home() -> None:
@@ -385,6 +472,7 @@ def _home() -> None:
     html('<div class="sl-intro"><h2>School Learning</h2>'
          '<p>Study notes, maps and practice for Nigerian secondary-school students. Geography (SSS 1–3) follows the WAEC syllabus.</p>'
          f'<div class="sl-intro-meta">{_review_badge()}{_chip("English")}{_chip("No account needed")}</div></div>')
+    _guest_offer_box()
     if prog:
         _continue_card(subject_id, prog, "sl_continue_btn")
     _restore_widget("sl_subject_search", "")
@@ -453,6 +541,7 @@ def _topics() -> None:
     with st.container(key="sl_topbar", horizontal=True, vertical_alignment="center"):
         st.button("School Learning", key="sl_back_home", icon=":material/arrow_back:", on_click=go, args=("home",))
         st.button("My progress", key="sl_topics_progress", icon=":material/insights:", on_click=go, args=("progress",))
+    _guest_offer_box()
     html(f'<div class="sl-intro"><div class="sl-kicker">{escape(s.get("level", ""))}</div><h2>{escape(s["title"])}</h2>'
          '<p>Seven full lessons on the regional geography of Nigeria, each with notes, maps, key terms, worked examples, exam guidance, '
          'quick checks, exam-style questions and a bank of 21 practice questions. The rest of the syllabus is listed below as coming soon.</p>'
@@ -787,6 +876,7 @@ def _progress() -> None:
     with st.container(key="sl_topbar", horizontal=True, vertical_alignment="center"):
         st.button("School Learning", key="sl_progress_home", icon=":material/arrow_back:", on_click=go, args=("home",))
         st.button("Back to topics", key="sl_progress_topics", icon=":material/list:", on_click=go, args=("topics",))
+    _guest_offer_box()
     html(f'<div class="sl-intro"><h2>My School Learning progress</h2><p>{escape(school.subject(subject_id)["title"])} · '
          'academic progress only, kept separately from quiz points, badges and rewards.</p></div>')
     _overview_tiles(o)
@@ -835,6 +925,7 @@ VIEWS = {"home": _home, "topics": _topics, "lesson": _lesson, "practice": _pract
 @st.fragment
 def _school() -> None:
     """School Learning reruns on its own (a page turn or an answer does not redraw the rest of World Explorer)."""
+    _ensure_owner()
     _device_restore()
     _restore(SS.school_subject)
     with st.container(key=f"school_{SS.school_view if SS.school_view in VIEWS else 'home'}"):

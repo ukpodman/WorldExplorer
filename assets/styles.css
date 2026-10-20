@@ -1923,3 +1923,7 @@ html[data-we-theme="dark"] .learn-map { --lm-sea:#0F2234; --lm-land:#22384F; --l
   .sl-progress-table td > * { text-align:right; }
   .sl-progress-table tbody tr:nth-child(even) { background:var(--surface-2); }
 }
+/* Guest progress import offer (shown once after signing in, only if the student studied as a guest) */
+.st-key-sl_guest_offer { background:var(--teal-soft); border:1px solid var(--chip-teal-border); border-radius:var(--radius); padding:12px 16px !important; gap:8px !important; }
+.sl-offer p { margin:4px 0 0; }
+.st-key-sl_offer_actions { gap:8px !important; flex-wrap:wrap !important; }

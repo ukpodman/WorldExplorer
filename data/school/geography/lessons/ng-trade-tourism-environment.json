@@ -4,13 +4,17 @@
   "title": "Trade, Tourism and Environmental Issues",
   "short": "Trade, tourism and environment",
   "minutes": 35,
-  "syllabus": ["WAEC Geography, Regional Geography of Nigeria: trade; tourism; development and environmental issues; ECOWAS. Part A: environmental problems and conservation; Part B: trade, tourism", "NERDC-based schemes: Commercial activities in Nigeria; Trade; Tourism; Environmental problems; Environmental conservation"],
+  "syllabus": [
+    "WAEC Geography, Regional Geography of Nigeria: trade; tourism; development and environmental issues; ECOWAS. Part A: environmental problems and conservation; Part B: trade, tourism",
+    "NERDC-based schemes: Commercial activities in Nigeria; Trade; Tourism; Environmental problems; Environmental conservation"
+  ],
   "objectives": [
     "distinguish between internal (domestic) and international trade and describe Nigeria's main exports and imports;",
     "explain the importance of trade and the role of ECOWAS;",
     "identify major tourist attractions and explain the importance and problems of tourism;",
     "describe Nigeria's main environmental problems, their causes and effects;",
-    "suggest ways of managing and conserving the environment."
+    "suggest ways of managing and conserving the environment.",
+    "explain the meaning of the balance of trade and calculate it from given figures;"
   ],
   "intro": [
     "Trade connects Nigeria's producers with markets at home and abroad; tourism turns natural beauty and culture into income; and the environment underpins both. This final lesson in the Nigeria series brings these together, because how Nigeria trades and develops directly affects its environment."
@@ -20,86 +24,228 @@
       "id": "trade",
       "title": "Internal and international trade",
       "blocks": [
-        {"type": "p", "text": "**Trade** is the buying and selling (or exchange) of goods and services. **Internal (domestic) trade** takes place within Nigeria; **international (foreign) trade** takes place between Nigeria and other countries."},
-        {"type": "list", "items": [
-          "**Internal trade** happens in daily and periodic markets, shops and, increasingly, online. Large markets such as Onitsha Main Market, Ariaria in Aba, Balogun in Lagos and Dawanau grain market near Kano serve traders from across Nigeria and neighbouring countries. Goods move between regions because each produces different things — for example grains and livestock from the north, and palm produce and manufactured goods from the south.",
-          "**Exports**: crude oil dominates. According to the National Bureau of Statistics, crude oil made up about 69% of the value of Nigeria's exports in the last quarter of 2024. Other exports include liquefied natural gas, refined petroleum products, cocoa, sesame seeds, cashew nuts and urea fertiliser.",
-          "**Imports** include machinery, vehicles, chemicals, wheat and other foods, and manufactured consumer goods. Nigeria long imported most of its petrol; new domestic refining capacity is changing this."
-        ]},
-        {"type": "p", "text": "Trade earns foreign exchange, provides government revenue through taxes and duties, creates jobs and gives people access to goods they cannot produce locally. Dependence on one main export, however, leaves the economy vulnerable when oil prices fall."}
+        {
+          "type": "p",
+          "text": "**Trade** is the buying and selling (or exchange) of goods and services. **Internal (domestic) trade** takes place within Nigeria; **international (foreign) trade** takes place between Nigeria and other countries."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Internal trade** happens in daily and periodic markets, shops and, increasingly, online. Large markets such as Onitsha Main Market, Ariaria in Aba, Balogun in Lagos and Dawanau grain market near Kano serve traders from across Nigeria and neighbouring countries. Goods move between regions because each produces different things — for example grains and livestock from the north, and palm produce and manufactured goods from the south.",
+            "**Exports**: crude oil dominates. According to the National Bureau of Statistics, crude oil made up about 69% of the value of Nigeria's exports in the last quarter of 2024. Other exports include liquefied natural gas, refined petroleum products, cocoa, sesame seeds, cashew nuts and urea fertiliser.",
+            "**Imports** include machinery, vehicles, chemicals, wheat and other foods, and manufactured consumer goods. Nigeria long imported most of its petrol; new domestic refining capacity is changing this."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Trade earns foreign exchange, provides government revenue through taxes and duties, creates jobs and gives people access to goods they cannot produce locally. Dependence on one main export, however, leaves the economy vulnerable when oil prices fall."
+        },
+        {
+          "type": "p",
+          "text": "The **balance of trade** is the difference between the value of a country's exports and imports of goods. It is **favourable** (a surplus) when exports are worth more than imports, and **unfavourable** (a deficit) when imports are worth more. Because crude oil dominates Nigeria's exports, the balance of trade rises and falls with the world price of oil."
+        }
       ]
     },
     {
       "id": "ecowas",
       "title": "ECOWAS and regional trade",
       "blocks": [
-        {"type": "p", "text": "The **Economic Community of West African States (ECOWAS)** was founded by the Treaty of Lagos in **1975** to promote economic co-operation and integration among West African countries. Its headquarters (the ECOWAS Commission) is in **Abuja**."},
-        {"type": "list", "items": [
-          "**Aims and achievements**: free movement of people (ECOWAS citizens can travel within the region without visas), reduction of trade barriers, regional infrastructure such as roads, and peace-keeping and conflict mediation.",
-          "**Problems**: poor road and rail links between countries, different currencies, smuggling and illegal checkpoints, political instability, and differences in national policies.",
-          "Nigeria is also a member of the wider **African Continental Free Trade Area (AfCFTA)**, which aims to increase trade between African countries."
-        ]}
+        {
+          "type": "p",
+          "text": "The **Economic Community of West African States (ECOWAS)** was founded by the Treaty of Lagos in **1975** to promote economic co-operation and integration among West African countries. Its headquarters (the ECOWAS Commission) is in **Abuja**."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Aims and achievements**: free movement of people (ECOWAS citizens can travel within the region without visas), reduction of trade barriers, regional infrastructure such as roads, and peace-keeping and conflict mediation.",
+            "**Problems**: poor road and rail links between countries, different currencies, smuggling and illegal checkpoints, political instability, and differences in national policies.",
+            "Nigeria is also a member of the wider **African Continental Free Trade Area (AfCFTA)**, which aims to increase trade between African countries."
+          ]
+        }
       ]
     },
     {
       "id": "tourism",
       "title": "Tourism",
       "blocks": [
-        {"type": "figure", "src": "nigeria_tourism_environment", "caption": "Selected tourist attractions and areas affected by major environmental problems (simplified).", "credit": "Map data: Natural Earth (public domain). Positions and zones approximate."},
-        {"type": "table", "head": ["Type", "Examples"], "rows": [
-          ["Natural attractions", "Obudu Mountain Resort (Cross River), Yankari Game Reserve and the Wikki warm spring (Bauchi), Kainji Lake National Park, Idanre Hills (Ondo), Erin Ijesha waterfalls (Osun), Olumo Rock (Abeokuta)"],
-          ["World Heritage sites", "Sukur Cultural Landscape (Adamawa, inscribed by UNESCO in 1999) and Osun-Osogbo Sacred Grove (Osun, inscribed in 2005)"],
-          ["Festivals and culture", "Argungu Fishing Festival (Kebbi), the Durbar festivals (Kano, Katsina and other northern cities), Calabar Carnival, the Osun-Osogbo festival, the Eyo festival (Lagos)"],
-          ["Beaches and cities", "Lagos beaches, museums and galleries in Lagos and other cities"]
-        ]},
-        {"type": "cards", "items": [
-          {"title": "Importance", "tone": "ok", "text": "Earns income and foreign exchange, creates jobs (hotels, guides, transport, crafts), encourages conservation of wildlife and heritage, and promotes national unity and cultural pride."},
-          {"title": "Problems", "tone": "warn", "text": "Insecurity in some regions, poor roads and facilities, irregular power and water, weak maintenance of sites, limited publicity and high costs."}
-        ]},
-        {"type": "p", "text": "Solutions include improving security and infrastructure, training hospitality workers, maintaining and promoting sites, and involving local communities so that they benefit from tourism."}
+        {
+          "type": "figure",
+          "src": "nigeria_tourism_environment",
+          "caption": "Selected tourist attractions and areas affected by major environmental problems (simplified).",
+          "credit": "Map data: Natural Earth (public domain). Positions and zones approximate."
+        },
+        {
+          "type": "table",
+          "head": [
+            "Type",
+            "Examples"
+          ],
+          "rows": [
+            [
+              "Natural attractions",
+              "Obudu Mountain Resort (Cross River), Yankari Game Reserve and the Wikki warm spring (Bauchi), Kainji Lake National Park, Idanre Hills (Ondo), Erin Ijesha waterfalls (Osun), Olumo Rock (Abeokuta)"
+            ],
+            [
+              "World Heritage sites",
+              "Sukur Cultural Landscape (Adamawa, inscribed by UNESCO in 1999) and Osun-Osogbo Sacred Grove (Osun, inscribed in 2005)"
+            ],
+            [
+              "Festivals and culture",
+              "Argungu Fishing Festival (Kebbi), the Durbar festivals (Kano, Katsina and other northern cities), Calabar Carnival, the Osun-Osogbo festival, the Eyo festival (Lagos)"
+            ],
+            [
+              "Beaches and cities",
+              "Lagos beaches, museums and galleries in Lagos and other cities"
+            ]
+          ]
+        },
+        {
+          "type": "cards",
+          "items": [
+            {
+              "title": "Importance",
+              "tone": "ok",
+              "text": "Earns income and foreign exchange, creates jobs (hotels, guides, transport, crafts), encourages conservation of wildlife and heritage, and promotes national unity and cultural pride."
+            },
+            {
+              "title": "Problems",
+              "tone": "warn",
+              "text": "Insecurity in some regions, poor roads and facilities, irregular power and water, weak maintenance of sites, limited publicity and high costs."
+            }
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Solutions include improving security and infrastructure, training hospitality workers, maintaining and promoting sites, and involving local communities so that they benefit from tourism."
+        }
       ]
     },
     {
       "id": "environment",
       "title": "Environmental problems",
       "blocks": [
-        {"type": "table", "head": ["Problem", "Where", "Causes", "Effects"], "rows": [
-          ["Desertification", "Far north (e.g. Sokoto, Yobe, Borno)", "Low, unreliable rainfall; overgrazing; tree felling; bush burning", "Loss of farmland and pasture; migration; conflicts over land"],
-          ["Gully erosion", "South-east (e.g. Anambra, Imo, Abia)", "Heavy rain on loose soils; removal of vegetation; poor drainage", "Destruction of farms, roads and houses"],
-          ["Flooding", "River valleys (Niger, Benue) and cities such as Lagos", "Heavy rainfall; release of water from dams; blocked drains; building on floodplains", "Loss of life, homes and crops; disease"],
-          ["Oil pollution and gas flaring", "Niger Delta", "Spills from pipelines and facilities; sabotage and theft; flaring of associated gas", "Polluted water and farmland, damaged fisheries and mangroves, air pollution, health problems"],
-          ["Deforestation", "Rainforest belt and savanna", "Logging, farming, fuelwood, urban expansion", "Loss of biodiversity, soil erosion, climate effects"],
-          ["Coastal erosion", "Lagos and other coastal areas", "Wave action, sea-level rise, sand mining", "Loss of land and property"],
-          ["Urban waste and air pollution", "Large cities", "Rapid population growth, poor waste collection, vehicle and generator fumes", "Blocked drains and flooding, disease, poor air quality"]
-        ]},
-        {"type": "p", "text": "Two recent examples show the scale of these problems. In **2022**, floods affected 33 of Nigeria's 36 states; the federal government reported over 600 deaths and more than 1.4 million people displaced, after unusually heavy rainfall and the release of water from Cameroon's Lagdo Dam. In the north-east, the open-water area of **Lake Chad** has shrunk dramatically since the 1960s — by about 90% according to the UN Food and Agriculture Organization — although its size varies from year to year."},
-        {"type": "p", "text": "In the Niger Delta, a 2011 UN Environment Programme assessment of Ogoniland reported widespread oil contamination of land and water; a government clean-up programme (HYPREP) was later set up to address it."}
+        {
+          "type": "table",
+          "head": [
+            "Problem",
+            "Where",
+            "Causes",
+            "Effects"
+          ],
+          "rows": [
+            [
+              "Desertification",
+              "Far north (e.g. Sokoto, Yobe, Borno)",
+              "Low, unreliable rainfall; overgrazing; tree felling; bush burning",
+              "Loss of farmland and pasture; migration; conflicts over land"
+            ],
+            [
+              "Gully erosion",
+              "South-east (e.g. Anambra, Imo, Abia)",
+              "Heavy rain on loose soils; removal of vegetation; poor drainage",
+              "Destruction of farms, roads and houses"
+            ],
+            [
+              "Flooding",
+              "River valleys (Niger, Benue) and cities such as Lagos",
+              "Heavy rainfall; release of water from dams; blocked drains; building on floodplains",
+              "Loss of life, homes and crops; disease"
+            ],
+            [
+              "Oil pollution and gas flaring",
+              "Niger Delta",
+              "Spills from pipelines and facilities; sabotage and theft; flaring of associated gas",
+              "Polluted water and farmland, damaged fisheries and mangroves, air pollution, health problems"
+            ],
+            [
+              "Deforestation",
+              "Rainforest belt and savanna",
+              "Logging, farming, fuelwood, urban expansion",
+              "Loss of biodiversity, soil erosion, climate effects"
+            ],
+            [
+              "Coastal erosion",
+              "Lagos and other coastal areas",
+              "Wave action, sea-level rise, sand mining",
+              "Loss of land and property"
+            ],
+            [
+              "Urban waste and air pollution",
+              "Large cities",
+              "Rapid population growth, poor waste collection, vehicle and generator fumes",
+              "Blocked drains and flooding, disease, poor air quality"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Two recent examples show the scale of these problems. In **2022**, floods affected 33 of Nigeria's 36 states; the federal government reported over 600 deaths and more than 1.4 million people displaced, after unusually heavy rainfall and the release of water from Cameroon's Lagdo Dam. In the north-east, the open-water area of **Lake Chad** has shrunk dramatically since the 1960s — by about 90% according to the UN Food and Agriculture Organization — although its size varies from year to year. The main causes are the severe droughts of the 1970s and 1980s and increased use of water for irrigation and other needs."
+        },
+        {
+          "type": "p",
+          "text": "In the Niger Delta, a 2011 UN Environment Programme assessment of Ogoniland reported widespread oil contamination of land and water; a government clean-up programme (HYPREP) was later set up to address it."
+        }
       ]
     },
     {
       "id": "conservation",
       "title": "Managing and conserving the environment",
       "blocks": [
-        {"type": "list", "items": [
-          "**Afforestation and the Great Green Wall** to slow desertification; shelter belts and controlled grazing.",
-          "**Erosion control**: planting vegetation, terracing, drainage channels and check dams in gully areas.",
-          "**Flood management**: early warning, clearing drains, controlling building on floodplains, better dam coordination and new reservoirs.",
-          "**Oil industry regulation**: reducing gas flaring, maintaining pipelines, prompt clean-up of spills and compensation for affected communities.",
-          "**Urban waste management**: regular collection, recycling and public education.",
-          "**Laws and agencies**: environmental protection laws and agencies, and public awareness through schools and the media."
-        ]},
-        {"type": "note", "text": "Environmental figures change over time. Always use the latest reliable source and quote the year of any figure you give in an examination."}
+        {
+          "type": "list",
+          "items": [
+            "**Afforestation and the Great Green Wall** to slow desertification; shelter belts and controlled grazing.",
+            "**Erosion control**: planting vegetation, terracing, drainage channels and check dams in gully areas.",
+            "**Flood management**: early warning, clearing drains, controlling building on floodplains, better dam coordination and new reservoirs.",
+            "**Oil industry regulation**: reducing gas flaring, maintaining pipelines, prompt clean-up of spills and compensation for affected communities.",
+            "**Urban waste management**: regular collection, recycling and public education.",
+            "**Laws and agencies**: environmental protection laws and agencies, and public awareness through schools and the media."
+          ]
+        },
+        {
+          "type": "note",
+          "text": "Environmental figures change over time. Always use the latest reliable source and quote the year of any figure you give in an examination."
+        }
       ]
     }
   ],
   "definitions": [
-    ["Internal trade", "Buying and selling within a country."],
-    ["International trade", "Exchange of goods and services between countries."],
-    ["Balance of trade", "The difference between the value of a country's exports and its imports."],
-    ["ECOWAS", "Economic Community of West African States, founded in 1975, headquartered in Abuja."],
-    ["Tourism", "Travelling to places for leisure, recreation, culture or business, and the services that support it."],
-    ["Desertification", "The spread of desert-like conditions into dry lands."],
-    ["Conservation", "The careful use and protection of natural resources and the environment."]
+    [
+      "Internal trade",
+      "Buying and selling within a country."
+    ],
+    [
+      "International trade",
+      "Exchange of goods and services between countries."
+    ],
+    [
+      "Balance of trade",
+      "The difference between the value of a country's exports and its imports."
+    ],
+    [
+      "ECOWAS",
+      "Economic Community of West African States, founded in 1975, headquartered in Abuja."
+    ],
+    [
+      "Tourism",
+      "Travelling to places for leisure, recreation, culture or business, and the services that support it."
+    ],
+    [
+      "Desertification",
+      "The spread of desert-like conditions into dry lands."
+    ],
+    [
+      "Conservation",
+      "The careful use and protection of natural resources and the environment."
+    ],
+    [
+      "Ecotourism",
+      "Responsible travel to natural areas that conserves the environment and benefits local people."
+    ],
+    [
+      "Deforestation",
+      "The clearing of forests for farming, timber, fuelwood or building, faster than they regrow."
+    ]
   ],
   "worked": [
     {
@@ -110,6 +256,16 @@
         "Interpretation: more than two-thirds of export earnings come from one product, so the economy depends heavily on oil and is exposed to changes in oil prices."
       ],
       "note": "Figures rounded from NBS data for the fourth quarter of 2024."
+    },
+    {
+      "title": "Calculating a balance of trade",
+      "problem": "In one year a country's exports were worth ₦18 trillion and its imports ₦15 trillion. Calculate its balance of trade and say whether it is favourable.",
+      "steps": [
+        "Balance of trade = value of exports − value of imports.",
+        "= ₦18 trillion − ₦15 trillion = **₦3 trillion**.",
+        "Exports are worth more than imports, so the balance is **favourable** (a surplus)."
+      ],
+      "note": "Illustrative figures, not official statistics."
     }
   ],
   "exam_tips": [
@@ -118,9 +274,26 @@
     "Remember ECOWAS facts: founded 1975 by the Treaty of Lagos; headquarters in Abuja."
   ],
   "checks": [
-    {"q": "What is the difference between internal and international trade?", "a": "Internal trade happens within Nigeria; international trade is between Nigeria and other countries."},
-    {"q": "Name Nigeria's two UNESCO World Heritage sites.", "a": "Sukur Cultural Landscape (1999) and Osun-Osogbo Sacred Grove (2005)."},
-    {"q": "Give one cause and one effect of desertification in northern Nigeria.", "a": "Cause: overgrazing or low, unreliable rainfall. Effect: loss of farmland and pasture, leading to migration."}
+    {
+      "q": "What is the difference between internal and international trade?",
+      "a": "Internal trade happens within Nigeria; international trade is between Nigeria and other countries."
+    },
+    {
+      "q": "Name Nigeria's two UNESCO World Heritage sites.",
+      "a": "Sukur Cultural Landscape (1999) and Osun-Osogbo Sacred Grove (2005)."
+    },
+    {
+      "q": "Give one cause and one effect of desertification in northern Nigeria.",
+      "a": "Cause: overgrazing or low, unreliable rainfall. Effect: loss of farmland and pasture, leading to migration."
+    },
+    {
+      "q": "Name the two UNESCO World Heritage sites in Nigeria and their states.",
+      "a": "Sukur Cultural Landscape (Adamawa State, inscribed 1999) and Osun-Osogbo Sacred Grove (Osun State, inscribed 2005)."
+    },
+    {
+      "q": "Give two effects of gas flaring in the Niger Delta.",
+      "a": "It pollutes the air and can harm people's health, and it wastes natural gas that could be used for power or exports. Heat and soot also affect crops and vegetation near flare sites."
+    }
   ],
   "summary": [
     "Internal trade links regions through large markets; international trade is dominated by crude oil exports, with imports of machinery, vehicles, chemicals and food.",
@@ -129,18 +302,342 @@
     "Major environmental problems include desertification, gully erosion, flooding, oil pollution, deforestation, coastal erosion and urban waste; each needs specific management measures."
   ],
   "practice": [
-    {"id": "tt1", "q": "Nigeria's most valuable export is", "options": ["cocoa", "crude oil", "groundnuts", "cotton"], "answer": 1, "explanation": "Crude oil made up about 69% of export value in the last quarter of 2024 (NBS).", "section": "trade"},
-    {"id": "tt2", "q": "Buying and selling within Nigeria is called", "options": ["international trade", "internal trade", "re-export trade", "barter only"], "answer": 1, "explanation": "Internal (domestic) trade takes place within a country.", "section": "trade"},
-    {"id": "tt3", "q": "ECOWAS was established in", "options": ["1960", "1975", "1991", "2001"], "answer": 1, "explanation": "ECOWAS was founded by the Treaty of Lagos in 1975.", "section": "ecowas"},
-    {"id": "tt4", "q": "Where is the headquarters of the ECOWAS Commission?", "options": ["Accra", "Lagos", "Abuja", "Dakar"], "answer": 2, "explanation": "The ECOWAS Commission is based in Abuja.", "section": "ecowas"},
-    {"id": "tt5", "q": "Which is a UNESCO World Heritage site in Nigeria?", "options": ["Olumo Rock", "Osun-Osogbo Sacred Grove", "Obudu Mountain Resort", "Kainji Lake"], "answer": 1, "explanation": "Osun-Osogbo Sacred Grove was inscribed in 2005; Sukur Cultural Landscape in 1999.", "section": "tourism"},
-    {"id": "tt6", "q": "The Argungu Fishing Festival takes place in", "options": ["Kebbi State", "Lagos State", "Cross River State", "Enugu State"], "answer": 0, "explanation": "Argungu is in Kebbi State.", "section": "tourism"},
-    {"id": "tt7", "q": "Obudu Mountain Resort is in", "options": ["Plateau State", "Cross River State", "Bauchi State", "Ogun State"], "answer": 1, "explanation": "The resort is on the Obudu Plateau in Cross River State.", "section": "tourism"},
-    {"id": "tt8", "q": "Severe gully erosion is most common in", "options": ["the north-west", "the south-east", "the Chad Basin", "the Jos Plateau"], "answer": 1, "explanation": "States such as Anambra, Imo and Abia are badly affected.", "section": "environment"},
-    {"id": "tt9", "q": "Burning off natural gas during oil production is called", "options": ["gas flaring", "refining", "smelting", "bush burning"], "answer": 0, "explanation": "Gas flaring pollutes the air in the Niger Delta.", "section": "environment"},
-    {"id": "tt10", "q": "Which is a cause of desertification in northern Nigeria?", "options": ["Overgrazing", "Mangrove planting", "Heavy rainfall", "Terracing"], "answer": 0, "explanation": "Overgrazing removes vegetation and exposes the soil.", "section": "environment"},
-    {"id": "tt11", "q": "Which measure helps to control desertification?", "options": ["Bush burning", "Afforestation and shelter belts", "Cutting more fuelwood", "Removing grass cover"], "answer": 1, "explanation": "Tree planting, including the Great Green Wall, protects the soil.", "section": "conservation"},
-    {"id": "tt12", "q": "The 2022 floods in Nigeria were worsened by", "options": ["a volcanic eruption", "the release of water from Lagdo Dam in Cameroon", "an earthquake", "a tsunami"], "answer": 1, "explanation": "Heavy rainfall and water released from the Lagdo Dam caused widespread flooding.", "section": "environment"}
+    {
+      "id": "tt1",
+      "q": "Nigeria's most valuable export is",
+      "options": [
+        "cocoa",
+        "crude oil",
+        "groundnuts",
+        "cotton"
+      ],
+      "answer": 1,
+      "explanation": "Crude oil made up about 69% of export value in the last quarter of 2024 (NBS).",
+      "section": "trade",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment",
+      "difficulty": "easy"
+    },
+    {
+      "id": "tt2",
+      "q": "Buying and selling within Nigeria is called",
+      "options": [
+        "international trade",
+        "internal trade",
+        "re-export trade",
+        "barter only"
+      ],
+      "answer": 1,
+      "explanation": "Internal (domestic) trade takes place within a country.",
+      "section": "trade",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment",
+      "difficulty": "easy"
+    },
+    {
+      "id": "tt3",
+      "q": "ECOWAS was established in",
+      "options": [
+        "1960",
+        "1975",
+        "1991",
+        "2001"
+      ],
+      "answer": 1,
+      "explanation": "ECOWAS was founded by the Treaty of Lagos in 1975.",
+      "section": "ecowas",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment",
+      "difficulty": "easy"
+    },
+    {
+      "id": "tt4",
+      "q": "Where is the headquarters of the ECOWAS Commission?",
+      "options": [
+        "Accra",
+        "Lagos",
+        "Abuja",
+        "Dakar"
+      ],
+      "answer": 2,
+      "explanation": "The ECOWAS Commission is based in Abuja.",
+      "section": "ecowas",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment",
+      "difficulty": "easy"
+    },
+    {
+      "id": "tt5",
+      "q": "Which is a UNESCO World Heritage site in Nigeria?",
+      "options": [
+        "Olumo Rock",
+        "Osun-Osogbo Sacred Grove",
+        "Obudu Mountain Resort",
+        "Kainji Lake"
+      ],
+      "answer": 1,
+      "explanation": "Osun-Osogbo Sacred Grove was inscribed in 2005; Sukur Cultural Landscape in 1999.",
+      "section": "tourism",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment",
+      "difficulty": "easy"
+    },
+    {
+      "id": "tt6",
+      "q": "The Argungu Fishing Festival takes place in",
+      "options": [
+        "Kebbi State",
+        "Lagos State",
+        "Cross River State",
+        "Enugu State"
+      ],
+      "answer": 0,
+      "explanation": "Argungu is in Kebbi State.",
+      "section": "tourism",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment",
+      "difficulty": "medium"
+    },
+    {
+      "id": "tt7",
+      "q": "Obudu Mountain Resort is in",
+      "options": [
+        "Plateau State",
+        "Cross River State",
+        "Bauchi State",
+        "Ogun State"
+      ],
+      "answer": 1,
+      "explanation": "The resort is on the Obudu Plateau in Cross River State.",
+      "section": "tourism",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment",
+      "difficulty": "medium"
+    },
+    {
+      "id": "tt8",
+      "q": "Severe gully erosion is most common in",
+      "options": [
+        "the north-west",
+        "the south-east",
+        "the Chad Basin",
+        "the Jos Plateau"
+      ],
+      "answer": 1,
+      "explanation": "States such as Anambra, Imo and Abia are badly affected.",
+      "section": "environment",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment",
+      "difficulty": "medium"
+    },
+    {
+      "id": "tt9",
+      "q": "Burning off natural gas during oil production is called",
+      "options": [
+        "gas flaring",
+        "refining",
+        "smelting",
+        "bush burning"
+      ],
+      "answer": 0,
+      "explanation": "Gas flaring pollutes the air in the Niger Delta.",
+      "section": "environment",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment",
+      "difficulty": "easy"
+    },
+    {
+      "id": "tt10",
+      "q": "Which is a cause of desertification in northern Nigeria?",
+      "options": [
+        "Overgrazing",
+        "Mangrove planting",
+        "Heavy rainfall",
+        "Terracing"
+      ],
+      "answer": 0,
+      "explanation": "Overgrazing removes vegetation and exposes the soil.",
+      "section": "environment",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment",
+      "difficulty": "medium"
+    },
+    {
+      "id": "tt11",
+      "q": "Which measure helps to control desertification?",
+      "options": [
+        "Bush burning",
+        "Afforestation and shelter belts",
+        "Cutting more fuelwood",
+        "Removing grass cover"
+      ],
+      "answer": 1,
+      "explanation": "Tree planting, including the Great Green Wall, protects the soil.",
+      "section": "conservation",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment",
+      "difficulty": "medium"
+    },
+    {
+      "id": "tt12",
+      "q": "The 2022 floods in Nigeria were worsened by",
+      "options": [
+        "a volcanic eruption",
+        "the release of water from Lagdo Dam in Cameroon",
+        "an earthquake",
+        "a tsunami"
+      ],
+      "answer": 1,
+      "explanation": "Heavy rainfall and water released from the Lagdo Dam caused widespread flooding.",
+      "section": "environment",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment",
+      "difficulty": "hard"
+    },
+    {
+      "id": "tt13",
+      "q": "A favourable balance of trade means that",
+      "options": [
+        "exports are worth more than imports",
+        "imports are worth more than exports",
+        "a country does no trade",
+        "tourism earnings have fallen"
+      ],
+      "answer": 0,
+      "explanation": "A favourable balance (a surplus) occurs when the value of exports is greater than the value of imports.",
+      "section": "trade",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment"
+    },
+    {
+      "id": "tt14",
+      "q": "Exports worth ₦18 trillion and imports worth ₦15 trillion give",
+      "options": [
+        "a surplus of ₦3 trillion",
+        "a deficit of ₦3 trillion",
+        "a surplus of ₦33 trillion",
+        "a deficit of ₦18 trillion"
+      ],
+      "answer": 0,
+      "explanation": "Balance = exports − imports = 18 − 15 = ₦3 trillion. It is positive, so it is a surplus.",
+      "section": "trade",
+      "difficulty": "hard",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment"
+    },
+    {
+      "id": "tt15",
+      "q": "One achievement of ECOWAS is",
+      "options": [
+        "visa-free travel for citizens of member states",
+        "a single currency used by every member",
+        "the complete end of smuggling",
+        "the removal of all national borders"
+      ],
+      "answer": 0,
+      "explanation": "ECOWAS citizens can travel within the region without visas. A single regional currency has been planned but not introduced, and smuggling remains a problem.",
+      "section": "ecowas",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment"
+    },
+    {
+      "id": "tt16",
+      "q": "Yankari Game Reserve and the Wikki warm spring are in",
+      "options": [
+        "Bauchi State",
+        "Kebbi State",
+        "Ondo State",
+        "Lagos State"
+      ],
+      "answer": 0,
+      "explanation": "Yankari, with the Wikki warm spring, is one of Nigeria's best-known wildlife reserves, in Bauchi State.",
+      "section": "tourism",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment"
+    },
+    {
+      "id": "tt17",
+      "q": "Which is an effect of deforestation?",
+      "options": [
+        "Loss of biodiversity and increased soil erosion",
+        "More mangrove forests",
+        "Less soil erosion",
+        "More wildlife habitat"
+      ],
+      "answer": 0,
+      "explanation": "Removing forest destroys habitats and leaves soil exposed to rain and wind.",
+      "section": "environment",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment"
+    },
+    {
+      "id": "tt18",
+      "q": "Which set of actions would best reduce urban flooding in Lagos?",
+      "options": [
+        "Clearing drains, controlling building on floodplains and giving early warnings",
+        "Building on wetlands and lagoon edges",
+        "Dumping waste in canals",
+        "Cutting down mangroves along the lagoon"
+      ],
+      "answer": 0,
+      "explanation": "Blocked drains and building on floodplains make flooding worse; clearing drains, planning controls and early warning reduce the damage.",
+      "section": "conservation",
+      "difficulty": "hard",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment"
+    },
+    {
+      "id": "tt19",
+      "q": "Coastal erosion in Lagos is caused mainly by",
+      "options": [
+        "wave action, sea-level rise and sand mining",
+        "gas flaring",
+        "overgrazing",
+        "the Harmattan"
+      ],
+      "answer": 0,
+      "explanation": "Waves remove sand from the shore, rising sea levels increase the attack, and sand mining removes sediment that protects the coast.",
+      "section": "environment",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment"
+    },
+    {
+      "id": "tt20",
+      "q": "The Sukur Cultural Landscape is in",
+      "options": [
+        "Adamawa State",
+        "Osun State",
+        "Lagos State",
+        "Cross River State"
+      ],
+      "answer": 0,
+      "explanation": "Sukur, in Adamawa State, was inscribed on the UNESCO World Heritage List in 1999.",
+      "section": "tourism",
+      "difficulty": "easy",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment"
+    },
+    {
+      "id": "tt21",
+      "q": "The open water of Lake Chad has shrunk by about 90% since the 1960s. Which is the best explanation?",
+      "options": [
+        "Severe droughts and increased use of water for irrigation",
+        "Melting glaciers flooding the basin",
+        "Sea water entering the lake",
+        "Volcanic eruptions blocking its rivers"
+      ],
+      "answer": 0,
+      "explanation": "Droughts in the 1970s and 1980s reduced inflow, and more water is now taken from the lake and its rivers for irrigation and other uses.",
+      "section": "environment",
+      "difficulty": "hard",
+      "subject": "geography",
+      "topic": "ng-trade-tourism-environment"
+    }
   ],
   "structured": [
     {
@@ -151,7 +648,9 @@
         "(b) 1. Insecurity discourages visitors. 2. Poor roads, power and water supplies make sites hard to reach and uncomfortable. 3. Poor maintenance and limited publicity reduce the attractiveness and visibility of sites.",
         "(c) Improve security and infrastructure; maintain and promote sites with community involvement."
       ],
-      "points": ["(a) 6 marks; (b) 6 marks; (c) 3 marks."]
+      "points": [
+        "(a) 6 marks; (b) 6 marks; (c) 3 marks."
+      ]
     },
     {
       "q": "(a) Describe the causes and effects of oil pollution in the Niger Delta. (b) Suggest three ways of reducing it.",
@@ -160,12 +659,59 @@
         "(a) Causes: leaks from old pipelines and facilities, sabotage and oil theft, accidents, and flaring of associated gas. Effects: polluted creeks and farmland, death of fish and damage to mangroves, loss of livelihoods for farmers and fishermen, air pollution and health problems, and conflict between communities and oil companies.",
         "(b) Regular maintenance and replacement of pipelines; prompt clean-up of spills and compensation for communities; strict enforcement of environmental laws and reduction of gas flaring by using the gas for power or export."
       ],
-      "points": ["(a) Up to 6 marks; (b) 2 marks per measure."]
+      "points": [
+        "(a) Up to 6 marks; (b) 2 marks per measure."
+      ]
+    },
+    {
+      "q": "(a) Name three tourist attractions in Nigeria and the state where each is found. (b) Describe three problems facing tourism in Nigeria and suggest a solution to each.",
+      "marks": 10,
+      "model": [
+        "(a) For example: Obudu Mountain Resort (Cross River); Yankari Game Reserve (Bauchi); Osun-Osogbo Sacred Grove (Osun); Argungu Fishing Festival (Kebbi); Olumo Rock (Ogun).",
+        "(b) 1. Insecurity in some regions: improve security and community policing around sites. 2. Poor roads and facilities: invest in access roads, power, water and accommodation. 3. Weak maintenance and publicity: train staff, maintain sites and promote them at home and abroad."
+      ],
+      "points": [
+        "1 mark for each attraction and its state (up to 4 marks).",
+        "1 mark for each problem and 1 for a matching solution (6 marks)."
+      ]
     }
   ],
   "references": [
-    {"title": "NBS foreign trade figures, Q4 2024 (reported by Sweet Crude Reports)", "url": "https://sweetcrudereports.com/crude-oil-exports-drive-nigerias-trade-with-n13-78tn-in-q4-2024/"},
-    {"title": "2022 Nigeria floods (deaths, displacement, causes)", "url": "https://en.wikipedia.org/wiki/2022_Nigeria_floods"},
-    {"title": "FAO: Lake Chad shrinking water resources", "url": "https://www.fao.org/newsroom/detail/Lake-Chad-facing-humanitarian-disaster/en"}
-  ]
+    {
+      "title": "NBS foreign trade figures, Q4 2024 (reported by Sweet Crude Reports)",
+      "url": "https://sweetcrudereports.com/crude-oil-exports-drive-nigerias-trade-with-n13-78tn-in-q4-2024/"
+    },
+    {
+      "title": "2022 Nigeria floods (deaths, displacement, causes)",
+      "url": "https://en.wikipedia.org/wiki/2022_Nigeria_floods"
+    },
+    {
+      "title": "FAO: Lake Chad shrinking water resources",
+      "url": "https://www.fao.org/newsroom/detail/Lake-Chad-facing-humanitarian-disaster/en"
+    },
+    {
+      "title": "WAEC (WASSCE) Geography syllabus, as published in a third-party copy of the official text",
+      "url": "https://waecsyllabus.com/download/ssce/GEOGRAPHY.pdf"
+    },
+    {
+      "title": "UNESCO World Heritage List: Sukur Cultural Landscape",
+      "url": "https://whc.unesco.org/en/list/938"
+    },
+    {
+      "title": "UNESCO World Heritage List: Osun-Osogbo Sacred Grove",
+      "url": "https://whc.unesco.org/en/list/1118"
+    },
+    {
+      "title": "UNEP: Environmental Assessment of Ogoniland (2011)",
+      "url": "https://www.unep.org/resources/assessment/environmental-assessment-ogoniland-site-factsheets-executive-summary-and-full"
+    }
+  ],
+  "subject": "geography",
+  "level": [
+    "SSS 2",
+    "SSS 3"
+  ],
+  "level_note": "Commercial activities, environmental problems and conservation are SSS 2 topics in NERDC-based schemes, revised in SSS 3 for WASSCE.",
+  "version": 1,
+  "review_status": "pending"
 }

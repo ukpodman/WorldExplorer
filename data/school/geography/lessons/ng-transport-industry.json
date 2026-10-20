@@ -4,13 +4,17 @@
   "title": "Transport, Communication and Industrial Development",
   "short": "Transport and industry",
   "minutes": 35,
-  "syllabus": ["WAEC Geography, Regional Geography of Nigeria: transportation; communication; industry. Part B: transportation, industry", "NERDC-based schemes: Transportation; Industry; Transport and communication in Nigeria; Manufacturing industries in Nigeria"],
+  "syllabus": [
+    "WAEC Geography, Regional Geography of Nigeria: transportation; communication; industry. Part B: transportation, industry",
+    "NERDC-based schemes: Transportation; Industry; Transport and communication in Nigeria; Manufacturing industries in Nigeria"
+  ],
   "objectives": [
     "describe the main modes of transport in Nigeria and their advantages and problems;",
     "identify major seaports, airports and railway lines;",
     "explain the importance of communication networks;",
     "explain the factors that influence the location of industries;",
-    "describe Nigeria's main industrial centres and the problems of industrial development."
+    "describe Nigeria's main industrial centres and the problems of industrial development.",
+    "explain the importance of transport to Nigeria's economy;"
   ],
   "intro": [
     "Transport moves people and goods; communication moves information. Both are essential for trade and industry. In this lesson you will see how Nigeria's transport and communication networks developed, where industries are located and why, and what holds industrial growth back."
@@ -20,83 +24,207 @@
       "id": "modes",
       "title": "Modes of transport",
       "blocks": [
-        {"type": "table", "head": ["Mode", "Advantages", "Problems"], "rows": [
-          ["Road", "Reaches most places; door-to-door; flexible", "Poor maintenance and potholes, congestion, accidents, high cost of vehicles and fuel"],
-          ["Rail", "Carries bulky goods and many passengers cheaply over long distances", "Old narrow lines decayed for decades; limited network; new lines are expensive to build"],
-          ["Water", "Cheapest for bulky goods; seaports link Nigeria to world trade", "Inland rivers are navigable only seasonally; silting; port congestion"],
-          ["Air", "Fastest over long distances; carries passengers and valuable or perishable goods", "Expensive; needs costly airports; affected by weather"],
-          ["Pipeline", "Carries oil, gas and refined products continuously", "Vandalism, leaks and pollution"]
-        ]},
-        {"type": "p", "text": "Road transport carries most of Nigeria's passengers and freight. The government has invested in new **standard-gauge railways**: Abuja–Kaduna (opened in July 2016), Warri–Itakpe (inaugurated in September 2020) and Lagos–Ibadan (inaugurated in June 2021). The older colonial-era main lines run from Lagos to Kano and Nguru and from Port Harcourt to Maiduguri."}
+        {
+          "type": "table",
+          "head": [
+            "Mode",
+            "Advantages",
+            "Problems"
+          ],
+          "rows": [
+            [
+              "Road",
+              "Reaches most places; door-to-door; flexible",
+              "Poor maintenance and potholes, congestion, accidents, high cost of vehicles and fuel"
+            ],
+            [
+              "Rail",
+              "Carries bulky goods and many passengers cheaply over long distances",
+              "Old narrow lines decayed for decades; limited network; new lines are expensive to build"
+            ],
+            [
+              "Water",
+              "Cheapest for bulky goods; seaports link Nigeria to world trade",
+              "Inland rivers are navigable only seasonally; silting; port congestion"
+            ],
+            [
+              "Air",
+              "Fastest over long distances; carries passengers and valuable or perishable goods",
+              "Expensive; needs costly airports; affected by weather"
+            ],
+            [
+              "Pipeline",
+              "Carries oil, gas and refined products continuously",
+              "Vandalism, leaks and pollution"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Road transport carries most of Nigeria's passengers and freight. The government has invested in new **standard-gauge railways**: Abuja–Kaduna (opened in July 2016), Warri–Itakpe (inaugurated in September 2020) and Lagos–Ibadan (inaugurated in June 2021). The older colonial-era main lines run from Lagos to Kano and Nguru and from Port Harcourt to Maiduguri."
+        },
+        {
+          "type": "p",
+          "text": "**Why transport matters:** transport moves people, raw materials and finished goods; it links farms, mines and factories with markets and seaports; it creates jobs; and it helps national unity by connecting the different parts of the country. Good transport allows each region to specialise in what it produces best."
+        }
       ]
     },
     {
       "id": "network",
       "title": "Ports, airports and the transport network",
       "blocks": [
-        {"type": "figure", "src": "nigeria_transport", "caption": "Main railways, seaports and international airports (simplified).", "credit": "Map data: Natural Earth (public domain). Routes simplified."},
-        {"type": "photo", "src": "country:NGA", "caption": "The Lekki–Ikoyi Link Bridge in Lagos: new road links help to ease traffic in Nigeria's largest city."},
-        {"type": "list", "items": [
-          "**Seaports**: Lagos (Apapa and Tin Can Island), Onne and Port Harcourt, Warri and Calabar. The **Lekki Deep Sea Port**, opened in January 2023, can handle much larger ships and aims to reduce congestion at the older Lagos ports.",
-          "**International airports**: Murtala Muhammed (Lagos), Nnamdi Azikiwe (Abuja), Mallam Aminu Kano (Kano) and Port Harcourt.",
-          "**Inland waterways**: the Niger and Benue can carry barges and boats, but navigation depends on the season and dredging.",
-          "**Pipelines**: carry crude oil, gas and petroleum products between oilfields, refineries, depots and power stations."
-        ]}
+        {
+          "type": "figure",
+          "src": "nigeria_transport",
+          "caption": "Main railways, seaports and international airports (simplified).",
+          "credit": "Map data: Natural Earth (public domain). Routes simplified."
+        },
+        {
+          "type": "photo",
+          "src": "country:NGA",
+          "caption": "The Lekki–Ikoyi Link Bridge in Lagos: new road links help to ease traffic in Nigeria's largest city."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Seaports**: Lagos (Apapa and Tin Can Island), Onne and Port Harcourt, Warri and Calabar. The **Lekki Deep Sea Port**, opened in January 2023, can handle much larger ships and aims to reduce congestion at the older Lagos ports.",
+            "**International airports**: Murtala Muhammed (Lagos), Nnamdi Azikiwe (Abuja), Mallam Aminu Kano (Kano) and Port Harcourt.",
+            "**Inland waterways**: the Niger and Benue can carry barges and boats, but navigation depends on the season and dredging.",
+            "**Pipelines**: carry crude oil, gas and petroleum products between oilfields, refineries, depots and power stations."
+          ]
+        }
       ]
     },
     {
       "id": "communication",
       "title": "Communication",
       "blocks": [
-        {"type": "p", "text": "**Communication** is the transfer of information from one place to another. Modern Nigeria relies on **telecommunications** — mobile phones, the internet and data networks — alongside radio, television, newspapers and postal services. Mobile telephony expanded rapidly after GSM licences were issued in 2001, and mobile phones are now used for calls, banking, trade and learning."},
-        {"type": "list", "items": [
-          "**Importance**: links businesses with customers and suppliers, supports banking and e-commerce, spreads news and education, helps emergency services and government administration.",
-          "**Problems**: uneven coverage in rural areas, cost of data, power supply problems for network equipment, vandalism of cables and masts."
-        ]}
+        {
+          "type": "p",
+          "text": "**Communication** is the transfer of information from one place to another. Modern Nigeria relies on **telecommunications** — mobile phones, the internet and data networks — alongside radio, television, newspapers and postal services. Mobile telephony expanded rapidly after GSM licences were issued in 2001, and mobile phones are now used for calls, banking, trade and learning."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Importance**: links businesses with customers and suppliers, supports banking and e-commerce, spreads news and education, helps emergency services and government administration.",
+            "**Problems**: uneven coverage in rural areas, cost of data, power supply problems for network equipment, vandalism of cables and masts."
+          ]
+        }
       ]
     },
     {
       "id": "location",
       "title": "Industry and factors of location",
       "blocks": [
-        {"type": "p", "text": "**Industry** can be grouped into **primary** (extracting raw materials: farming, mining, fishing, forestry), **secondary** (manufacturing and processing), **tertiary** (services such as trade, transport and banking) and **quaternary** (information, research and technology)."},
-        {"type": "list", "items": [
-          "**Raw materials**: heavy or perishable raw materials attract industry close to their source — cement works near limestone (Obajana, Ewekoro), refineries near oilfields.",
-          "**Market**: industries producing bulky or fragile goods (drinks, furniture) locate near large populations such as Lagos.",
-          "**Power**: reliable electricity is essential; many firms run their own generators.",
-          "**Labour**: availability of skilled and unskilled workers.",
-          "**Transport**: ports, roads and railways reduce costs — many industries cluster around the Lagos ports.",
-          "**Capital and government policy**: investment, incentives, export processing zones and free trade zones (e.g. the Lekki Free Trade Zone)."
-        ]}
+        {
+          "type": "p",
+          "text": "**Industry** can be grouped into **primary** (extracting raw materials: farming, mining, fishing, forestry), **secondary** (manufacturing and processing), **tertiary** (services such as trade, transport and banking) and **quaternary** (information, research and technology)."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Raw materials**: heavy or perishable raw materials attract industry close to their source — cement works near limestone (Obajana, Ewekoro), refineries near oilfields.",
+            "**Market**: industries producing bulky or fragile goods (drinks, furniture) locate near large populations such as Lagos.",
+            "**Power**: reliable electricity is essential; many firms run their own generators.",
+            "**Labour**: availability of skilled and unskilled workers.",
+            "**Transport**: ports, roads and railways reduce costs — many industries cluster around the Lagos ports.",
+            "**Capital and government policy**: investment, incentives, export processing zones and free trade zones (e.g. the Lekki Free Trade Zone)."
+          ]
+        }
       ]
     },
     {
       "id": "centres",
       "title": "Industrial centres and problems",
       "blocks": [
-        {"type": "table", "head": ["Centre", "Examples of industries"], "rows": [
-          ["Lagos (Ikeja, Apapa, Agbara, Lekki)", "Food and beverages, chemicals, vehicle assembly, textiles, the Dangote refinery at Lekki"],
-          ["Kano", "Groundnut and food processing, textiles, tanning and leather"],
-          ["Kaduna", "Textiles (historically), refinery, vehicle assembly"],
-          ["Port Harcourt", "Oil refining, petrochemicals, fertiliser"],
-          ["Aba and Onitsha", "Small and medium manufacturing, trading, shoes and garments"],
-          ["Kogi State", "Cement (Obajana), iron and steel (Ajaokuta, long delayed)"]
-        ]},
-        {"type": "p", "text": "The privately owned **Dangote refinery** at Lekki was commissioned in May 2023 and began operations in January 2024. It is designed to refine about 650,000 barrels of crude oil per day — enough, its owners say, to meet Nigeria's domestic demand for fuel, which the country previously imported in large quantities."},
-        {"type": "cards", "items": [
-          {"title": "Problems", "tone": "warn", "text": "Unreliable electricity; poor roads and port congestion; high cost of borrowing; competition from cheap imports; insecurity; multiple taxes and levies; shortage of some skilled workers."},
-          {"title": "Possible solutions", "tone": "ok", "text": "Improving power supply; investing in roads, rail and ports; access to credit for manufacturers; protecting and promoting local industries; improving security; training and technical education."}
-        ]}
+        {
+          "type": "table",
+          "head": [
+            "Centre",
+            "Examples of industries"
+          ],
+          "rows": [
+            [
+              "Lagos (Ikeja, Apapa, Agbara, Lekki)",
+              "Food and beverages, chemicals, vehicle assembly, textiles, the Dangote refinery at Lekki"
+            ],
+            [
+              "Kano",
+              "Groundnut and food processing, textiles, tanning and leather"
+            ],
+            [
+              "Kaduna",
+              "Textiles (historically), refinery, vehicle assembly"
+            ],
+            [
+              "Port Harcourt",
+              "Oil refining, petrochemicals, fertiliser"
+            ],
+            [
+              "Aba and Onitsha",
+              "Small and medium manufacturing, trading, shoes and garments"
+            ],
+            [
+              "Kogi State",
+              "Cement (Obajana), iron and steel (Ajaokuta, long delayed)"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "The privately owned **Dangote refinery** at Lekki was commissioned in May 2023 and began operations in January 2024. It is designed to refine about 650,000 barrels of crude oil per day — enough, its owners say, to meet Nigeria's domestic demand for fuel, which the country previously imported in large quantities."
+        },
+        {
+          "type": "cards",
+          "items": [
+            {
+              "title": "Problems",
+              "tone": "warn",
+              "text": "Unreliable electricity; poor roads and port congestion; high cost of borrowing; competition from cheap imports; insecurity; multiple taxes and levies; shortage of some skilled workers."
+            },
+            {
+              "title": "Possible solutions",
+              "tone": "ok",
+              "text": "Improving power supply; investing in roads, rail and ports; access to credit for manufacturers; protecting and promoting local industries; improving security; training and technical education."
+            }
+          ]
+        }
       ]
     }
   ],
   "definitions": [
-    ["Transport", "The movement of people and goods from one place to another."],
-    ["Communication", "The transfer of information, ideas and messages from one place to another."],
-    ["Standard gauge", "Railway track 1,435 mm wide, used on Nigeria's new main lines."],
-    ["Secondary industry", "Industry that processes raw materials into finished goods."],
-    ["Industrial location factors", "Raw materials, power, labour, market, transport, capital and government policy."],
-    ["Free trade zone", "An area where goods can be manufactured, stored or traded with reduced customs duties and regulations."]
+    [
+      "Transport",
+      "The movement of people and goods from one place to another."
+    ],
+    [
+      "Communication",
+      "The transfer of information, ideas and messages from one place to another."
+    ],
+    [
+      "Standard gauge",
+      "Railway track 1,435 mm wide, used on Nigeria's new main lines."
+    ],
+    [
+      "Secondary industry",
+      "Industry that processes raw materials into finished goods."
+    ],
+    [
+      "Industrial location factors",
+      "Raw materials, power, labour, market, transport, capital and government policy."
+    ],
+    [
+      "Free trade zone",
+      "An area where goods can be manufactured, stored or traded with reduced customs duties and regulations."
+    ],
+    [
+      "Freight",
+      "Goods carried by road, rail, water, air or pipeline."
+    ],
+    [
+      "Industrial estate",
+      "An area planned and serviced for factories, with roads, power and water, such as Ikeja in Lagos."
+    ]
   ],
   "worked": [
     {
@@ -107,6 +235,15 @@
         "Locate the raw material: there are large limestone deposits at Obajana.",
         "Explain: building the factory at the source reduces the cost of transporting heavy raw materials; Kogi's central position also helps distribution to markets across Nigeria."
       ]
+    },
+    {
+      "title": "Calculating journey time",
+      "problem": "The Lagos–Ibadan standard-gauge railway is about 156 km long. If a train travels at an average speed of 78 km/h, how long does the journey take?",
+      "steps": [
+        "Time = distance ÷ speed.",
+        "Time = 156 km ÷ 78 km/h = **2 hours**."
+      ],
+      "note": "The line length is approximate; the average speed is an illustrative figure, not a timetable."
     }
   ],
   "exam_tips": [
@@ -115,9 +252,26 @@
     "Name specific ports, airports and railway lines; avoid general statements."
   ],
   "checks": [
-    {"q": "Name Nigeria's three standard-gauge railway lines opened between 2016 and 2021.", "a": "Abuja–Kaduna (2016), Warri–Itakpe (2020) and Lagos–Ibadan (2021)."},
-    {"q": "Why do many industries locate in Lagos?", "a": "Large market, seaports and airport, good access to imported raw materials, available labour, banks and services."},
-    {"q": "Give two problems facing industries in Nigeria.", "a": "Unreliable electricity and poor transport infrastructure (also competition from imports, insecurity, high cost of credit)."}
+    {
+      "q": "Name Nigeria's three standard-gauge railway lines opened between 2016 and 2021.",
+      "a": "Abuja–Kaduna (2016), Warri–Itakpe (2020) and Lagos–Ibadan (2021)."
+    },
+    {
+      "q": "Why do many industries locate in Lagos?",
+      "a": "Large market, seaports and airport, good access to imported raw materials, available labour, banks and services."
+    },
+    {
+      "q": "Give two problems facing industries in Nigeria.",
+      "a": "Unreliable electricity and poor transport infrastructure (also competition from imports, insecurity, high cost of credit)."
+    },
+    {
+      "q": "Give two advantages of rail over road for moving bulky goods.",
+      "a": "A train can carry very heavy, bulky loads in one trip at a lower cost per tonne, and it reduces road congestion and wear on roads."
+    },
+    {
+      "q": "Why do many industries cluster around Lagos?",
+      "a": "Lagos has the main seaports for imported raw materials and exports, the largest market, many workers, banks, and better roads and power than many other areas."
+    }
   ],
   "summary": [
     "Road carries most traffic; new standard-gauge railways link Abuja–Kaduna, Warri–Itakpe and Lagos–Ibadan; seaports, airports, inland waterways and pipelines complete the network.",
@@ -126,18 +280,342 @@
     "Industrial location depends on raw materials, market, power, labour, transport, capital and policy. Major centres include Lagos, Kano, Kaduna, Port Harcourt, Aba and Onitsha; power supply and infrastructure are the biggest constraints."
   ],
   "practice": [
-    {"id": "ti1", "q": "Which mode of transport carries most passengers and goods in Nigeria?", "options": ["Rail", "Road", "Air", "Pipeline"], "answer": 1, "explanation": "Road transport dominates because it reaches most places.", "section": "modes"},
-    {"id": "ti2", "q": "The Abuja–Kaduna standard-gauge railway opened in", "options": ["1912", "1964", "2016", "2023"], "answer": 2, "explanation": "It opened officially in July 2016.", "section": "modes"},
-    {"id": "ti3", "q": "Which seaport opened in January 2023 to handle larger ships?", "options": ["Apapa", "Onne", "Lekki Deep Sea Port", "Calabar"], "answer": 2, "explanation": "The Lekki Deep Sea Port was opened on 23 January 2023.", "section": "network"},
-    {"id": "ti4", "q": "The cheapest way of moving bulky goods over long distances is usually by", "options": ["air", "water", "road", "motorcycle"], "answer": 1, "explanation": "Ships and barges carry large loads at low cost per tonne.", "section": "modes"},
-    {"id": "ti5", "q": "A major problem of pipeline transport in Nigeria is", "options": ["slowness", "vandalism", "high fares", "noise"], "answer": 1, "explanation": "Pipelines are often damaged by vandalism and theft, causing leaks and pollution.", "section": "modes"},
-    {"id": "ti6", "q": "Cement factories are usually located near", "options": ["limestone deposits", "airports", "coal mines only", "the coast only"], "answer": 0, "explanation": "Limestone is bulky, so factories locate near the source, e.g. Obajana and Ewekoro.", "section": "location"},
-    {"id": "ti7", "q": "Banking and transport are examples of", "options": ["primary industry", "secondary industry", "tertiary industry", "extractive industry"], "answer": 2, "explanation": "Services such as banking and transport belong to the tertiary sector.", "section": "location"},
-    {"id": "ti8", "q": "Which is the most serious problem for manufacturing in Nigeria?", "options": ["Too much electricity", "Unreliable power supply", "Too few customers", "Cold climate"], "answer": 1, "explanation": "Unreliable electricity raises costs because firms must run generators.", "section": "centres"},
-    {"id": "ti9", "q": "The Dangote refinery is located at", "options": ["Kaduna", "Warri", "Lekki, Lagos", "Port Harcourt"], "answer": 2, "explanation": "It is in the Lekki Free Trade Zone, Lagos State.", "section": "centres"},
-    {"id": "ti10", "q": "Mobile telephony expanded rapidly in Nigeria after GSM licences were issued in", "options": ["1960", "1991", "2001", "2015"], "answer": 2, "explanation": "GSM licences were issued in 2001.", "section": "communication"},
-    {"id": "ti11", "q": "Which railway links the iron ore at Itakpe with the port of Warri?", "options": ["Lagos–Kano line", "Warri–Itakpe line", "Port Harcourt–Maiduguri line", "Abuja–Kaduna line"], "answer": 1, "explanation": "The Warri–Itakpe standard-gauge line was inaugurated in 2020.", "section": "modes"},
-    {"id": "ti12", "q": "An industry that makes drinks would most likely locate near", "options": ["its market", "a coal mine", "a forest reserve", "a desert"], "answer": 0, "explanation": "Bottled drinks are bulky and fragile, so they are made close to large markets.", "section": "location"}
+    {
+      "id": "ti1",
+      "q": "Which mode of transport carries most passengers and goods in Nigeria?",
+      "options": [
+        "Rail",
+        "Road",
+        "Air",
+        "Pipeline"
+      ],
+      "answer": 1,
+      "explanation": "Road transport dominates because it reaches most places.",
+      "section": "modes",
+      "subject": "geography",
+      "topic": "ng-transport-industry",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ti2",
+      "q": "The Abuja–Kaduna standard-gauge railway opened in",
+      "options": [
+        "1912",
+        "1964",
+        "2016",
+        "2023"
+      ],
+      "answer": 2,
+      "explanation": "It opened officially in July 2016.",
+      "section": "modes",
+      "subject": "geography",
+      "topic": "ng-transport-industry",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ti3",
+      "q": "Which seaport opened in January 2023 to handle larger ships?",
+      "options": [
+        "Apapa",
+        "Onne",
+        "Lekki Deep Sea Port",
+        "Calabar"
+      ],
+      "answer": 2,
+      "explanation": "The Lekki Deep Sea Port was opened on 23 January 2023.",
+      "section": "network",
+      "subject": "geography",
+      "topic": "ng-transport-industry",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ti4",
+      "q": "The cheapest way of moving bulky goods over long distances is usually by",
+      "options": [
+        "air",
+        "water",
+        "road",
+        "motorcycle"
+      ],
+      "answer": 1,
+      "explanation": "Ships and barges carry large loads at low cost per tonne.",
+      "section": "modes",
+      "subject": "geography",
+      "topic": "ng-transport-industry",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ti5",
+      "q": "A major problem of pipeline transport in Nigeria is",
+      "options": [
+        "slowness",
+        "vandalism",
+        "high fares",
+        "noise"
+      ],
+      "answer": 1,
+      "explanation": "Pipelines are often damaged by vandalism and theft, causing leaks and pollution.",
+      "section": "modes",
+      "subject": "geography",
+      "topic": "ng-transport-industry",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ti6",
+      "q": "Cement factories are usually located near",
+      "options": [
+        "limestone deposits",
+        "airports",
+        "coal mines only",
+        "the coast only"
+      ],
+      "answer": 0,
+      "explanation": "Limestone is bulky, so factories locate near the source, e.g. Obajana and Ewekoro.",
+      "section": "location",
+      "subject": "geography",
+      "topic": "ng-transport-industry",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ti7",
+      "q": "Banking and transport are examples of",
+      "options": [
+        "primary industry",
+        "secondary industry",
+        "tertiary industry",
+        "extractive industry"
+      ],
+      "answer": 2,
+      "explanation": "Services such as banking and transport belong to the tertiary sector.",
+      "section": "location",
+      "subject": "geography",
+      "topic": "ng-transport-industry",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ti8",
+      "q": "Which is the most serious problem for manufacturing in Nigeria?",
+      "options": [
+        "Too much electricity",
+        "Unreliable power supply",
+        "Too few customers",
+        "Cold climate"
+      ],
+      "answer": 1,
+      "explanation": "Unreliable electricity raises costs because firms must run generators.",
+      "section": "centres",
+      "subject": "geography",
+      "topic": "ng-transport-industry",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ti9",
+      "q": "The Dangote refinery is located at",
+      "options": [
+        "Kaduna",
+        "Warri",
+        "Lekki, Lagos",
+        "Port Harcourt"
+      ],
+      "answer": 2,
+      "explanation": "It is in the Lekki Free Trade Zone, Lagos State.",
+      "section": "centres",
+      "subject": "geography",
+      "topic": "ng-transport-industry",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ti10",
+      "q": "Mobile telephony expanded rapidly in Nigeria after GSM licences were issued in",
+      "options": [
+        "1960",
+        "1991",
+        "2001",
+        "2015"
+      ],
+      "answer": 2,
+      "explanation": "GSM licences were issued in 2001.",
+      "section": "communication",
+      "subject": "geography",
+      "topic": "ng-transport-industry",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ti11",
+      "q": "Which railway links the iron ore at Itakpe with the port of Warri?",
+      "options": [
+        "Lagos–Kano line",
+        "Warri–Itakpe line",
+        "Port Harcourt–Maiduguri line",
+        "Abuja–Kaduna line"
+      ],
+      "answer": 1,
+      "explanation": "The Warri–Itakpe standard-gauge line was inaugurated in 2020.",
+      "section": "modes",
+      "subject": "geography",
+      "topic": "ng-transport-industry",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ti12",
+      "q": "An industry that makes drinks would most likely locate near",
+      "options": [
+        "its market",
+        "a coal mine",
+        "a forest reserve",
+        "a desert"
+      ],
+      "answer": 0,
+      "explanation": "Bottled drinks are bulky and fragile, so they are made close to large markets.",
+      "section": "location",
+      "subject": "geography",
+      "topic": "ng-transport-industry",
+      "difficulty": "hard"
+    },
+    {
+      "id": "ti13",
+      "q": "Which mode of transport is fastest over long distances?",
+      "options": [
+        "Air",
+        "Pipeline",
+        "Rail",
+        "Water"
+      ],
+      "answer": 0,
+      "explanation": "Air transport is the fastest, which is why it carries passengers and valuable or perishable goods, but it is also the most expensive.",
+      "section": "modes",
+      "difficulty": "easy",
+      "subject": "geography",
+      "topic": "ng-transport-industry"
+    },
+    {
+      "id": "ti14",
+      "q": "Transport on the River Niger is limited mainly because",
+      "options": [
+        "water levels fall in the dry season and channels silt up",
+        "the river freezes in winter",
+        "boats are not allowed on it",
+        "there are no towns along it"
+      ],
+      "answer": 0,
+      "explanation": "Inland rivers are navigable only seasonally, and silting means channels need dredging.",
+      "section": "modes",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-transport-industry"
+    },
+    {
+      "id": "ti15",
+      "q": "Cement works are built close to limestone deposits mainly because",
+      "options": [
+        "limestone is a heavy, bulky raw material that is costly to move",
+        "cement works need a cool climate",
+        "they attract tourists",
+        "limestone is found only in cities"
+      ],
+      "answer": 0,
+      "explanation": "Heavy raw materials that lose bulk in processing pull industries towards their source, as at Obajana and Ewekoro.",
+      "section": "location",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-transport-industry"
+    },
+    {
+      "id": "ti16",
+      "q": "A company plans a factory that makes bottled soft drinks. The best location is",
+      "options": [
+        "near a large city market such as Lagos",
+        "beside a remote mine",
+        "inside a forest reserve",
+        "on an offshore oil platform"
+      ],
+      "answer": 0,
+      "explanation": "Drinks are bulky and fragile to transport, and water is available almost everywhere, so such factories locate near their market.",
+      "section": "location",
+      "difficulty": "hard",
+      "subject": "geography",
+      "topic": "ng-transport-industry"
+    },
+    {
+      "id": "ti17",
+      "q": "The Obajana cement works is in",
+      "options": [
+        "Kogi State",
+        "Ogun State",
+        "Lagos State",
+        "Kano State"
+      ],
+      "answer": 0,
+      "explanation": "Obajana in Kogi State has large limestone deposits. Ewekoro is the cement centre in Ogun State.",
+      "section": "centres",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-transport-industry"
+    },
+    {
+      "id": "ti18",
+      "q": "Which is a problem of telecommunications in Nigeria?",
+      "options": [
+        "Uneven coverage in rural areas and the cost of data",
+        "Too many masts in every village",
+        "Free electricity for all networks",
+        "A complete lack of mobile phones"
+      ],
+      "answer": 0,
+      "explanation": "Coverage is weaker in rural areas, data costs are a burden, and power supply and vandalism affect network equipment.",
+      "section": "communication",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-transport-industry"
+    },
+    {
+      "id": "ti19",
+      "q": "Manufacturing and processing are examples of",
+      "options": [
+        "secondary industry",
+        "primary industry",
+        "tertiary industry",
+        "quaternary industry"
+      ],
+      "answer": 0,
+      "explanation": "Secondary industry turns raw materials into finished goods. Primary industry extracts them, tertiary industry provides services and quaternary industry deals with information and research.",
+      "section": "location",
+      "difficulty": "easy",
+      "subject": "geography",
+      "topic": "ng-transport-industry"
+    },
+    {
+      "id": "ti20",
+      "q": "Which international airport serves Abuja?",
+      "options": [
+        "Nnamdi Azikiwe International Airport",
+        "Murtala Muhammed International Airport",
+        "Mallam Aminu Kano International Airport",
+        "Port Harcourt International Airport"
+      ],
+      "answer": 0,
+      "explanation": "Nnamdi Azikiwe serves Abuja. Murtala Muhammed is in Lagos and Mallam Aminu Kano is in Kano.",
+      "section": "network",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-transport-industry"
+    },
+    {
+      "id": "ti21",
+      "q": "A train travels 156 km from Lagos to Ibadan at an average speed of 78 km/h. The journey takes",
+      "options": [
+        "2 hours",
+        "1 hour",
+        "3 hours",
+        "12 hours"
+      ],
+      "answer": 0,
+      "explanation": "Time = distance ÷ speed = 156 ÷ 78 = 2 hours.",
+      "section": "modes",
+      "difficulty": "hard",
+      "subject": "geography",
+      "topic": "ng-transport-industry"
+    }
   ],
   "structured": [
     {
@@ -148,7 +626,9 @@
         "(b) Road — advantage: reaches most places and gives door-to-door service; problem: poor maintenance and congestion. Rail — advantage: cheap for bulky goods over long distances; problem: limited network and decayed old lines. Water — advantage: cheapest for bulky goods and links Nigeria to world trade; problem: seasonal navigation on rivers and port congestion.",
         "(c) Regular maintenance and expansion of roads; extending the standard-gauge rail network; dredging rivers; developing new deep-sea ports such as Lekki and improving port efficiency."
       ],
-      "points": ["(a) 3 marks; (b) 6 marks; (c) 6 marks (3 per suggestion, explained)."]
+      "points": [
+        "(a) 3 marks; (b) 6 marks; (c) 6 marks (3 per suggestion, explained)."
+      ]
     },
     {
       "q": "Explain four factors that influence the location of industries in Nigeria, using examples.",
@@ -156,12 +636,46 @@
       "model": [
         "1. Raw materials: industries using heavy or bulky raw materials locate near them, e.g. cement at Obajana near limestone. 2. Market: industries producing bulky or perishable goods locate near large populations, e.g. food and drinks factories in Lagos. 3. Transport: access to ports and roads reduces costs, e.g. industries around Apapa. 4. Power: reliable electricity attracts industry; its absence raises costs. (Labour, capital and government policy, e.g. free trade zones, are also accepted.)"
       ],
-      "points": ["3 marks for each factor: stated (1), explained (1), example (1)."]
+      "points": [
+        "3 marks for each factor: stated (1), explained (1), example (1)."
+      ]
+    },
+    {
+      "q": "(a) Give two advantages and two disadvantages of road transport in Nigeria. (b) Explain three factors that have favoured the growth of industries in Lagos.",
+      "marks": 10,
+      "model": [
+        "(a) Advantages: it reaches most places and offers door-to-door service; it is flexible in timing and route. Disadvantages: potholes and poor maintenance; traffic congestion and accidents (also high fuel and vehicle costs).",
+        "(b) 1. Seaports (Apapa, Tin Can Island, Lekki) for importing raw materials and machinery and exporting goods. 2. A very large market of consumers. 3. Available labour and capital, banks and government incentives such as free trade zones."
+      ],
+      "points": [
+        "1 mark for each advantage and disadvantage (4 marks).",
+        "2 marks for each factor explained with reference to Lagos (6 marks)."
+      ]
     }
   ],
   "references": [
-    {"title": "Rail transport in Nigeria (standard-gauge line dates)", "url": "https://en.wikipedia.org/wiki/Rail_transport_in_Nigeria"},
-    {"title": "Al Jazeera: Nigeria opens Lekki Deep Sea Port (23 January 2023)", "url": "https://www.aljazeera.com/news/2023/1/24/nigeria-opens-game-changer-billion-dollar-deep-seaport"},
-    {"title": "Dangote refinery (capacity, commissioning and start of operations)", "url": "https://en.wikipedia.org/wiki/Dangote_refinery"}
-  ]
+    {
+      "title": "Rail transport in Nigeria (standard-gauge line dates)",
+      "url": "https://en.wikipedia.org/wiki/Rail_transport_in_Nigeria"
+    },
+    {
+      "title": "Al Jazeera: Nigeria opens Lekki Deep Sea Port (23 January 2023)",
+      "url": "https://www.aljazeera.com/news/2023/1/24/nigeria-opens-game-changer-billion-dollar-deep-seaport"
+    },
+    {
+      "title": "Dangote refinery (capacity, commissioning and start of operations)",
+      "url": "https://en.wikipedia.org/wiki/Dangote_refinery"
+    },
+    {
+      "title": "WAEC (WASSCE) Geography syllabus, as published in a third-party copy of the official text",
+      "url": "https://waecsyllabus.com/download/ssce/GEOGRAPHY.pdf"
+    }
+  ],
+  "subject": "geography",
+  "level": [
+    "SSS 2"
+  ],
+  "level_note": "Transport and communication in Nigeria and manufacturing industries in Nigeria are SSS 2 topics in NERDC-based schemes (introduced in SSS 1). Examined in WASSCE.",
+  "version": 1,
+  "review_status": "pending"
 }

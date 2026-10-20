@@ -92,6 +92,7 @@ assets/
   styles.css               all styling (palette and accessibility notes at the top)
   flags.json               244 flag images (WebP, base64) in one file
   world_map.json           continent outlines for the Explore map (Natural Earth, public domain; generated)
+  country_shapes.json      simplified country outlines for the Learn locator map (Natural Earth, public domain; generated)
 supabase/rewards_schema.sql  rewards tables, rules, functions and access (run once in Supabase; see REWARDS_SETUP.md)
 tests/                     test_core.py (logic), test_app.py (real Streamlit AppTest), test_rewards*.py
 tools/                     rebuild data/countries.json, flags.json, world_map.json and COVERAGE.md
@@ -192,21 +193,23 @@ accounts). After uploading:
    `records` entry next to `points`, `rounds_finished` and `stats`. Older rows without it keep working.
 5. If the footer says "Saved profile not reachable yet", nothing is written until the profile has loaded.
 
-## Learn V24: 🌍 World Geography | 📚 School Learning (2026-10-19)
+## Learn V24: 🌍 World Geography | 📚 School Learning (2026-10-20, staging)
 
-* **World Geography** (default): the country collection, plus a phone-friendly search (country, official name or
-  capital, with tappable results) and continent chips that also narrow Previous / Next.
-* **School Learning**: Nigerian SSS Geography, organised by the WAEC syllabus. Seven full lessons on the regional
-  geography of Nigeria, each with objectives, notes, theme-adaptive maps and charts, definitions, worked examples, exam
-  tips, quick checks, a summary, exam-style questions with model answers, references and 10-question practice. Reading
-  position, Completed (after the last page) and the revision list are separate. English only. Marked "Educational
-  review pending". Not approved or endorsed by WAEC or NERDC (see `data/school/geography/CURRICULUM_ALIGNMENT.md`).
-* Guests can read and practise with no account. Saving progress to accounts uses two new dedicated tables. These are
-  **not created yet** and await approval: see `SCHOOL_LEARNING_SETUP.md`.
-* School Learning never gives points, badges, streaks, rewards or money, and it is separate from the World Geography
-  Quiz.
-* Add a subject or lesson: add a JSON file under `data/school/` (see `core/school.py` for the schema). No interface
-  code changes are needed.
+* **World Geography** (default): the country collection, with a full-width search (country, official name or capital) and tappable results,
+  continent chips (scroll sideways on phones), and a new **locator map** for every country, built from bundled Natural Earth outlines
+  (`assets/country_shapes.json`, `tools/build_country_shapes.py`). Photos, facts, neighbours, landmarks, size comparison and Quiz me are kept.
+* **School Learning**: school → subject → class level → topic → lesson → practice → progress. Geography (SSS 1–3) is available, with 7 complete
+  lessons on the regional geography of Nigeria and 147 practice questions (21 per lesson). Nigerian History and Citizenship and Heritage
+  Studies are listed as "coming soon", with no buttons. English only. "Educational review pending". Not approved or endorsed by WAEC or NERDC.
+* Learning controls: Mark lesson complete, Add to revision, Practise questions, Previous/Next page and lesson, Back to topics, and Continue
+  learning, which returns to the last section. States: Not started / In progress / Completed, plus Needs revision.
+* Search subjects, search Geography topics, and filter by curriculum section, class level and learning status. The dashboard shows lessons
+  available, completed and in progress, lessons needing revision, questions attempted, average and best scores, and recently studied lessons.
+* Guests study without an account. Their progress stays in the tab, or on the device if they opt in. Saving to accounts uses two dedicated
+  tables that are **proposed, not created**: see `SCHOOL_LEARNING_SETUP.md` and `supabase/school_learning_migration.sql`.
+* School Learning never gives points, badges, streaks, rewards or money, and has no competitions.
+* Content: `data/school/` (see `data/school/CONTENT_GUIDE.md`). Curriculum report: `data/school/geography/CURRICULUM_ALIGNMENT.md`.
+  Sources: `SOURCES.md`. Teacher checklist: `TEACHER_REVIEW_CHECKLIST.md`. Installation: `INSTALL_V24.md`.
 
 ## Phones: two-row header, account menu and map first (2026-10-14)
 

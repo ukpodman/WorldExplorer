@@ -1,6 +1,6 @@
 {
   "subject": "geography",
-  "version": 1,
+  "version": 2,
   "status_note": "Topic structure checked against the WAEC (WASSCE) Geography syllabus as published in a third-party copy of the official text, and against schemes of work that describe themselves as following the NERDC senior secondary curriculum. The official NERDC curriculum document was not available to us. World Explorer is not approved or endorsed by WAEC or NERDC.",
   "review_status": "pending",
   "sections": [
@@ -9,12 +9,77 @@
       "title": "Practical geography and map work",
       "waec": "Part A: map work, statistical maps and diagrams, GIS (GIS is examined for Nigeria only)",
       "topics": [
-        {"id": "map-reading", "title": "Map reading: scale, distance, reduction and enlargement"},
-        {"id": "relief-representation", "title": "Direction, bearing and representation of relief"},
-        {"id": "map-interpretation", "title": "Interpretation of physical and cultural features on maps"},
-        {"id": "statistical-maps", "title": "Statistical maps and diagrams"},
-        {"id": "gis-concepts", "title": "GIS: concepts and components"},
-        {"id": "gis-data", "title": "GIS data, satellite remote sensing and applications"}
+        {
+          "id": "map-reading",
+          "title": "Map reading: scale, distance, reduction and enlargement",
+          "level": [
+            "SSS 1"
+          ],
+          "objectives": [
+            "read and use a map scale to measure distances and areas",
+            "reduce and enlarge maps"
+          ]
+        },
+        {
+          "id": "relief-representation",
+          "title": "Direction, bearing and representation of relief",
+          "level": [
+            "SSS 2"
+          ],
+          "objectives": [
+            "find direction and bearing between places",
+            "describe how relief is shown by contours, spot heights and layer colouring"
+          ]
+        },
+        {
+          "id": "map-interpretation",
+          "title": "Interpretation of physical and cultural features on maps",
+          "level": [
+            "SSS 1",
+            "SSS 2",
+            "SSS 3"
+          ],
+          "objectives": [
+            "identify physical and cultural features on a topographical map",
+            "relate features such as settlements and routes to relief and drainage"
+          ]
+        },
+        {
+          "id": "statistical-maps",
+          "title": "Statistical maps and diagrams",
+          "level": [
+            "SSS 2",
+            "SSS 3"
+          ],
+          "objectives": [
+            "draw and interpret bar graphs, line graphs, pie charts, dot and choropleth maps",
+            "choose a suitable diagram for a given set of data"
+          ]
+        },
+        {
+          "id": "gis-concepts",
+          "title": "GIS: concepts and components",
+          "level": [
+            "SSS 1",
+            "SSS 2"
+          ],
+          "objectives": [
+            "define GIS and name its components",
+            "give uses of GIS in Nigeria"
+          ]
+        },
+        {
+          "id": "gis-data",
+          "title": "GIS data, satellite remote sensing and applications",
+          "level": [
+            "SSS 2",
+            "SSS 3"
+          ],
+          "objectives": [
+            "distinguish between vector and raster data",
+            "explain how satellite remote sensing supplies geographical data"
+          ]
+        }
       ]
     },
     {
@@ -22,17 +87,131 @@
       "title": "Physical geography",
       "waec": "Part A: the earth in space, rocks, tectonic and denudational processes, landforms, weather and climate, climate change (Nigeria only), the environment",
       "topics": [
-        {"id": "earth-in-space", "title": "The earth in space: solar system, rotation, revolution, latitude, longitude and time"},
-        {"id": "earth-structure-rocks", "title": "Structure of the earth and rocks"},
-        {"id": "internal-processes", "title": "Earth's internal processes: earth movements, vulcanicity and earthquakes"},
-        {"id": "landforms", "title": "Landforms: mountains, plains and lowlands"},
-        {"id": "weathering-mass-movement", "title": "Denudation: weathering and mass movement"},
-        {"id": "agents-of-erosion", "title": "Running water, groundwater, wind and waves: processes and landforms"},
-        {"id": "weather", "title": "Weather: elements, instruments and the weather station"},
-        {"id": "climate-classification", "title": "Climate: controls, types and classification (Greek and Köppen)"},
-        {"id": "climate-change", "title": "Climate change"},
-        {"id": "environmental-resources", "title": "Environmental resources: renewable and non-renewable"},
-        {"id": "environmental-problems", "title": "Environmental problems, hazards and conservation"}
+        {
+          "id": "earth-in-space",
+          "title": "The earth in space: solar system, rotation, revolution, latitude, longitude and time",
+          "level": [
+            "SSS 1"
+          ],
+          "objectives": [
+            "describe the solar system and the earth's shape",
+            "explain the effects of rotation and revolution, latitude, longitude and time"
+          ]
+        },
+        {
+          "id": "earth-structure-rocks",
+          "title": "Structure of the earth and rocks",
+          "level": [
+            "SSS 1"
+          ],
+          "objectives": [
+            "describe the structure of the earth",
+            "classify rocks as igneous, sedimentary and metamorphic, with Nigerian examples"
+          ]
+        },
+        {
+          "id": "internal-processes",
+          "title": "Earth's internal processes: earth movements, vulcanicity and earthquakes",
+          "level": [
+            "SSS 1",
+            "SSS 2"
+          ],
+          "objectives": [
+            "explain folding, faulting, vulcanicity and earthquakes",
+            "describe the landforms they produce"
+          ]
+        },
+        {
+          "id": "landforms",
+          "title": "Landforms: mountains, plains and lowlands",
+          "level": [
+            "SSS 1",
+            "SSS 2"
+          ],
+          "objectives": [
+            "describe mountains, plateaux, plains and lowlands",
+            "explain how they are formed and used"
+          ]
+        },
+        {
+          "id": "weathering-mass-movement",
+          "title": "Denudation: weathering and mass movement",
+          "level": [
+            "SSS 2"
+          ],
+          "objectives": [
+            "distinguish mechanical, chemical and biological weathering",
+            "describe types of mass movement and their effects"
+          ]
+        },
+        {
+          "id": "agents-of-erosion",
+          "title": "Running water, groundwater, wind and waves: processes and landforms",
+          "level": [
+            "SSS 1",
+            "SSS 2"
+          ],
+          "objectives": [
+            "explain how running water, groundwater, wind and waves erode, transport and deposit",
+            "describe the landforms each agent produces"
+          ]
+        },
+        {
+          "id": "weather",
+          "title": "Weather: elements, instruments and the weather station",
+          "level": [
+            "SSS 1"
+          ],
+          "objectives": [
+            "name the elements of weather and the instruments that measure them",
+            "describe a weather station and record simple observations"
+          ]
+        },
+        {
+          "id": "climate-classification",
+          "title": "Climate: controls, types and classification (Greek and Köppen)",
+          "level": [
+            "SSS 2"
+          ],
+          "objectives": [
+            "explain the controls of climate",
+            "describe the Greek and Köppen classifications of climate"
+          ]
+        },
+        {
+          "id": "climate-change",
+          "title": "Climate change",
+          "level": [
+            "SSS 2",
+            "SSS 3"
+          ],
+          "objectives": [
+            "explain the causes and evidence of climate change",
+            "describe its effects on Nigeria and ways of adapting and reducing it"
+          ]
+        },
+        {
+          "id": "environmental-resources",
+          "title": "Environmental resources: renewable and non-renewable",
+          "level": [
+            "SSS 2"
+          ],
+          "objectives": [
+            "classify environmental resources as renewable and non-renewable",
+            "explain their importance and how to manage them"
+          ]
+        },
+        {
+          "id": "environmental-problems",
+          "title": "Environmental problems, hazards and conservation",
+          "level": [
+            "SSS 2"
+          ],
+          "objectives": [
+            "describe environmental hazards and problems and their causes",
+            "explain methods of conservation"
+          ]
+        }
       ]
     },
     {
@@ -40,12 +219,74 @@
       "title": "Human and economic geography",
       "waec": "Part B: world population, settlement, transportation, industry, trade, tourism",
       "topics": [
-        {"id": "world-population", "title": "World population"},
-        {"id": "settlement", "title": "Settlement: rural and urban, functions and interactions"},
-        {"id": "transportation", "title": "Transportation"},
-        {"id": "industry", "title": "Industry"},
-        {"id": "trade", "title": "Trade"},
-        {"id": "tourism", "title": "Tourism"}
+        {
+          "id": "world-population",
+          "title": "World population",
+          "level": [
+            "SSS 2"
+          ],
+          "objectives": [
+            "describe world population distribution, growth and structure",
+            "explain the factors that affect them"
+          ]
+        },
+        {
+          "id": "settlement",
+          "title": "Settlement: rural and urban, functions and interactions",
+          "level": [
+            "SSS 2"
+          ],
+          "objectives": [
+            "classify rural and urban settlements and their functions",
+            "explain settlement interactions"
+          ]
+        },
+        {
+          "id": "transportation",
+          "title": "Transportation",
+          "level": [
+            "SSS 2"
+          ],
+          "objectives": [
+            "compare modes of transport and their roles in development",
+            "explain problems of transport in developing countries"
+          ]
+        },
+        {
+          "id": "industry",
+          "title": "Industry",
+          "level": [
+            "SSS 2"
+          ],
+          "objectives": [
+            "classify industries",
+            "explain factors of industrial location with world examples"
+          ]
+        },
+        {
+          "id": "trade",
+          "title": "Trade",
+          "level": [
+            "SSS 2",
+            "SSS 3"
+          ],
+          "objectives": [
+            "distinguish internal and international trade",
+            "explain the factors and problems of trade"
+          ]
+        },
+        {
+          "id": "tourism",
+          "title": "Tourism",
+          "level": [
+            "SSS 2",
+            "SSS 3"
+          ],
+          "objectives": [
+            "explain the importance of tourism",
+            "describe tourist attractions and the problems of tourism"
+          ]
+        }
       ]
     },
     {
@@ -53,16 +294,136 @@
       "title": "Regional geography of Nigeria",
       "waec": "Part C (Nigeria): broad outline, physical setting, population, resources, agriculture, transportation, communication, industry, trade, tourism, development and environmental issues, ECOWAS, geopolitical issues",
       "topics": [
-        {"id": "ng-physical-setting", "title": "Location and Physical Setting of Nigeria", "lesson": true},
-        {"id": "ng-climate", "title": "Climate of Nigeria", "lesson": true},
-        {"id": "ng-vegetation-soils", "title": "Vegetation and Soils of Nigeria", "lesson": true},
-        {"id": "ng-population-settlement", "title": "Population and Settlement", "lesson": true},
-        {"id": "ng-resources-agriculture", "title": "Natural Resources and Agriculture", "lesson": true},
-        {"id": "ng-transport-industry", "title": "Transport, Communication and Industrial Development", "lesson": true},
-        {"id": "ng-trade-tourism-environment", "title": "Trade, Tourism and Environmental Issues", "lesson": true},
-        {"id": "ecowas", "title": "ECOWAS"},
-        {"id": "geopolitical-issues", "title": "Geopolitical issues"},
-        {"id": "local-geography", "title": "Local geography: your town or village and local government area"}
+        {
+          "id": "ng-physical-setting",
+          "title": "Location and Physical Setting of Nigeria",
+          "lesson": true,
+          "level": [
+            "SSS 1"
+          ],
+          "objectives": [
+            "state the location of Nigeria using latitude and longitude, and name its neighbours",
+            "describe Nigeria's size and its political divisions",
+            "identify the main relief regions of Nigeria and give examples of each"
+          ]
+        },
+        {
+          "id": "ng-climate",
+          "title": "Climate of Nigeria",
+          "lesson": true,
+          "level": [
+            "SSS 1",
+            "SSS 2"
+          ],
+          "objectives": [
+            "distinguish weather from climate, name the instruments of a weather station and explain the main controls of Nigeria's climate",
+            "name the two air masses that control Nigeria's seasons and describe each one",
+            "explain how the movement of the Inter-Tropical Discontinuity (ITD) causes the wet and dry seasons"
+          ]
+        },
+        {
+          "id": "ng-vegetation-soils",
+          "title": "Vegetation and Soils of Nigeria",
+          "lesson": true,
+          "level": [
+            "SSS 1",
+            "SSS 2"
+          ],
+          "objectives": [
+            "describe the main vegetation belts of Nigeria and the factors that control them",
+            "describe the characteristics and uses of each vegetation belt",
+            "explain how soils form and describe a soil profile"
+          ]
+        },
+        {
+          "id": "ng-population-settlement",
+          "title": "Population and Settlement",
+          "lesson": true,
+          "level": [
+            "SSS 1",
+            "SSS 2"
+          ],
+          "objectives": [
+            "state Nigeria's population size and explain how it is measured",
+            "describe and explain the distribution of population in Nigeria",
+            "discuss the effects of rapid population growth and migration"
+          ]
+        },
+        {
+          "id": "ng-resources-agriculture",
+          "title": "Natural Resources and Agriculture",
+          "lesson": true,
+          "level": [
+            "SSS 1",
+            "SSS 2"
+          ],
+          "objectives": [
+            "classify natural resources as renewable or non-renewable, with examples",
+            "locate Nigeria's main mineral resources and explain their importance",
+            "describe the main types of agriculture practised in Nigeria"
+          ]
+        },
+        {
+          "id": "ng-transport-industry",
+          "title": "Transport, Communication and Industrial Development",
+          "lesson": true,
+          "level": [
+            "SSS 2"
+          ],
+          "objectives": [
+            "describe the main modes of transport in Nigeria and their advantages and problems",
+            "identify major seaports, airports and railway lines",
+            "explain the importance of communication networks"
+          ]
+        },
+        {
+          "id": "ng-trade-tourism-environment",
+          "title": "Trade, Tourism and Environmental Issues",
+          "lesson": true,
+          "level": [
+            "SSS 2",
+            "SSS 3"
+          ],
+          "objectives": [
+            "distinguish between internal (domestic) and international trade and describe Nigeria's main exports and imports",
+            "explain the importance of trade and the role of ECOWAS",
+            "identify major tourist attractions and explain the importance and problems of tourism"
+          ]
+        },
+        {
+          "id": "ecowas",
+          "title": "ECOWAS",
+          "level": [
+            "SSS 2",
+            "SSS 3"
+          ],
+          "objectives": [
+            "state the aims and member states of ECOWAS",
+            "evaluate its achievements and problems"
+          ]
+        },
+        {
+          "id": "geopolitical-issues",
+          "title": "Geopolitical issues",
+          "level": [
+            "SSS 2"
+          ],
+          "objectives": [
+            "explain Nigeria's geopolitical zones and boundary issues",
+            "discuss the geography of resource control and regional development"
+          ]
+        },
+        {
+          "id": "local-geography",
+          "title": "Local geography: your town or village and local government area",
+          "level": [
+            "SSS 1"
+          ],
+          "objectives": [
+            "describe the physical and human features of the local area",
+            "carry out simple observations of the immediate environment"
+          ]
+        }
       ]
     },
     {
@@ -70,12 +431,48 @@
       "title": "Fieldwork",
       "waec": "Part D: one fieldwork study (land use, market survey, traffic flow, journey to work or local erosion), assessed in school",
       "topics": [
-        {"id": "fieldwork", "title": "Planning and reporting a fieldwork study"}
+        {
+          "id": "fieldwork",
+          "title": "Planning and reporting a fieldwork study",
+          "level": [
+            "SSS 1",
+            "SSS 2",
+            "SSS 3"
+          ],
+          "objectives": [
+            "plan a fieldwork study with an aim and methods",
+            "collect, present and analyse field data in a report"
+          ]
+        }
       ]
     }
   ],
   "not_for_nigeria": [
     "Elementary surveying, hydrosphere, vegetation and soil (as world topics) are marked in the WAEC syllabus for Ghana, Sierra Leone, Liberia and The Gambia. Nigeria's vegetation and soils are covered in Lesson 3 as part of Nigeria's physical setting.",
     "The regional geography of Ghana, Sierra Leone, Liberia, Senegambia and the selected topics on Africa are examined for those countries, not for Nigerian candidates."
-  ]
+  ],
+  "school": "nigeria-secondary",
+  "levels": [
+    "SSS 1",
+    "SSS 2",
+    "SSS 3"
+  ],
+  "level_note": "Class levels follow NERDC-based schemes of work (they differ between schools and between the older and the 2025/26 curriculum). Every topic is examined in WASSCE at the end of SSS 3.",
+  "exam_guidance": {
+    "objective": [
+      "Read the whole question and every option before choosing; underline key words such as NOT, BEST or MAIN.",
+      "Eliminate options you know are wrong, then choose between the rest.",
+      "For calculations, write the formula and the units, and check that the answer is sensible.",
+      "Do not spend too long on one question; mark it and return to it if time allows.",
+      "Answer every question: a blank answer cannot earn a mark."
+    ],
+    "structured": [
+      "Look at the command word: 'name' or 'state' needs a short answer; 'describe' needs details; 'explain' needs reasons; 'account for' needs causes.",
+      "Use the marks as a guide: a 6-mark part usually needs about three well-developed points.",
+      "Support each point with a named Nigerian example (a place, state, river or figure with its year).",
+      "Use clear sketch maps and labelled diagrams where they help; give them a title and a key.",
+      "Write in short paragraphs, one point per paragraph, and keep to the question asked."
+    ],
+    "note": "These are general study strategies. No question is guaranteed to appear in any examination."
+  }
 }

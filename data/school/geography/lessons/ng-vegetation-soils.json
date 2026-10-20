@@ -4,13 +4,17 @@
   "title": "Vegetation and Soils of Nigeria",
   "short": "Vegetation and soils",
   "minutes": 30,
-  "syllabus": ["WAEC Geography, Regional Geography of Nigeria: physical setting (vegetation and soils)", "NERDC-based schemes: The environment; Environmental resources and conservation"],
+  "syllabus": [
+    "WAEC Geography, Regional Geography of Nigeria: physical setting (vegetation and soils)",
+    "NERDC-based schemes: The environment; Environmental resources and conservation"
+  ],
   "objectives": [
     "describe the main vegetation belts of Nigeria and the factors that control them;",
     "describe the characteristics and uses of each vegetation belt;",
     "explain how soils form and describe a soil profile;",
     "describe the main soil types of Nigeria and where they are found;",
-    "explain the causes of soil erosion and vegetation loss, and methods of conservation."
+    "explain the causes of soil erosion and vegetation loss, and methods of conservation.",
+    "explain why soils matter for farming and describe the forms of soil degradation;"
   ],
   "intro": [
     "Natural vegetation is the plant cover that would grow in an area without human interference. In Nigeria it changes from dense forest in the wet south to open grassland in the dry north, closely following the rainfall pattern you studied in the climate lesson. Soils develop together with vegetation and climate, and both are vital resources for farming."
@@ -20,82 +24,246 @@
       "id": "belts",
       "title": "Vegetation belts and their controls",
       "blocks": [
-        {"type": "p", "text": "Nigeria's vegetation can be grouped into **forest** belts in the south and **savanna** belts in the centre and north, with **montane** vegetation on the high plateaux. The main control is **rainfall**: the amount and the length of the wet season decrease northwards, so trees become fewer and grasses shorter. Soils, relief and human activities also matter."},
-        {"type": "figure", "src": "nigeria_vegetation", "caption": "Simplified vegetation belts of Nigeria. In reality the boundaries are gradual and much of the original vegetation has been modified by people.", "credit": "Map data: Natural Earth (public domain). Belt boundaries simplified."},
-        {"type": "table", "head": ["Belt", "Location", "Main features"], "rows": [
-          ["Mangrove swamp forest", "Coast and the Niger Delta", "Salt-tolerant mangrove trees with stilt roots, growing in tidal mud"],
-          ["Freshwater swamp forest", "Inland of the mangroves, along creeks and river floodplains", "Trees such as raffia palms on waterlogged ground"],
-          ["Tropical rainforest", "The south, roughly between the swamps and about 7°N", "Tall evergreen trees in layers (canopies), e.g. iroko, mahogany, obeche; dense undergrowth where light reaches the floor"],
-          ["Guinea savanna", "Middle Belt (the largest belt)", "Tall grasses with scattered trees such as locust bean and shea; gallery forests along rivers"],
-          ["Sudan savanna", "North", "Shorter grasses and fewer trees, e.g. baobab and acacia"],
-          ["Sahel savanna", "Far north-east", "Short, sparse grasses and thorny shrubs adapted to drought"],
-          ["Montane vegetation", "Jos, Mambilla and Obudu Plateaux", "Grassland with patches of forest, influenced by altitude"]
-        ]}
+        {
+          "type": "p",
+          "text": "Nigeria's vegetation can be grouped into **forest** belts in the south and **savanna** belts in the centre and north, with **montane** vegetation on the high plateaux. The main control is **rainfall**: the amount and the length of the wet season decrease northwards, so trees become fewer and grasses shorter. Soils, relief and human activities also matter."
+        },
+        {
+          "type": "figure",
+          "src": "nigeria_vegetation",
+          "caption": "Simplified vegetation belts of Nigeria. In reality the boundaries are gradual and much of the original vegetation has been modified by people.",
+          "credit": "Map data: Natural Earth (public domain). Belt boundaries simplified."
+        },
+        {
+          "type": "table",
+          "head": [
+            "Belt",
+            "Location",
+            "Main features"
+          ],
+          "rows": [
+            [
+              "Mangrove swamp forest",
+              "Coast and the Niger Delta",
+              "Salt-tolerant mangrove trees with stilt roots, growing in tidal mud"
+            ],
+            [
+              "Freshwater swamp forest",
+              "Inland of the mangroves, along creeks and river floodplains",
+              "Trees such as raffia palms on waterlogged ground"
+            ],
+            [
+              "Tropical rainforest",
+              "The south, roughly between the swamps and about 7°N",
+              "Tall evergreen trees in layers (canopies), e.g. iroko, mahogany, obeche; dense undergrowth where light reaches the floor"
+            ],
+            [
+              "Guinea savanna",
+              "Middle Belt (the largest belt)",
+              "Tall grasses with scattered trees such as locust bean and shea; gallery forests along rivers"
+            ],
+            [
+              "Sudan savanna",
+              "North",
+              "Shorter grasses and fewer trees, e.g. baobab and acacia"
+            ],
+            [
+              "Sahel savanna",
+              "Far north-east",
+              "Short, sparse grasses and thorny shrubs adapted to drought"
+            ],
+            [
+              "Montane vegetation",
+              "Jos, Mambilla and Obudu Plateaux",
+              "Grassland with patches of forest, influenced by altitude"
+            ]
+          ]
+        }
       ]
     },
     {
       "id": "uses",
       "title": "Uses and human impact",
       "blocks": [
-        {"type": "cards", "items": [
-          {"title": "Forest belts", "tone": "ok", "text": "Timber (iroko, mahogany, obeche), oil palm, raffia, cocoa and kola farming on cleared land, fuelwood, medicinal plants, fishing in swamps."},
-          {"title": "Savanna belts", "tone": "gold", "text": "Grazing of cattle, sheep and goats; grain crops such as millet, sorghum and maize; shea and locust bean products; hunting and tourism in game reserves."}
-        ]},
-        {"type": "p", "text": "Human activities have greatly changed Nigeria's vegetation. Large areas of rainforest have been cleared for farming, timber and settlements, and replaced by a mixture of farmland, bush and grass known as **derived savanna**. In the north, **overgrazing, bush burning and the cutting of trees for fuelwood** leave the soil bare and contribute to **desertification**."},
-        {"type": "list", "items": [
-          "**Conservation measures** include forest reserves and national parks (for example Cross River National Park and Gashaka-Gumti National Park), afforestation and reforestation, controlled grazing and bans on indiscriminate bush burning.",
-          "Nigeria takes part in the **Great Green Wall** initiative, which aims to restore land and plant trees across the Sahel to slow desertification."
-        ]}
+        {
+          "type": "cards",
+          "items": [
+            {
+              "title": "Forest belts",
+              "tone": "ok",
+              "text": "Timber (iroko, mahogany, obeche), oil palm, raffia, cocoa and kola farming on cleared land, fuelwood, medicinal plants, fishing in swamps."
+            },
+            {
+              "title": "Savanna belts",
+              "tone": "gold",
+              "text": "Grazing of cattle, sheep and goats; grain crops such as millet, sorghum and maize; shea and locust bean products; hunting and tourism in game reserves."
+            }
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Human activities have greatly changed Nigeria's vegetation. Large areas of rainforest have been cleared for farming, timber and settlements, and replaced by a mixture of farmland, bush and grass known as **derived savanna**. In the north, **overgrazing, bush burning and the cutting of trees for fuelwood** leave the soil bare and contribute to **desertification**."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Conservation measures** include forest reserves and national parks (for example Cross River National Park and Gashaka-Gumti National Park), afforestation and reforestation, controlled grazing and bans on indiscriminate bush burning.",
+            "Nigeria takes part in the **Great Green Wall** initiative, which aims to restore land and plant trees across the Sahel to slow desertification."
+          ]
+        }
       ]
     },
     {
       "id": "soilformation",
       "title": "How soil forms: factors and profile",
       "blocks": [
-        {"type": "p", "text": "**Soil** is the loose top layer of the Earth's surface in which plants grow. It is a mixture of weathered rock particles, humus (decayed organic matter), water, air and living organisms."},
-        {"type": "list", "items": [
-          "**Parent material**: the rock from which the soil is formed affects its texture and minerals.",
-          "**Climate**: rainfall and temperature control weathering and leaching; heavy rain washes nutrients downwards.",
-          "**Living organisms**: plants supply humus; earthworms and termites mix the soil.",
-          "**Relief**: soils are thin on steep slopes and deeper, sometimes waterlogged, on flat lowlands.",
-          "**Time**: well-developed soils take thousands of years to form."
-        ]},
-        {"type": "p", "text": "A vertical section through the soil is called a **soil profile**. It is made of layers called **horizons**: the **A horizon** (topsoil, dark with humus), the **B horizon** (subsoil, where washed-down minerals accumulate), the **C horizon** (weathered parent rock) and the **bedrock** beneath."}
+        {
+          "type": "p",
+          "text": "**Soil** is the loose top layer of the Earth's surface in which plants grow. It is a mixture of weathered rock particles, humus (decayed organic matter), water, air and living organisms."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Parent material**: the rock from which the soil is formed affects its texture and minerals.",
+            "**Climate**: rainfall and temperature control weathering and leaching; heavy rain washes nutrients downwards.",
+            "**Living organisms**: plants supply humus; earthworms and termites mix the soil.",
+            "**Relief**: soils are thin on steep slopes and deeper, sometimes waterlogged, on flat lowlands.",
+            "**Time**: well-developed soils take thousands of years to form."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "A vertical section through the soil is called a **soil profile**. It is made of layers called **horizons**: the **A horizon** (topsoil, dark with humus), the **B horizon** (subsoil, where washed-down minerals accumulate), the **C horizon** (weathered parent rock) and the **bedrock** beneath."
+        }
       ]
     },
     {
       "id": "soiltypes",
       "title": "Soil types of Nigeria",
       "blocks": [
-        {"type": "table", "head": ["Soil type", "Where found", "Characteristics"], "rows": [
-          ["Ferrallitic soils", "The rainforest south", "Red or yellow, deeply weathered and heavily leached; nutrients are lost quickly once the forest is cleared; laterite crusts may form"],
-          ["Ferruginous tropical soils", "Savanna areas of the Middle Belt and north", "Reddish-brown; less leached than ferrallitic soils; moderately fertile but easily eroded"],
-          ["Hydromorphic soils", "Swamps, the Niger Delta and river floodplains", "Waterlogged, grey or mottled; suitable for crops such as rice when drained"],
-          ["Alluvial (fadama) soils", "River floodplains, e.g. along the Niger, Benue and Sokoto", "Fertile soils deposited by rivers; important for dry-season farming"],
-          ["Sandy (aeolian) soils", "The far north", "Formed from wind-blown sand; light, low in humus and easily eroded by wind"]
-        ]}
+        {
+          "type": "table",
+          "head": [
+            "Soil type",
+            "Where found",
+            "Characteristics"
+          ],
+          "rows": [
+            [
+              "Ferrallitic soils",
+              "The rainforest south",
+              "Red or yellow, deeply weathered and heavily leached; nutrients are lost quickly once the forest is cleared; laterite crusts may form"
+            ],
+            [
+              "Ferruginous tropical soils",
+              "Savanna areas of the Middle Belt and north",
+              "Reddish-brown; less leached than ferrallitic soils; moderately fertile but easily eroded"
+            ],
+            [
+              "Hydromorphic soils",
+              "Swamps, the Niger Delta and river floodplains",
+              "Waterlogged, grey or mottled; suitable for crops such as rice when drained"
+            ],
+            [
+              "Alluvial (fadama) soils",
+              "River floodplains, e.g. along the Niger, Benue and Sokoto",
+              "Fertile soils deposited by rivers; important for dry-season farming"
+            ],
+            [
+              "Sandy (aeolian) soils",
+              "The far north",
+              "Formed from wind-blown sand; light, low in humus and easily eroded by wind"
+            ]
+          ]
+        }
       ]
     },
     {
       "id": "erosion",
-      "title": "Soil erosion and conservation",
+      "title": "Soil degradation, erosion and conservation",
       "blocks": [
-        {"type": "p", "text": "**Soil erosion** is the removal of topsoil by water or wind faster than it can form. In the south-east, heavy rain on loose, sandy soils produces deep **gullies** — for example around Agulu and Nanka in Anambra State — which destroy farms, roads and houses. In the north, strong dry-season winds remove loose sandy soil from bare land."},
-        {"type": "list", "items": [
-          "**Causes**: removal of vegetation, overgrazing, bush burning, poor farming methods such as ploughing up and down slopes, heavy rainfall and poor drainage around roads and buildings.",
-          "**Conservation methods**: planting trees and cover crops, contour ploughing and terracing on slopes, mulching, crop rotation and fallowing, windbreaks and shelter belts in the north, and building drainage channels and check dams to control gullies."
-        ]}
+        {
+          "type": "h",
+          "text": "Why soils matter for farming"
+        },
+        {
+          "type": "p",
+          "text": "Soil supplies plants with water, air and nutrients (such as nitrogen, phosphorus and potassium) and anchors their roots. Fertile soils support high crop yields and dense rural populations, for example the alluvial fadama soils used for dry-season rice and vegetables. Poor or degraded soils lower yields and push farmers to clear new land."
+        },
+        {
+          "type": "h",
+          "text": "Soil degradation"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Leaching:** heavy rain washes nutrients down below the reach of plant roots, especially in the rainforest south.",
+            "**Laterisation:** where wet and dry seasons alternate, iron and aluminium compounds can harden into a **laterite** crust that roots cannot easily penetrate.",
+            "**Loss of fertility:** continuous cropping and shorter fallow periods remove nutrients faster than they are replaced.",
+            "**Compaction:** heavy machinery and trampling by animals squeeze out the air spaces in the soil.",
+            "**Pollution:** oil spills in the Niger Delta and careless use of farm chemicals contaminate the soil.",
+            "**Salinisation:** salts can build up in poorly drained irrigated land in the dry north."
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Soil erosion"
+        },
+        {
+          "type": "p",
+          "text": "**Soil erosion** is the removal of topsoil by water or wind faster than it can form. In the south-east, heavy rain on loose, sandy soils produces deep **gullies** — for example around Agulu and Nanka in Anambra State — which destroy farms, roads and houses. In the north, strong dry-season winds remove loose sandy soil from bare land."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Causes**: removal of vegetation, overgrazing, bush burning, poor farming methods such as ploughing up and down slopes, heavy rainfall and poor drainage around roads and buildings.",
+            "**Conservation methods**: planting trees and cover crops, contour ploughing and terracing on slopes, mulching, crop rotation and fallowing, windbreaks and shelter belts in the north, and building drainage channels and check dams to control gullies."
+          ]
+        }
       ]
     }
   ],
   "definitions": [
-    ["Natural vegetation", "Plant cover that grows in an area without human interference."],
-    ["Savanna", "Tropical grassland with scattered trees, found where there is a long dry season."],
-    ["Derived savanna", "Grassland and bush that have replaced forest after clearing and burning."],
-    ["Desertification", "The spread of desert-like conditions into dry lands, caused by human activities and climate."],
-    ["Leaching", "The washing down of soluble nutrients from the upper soil by rainwater."],
-    ["Soil profile", "A vertical section through the soil showing its layers (horizons)."],
-    ["Humus", "Dark organic matter formed from decayed plants and animals."]
+    [
+      "Natural vegetation",
+      "Plant cover that grows in an area without human interference."
+    ],
+    [
+      "Savanna",
+      "Tropical grassland with scattered trees, found where there is a long dry season."
+    ],
+    [
+      "Derived savanna",
+      "Grassland and bush that have replaced forest after clearing and burning."
+    ],
+    [
+      "Desertification",
+      "The spread of desert-like conditions into dry lands, caused by human activities and climate."
+    ],
+    [
+      "Leaching",
+      "The washing down of soluble nutrients from the upper soil by rainwater."
+    ],
+    [
+      "Soil profile",
+      "A vertical section through the soil showing its layers (horizons)."
+    ],
+    [
+      "Humus",
+      "Dark organic matter formed from decayed plants and animals."
+    ],
+    [
+      "Laterite",
+      "A hard, reddish crust of iron and aluminium compounds that can form in tropical soils with wet and dry seasons."
+    ],
+    [
+      "Afforestation",
+      "Planting trees on land that has not recently had forest; reforestation is replanting where forest was cleared."
+    ],
+    [
+      "Soil degradation",
+      "A decline in soil quality through leaching, erosion, compaction, pollution or loss of nutrients."
+    ]
   ],
   "worked": [
     {
@@ -106,6 +274,17 @@
         "Link to plant needs: trees need water throughout the year; plenty of rain allows tall evergreen forest to grow.",
         "Conclude: around Kano, the long dry season and lower rainfall favour drought-resistant grasses with fewer, smaller trees, so the vegetation is savanna."
       ]
+    },
+    {
+      "title": "Reading a soil profile",
+      "problem": "A soil pit shows: 0–20 cm, dark brown with many roots; 20–90 cm, reddish and clay-rich; 90–150 cm, broken rock fragments; below 150 cm, solid granite. Name each layer.",
+      "steps": [
+        "0–20 cm, dark and full of roots: the **A horizon** (topsoil), rich in humus.",
+        "20–90 cm, reddish and clay-rich: the **B horizon** (subsoil), where washed-down minerals collect.",
+        "90–150 cm, broken rock: the **C horizon** (weathered parent rock).",
+        "Below 150 cm: the **bedrock**, here granite, which is the parent material."
+      ],
+      "note": "An illustrative profile for practising identification, not a measured site."
     }
   ],
   "exam_tips": [
@@ -114,9 +293,26 @@
     "For soil questions, a labelled diagram of a soil profile earns marks."
   ],
   "checks": [
-    {"q": "List Nigeria's vegetation belts from south to north.", "a": "Mangrove swamp forest, freshwater swamp forest, tropical rainforest, Guinea savanna, Sudan savanna and Sahel savanna (plus montane vegetation on high plateaux)."},
-    {"q": "What is derived savanna, and how is it formed?", "a": "Grassland and bush that replace forest after it has been cleared for farming, timber or settlement and repeatedly burned."},
-    {"q": "Why do rainforest soils lose fertility quickly after clearing?", "a": "They are heavily leached by heavy rain; once the forest is removed, the humus supply stops and nutrients are washed away."}
+    {
+      "q": "List Nigeria's vegetation belts from south to north.",
+      "a": "Mangrove swamp forest, freshwater swamp forest, tropical rainforest, Guinea savanna, Sudan savanna and Sahel savanna (plus montane vegetation on high plateaux)."
+    },
+    {
+      "q": "What is derived savanna, and how is it formed?",
+      "a": "Grassland and bush that replace forest after it has been cleared for farming, timber or settlement and repeatedly burned."
+    },
+    {
+      "q": "Why do rainforest soils lose fertility quickly after clearing?",
+      "a": "They are heavily leached by heavy rain; once the forest is removed, the humus supply stops and nutrients are washed away."
+    },
+    {
+      "q": "Give two characteristics of ferrallitic soils.",
+      "a": "They are red or yellow and deeply weathered, and they are heavily leached, so they lose fertility quickly once the forest is cleared. Laterite crusts may form in them."
+    },
+    {
+      "q": "Why does clearing the rainforest quickly reduce soil fertility?",
+      "a": "The forest supplies the humus that holds nutrients. Once it is cleared, heavy rain leaches the nutrients away and erodes the bare topsoil, and no new humus is added."
+    }
   ],
   "summary": [
     "Vegetation changes from mangrove and swamp forest on the coast through rainforest to Guinea, Sudan and Sahel savanna in the north, mainly because rainfall decreases northwards.",
@@ -125,18 +321,342 @@
     "Main soils: ferrallitic (south), ferruginous tropical (savanna), hydromorphic (swamps), alluvial fadama soils (floodplains) and sandy soils (far north). Gully erosion is severe in the south-east."
   ],
   "practice": [
-    {"id": "vs1", "q": "Which vegetation belt covers the largest area of Nigeria?", "options": ["Mangrove swamp", "Tropical rainforest", "Guinea savanna", "Sahel savanna"], "answer": 2, "explanation": "The Guinea savanna of the Middle Belt is the largest vegetation belt.", "section": "belts"},
-    {"id": "vs2", "q": "Mangrove trees are adapted to tidal mud by their", "options": ["thick bark", "stilt roots", "needle-shaped leaves", "deep tap roots only"], "answer": 1, "explanation": "Stilt (prop) roots support mangroves in soft, tidal mud.", "section": "belts"},
-    {"id": "vs3", "q": "Which of these trees is typical of the tropical rainforest?", "options": ["Baobab", "Acacia", "Iroko", "Shea"], "answer": 2, "explanation": "Iroko, mahogany and obeche are rainforest hardwoods.", "section": "belts"},
-    {"id": "vs4", "q": "The main factor controlling Nigeria's vegetation belts is", "options": ["latitude only", "rainfall", "rock type", "population"], "answer": 1, "explanation": "The amount of rainfall and length of the dry season decrease northwards, changing forest to savanna.", "section": "belts"},
-    {"id": "vs5", "q": "Grassland that replaces cleared and burned forest is called", "options": ["montane grassland", "derived savanna", "Sahel savanna", "swamp forest"], "answer": 1, "explanation": "Derived savanna results from human clearing and repeated burning of forest.", "section": "uses"},
-    {"id": "vs6", "q": "Which human activity contributes most directly to desertification in northern Nigeria?", "options": ["Fishing", "Overgrazing", "Rice farming", "Building dams"], "answer": 1, "explanation": "Overgrazing removes plant cover, leaving soil bare and exposed to wind.", "section": "uses"},
-    {"id": "vs7", "q": "The topsoil, rich in humus, is the", "options": ["A horizon", "B horizon", "C horizon", "bedrock"], "answer": 0, "explanation": "The A horizon is the dark topsoil containing most of the humus.", "section": "soilformation"},
-    {"id": "vs8", "q": "The washing down of soluble nutrients by rainwater is called", "options": ["weathering", "leaching", "deposition", "erosion"], "answer": 1, "explanation": "Leaching is strongest where rainfall is heavy, as in the rainforest south.", "section": "soilformation"},
-    {"id": "vs9", "q": "Fertile soils deposited by rivers on floodplains are", "options": ["aeolian soils", "laterite", "alluvial soils", "ferrallitic soils"], "answer": 2, "explanation": "Alluvial (fadama) soils are deposited by rivers and are important for dry-season farming.", "section": "soiltypes"},
-    {"id": "vs10", "q": "Severe gully erosion is a major problem in", "options": ["the Sokoto Plains", "the south-east, e.g. Anambra State", "the Chad Basin", "the Jos Plateau only"], "answer": 1, "explanation": "Heavy rainfall on loose, sandy soils produces deep gullies in Anambra and nearby states.", "section": "erosion"},
-    {"id": "vs11", "q": "Which method helps to reduce wind erosion in the far north?", "options": ["Bush burning", "Shelter belts of trees", "Ploughing up and down slopes", "Removing hedges"], "answer": 1, "explanation": "Shelter belts and windbreaks slow the wind and protect the soil.", "section": "erosion"},
-    {"id": "vs12", "q": "Waterlogged soils of swamps and the Niger Delta are", "options": ["hydromorphic soils", "sandy soils", "ferruginous soils", "montane soils"], "answer": 0, "explanation": "Hydromorphic soils form where the ground is waterlogged for long periods.", "section": "soiltypes"}
+    {
+      "id": "vs1",
+      "q": "Which vegetation belt covers the largest area of Nigeria?",
+      "options": [
+        "Mangrove swamp",
+        "Tropical rainforest",
+        "Guinea savanna",
+        "Sahel savanna"
+      ],
+      "answer": 2,
+      "explanation": "The Guinea savanna of the Middle Belt is the largest vegetation belt.",
+      "section": "belts",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils",
+      "difficulty": "easy"
+    },
+    {
+      "id": "vs2",
+      "q": "Mangrove trees are adapted to tidal mud by their",
+      "options": [
+        "thick bark",
+        "stilt roots",
+        "needle-shaped leaves",
+        "deep tap roots only"
+      ],
+      "answer": 1,
+      "explanation": "Stilt (prop) roots support mangroves in soft, tidal mud.",
+      "section": "belts",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils",
+      "difficulty": "medium"
+    },
+    {
+      "id": "vs3",
+      "q": "Which of these trees is typical of the tropical rainforest?",
+      "options": [
+        "Baobab",
+        "Acacia",
+        "Iroko",
+        "Shea"
+      ],
+      "answer": 2,
+      "explanation": "Iroko, mahogany and obeche are rainforest hardwoods.",
+      "section": "belts",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils",
+      "difficulty": "easy"
+    },
+    {
+      "id": "vs4",
+      "q": "The main factor controlling Nigeria's vegetation belts is",
+      "options": [
+        "latitude only",
+        "rainfall",
+        "rock type",
+        "population"
+      ],
+      "answer": 1,
+      "explanation": "The amount of rainfall and length of the dry season decrease northwards, changing forest to savanna.",
+      "section": "belts",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils",
+      "difficulty": "medium"
+    },
+    {
+      "id": "vs5",
+      "q": "Grassland that replaces cleared and burned forest is called",
+      "options": [
+        "montane grassland",
+        "derived savanna",
+        "Sahel savanna",
+        "swamp forest"
+      ],
+      "answer": 1,
+      "explanation": "Derived savanna results from human clearing and repeated burning of forest.",
+      "section": "uses",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils",
+      "difficulty": "medium"
+    },
+    {
+      "id": "vs6",
+      "q": "Which human activity contributes most directly to desertification in northern Nigeria?",
+      "options": [
+        "Fishing",
+        "Overgrazing",
+        "Rice farming",
+        "Building dams"
+      ],
+      "answer": 1,
+      "explanation": "Overgrazing removes plant cover, leaving soil bare and exposed to wind.",
+      "section": "uses",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils",
+      "difficulty": "medium"
+    },
+    {
+      "id": "vs7",
+      "q": "The topsoil, rich in humus, is the",
+      "options": [
+        "A horizon",
+        "B horizon",
+        "C horizon",
+        "bedrock"
+      ],
+      "answer": 0,
+      "explanation": "The A horizon is the dark topsoil containing most of the humus.",
+      "section": "soilformation",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils",
+      "difficulty": "medium"
+    },
+    {
+      "id": "vs8",
+      "q": "The washing down of soluble nutrients by rainwater is called",
+      "options": [
+        "weathering",
+        "leaching",
+        "deposition",
+        "erosion"
+      ],
+      "answer": 1,
+      "explanation": "Leaching is strongest where rainfall is heavy, as in the rainforest south.",
+      "section": "soilformation",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils",
+      "difficulty": "medium"
+    },
+    {
+      "id": "vs9",
+      "q": "Fertile soils deposited by rivers on floodplains are",
+      "options": [
+        "aeolian soils",
+        "laterite",
+        "alluvial soils",
+        "ferrallitic soils"
+      ],
+      "answer": 2,
+      "explanation": "Alluvial (fadama) soils are deposited by rivers and are important for dry-season farming.",
+      "section": "soiltypes",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils",
+      "difficulty": "easy"
+    },
+    {
+      "id": "vs10",
+      "q": "Severe gully erosion is a major problem in",
+      "options": [
+        "the Sokoto Plains",
+        "the south-east, e.g. Anambra State",
+        "the Chad Basin",
+        "the Jos Plateau only"
+      ],
+      "answer": 1,
+      "explanation": "Heavy rainfall on loose, sandy soils produces deep gullies in Anambra and nearby states.",
+      "section": "erosion",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils",
+      "difficulty": "medium"
+    },
+    {
+      "id": "vs11",
+      "q": "Which method helps to reduce wind erosion in the far north?",
+      "options": [
+        "Bush burning",
+        "Shelter belts of trees",
+        "Ploughing up and down slopes",
+        "Removing hedges"
+      ],
+      "answer": 1,
+      "explanation": "Shelter belts and windbreaks slow the wind and protect the soil.",
+      "section": "erosion",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils",
+      "difficulty": "medium"
+    },
+    {
+      "id": "vs12",
+      "q": "Waterlogged soils of swamps and the Niger Delta are",
+      "options": [
+        "hydromorphic soils",
+        "sandy soils",
+        "ferruginous soils",
+        "montane soils"
+      ],
+      "answer": 0,
+      "explanation": "Hydromorphic soils form where the ground is waterlogged for long periods.",
+      "section": "soiltypes",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils",
+      "difficulty": "medium"
+    },
+    {
+      "id": "vs13",
+      "q": "Gallery forests are found",
+      "options": [
+        "along rivers in the savanna",
+        "on high mountain tops",
+        "in tidal mud along the coast",
+        "in the driest parts of the Sahel"
+      ],
+      "answer": 0,
+      "explanation": "Gallery forests are strips of trees along rivers in the savanna, where water is available all year.",
+      "section": "belts",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils"
+    },
+    {
+      "id": "vs14",
+      "q": "Baobab and acacia trees are typical of the",
+      "options": [
+        "Sudan savanna",
+        "mangrove swamp forest",
+        "tropical rainforest",
+        "montane grassland"
+      ],
+      "answer": 0,
+      "explanation": "The Sudan savanna of the north has shorter grasses and fewer, drought-resistant trees such as baobab and acacia.",
+      "section": "belts",
+      "difficulty": "easy",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils"
+    },
+    {
+      "id": "vs15",
+      "q": "Travelling from Port Harcourt to Maiduguri, which order of vegetation belts is crossed?",
+      "options": [
+        "Swamp forest → rainforest → Guinea savanna → Sudan savanna → Sahel savanna",
+        "Sahel savanna → Sudan savanna → Guinea savanna → rainforest → swamp forest",
+        "Rainforest → swamp forest → Sudan savanna → Guinea savanna",
+        "Guinea savanna → rainforest → Sahel savanna → Sudan savanna"
+      ],
+      "answer": 0,
+      "explanation": "Rainfall decreases from the coast to the north-east, so the belts change from swamp forest and rainforest in the south to Guinea, Sudan and then Sahel savanna.",
+      "section": "belts",
+      "difficulty": "hard",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils"
+    },
+    {
+      "id": "vs16",
+      "q": "Which soil-forming factor best explains why soils are thin on steep slopes?",
+      "options": [
+        "Relief",
+        "Parent material",
+        "Living organisms",
+        "Time"
+      ],
+      "answer": 0,
+      "explanation": "On steep slopes, soil is washed downhill as fast as it forms, so it stays thin. This is the effect of relief.",
+      "section": "soilformation",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils"
+    },
+    {
+      "id": "vs17",
+      "q": "Ferrallitic soils become infertile soon after forest clearing mainly because they",
+      "options": [
+        "are heavily leached and lose their humus quickly",
+        "are waterlogged all year",
+        "are made of wind-blown sand",
+        "contain too much salt"
+      ],
+      "answer": 0,
+      "explanation": "Heavy rainfall leaches ferrallitic soils. The forest's humus held the nutrients, so once it is removed fertility falls quickly.",
+      "section": "soiltypes",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils"
+    },
+    {
+      "id": "vs18",
+      "q": "A farmer on a hillside wants to reduce soil erosion on his farm. The best advice is to",
+      "options": [
+        "plough along the contours and build terraces",
+        "plough up and down the slope",
+        "burn the bush before planting",
+        "remove all the trees"
+      ],
+      "answer": 0,
+      "explanation": "Contour ploughing and terraces slow running water so it soaks in instead of carrying soil away. The other actions all increase erosion.",
+      "section": "erosion",
+      "difficulty": "hard",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils"
+    },
+    {
+      "id": "vs19",
+      "q": "A laterite crust forms when",
+      "options": [
+        "iron and aluminium compounds harden in soils with wet and dry seasons",
+        "wind blows sand into dunes",
+        "rivers deposit silt on flood plains",
+        "sea water floods coastal land"
+      ],
+      "answer": 0,
+      "explanation": "Alternating wet and dry seasons concentrate iron and aluminium compounds, which can harden into laterite.",
+      "section": "erosion",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils"
+    },
+    {
+      "id": "vs20",
+      "q": "Cross River National Park helps to",
+      "options": [
+        "conserve forest and wildlife",
+        "increase gas flaring",
+        "expand cattle grazing",
+        "build seaports"
+      ],
+      "answer": 0,
+      "explanation": "National parks and forest reserves protect forests and wildlife from logging, farming and hunting.",
+      "section": "uses",
+      "difficulty": "easy",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils"
+    },
+    {
+      "id": "vs21",
+      "q": "Soil is a mixture of rock particles, water, air, living organisms and",
+      "options": [
+        "humus",
+        "tar",
+        "plastic",
+        "only salt water"
+      ],
+      "answer": 0,
+      "explanation": "Humus, which is decayed plant and animal matter, darkens the topsoil and holds nutrients.",
+      "section": "soilformation",
+      "difficulty": "easy",
+      "subject": "geography",
+      "topic": "ng-vegetation-soils"
+    }
   ],
   "structured": [
     {
@@ -146,7 +666,10 @@
         "(a) Tropical rainforest: tall evergreen trees such as iroko and mahogany growing in layers, found in the wet south. Guinea savanna: tall grasses with scattered trees such as locust bean and shea, covering the Middle Belt. Sudan savanna: shorter grasses with fewer trees such as baobab and acacia, in the north. (Mangrove swamp, Sahel savanna or montane vegetation are also accepted.)",
         "(b) 1. Clearing forest for farming, timber and settlements, followed by burning, has replaced large areas of rainforest with derived savanna. 2. In the north, overgrazing, bush burning and cutting trees for fuelwood have reduced plant cover and contributed to desertification."
       ],
-      "points": ["3 marks for each belt in (a): name, location and features.", "3 marks for each change in (b), explained."]
+      "points": [
+        "3 marks for each belt in (a): name, location and features.",
+        "3 marks for each change in (b), explained."
+      ]
     },
     {
       "q": "(a) What is soil erosion? (b) Describe two causes of soil erosion in Nigeria. (c) Suggest three methods of soil conservation.",
@@ -156,11 +679,53 @@
         "(b) 1. Removal of vegetation by clearing, overgrazing or burning exposes the soil to heavy rain and wind. 2. Heavy rainfall on loose, sandy soils with poor drainage, as in Anambra State, produces sheet, rill and gully erosion.",
         "(c) Contour ploughing and terracing on slopes; planting trees and cover crops; building drainage channels and check dams to control gullies (also mulching, windbreaks, crop rotation)."
       ],
-      "points": ["(a) 2 marks; (b) 2 × 2 marks; (c) 3 × 2 marks."]
+      "points": [
+        "(a) 2 marks; (b) 2 × 2 marks; (c) 3 × 2 marks."
+      ]
+    },
+    {
+      "q": "(a) What is soil erosion? (b) Describe two causes of gully erosion in south-eastern Nigeria. (c) Suggest three ways of controlling it.",
+      "marks": 10,
+      "model": [
+        "(a) Soil erosion is the removal of topsoil by water or wind faster than new soil can form.",
+        "(b) 1. Heavy, intense rainfall falling on loose, sandy soils, for example around Agulu and Nanka in Anambra State. 2. Removal of vegetation and poor drainage around roads and buildings, which concentrates runoff into channels.",
+        "(c) Planting trees and grasses on slopes; building drainage channels and check dams; terracing and contour ploughing. Controlling building and sand digging near gully heads is also accepted."
+      ],
+      "points": [
+        "2 marks for the definition.",
+        "2 marks for each cause, described with a named area (4 marks).",
+        "1–2 marks for each control method (4 marks)."
+      ]
     }
   ],
   "references": [
-    {"title": "Geography of Nigeria — vegetation zones and protected areas", "url": "https://en.wikipedia.org/wiki/Geography_of_Nigeria"},
-    {"title": "Natural Earth vector data (maps in this lesson)", "url": "https://www.naturalearthdata.com/"}
-  ]
+    {
+      "title": "Geography of Nigeria — vegetation zones and protected areas",
+      "url": "https://en.wikipedia.org/wiki/Geography_of_Nigeria"
+    },
+    {
+      "title": "Natural Earth vector data (maps in this lesson)",
+      "url": "https://www.naturalearthdata.com/"
+    },
+    {
+      "title": "WAEC (WASSCE) Geography syllabus, as published in a third-party copy of the official text",
+      "url": "https://waecsyllabus.com/download/ssce/GEOGRAPHY.pdf"
+    },
+    {
+      "title": "SS1 Geography scheme of work (new national curriculum, NERDC-based), topics by term",
+      "url": "https://www.headteacher.ng/product/ss1-geography-scheme-of-work-2026-new-national-curriculum/"
+    },
+    {
+      "title": "UN Convention to Combat Desertification: the Great Green Wall initiative",
+      "url": "https://www.unccd.int/our-work/ggwi"
+    }
+  ],
+  "subject": "geography",
+  "level": [
+    "SSS 1",
+    "SSS 2"
+  ],
+  "level_note": "Vegetation resources appear in SSS 1 and environmental resources in SSS 2 in NERDC-based schemes. Examined in WASSCE.",
+  "version": 1,
+  "review_status": "pending"
 }

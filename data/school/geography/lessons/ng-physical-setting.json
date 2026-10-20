@@ -4,7 +4,10 @@
   "title": "Location and Physical Setting of Nigeria",
   "short": "Physical setting",
   "minutes": 30,
-  "syllabus": ["WAEC Geography, Regional Geography of Nigeria: broad outline and physical setting", "NERDC-based SS 1 schemes: Nigeria — location and position; physical setting of Nigeria"],
+  "syllabus": [
+    "WAEC Geography, Regional Geography of Nigeria: broad outline and physical setting",
+    "NERDC-based SS 1 schemes: Nigeria — location and position; physical setting of Nigeria"
+  ],
   "objectives": [
     "state the location of Nigeria using latitude and longitude, and name its neighbours;",
     "describe Nigeria's size and its political divisions;",
@@ -20,77 +23,179 @@
       "id": "location",
       "title": "Location, size and boundaries",
       "blocks": [
-        {"type": "p", "text": "Nigeria lies in West Africa, roughly between latitudes **4°N and 14°N** and longitudes **3°E and 15°E**. Because it lies wholly within the tropics, the sun is high in the sky throughout the year."},
-        {"type": "p", "text": "Its total area is **923,768 km²**, which makes it one of the largest countries in West Africa. From the southern coast to the northern border is roughly 1,000 km."},
-        {"type": "cards", "items": [
-          {"title": "West", "text": "Benin Republic (land border about 773 km)."},
-          {"title": "North", "text": "Niger Republic (about 1,497 km)."},
-          {"title": "North-east", "text": "Chad (about 87 km), across Lake Chad."},
-          {"title": "East", "text": "Cameroon (about 1,690 km), the longest land border."},
-          {"title": "South", "text": "The Atlantic Ocean (Gulf of Guinea): a coastline of about 853 km."}
-        ]},
-        {"type": "p", "text": "Politically, Nigeria is a federation of **36 states and the Federal Capital Territory (FCT)**, Abuja. The capital moved from Lagos to Abuja in December 1991. Abuja was chosen partly because of its central position, which makes it easier to reach from all parts of the country."},
-        {"type": "note", "text": "Border lengths are approximate and come from published reference figures; you will not be asked to memorise exact lengths, but you should know the neighbours and their directions."}
+        {
+          "type": "p",
+          "text": "Nigeria lies in West Africa, roughly between latitudes **4°N and 14°N** and longitudes **3°E and 15°E**. Because it lies wholly within the tropics, the sun is high in the sky throughout the year."
+        },
+        {
+          "type": "p",
+          "text": "Its total area is **923,768 km²**, which makes it one of the largest countries in West Africa. From the southern coast to the northern border is roughly 1,000 km."
+        },
+        {
+          "type": "cards",
+          "items": [
+            {
+              "title": "West",
+              "text": "Benin Republic (land border about 773 km)."
+            },
+            {
+              "title": "North",
+              "text": "Niger Republic (about 1,497 km)."
+            },
+            {
+              "title": "North-east",
+              "text": "Chad (about 87 km), across Lake Chad."
+            },
+            {
+              "title": "East",
+              "text": "Cameroon (about 1,690 km), the longest land border."
+            },
+            {
+              "title": "South",
+              "text": "The Atlantic Ocean (Gulf of Guinea): a coastline of about 853 km."
+            }
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Politically, Nigeria is a federation of **36 states and the Federal Capital Territory (FCT)**, Abuja. The capital moved from Lagos to Abuja in December 1991. Abuja was chosen partly because of its central position, which makes it easier to reach from all parts of the country."
+        },
+        {
+          "type": "note",
+          "text": "Border lengths are approximate and come from published reference figures; you will not be asked to memorise exact lengths, but you should know the neighbours and their directions."
+        }
       ]
     },
     {
       "id": "relief",
       "title": "Relief: highlands and lowlands",
       "blocks": [
-        {"type": "p", "text": "**Relief** means the differences in height and slope of the land surface. Nigeria's relief can be grouped into **highlands** (land generally above about 300 m) and **lowlands**."},
-        {"type": "figure", "src": "nigeria_relief", "caption": "Main relief regions and rivers of Nigeria (simplified). State boundaries are shown as thin dashed lines.", "credit": "Map data: Natural Earth (public domain). Highland areas and labels positioned approximately."},
-        {"type": "h", "text": "Highland areas"},
-        {"type": "list", "items": [
-          "**Jos Plateau** (central Nigeria): mostly above 1,000 m, made largely of younger granites. It is cooler than the surrounding lowlands and is the source of many rivers.",
-          "**Eastern highlands** along the Cameroon border: the Mambilla Plateau, the Obudu Plateau and the Adamawa and Shebshi mountains. **Chappal Waddi (2,419 m)** in Taraba State is Nigeria's highest point.",
-          "**Western uplands** (Yoruba highlands): a dissected upland of old basement rocks with many inselbergs (isolated rocky hills) such as the hills around Idanre and Olumo Rock at Abeokuta.",
-          "**Udi–Nsukka Plateau** (south-east): a sandstone escarpment and plateau east of the Niger.",
-          "**High Plains of Hausaland** (north-central): a gently undulating plain, mostly 600–900 m high, around Kano, Kaduna and Zaria."
-        ]},
-        {"type": "h", "text": "Lowland areas"},
-        {"type": "list", "items": [
-          "**Coastal lowlands**: low-lying land along the coast, with lagoons, creeks and sand bars, for example around Lagos.",
-          "**Niger Delta**: one of the largest deltas in the world, built from sediment deposited by the River Niger; a maze of creeks, swamps and distributaries.",
-          "**Niger–Benue trough**: the broad lowland valleys of the Niger and Benue rivers, meeting at Lokoja.",
-          "**Sokoto Plains** (north-west) and the **Chad Basin** (north-east): low, flat sedimentary plains."
-        ]}
+        {
+          "type": "p",
+          "text": "**Relief** means the differences in height and slope of the land surface. Nigeria's relief can be grouped into **highlands** (land generally above about 300 m) and **lowlands**."
+        },
+        {
+          "type": "figure",
+          "src": "nigeria_relief",
+          "caption": "Main relief regions and rivers of Nigeria (simplified). State boundaries are shown as thin dashed lines.",
+          "credit": "Map data: Natural Earth (public domain). Highland areas and labels positioned approximately."
+        },
+        {
+          "type": "h",
+          "text": "Highland areas"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Jos Plateau** (central Nigeria): mostly above 1,000 m, made largely of younger granites. It is cooler than the surrounding lowlands and is the source of many rivers.",
+            "**Eastern highlands** along the Cameroon border: the Mambilla Plateau, the Obudu Plateau and the Adamawa and Shebshi mountains. **Chappal Waddi (2,419 m)** in Taraba State is Nigeria's highest point.",
+            "**Western uplands** (Yoruba highlands): a dissected upland of old basement rocks with many inselbergs (isolated rocky hills) such as the hills around Idanre and Olumo Rock at Abeokuta.",
+            "**Udi–Nsukka Plateau** (south-east): a sandstone escarpment and plateau east of the Niger.",
+            "**High Plains of Hausaland** (north-central): a gently undulating plain, mostly 600–900 m high, around Kano, Kaduna and Zaria."
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Lowland areas"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Coastal lowlands**: low-lying land along the coast, with lagoons, creeks and sand bars, for example around Lagos.",
+            "**Niger Delta**: one of the largest deltas in the world, built from sediment deposited by the River Niger; a maze of creeks, swamps and distributaries.",
+            "**Niger–Benue trough**: the broad lowland valleys of the Niger and Benue rivers, meeting at Lokoja.",
+            "**Sokoto Plains** (north-west) and the **Chad Basin** (north-east): low, flat sedimentary plains."
+          ]
+        }
       ]
     },
     {
       "id": "drainage",
       "title": "Drainage: rivers and lakes",
       "blocks": [
-        {"type": "p", "text": "**Drainage** describes how water flows over and away from an area: its rivers, lakes and basins. Most of Nigeria drains towards the Atlantic Ocean through the Niger–Benue system; the north-east drains inland into Lake Chad."},
-        {"type": "list", "items": [
-          "**River Niger**: enters Nigeria from Niger Republic in the north-west and flows south-east, then south to the Atlantic. Kainji Lake, created by the Kainji Dam on the Niger, is Nigeria's largest lake (about 1,243 km²).",
-          "**River Benue**: the Niger's chief tributary, rising in Cameroon and flowing west. The Niger and Benue meet at **Lokoja** in a Y-shaped confluence.",
-          "**Tributaries** of the Niger include the Sokoto, Kaduna and Gbako rivers; the Benue receives the Gongola and Katsina-Ala, among others.",
-          "**Inland drainage (Chad Basin)**: rivers such as the Komadugu Yobe flow north-east into **Lake Chad**, which has no outlet to the sea.",
-          "**Coastal rivers** drain directly to the sea, for example the Ogun, Osun, Imo and Cross rivers."
-        ]},
-        {"type": "p", "text": "The Jos Plateau acts as a **water parting** (watershed): rivers flow from it in different directions — north-east towards Lake Chad, and south and west towards the Niger and Benue. This is called a **radial drainage** pattern."}
+        {
+          "type": "p",
+          "text": "**Drainage** describes how water flows over and away from an area: its rivers, lakes and basins. Most of Nigeria drains towards the Atlantic Ocean through the Niger–Benue system; the north-east drains inland into Lake Chad."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**River Niger**: enters Nigeria from Niger Republic in the north-west and flows south-east, then south to the Atlantic. Kainji Lake, created by the Kainji Dam on the Niger, is Nigeria's largest lake (about 1,243 km²).",
+            "**River Benue**: the Niger's chief tributary, rising in Cameroon and flowing west. The Niger and Benue meet at **Lokoja** in a Y-shaped confluence.",
+            "**Tributaries** of the Niger include the Sokoto, Kaduna and Gbako rivers; the Benue receives the Gongola and Katsina-Ala, among others.",
+            "**Inland drainage (Chad Basin)**: rivers such as the Komadugu Yobe flow north-east into **Lake Chad**, which has no outlet to the sea.",
+            "**Coastal rivers** drain directly to the sea, for example the Ogun, Osun, Imo and Cross rivers."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "The Jos Plateau acts as a **water parting** (watershed): rivers flow from it in different directions — north-east towards Lake Chad, and south and west towards the Niger and Benue. This is called a **radial drainage** pattern."
+        }
       ]
     },
     {
       "id": "importance",
       "title": "How relief and drainage affect people",
       "blocks": [
-        {"type": "cards", "items": [
-          {"title": "Advantages", "tone": "ok", "text": "Rivers provide water for farming, fishing and transport; the Kainji, Jebba and Shiroro dams generate hydro-electric power; plateaus such as Jos and Obudu attract tourists and support crops that need cooler conditions."},
-          {"title": "Challenges", "tone": "warn", "text": "Steep slopes and rugged highlands make roads and railways expensive; swampy delta land is hard to build on; river valleys flood in the rainy season; some rivers have rapids or low water in the dry season, limiting navigation."}
-        ]},
-        {"type": "p", "text": "For example, the fertile flood plains (called **fadama** land in the north) of the Niger, Benue and Sokoto rivers are used for dry-season farming of rice and vegetables, but the same plains are at risk when rivers overflow, as happened in the severe floods of 2012 and 2022."}
+        {
+          "type": "cards",
+          "items": [
+            {
+              "title": "Advantages",
+              "tone": "ok",
+              "text": "Rivers provide water for farming, fishing and transport; the Kainji, Jebba and Shiroro dams generate hydro-electric power; plateaus such as Jos and Obudu attract tourists and support crops that need cooler conditions."
+            },
+            {
+              "title": "Challenges",
+              "tone": "warn",
+              "text": "Steep slopes and rugged highlands make roads and railways expensive; swampy delta land is hard to build on; river valleys flood in the rainy season; some rivers have rapids or low water in the dry season, limiting navigation."
+            }
+          ]
+        },
+        {
+          "type": "p",
+          "text": "For example, the fertile flood plains (called **fadama** land in the north) of the Niger, Benue and Sokoto rivers are used for dry-season farming of rice and vegetables, but the same plains are at risk when rivers overflow, as happened in the severe floods of 2012 and 2022."
+        }
       ]
     }
   ],
   "definitions": [
-    ["Relief", "The differences in height and slope of the land surface."],
-    ["Plateau", "An extensive area of high, fairly flat land, often bounded by steep slopes (escarpments)."],
-    ["Inselberg", "An isolated, steep-sided rocky hill rising abruptly from a plain."],
-    ["Drainage basin", "The area of land drained by a river and its tributaries."],
-    ["Confluence", "The point where two rivers meet, such as the Niger and Benue at Lokoja."],
-    ["Delta", "A low-lying area of sediment deposited where a river enters the sea, crossed by many distributaries."],
-    ["Water parting (watershed)", "High ground separating the flow of water into different river systems."]
+    [
+      "Relief",
+      "The differences in height and slope of the land surface."
+    ],
+    [
+      "Plateau",
+      "An extensive area of high, fairly flat land, often bounded by steep slopes (escarpments)."
+    ],
+    [
+      "Inselberg",
+      "An isolated, steep-sided rocky hill rising abruptly from a plain."
+    ],
+    [
+      "Drainage basin",
+      "The area of land drained by a river and its tributaries."
+    ],
+    [
+      "Confluence",
+      "The point where two rivers meet, such as the Niger and Benue at Lokoja."
+    ],
+    [
+      "Delta",
+      "A low-lying area of sediment deposited where a river enters the sea, crossed by many distributaries."
+    ],
+    [
+      "Water parting (watershed)",
+      "High ground separating the flow of water into different river systems."
+    ],
+    [
+      "Escarpment",
+      "A long, steep slope or cliff at the edge of a plateau or upland, such as the edge of the Udi–Nsukka Plateau."
+    ],
+    [
+      "Distributary",
+      "A channel that branches away from the main river and flows separately to the sea."
+    ]
   ],
   "worked": [
     {
@@ -101,6 +206,16 @@
         "Nigeria lies between about 3°E and 15°E, so 7.5°E is a little west of the centre.",
         "A position in the centre of the country, slightly west, places the town in north-central Nigeria — this is the position of **Abuja**, the Federal Capital Territory."
       ]
+    },
+    {
+      "title": "Using a map scale to find a real distance",
+      "problem": "On a map with a scale of 1 : 5,000,000, two towns are 10.5 cm apart. Find the real distance between them in kilometres.",
+      "steps": [
+        "The scale means 1 cm on the map represents 5,000,000 cm on the ground.",
+        "Real distance = 10.5 × 5,000,000 cm = 52,500,000 cm.",
+        "There are 100,000 cm in 1 km, so 52,500,000 ÷ 100,000 = **525 km**."
+      ],
+      "note": "Illustrative figures for practising the method; they are not a measured distance between named towns."
     }
   ],
   "exam_tips": [
@@ -109,10 +224,26 @@
     "Draw a simple sketch map of Nigeria showing the Niger, Benue, Lokoja, Lake Chad, the Jos Plateau and the eastern highlands. Sketch maps earn marks when they are clear and labelled."
   ],
   "checks": [
-    {"q": "Name Nigeria's four land neighbours and give the direction of each.", "a": "Benin (west), Niger (north), Chad (north-east) and Cameroon (east)."},
-    {"q": "Where do the Niger and Benue meet, and what is the shape of the meeting point?", "a": "At Lokoja, in a Y-shaped confluence."},
-    {"q": "Why does the north-east of Nigeria have inland drainage?", "a": "Its rivers, such as the Komadugu Yobe, flow into Lake Chad, which has no outlet to the sea."},
-    {"q": "Give one advantage and one disadvantage of the Niger Delta's physical setting.", "a": "Advantage: fertile land, fishing and oil and gas deposits. Disadvantage: swampy ground and many creeks make building roads and settlements difficult and flooding common."}
+    {
+      "q": "Name Nigeria's four land neighbours and give the direction of each.",
+      "a": "Benin (west), Niger (north), Chad (north-east) and Cameroon (east)."
+    },
+    {
+      "q": "Where do the Niger and Benue meet, and what is the shape of the meeting point?",
+      "a": "At Lokoja, in a Y-shaped confluence."
+    },
+    {
+      "q": "Why does the north-east of Nigeria have inland drainage?",
+      "a": "Its rivers, such as the Komadugu Yobe, flow into Lake Chad, which has no outlet to the sea."
+    },
+    {
+      "q": "Give one advantage and one disadvantage of the Niger Delta's physical setting.",
+      "a": "Advantage: fertile land, fishing and oil and gas deposits. Disadvantage: swampy ground and many creeks make building roads and settlements difficult and flooding common."
+    },
+    {
+      "q": "Why does most of Nigeria drain to the Atlantic, while the north-east drains into Lake Chad?",
+      "a": "Most rivers join the Niger–Benue system, which flows south to the Atlantic. The north-east lies in the Chad Basin, an inland basin: its rivers, such as the Komadugu Yobe, flow into Lake Chad, which has no outlet to the sea."
+    }
   ],
   "summary": [
     "Nigeria lies between about 4°N–14°N and 3°E–15°E, covers 923,768 km² and borders Benin, Niger, Chad and Cameroon, with an 853 km coastline.",
@@ -121,18 +252,342 @@
     "Most rivers drain to the Atlantic via the Niger–Benue system; the north-east drains inland to Lake Chad."
   ],
   "practice": [
-    {"id": "ps1", "q": "Between which latitudes does Nigeria approximately lie?", "options": ["4°N and 14°N", "0° and 10°N", "10°N and 20°N", "4°S and 14°N"], "answer": 0, "explanation": "Nigeria lies roughly between latitudes 4°N and 14°N, wholly within the tropics.", "section": "location"},
-    {"id": "ps2", "q": "Which country shares the longest land border with Nigeria?", "options": ["Niger", "Benin", "Cameroon", "Chad"], "answer": 2, "explanation": "Cameroon, to the east, has the longest border (about 1,690 km).", "section": "location"},
-    {"id": "ps3", "q": "Nigeria's highest point, Chappal Waddi, is found in the", "options": ["Jos Plateau", "Western uplands", "Eastern highlands", "Udi–Nsukka Plateau"], "answer": 2, "explanation": "Chappal Waddi (2,419 m) is in the eastern highlands, in Taraba State near the Cameroon border.", "section": "relief"},
-    {"id": "ps4", "q": "The Niger and Benue rivers meet at", "options": ["Onitsha", "Lokoja", "Makurdi", "Jebba"], "answer": 1, "explanation": "The two rivers form a Y-shaped confluence at Lokoja in Kogi State.", "section": "drainage"},
-    {"id": "ps5", "q": "Which of these is a lowland region of Nigeria?", "options": ["Mambilla Plateau", "Obudu Plateau", "Chad Basin", "Jos Plateau"], "answer": 2, "explanation": "The Chad Basin in the north-east is a low, flat sedimentary plain; the others are plateaus.", "section": "relief"},
-    {"id": "ps6", "q": "Rivers that flow from the Jos Plateau in different directions form which drainage pattern?", "options": ["Trellis", "Radial", "Parallel", "Dendritic only"], "answer": 1, "explanation": "Rivers flowing outwards in many directions from a central high area form a radial pattern.", "section": "drainage"},
-    {"id": "ps7", "q": "Lake Chad is an example of", "options": ["a man-made lake", "a lake drained by the Niger", "inland drainage", "a coastal lagoon"], "answer": 2, "explanation": "Lake Chad has no outlet to the sea, so the rivers that feed it form an inland drainage basin.", "section": "drainage"},
-    {"id": "ps8", "q": "Kainji Lake was formed by", "options": ["a volcanic eruption", "a dam on the River Niger", "glacial erosion", "the meeting of the Niger and Benue"], "answer": 1, "explanation": "Kainji Lake is a reservoir created by the Kainji Dam on the River Niger.", "section": "drainage"},
-    {"id": "ps9", "q": "An isolated, steep-sided rocky hill rising from a plain is called", "options": ["an escarpment", "a delta", "an inselberg", "a valley"], "answer": 2, "explanation": "Inselbergs, such as Olumo Rock, are common in the western uplands.", "section": "relief"},
-    {"id": "ps10", "q": "Nigeria has been a federation of how many states since 1996?", "options": ["19", "21", "30", "36"], "answer": 3, "explanation": "Nigeria has 36 states plus the Federal Capital Territory.", "section": "location"},
-    {"id": "ps11", "q": "Which of the following is a disadvantage of rugged highland relief?", "options": ["It attracts tourists", "It makes road construction expensive", "It is a source of rivers", "It provides cooler climate"], "answer": 1, "explanation": "Steep, rugged land makes building and maintaining roads and railways difficult and costly.", "section": "importance"},
-    {"id": "ps12", "q": "The capital of Nigeria moved from Lagos to Abuja in", "options": ["1960", "1976", "1991", "2001"], "answer": 2, "explanation": "The move took place in December 1991; Abuja's central position was one reason it was chosen.", "section": "location"}
+    {
+      "id": "ps1",
+      "q": "Between which latitudes does Nigeria approximately lie?",
+      "options": [
+        "4°N and 14°N",
+        "0° and 10°N",
+        "10°N and 20°N",
+        "4°S and 14°N"
+      ],
+      "answer": 0,
+      "explanation": "Nigeria lies roughly between latitudes 4°N and 14°N, wholly within the tropics.",
+      "section": "location",
+      "subject": "geography",
+      "topic": "ng-physical-setting",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ps2",
+      "q": "Which country shares the longest land border with Nigeria?",
+      "options": [
+        "Niger",
+        "Benin",
+        "Cameroon",
+        "Chad"
+      ],
+      "answer": 2,
+      "explanation": "Cameroon, to the east, has the longest border (about 1,690 km).",
+      "section": "location",
+      "subject": "geography",
+      "topic": "ng-physical-setting",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ps3",
+      "q": "Nigeria's highest point, Chappal Waddi, is found in the",
+      "options": [
+        "Jos Plateau",
+        "Western uplands",
+        "Eastern highlands",
+        "Udi–Nsukka Plateau"
+      ],
+      "answer": 2,
+      "explanation": "Chappal Waddi (2,419 m) is in the eastern highlands, in Taraba State near the Cameroon border.",
+      "section": "relief",
+      "subject": "geography",
+      "topic": "ng-physical-setting",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ps4",
+      "q": "The Niger and Benue rivers meet at",
+      "options": [
+        "Onitsha",
+        "Lokoja",
+        "Makurdi",
+        "Jebba"
+      ],
+      "answer": 1,
+      "explanation": "The two rivers form a Y-shaped confluence at Lokoja in Kogi State.",
+      "section": "drainage",
+      "subject": "geography",
+      "topic": "ng-physical-setting",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ps5",
+      "q": "Which of these is a lowland region of Nigeria?",
+      "options": [
+        "Mambilla Plateau",
+        "Obudu Plateau",
+        "Chad Basin",
+        "Jos Plateau"
+      ],
+      "answer": 2,
+      "explanation": "The Chad Basin in the north-east is a low, flat sedimentary plain; the others are plateaus.",
+      "section": "relief",
+      "subject": "geography",
+      "topic": "ng-physical-setting",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ps6",
+      "q": "Rivers that flow from the Jos Plateau in different directions form which drainage pattern?",
+      "options": [
+        "Trellis",
+        "Radial",
+        "Parallel",
+        "Dendritic only"
+      ],
+      "answer": 1,
+      "explanation": "Rivers flowing outwards in many directions from a central high area form a radial pattern.",
+      "section": "drainage",
+      "subject": "geography",
+      "topic": "ng-physical-setting",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ps7",
+      "q": "Lake Chad is an example of",
+      "options": [
+        "a man-made lake",
+        "a lake drained by the Niger",
+        "inland drainage",
+        "a coastal lagoon"
+      ],
+      "answer": 2,
+      "explanation": "Lake Chad has no outlet to the sea, so the rivers that feed it form an inland drainage basin.",
+      "section": "drainage",
+      "subject": "geography",
+      "topic": "ng-physical-setting",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ps8",
+      "q": "Kainji Lake was formed by",
+      "options": [
+        "a volcanic eruption",
+        "a dam on the River Niger",
+        "glacial erosion",
+        "the meeting of the Niger and Benue"
+      ],
+      "answer": 1,
+      "explanation": "Kainji Lake is a reservoir created by the Kainji Dam on the River Niger.",
+      "section": "drainage",
+      "subject": "geography",
+      "topic": "ng-physical-setting",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ps9",
+      "q": "An isolated, steep-sided rocky hill rising from a plain is called",
+      "options": [
+        "an escarpment",
+        "a delta",
+        "an inselberg",
+        "a valley"
+      ],
+      "answer": 2,
+      "explanation": "Inselbergs, such as Olumo Rock, are common in the western uplands.",
+      "section": "relief",
+      "subject": "geography",
+      "topic": "ng-physical-setting",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ps10",
+      "q": "Nigeria has been a federation of how many states since 1996?",
+      "options": [
+        "19",
+        "21",
+        "30",
+        "36"
+      ],
+      "answer": 3,
+      "explanation": "Nigeria has 36 states plus the Federal Capital Territory.",
+      "section": "location",
+      "subject": "geography",
+      "topic": "ng-physical-setting",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ps11",
+      "q": "Which of the following is a disadvantage of rugged highland relief?",
+      "options": [
+        "It attracts tourists",
+        "It makes road construction expensive",
+        "It is a source of rivers",
+        "It provides cooler climate"
+      ],
+      "answer": 1,
+      "explanation": "Steep, rugged land makes building and maintaining roads and railways difficult and costly.",
+      "section": "importance",
+      "subject": "geography",
+      "topic": "ng-physical-setting",
+      "difficulty": "hard"
+    },
+    {
+      "id": "ps12",
+      "q": "The capital of Nigeria moved from Lagos to Abuja in",
+      "options": [
+        "1960",
+        "1976",
+        "1991",
+        "2001"
+      ],
+      "answer": 2,
+      "explanation": "The move took place in December 1991; Abuja's central position was one reason it was chosen.",
+      "section": "location",
+      "subject": "geography",
+      "topic": "ng-physical-setting",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ps13",
+      "q": "A region is described as 'a dissected upland of old basement rocks with many inselbergs'. Which region is this?",
+      "options": [
+        "The Western uplands",
+        "The Chad Basin",
+        "The Niger Delta",
+        "The Sokoto Plains"
+      ],
+      "answer": 0,
+      "explanation": "The Western (Yoruba) uplands are old basement rocks worn into many isolated rocky hills (inselbergs), such as Olumo Rock and the Idanre Hills. The other three are low, flat sedimentary areas.",
+      "section": "relief",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-physical-setting"
+    },
+    {
+      "id": "ps14",
+      "q": "The chief tributary of the River Niger is the",
+      "options": [
+        "River Benue",
+        "River Ogun",
+        "Cross River",
+        "Komadugu Yobe"
+      ],
+      "answer": 0,
+      "explanation": "The Benue rises in Cameroon, flows west and joins the Niger at Lokoja. The Ogun and Cross rivers drain directly to the sea, and the Komadugu Yobe flows into Lake Chad.",
+      "section": "drainage",
+      "difficulty": "easy",
+      "subject": "geography",
+      "topic": "ng-physical-setting"
+    },
+    {
+      "id": "ps15",
+      "q": "One reason why Abuja was chosen as Nigeria's new capital is that it",
+      "options": [
+        "is near the centre of the country and easier to reach from all parts",
+        "lies on the coast with a large natural harbour",
+        "has the largest oil reserves in Nigeria",
+        "is the oldest city in Nigeria"
+      ],
+      "answer": 0,
+      "explanation": "Abuja's central position makes it easier to reach from every part of the country. Lagos, the former capital, is on the coast in the far south-west.",
+      "section": "location",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-physical-setting"
+    },
+    {
+      "id": "ps16",
+      "q": "Chappal Waddi, Nigeria's highest point, is about",
+      "options": [
+        "2,419 m high",
+        "1,000 m high",
+        "4,200 m high",
+        "600 m high"
+      ],
+      "answer": 0,
+      "explanation": "Chappal Waddi in the eastern highlands (Taraba State) rises to about 2,419 m. Much of the Jos Plateau is above 1,000 m, but not as high as this.",
+      "section": "relief",
+      "difficulty": "easy",
+      "subject": "geography",
+      "topic": "ng-physical-setting"
+    },
+    {
+      "id": "ps17",
+      "q": "Which of these rivers flows into Lake Chad?",
+      "options": [
+        "Komadugu Yobe",
+        "Sokoto",
+        "Ogun",
+        "Kaduna"
+      ],
+      "answer": 0,
+      "explanation": "The Komadugu Yobe flows north-east into Lake Chad (inland drainage). The Sokoto and Kaduna are tributaries of the Niger, and the Ogun flows to the Atlantic.",
+      "section": "drainage",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-physical-setting"
+    },
+    {
+      "id": "ps18",
+      "q": "A farmer near the Sokoto River grows rice and vegetables in the dry season on low, moist land beside the river. This land is called",
+      "options": [
+        "fadama land",
+        "an inselberg",
+        "an escarpment",
+        "a lagoon"
+      ],
+      "answer": 0,
+      "explanation": "Fadama land is the low-lying flood plain beside northern rivers. Its alluvial soils stay moist after the floods, so it can be farmed in the dry season, but it is at risk when rivers overflow.",
+      "section": "importance",
+      "difficulty": "hard",
+      "subject": "geography",
+      "topic": "ng-physical-setting"
+    },
+    {
+      "id": "ps19",
+      "q": "Nigeria lies between about 4°N and 14°N. A town at 12°N, 8.5°E is most likely to be in",
+      "options": [
+        "northern Nigeria",
+        "the Niger Delta",
+        "the coastal lowlands",
+        "south-eastern Nigeria"
+      ],
+      "answer": 0,
+      "explanation": "12°N is close to Nigeria's northern limit of about 14°N, so the town is in the north (Kano lies at about 12°N, 8.5°E). The Niger Delta and the coast lie near 4–6°N.",
+      "section": "location",
+      "difficulty": "hard",
+      "subject": "geography",
+      "topic": "ng-physical-setting"
+    },
+    {
+      "id": "ps20",
+      "q": "The Udi–Nsukka Plateau is best described as",
+      "options": [
+        "a sandstone plateau and escarpment in the south-east",
+        "a granite plateau in central Nigeria",
+        "a swampy delta at the coast",
+        "a flat sedimentary plain in the north-east"
+      ],
+      "answer": 0,
+      "explanation": "The Udi–Nsukka Plateau is a sandstone upland east of the Niger with a steep escarpment. The Jos Plateau is the granite plateau in central Nigeria.",
+      "section": "relief",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-physical-setting"
+    },
+    {
+      "id": "ps21",
+      "q": "Which is a problem caused by the swampy land of the Niger Delta?",
+      "options": [
+        "It is difficult and costly to build roads and buildings",
+        "It causes desertification",
+        "It makes the climate cold",
+        "It prevents fishing"
+      ],
+      "answer": 0,
+      "explanation": "Waterlogged, swampy ground makes construction difficult and expensive. The creeks are actually good for fishing, and desertification is a problem of the far north.",
+      "section": "importance",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-physical-setting"
+    }
   ],
   "structured": [
     {
@@ -142,7 +597,10 @@
         "(a) Nigeria's relief can be divided into highlands and lowlands. The highlands include the Jos Plateau in the centre (mostly above 1,000 m), the eastern highlands along the Cameroon border (Mambilla and Obudu plateaux, the Adamawa and Shebshi mountains, with Chappal Waddi at 2,419 m), the western uplands with many inselbergs, the Udi–Nsukka Plateau in the south-east and the High Plains of Hausaland. The lowlands include the coastal lowlands, the Niger Delta, the Niger–Benue trough, the Sokoto Plains and the Chad Basin. A sketch map should show and label these, with the Niger and Benue rivers.",
         "(b) 1. Highlands such as the Jos Plateau have a cooler climate, which supports crops such as Irish potatoes and attracts tourists. 2. Rugged relief makes the construction of roads and railways difficult and expensive, while flat lowland plains are easier to cultivate and build on but may flood."
       ],
-      "points": ["Up to 8 marks for (a): named highlands and lowlands with examples, plus a clear labelled sketch map.", "Up to 7 marks for (b): each effect stated and explained with a Nigerian example."]
+      "points": [
+        "Up to 8 marks for (a): named highlands and lowlands with examples, plus a clear labelled sketch map.",
+        "Up to 7 marks for (b): each effect stated and explained with a Nigerian example."
+      ]
     },
     {
       "q": "Describe the drainage of Nigeria under the following headings: (i) the Niger–Benue system; (ii) inland drainage; (iii) coastal rivers.",
@@ -152,11 +610,50 @@
         "(ii) In the north-east, rivers such as the Komadugu Yobe flow into Lake Chad, which has no outlet to the sea.",
         "(iii) Several rivers, such as the Ogun, Osun, Imo and Cross, flow directly into the Atlantic Ocean."
       ],
-      "points": ["About 4 marks for each part, for accurate description with named examples."]
+      "points": [
+        "About 4 marks for each part, for accurate description with named examples."
+      ]
+    },
+    {
+      "q": "(a) Name two highland areas and two lowland areas of Nigeria. (b) Describe three ways in which the River Niger is important to Nigeria.",
+      "marks": 10,
+      "model": [
+        "(a) Highlands: the Jos Plateau; the eastern highlands (Mambilla, Obudu, Adamawa); the Western uplands; the Udi–Nsukka Plateau. Lowlands: the Niger Delta; the coastal lowlands; the Sokoto Plains; the Chad Basin; the Niger–Benue trough.",
+        "(b) 1. Hydro-electric power from the Kainji and Jebba dams. 2. Water for irrigation and dry-season farming on fertile fadama flood plains. 3. Fishing, for example on Kainji Lake. Transport by boats and barges (in the wet season) is also accepted."
+      ],
+      "points": [
+        "1 mark for each correctly named highland and lowland (4 marks).",
+        "2 marks for each importance that is stated and explained with an example (6 marks)."
+      ]
     }
   ],
   "references": [
-    {"title": "Geography of Nigeria (area, coastline, borders, relief, rivers)", "url": "https://en.wikipedia.org/wiki/Geography_of_Nigeria"},
-    {"title": "Natural Earth vector data (maps in this lesson)", "url": "https://www.naturalearthdata.com/"}
-  ]
+    {
+      "title": "Geography of Nigeria (area, coastline, borders, relief, rivers)",
+      "url": "https://en.wikipedia.org/wiki/Geography_of_Nigeria"
+    },
+    {
+      "title": "Natural Earth vector data (maps in this lesson)",
+      "url": "https://www.naturalearthdata.com/"
+    },
+    {
+      "title": "CIA World Factbook: Nigeria (geography, area, boundaries), 2023 archive",
+      "url": "https://cia.gov/the-world-factbook/about/archives/2023/countries/nigeria"
+    },
+    {
+      "title": "WAEC (WASSCE) Geography syllabus, as published in a third-party copy of the official text",
+      "url": "https://waecsyllabus.com/download/ssce/GEOGRAPHY.pdf"
+    },
+    {
+      "title": "SS1 Geography scheme of work (new national curriculum, NERDC-based), topics by term",
+      "url": "https://www.headteacher.ng/product/ss1-geography-scheme-of-work-2026-new-national-curriculum/"
+    }
+  ],
+  "subject": "geography",
+  "level": [
+    "SSS 1"
+  ],
+  "level_note": "Taught in SSS 1 (second term) in NERDC-based schemes of work; examined in WASSCE at the end of SSS 3.",
+  "version": 1,
+  "review_status": "pending"
 }

@@ -1866,3 +1866,60 @@ html[data-we-theme="dark"] .sl-fig {--sea:#0F2234;--land:#1B2E44;--landline:#3D5
 .sl-fig .wa-sea { font-size:2.4px; font-style:italic; fill:var(--muted); stroke:var(--sea); }
 .sl-fig .wa-n { font-size:2.6px; font-weight:700; fill:var(--muted); stroke:var(--land); }
 .sl-fig .lbl-itd { font-size:2.1px; }
+/* V24 Stage Two additions: filters, class-level chips, six progress tiles, exam guidance */
+.sl-chip-level { background:var(--surface-2); color:var(--slate); border-color:var(--line); font-weight:700; }
+.sl-subject-top { display:flex; gap:10px; align-items:center; }
+.st-key-sl_subject_bar { gap:12px !important; flex-wrap:wrap !important; }
+.st-key-sl_subject_bar > :first-child { flex:0 0 auto !important; width:auto !important; }
+.st-key-sl_subject_bar > :last-child { flex:1 1 220px !important; max-width:420px; }
+.st-key-sl_filters { background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:12px 14px !important; gap:10px !important; box-shadow:var(--shadow); }
+.st-key-sl_filter_row { gap:10px !important; flex-wrap:wrap !important; }
+.st-key-sl_filter_row > div { flex:1 1 200px !important; min-width:0; }
+.st-key-sl_filters [data-testid="stButtonGroup"] > div { flex-wrap:wrap; gap:6px; }
+.st-key-sl_filters button[data-variant^="pills"] { min-height:38px; border-radius:999px !important; padding:0 12px !important; background:var(--surface-2); border:1px solid var(--line) !important; }
+.st-key-sl_filters button[data-variant^="pills"] :is(p, span, div) { color:var(--navy); font-weight:600 !important; }
+.st-key-sl_filters button[data-variant^="pills"][data-selected="true"] { background:var(--teal) !important; border-color:var(--teal-deep) !important; }
+.st-key-sl_filters button[data-variant^="pills"][data-selected="true"] :is(p, span, div) { color:#FFFFFF !important; }
+.sl-count { font-size:.88rem; font-weight:700; color:var(--slate); }
+.sl-soon-t { font-weight:700; color:var(--navy); display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+.sl-tiles-6 { grid-template-columns:repeat(6, minmax(0, 1fr)); }
+.sl-two { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.st-key-sl_areas, .st-key-sl_recent { gap:8px !important; flex-wrap:wrap !important; }
+.st-key-sl_store_box { gap:6px !important; }
+@media (max-width:1024px) { .sl-tiles-6 { grid-template-columns:repeat(3, minmax(0, 1fr)); } }
+@media (max-width:640px) {
+  .sl-tiles-6 { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .sl-two { grid-template-columns:1fr; }
+  .st-key-sl_filters [data-testid="stButtonGroup"] > div { flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; padding-bottom:2px; }
+  .st-key-sl_filters [data-testid="stButtonGroup"] button { flex:0 0 auto; }
+  .st-key-sl_subject_bar > :last-child { max-width:none; }
+  .st-key-sl_status_row button, .st-key-sl_result_actions button { flex:1 1 140px; }
+}
+/* Learn → World Geography: locator map (Natural Earth outlines, coloured for light and dark) */
+.learn-map { margin:6px 0 14px; --lm-sea:#DCEBF0; --lm-land:#EEE9DD; --lm-line:#AFA796; --lm-me:#247C80; --lm-me-line:#17283B; --lm-pin:#B58A3A; }
+html[data-we-theme="dark"] .learn-map { --lm-sea:#0F2234; --lm-land:#22384F; --lm-line:#3D5A78; --lm-me:#3FAEB0; --lm-me-line:#E8EDF2; --lm-pin:#E3C27F; }
+@media (prefers-color-scheme:dark) { html:not([data-we-theme]) .learn-map { --lm-sea:#0F2234; --lm-land:#22384F; --lm-line:#3D5A78; --lm-me:#3FAEB0; --lm-me-line:#E8EDF2; --lm-pin:#E3C27F; } }
+.learn-map svg { width:100%; height:auto; aspect-ratio:16 / 10; max-height:340px; display:block; border-radius:14px; border:1px solid var(--line); }
+.learn-map .lm-sea { fill:var(--lm-sea); }
+.learn-map .lm-land { fill:var(--lm-land); stroke:var(--lm-land); stroke-width:.5px; vector-effect:non-scaling-stroke; stroke-linejoin:round; }
+.learn-map .lm-border { fill:none; stroke:var(--lm-line); stroke-width:.8px; vector-effect:non-scaling-stroke; stroke-linejoin:round; }
+.learn-map .lm-me { fill:var(--lm-me); stroke:var(--lm-me-line); stroke-width:1.4px; vector-effect:non-scaling-stroke; stroke-linejoin:round; }
+.learn-map .lm-pin { fill:var(--lm-pin); stroke:var(--paper); stroke-width:2px; vector-effect:non-scaling-stroke; }
+.learn-map .lm-ring { fill:none; stroke:var(--lm-pin); stroke-width:2px; vector-effect:non-scaling-stroke; opacity:.7; }
+.learn-map figcaption { margin-top:6px; display:flex; flex-wrap:wrap; justify-content:space-between; gap:4px 12px; font-size:.86rem; color:var(--slate); }
+.learn-map figcaption b { color:var(--navy); }
+.st-key-sl_lesson_grid { gap:14px !important; flex-wrap:wrap !important; align-items:stretch !important; }
+.st-key-sl_lesson_grid > div { flex:1 1 calc(50% - 7px) !important; min-width:0; max-width:100%; }
+.st-key-sl_lesson_grid [class*="st-key-sl_lesson_card_"] { height:100%; }
+@media (max-width:900px) { .st-key-sl_lesson_grid > div { flex:1 1 100% !important; } }
+/* Progress table on phones: one card per lesson instead of a wide table */
+@media (max-width:640px) {
+  .sl-progress-table thead { display:none; }
+  .sl-progress-table, .sl-progress-table tbody, .sl-progress-table tr { display:block; width:100%; }
+  .sl-progress-table tr { padding:8px 12px; border-bottom:1px solid var(--line); }
+  .sl-progress-table th[scope="row"] { display:block; border:0; padding:0 0 4px; }
+  .sl-progress-table td { display:flex; justify-content:space-between; gap:10px; border:0; padding:3px 0; font-size:.86rem; }
+  .sl-progress-table td::before { content:attr(data-label); color:var(--slate); font-weight:600; flex:0 0 auto; }
+  .sl-progress-table td > * { text-align:right; }
+  .sl-progress-table tbody tr:nth-child(even) { background:var(--surface-2); }
+}

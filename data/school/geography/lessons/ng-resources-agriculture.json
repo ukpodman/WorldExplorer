@@ -4,13 +4,17 @@
   "title": "Natural Resources and Agriculture",
   "short": "Resources and agriculture",
   "minutes": 35,
-  "syllabus": ["WAEC Geography, Regional Geography of Nigeria: resources; agriculture. Part A: environmental resources", "NERDC-based schemes: Resources of Nigeria; Renewable and non-renewable resources; Agriculture"],
+  "syllabus": [
+    "WAEC Geography, Regional Geography of Nigeria: resources; agriculture. Part A: environmental resources",
+    "NERDC-based schemes: Resources of Nigeria; Renewable and non-renewable resources; Agriculture"
+  ],
   "objectives": [
     "classify natural resources as renewable or non-renewable, with examples;",
     "locate Nigeria's main mineral resources and explain their importance;",
     "describe the main types of agriculture practised in Nigeria;",
     "relate the distribution of major crops and livestock to climate and soils;",
-    "explain the problems facing agriculture and suggest solutions."
+    "explain the problems facing agriculture and suggest solutions.",
+    "describe the environmental concerns linked to farming and mining;"
   ],
   "intro": [
     "Natural resources are things found in nature that people use to meet their needs: land, water, forests, minerals and energy sources. Nigeria is rich in both mineral and agricultural resources, but managing them well — and spreading their benefits — is one of the country's biggest challenges."
@@ -20,77 +24,227 @@
       "id": "types",
       "title": "Types of natural resources",
       "blocks": [
-        {"type": "cards", "items": [
-          {"title": "Renewable resources", "tone": "ok", "text": "Can be replaced naturally if used carefully: soil, water, forests, fish, wildlife, solar and wind energy."},
-          {"title": "Non-renewable resources", "tone": "warn", "text": "Exist in fixed amounts and cannot be replaced once used up: crude oil, natural gas, coal, tin and other minerals."}
-        ]},
-        {"type": "p", "text": "Even renewable resources can be destroyed by overuse — for example forests by uncontrolled logging, fish stocks by overfishing and soil by erosion. Careful management (**conservation**) is needed so that resources remain available for future generations."}
+        {
+          "type": "cards",
+          "items": [
+            {
+              "title": "Renewable resources",
+              "tone": "ok",
+              "text": "Can be replaced naturally if used carefully: soil, water, forests, fish, wildlife, solar and wind energy."
+            },
+            {
+              "title": "Non-renewable resources",
+              "tone": "warn",
+              "text": "Exist in fixed amounts and cannot be replaced once used up: crude oil, natural gas, coal, tin and other minerals."
+            }
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Even renewable resources can be destroyed by overuse — for example forests by uncontrolled logging, fish stocks by overfishing and soil by erosion. Careful management (**conservation**) is needed so that resources remain available for future generations."
+        }
       ]
     },
     {
       "id": "minerals",
       "title": "Mineral resources and where they are found",
       "blocks": [
-        {"type": "figure", "src": "nigeria_resources", "caption": "Where some of Nigeria's main mineral resources are found (positions approximate).", "credit": "Map data: Natural Earth (public domain)."},
-        {"type": "table", "head": ["Mineral", "Main areas", "Uses / importance"], "rows": [
-          ["Crude oil and natural gas", "Niger Delta and offshore (Rivers, Delta, Bayelsa, Akwa Ibom states)", "Main source of export earnings and government revenue; fuel, petrochemicals, gas for power"],
-          ["Coal", "Enugu (Udi area); also Kogi and other states", "Historically fuel for railways and power stations; first mined at Enugu in the early 20th century"],
-          ["Tin and columbite", "Jos Plateau", "Tin for plating and alloys; columbite for special steels"],
-          ["Limestone", "Ewekoro (Ogun), Obajana (Kogi), Nkalagu (Ebonyi), Sokoto", "Cement manufacture"],
-          ["Iron ore", "Itakpe (Kogi)", "Raw material for the Ajaokuta steel complex"],
-          ["Bitumen", "Ondo and Ogun states", "Road construction (not yet widely exploited)"],
-          ["Gold", "Zamfara, Osun and other states", "Jewellery and investment; much small-scale mining"],
-          ["Lead and zinc", "Abakaliki area (Ebonyi)", "Batteries, galvanising"]
-        ]},
-        {"type": "p", "text": "Commercial crude oil was first discovered at **Oloibiri** (in present-day Bayelsa State) in **1956**, and exports began in 1958. Most of Nigeria's oil and gas comes from the Niger Delta. Oil brings revenue, foreign exchange and jobs, but also problems: dependence on one commodity, price swings, pollution from spills and gas flaring, and conflict over the sharing of benefits."}
+        {
+          "type": "figure",
+          "src": "nigeria_resources",
+          "caption": "Where some of Nigeria's main mineral resources are found (positions approximate).",
+          "credit": "Map data: Natural Earth (public domain)."
+        },
+        {
+          "type": "table",
+          "head": [
+            "Mineral",
+            "Main areas",
+            "Uses / importance"
+          ],
+          "rows": [
+            [
+              "Crude oil and natural gas",
+              "Niger Delta and offshore (Rivers, Delta, Bayelsa, Akwa Ibom states)",
+              "Main source of export earnings and government revenue; fuel, petrochemicals, gas for power"
+            ],
+            [
+              "Coal",
+              "Enugu (Udi area); also Kogi and other states",
+              "Historically fuel for railways and power stations; first mined at Enugu in the early 20th century"
+            ],
+            [
+              "Tin and columbite",
+              "Jos Plateau",
+              "Tin for plating and alloys; columbite for special steels"
+            ],
+            [
+              "Limestone",
+              "Ewekoro (Ogun), Obajana (Kogi), Nkalagu (Ebonyi), Sokoto",
+              "Cement manufacture"
+            ],
+            [
+              "Iron ore",
+              "Itakpe (Kogi)",
+              "Raw material for the Ajaokuta steel complex"
+            ],
+            [
+              "Bitumen",
+              "Ondo and Ogun states",
+              "Road construction (not yet widely exploited)"
+            ],
+            [
+              "Gold",
+              "Zamfara, Osun and other states",
+              "Jewellery and investment; much small-scale mining"
+            ],
+            [
+              "Lead and zinc",
+              "Abakaliki area (Ebonyi)",
+              "Batteries, galvanising"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Commercial crude oil was first discovered at **Oloibiri** (in present-day Bayelsa State) in **1956**, and exports began in 1958. Most of Nigeria's oil and gas comes from the Niger Delta. Oil brings revenue, foreign exchange and jobs, but also problems: dependence on one commodity, price swings, pollution from spills and gas flaring, and conflict over the sharing of benefits."
+        }
       ]
     },
     {
       "id": "farming",
       "title": "Types of agriculture",
       "blocks": [
-        {"type": "list", "items": [
-          "**Subsistence farming**: farmers grow food mainly for their families, on small plots with simple tools such as hoes and cutlasses.",
-          "**Bush fallowing and shifting cultivation**: land is farmed for a few years and then left to rest (fallow) so that soil fertility can recover. Rising population has shortened fallow periods.",
-          "**Mixed farming**: crops and livestock on the same farm; animal manure fertilises the crops.",
-          "**Plantation agriculture**: large estates growing one cash crop, such as oil palm or rubber, often with processing on site.",
-          "**Pastoral nomadism**: herders, mainly in the north, move cattle, sheep and goats in search of pasture and water.",
-          "**Irrigation farming**: water from rivers and dams is used to grow crops in the dry season, especially on fadama land and in irrigation schemes in the north.",
-          "**Fishing**: in rivers, lakes such as Kainji, creeks and the sea."
-        ]}
+        {
+          "type": "list",
+          "items": [
+            "**Subsistence farming**: farmers grow food mainly for their families, on small plots with simple tools such as hoes and cutlasses.",
+            "**Bush fallowing and shifting cultivation**: land is farmed for a few years and then left to rest (fallow) so that soil fertility can recover. Rising population has shortened fallow periods.",
+            "**Mixed farming**: crops and livestock on the same farm; animal manure fertilises the crops.",
+            "**Plantation agriculture**: large estates growing one cash crop, such as oil palm or rubber, often with processing on site.",
+            "**Pastoral nomadism**: herders, mainly in the north, move cattle, sheep and goats in search of pasture and water.",
+            "**Irrigation farming**: water from rivers and dams is used to grow crops in the dry season, especially on fadama land and in irrigation schemes in the north.",
+            "**Fishing**: in rivers, lakes such as Kainji, creeks and the sea."
+          ]
+        }
       ]
     },
     {
       "id": "crops",
       "title": "Crops and livestock: where and why",
       "blocks": [
-        {"type": "table", "head": ["Zone", "Main crops and livestock", "Why"], "rows": [
-          ["South (forest)", "Root crops: yam, cassava, cocoyam. Tree crops: cocoa (south-west, e.g. Ondo, Osun, Ogun), oil palm (south and south-east), rubber (Edo, Delta), kola", "Heavy rainfall and a long wet season suit tree crops and root crops"],
-          ["Middle Belt (Guinea savanna)", "Yam, sorghum, maize, rice, soybeans, beniseed; Benue State is often called the 'food basket of the nation'", "Moderate rainfall and fertile river valleys"],
-          ["North (Sudan and Sahel savanna)", "Millet, sorghum, maize, groundnuts, cotton, cowpea, irrigated rice and vegetables; cattle, sheep and goats", "Shorter wet season suits grains and legumes; open grassland supports grazing; tsetse fly is less common in drier areas"]
-        ]},
-        {"type": "p", "text": "Agriculture provides food, raw materials for industries (for example cocoa, cotton, oil palm and hides), employment for a large part of the workforce, and some export earnings. Before oil, crops such as cocoa, groundnuts and palm produce were Nigeria's main exports."}
+        {
+          "type": "table",
+          "head": [
+            "Zone",
+            "Main crops and livestock",
+            "Why"
+          ],
+          "rows": [
+            [
+              "South (forest)",
+              "Root crops: yam, cassava, cocoyam. Tree crops: cocoa (south-west, e.g. Ondo, Osun, Ogun), oil palm (south and south-east), rubber (Edo, Delta), kola",
+              "Heavy rainfall and a long wet season suit tree crops and root crops"
+            ],
+            [
+              "Middle Belt (Guinea savanna)",
+              "Yam, sorghum, maize, rice, soybeans, beniseed; Benue State is often called the 'food basket of the nation'",
+              "Moderate rainfall and fertile river valleys"
+            ],
+            [
+              "North (Sudan and Sahel savanna)",
+              "Millet, sorghum, maize, groundnuts, cotton, cowpea, irrigated rice and vegetables; cattle, sheep and goats",
+              "Shorter wet season suits grains and legumes; open grassland supports grazing; tsetse fly is less common in drier areas"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Agriculture provides food, raw materials for industries (for example cocoa, cotton, oil palm and hides), employment for a large part of the workforce, and some export earnings. Before oil, crops such as cocoa, groundnuts and palm produce were Nigeria's main exports."
+        }
       ]
     },
     {
       "id": "problems",
       "title": "Problems of agriculture and solutions",
       "blocks": [
-        {"type": "cards", "items": [
-          {"title": "Problems", "tone": "warn", "text": "Small, scattered farms; simple tools; poor storage and processing causing post-harvest losses; poor rural roads; lack of credit; pests and diseases; soil erosion; unreliable rainfall and floods; land tenure problems; conflicts between farmers and herders."},
-          {"title": "Possible solutions", "tone": "ok", "text": "Credit schemes and cooperatives; better storage and processing; improved seeds and fertilisers through extension services; irrigation and water management; better rural roads; land reform; peaceful grazing arrangements; climate-smart farming."}
-        ]}
+        {
+          "type": "cards",
+          "items": [
+            {
+              "title": "Problems",
+              "tone": "warn",
+              "text": "Small, scattered farms; simple tools; poor storage and processing causing post-harvest losses; poor rural roads; lack of credit; pests and diseases; soil erosion; unreliable rainfall and floods; land tenure problems; conflicts between farmers and herders."
+            },
+            {
+              "title": "Possible solutions",
+              "tone": "ok",
+              "text": "Credit schemes and cooperatives; better storage and processing; improved seeds and fertilisers through extension services; irrigation and water management; better rural roads; land reform; peaceful grazing arrangements; climate-smart farming."
+            }
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Environmental concerns"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Clearing forest and savanna for new farms causes deforestation and loss of wildlife habitat.",
+            "Overgrazing and bush burning leave the soil bare, which leads to erosion and contributes to desertification.",
+            "Too much fertiliser or pesticide can wash into rivers and harm fish and drinking water.",
+            "Shrinking pasture and water, made worse by drought, has increased competition between farmers and herders.",
+            "Mining can pollute land and water. Lead released by small-scale gold processing in Zamfara State caused a serious lead-poisoning outbreak among children in 2010."
+          ]
+        }
       ]
     }
   ],
   "definitions": [
-    ["Natural resource", "A material or substance found in nature that people can use."],
-    ["Renewable resource", "A resource that can be replaced naturally if managed well, such as forests or water."],
-    ["Non-renewable resource", "A resource that exists in fixed amounts and cannot be replaced, such as crude oil."],
-    ["Bush fallowing", "Leaving farmland to rest for some years so that its fertility can recover."],
-    ["Plantation", "A large estate specialising in one cash crop, such as rubber or oil palm."],
-    ["Pastoral nomadism", "Moving livestock from place to place in search of pasture and water."],
-    ["Gas flaring", "Burning off natural gas released during oil production."]
+    [
+      "Natural resource",
+      "A material or substance found in nature that people can use."
+    ],
+    [
+      "Renewable resource",
+      "A resource that can be replaced naturally if managed well, such as forests or water."
+    ],
+    [
+      "Non-renewable resource",
+      "A resource that exists in fixed amounts and cannot be replaced, such as crude oil."
+    ],
+    [
+      "Bush fallowing",
+      "Leaving farmland to rest for some years so that its fertility can recover."
+    ],
+    [
+      "Plantation",
+      "A large estate specialising in one cash crop, such as rubber or oil palm."
+    ],
+    [
+      "Pastoral nomadism",
+      "Moving livestock from place to place in search of pasture and water."
+    ],
+    [
+      "Gas flaring",
+      "Burning off natural gas released during oil production."
+    ],
+    [
+      "Cash crop",
+      "A crop grown mainly for sale, such as cocoa, cotton or sesame, rather than for the farmer's own food."
+    ],
+    [
+      "Irrigation",
+      "Supplying water to crops from rivers, dams, wells or canals, especially in the dry season."
+    ],
+    [
+      "Cooperative",
+      "A group of farmers who pool resources to buy inputs, obtain credit, process and market produce together."
+    ],
+    [
+      "Fadama",
+      "Low-lying flood plain land beside rivers in northern Nigeria, farmed in the dry season."
+    ]
   ],
   "worked": [
     {
@@ -101,6 +255,16 @@
         "Compare with the south-west: rainfall is high, the dry season short, and forest soils are deep — conditions suit cocoa.",
         "Compare with the far north: rainfall is low and the dry season long and harsh, so cocoa trees cannot survive there without irrigation."
       ]
+    },
+    {
+      "title": "Calculating crop yield and its change",
+      "problem": "A farm of 2.5 hectares produced 7.5 tonnes of maize. After using improved seed and fertiliser, the same farm produced 10 tonnes. Calculate the yield before and after, and the percentage increase.",
+      "steps": [
+        "Yield = production ÷ area. Before: 7.5 ÷ 2.5 = **3 tonnes per hectare**.",
+        "After: 10 ÷ 2.5 = **4 tonnes per hectare**.",
+        "Percentage increase = (4 − 3) ÷ 3 × 100 = **33.3%**."
+      ],
+      "note": "Illustrative figures for practising the method."
     }
   ],
   "exam_tips": [
@@ -109,9 +273,26 @@
     "Link crop distribution to climate and soils, not just to a list of states."
   ],
   "checks": [
-    {"q": "Give two examples each of renewable and non-renewable resources found in Nigeria.", "a": "Renewable: forests, water, soil, fish. Non-renewable: crude oil, natural gas, coal, tin."},
-    {"q": "Where and when was commercial crude oil first discovered in Nigeria?", "a": "At Oloibiri, in present-day Bayelsa State, in 1956."},
-    {"q": "Why is pastoral nomadism common in the north?", "a": "Open grassland provides pasture, the drier climate has fewer tsetse flies, and herders move seasonally to find pasture and water."}
+    {
+      "q": "Give two examples each of renewable and non-renewable resources found in Nigeria.",
+      "a": "Renewable: forests, water, soil, fish. Non-renewable: crude oil, natural gas, coal, tin."
+    },
+    {
+      "q": "Where and when was commercial crude oil first discovered in Nigeria?",
+      "a": "At Oloibiri, in present-day Bayelsa State, in 1956."
+    },
+    {
+      "q": "Why is pastoral nomadism common in the north?",
+      "a": "Open grassland provides pasture, the drier climate has fewer tsetse flies, and herders move seasonally to find pasture and water."
+    },
+    {
+      "q": "Why is crude oil called a non-renewable resource?",
+      "a": "It exists in a fixed amount that took millions of years to form; once it is extracted and used it cannot be replaced within human time."
+    },
+    {
+      "q": "Give two advantages of mixed farming.",
+      "a": "Animal manure fertilises the crops, and crop waste can feed the animals; the farmer also has more than one source of food and income, which reduces risk."
+    }
   ],
   "summary": [
     "Resources are renewable (soil, water, forests, fish) or non-renewable (oil, gas, coal, tin and other minerals).",
@@ -120,18 +301,342 @@
     "Root and tree crops dominate the south, mixed grains and yams the Middle Belt, and grains, groundnuts, cotton and livestock the north. Many problems limit productivity, but each has possible solutions."
   ],
   "practice": [
-    {"id": "ra1", "q": "Which of these is a non-renewable resource?", "options": ["Forest", "Water", "Crude oil", "Fish"], "answer": 2, "explanation": "Crude oil exists in fixed amounts and cannot be replaced once used.", "section": "types"},
-    {"id": "ra2", "q": "Commercial crude oil was first discovered in Nigeria at", "options": ["Bonny", "Oloibiri", "Warri", "Port Harcourt"], "answer": 1, "explanation": "Oil was discovered at Oloibiri in 1956.", "section": "minerals"},
-    {"id": "ra3", "q": "Tin and columbite are mined mainly on the", "options": ["Udi Plateau", "Jos Plateau", "Mambilla Plateau", "Obudu Plateau"], "answer": 1, "explanation": "The Jos Plateau is Nigeria's main tin and columbite area.", "section": "minerals"},
-    {"id": "ra4", "q": "Iron ore for the Ajaokuta steel complex comes from", "options": ["Itakpe", "Enugu", "Ewekoro", "Abakaliki"], "answer": 0, "explanation": "Itakpe in Kogi State has Nigeria's main iron ore deposit.", "section": "minerals"},
-    {"id": "ra5", "q": "Limestone is the main raw material for", "options": ["steel", "cement", "glass only", "fertiliser only"], "answer": 1, "explanation": "Cement plants at Ewekoro, Obajana and Nkalagu use local limestone.", "section": "minerals"},
-    {"id": "ra6", "q": "Leaving farmland to rest so that its fertility can recover is called", "options": ["irrigation", "bush fallowing", "plantation farming", "mixed farming"], "answer": 1, "explanation": "Bush fallowing restores soil fertility; it is shortened when land is scarce.", "section": "farming"},
-    {"id": "ra7", "q": "Cocoa is grown mainly in", "options": ["the far north", "the south-west", "the Chad Basin", "the Sokoto Plains"], "answer": 1, "explanation": "Cocoa needs high rainfall and forest soils, found in states such as Ondo, Osun and Ogun.", "section": "crops"},
-    {"id": "ra8", "q": "Which crop is typical of the Sudan savanna?", "options": ["Rubber", "Cocoa", "Groundnuts", "Oil palm"], "answer": 2, "explanation": "Groundnuts, millet, sorghum and cotton suit the shorter wet season of the north.", "section": "crops"},
-    {"id": "ra9", "q": "The movement of herders with their animals in search of pasture is", "options": ["mixed farming", "pastoral nomadism", "plantation agriculture", "shifting cultivation"], "answer": 1, "explanation": "Pastoral nomads move seasonally to find grazing and water.", "section": "farming"},
-    {"id": "ra10", "q": "Which is a major environmental problem linked to oil production in the Niger Delta?", "options": ["Desertification", "Oil spills and gas flaring", "Glacial erosion", "Volcanic activity"], "answer": 1, "explanation": "Oil spills and gas flaring pollute land, water and air in the Delta.", "section": "minerals"},
-    {"id": "ra11", "q": "Benue State is often described as the", "options": ["centre of excellence", "food basket of the nation", "home of peace", "coal city state"], "answer": 1, "explanation": "Benue produces large amounts of yams, grains and soybeans.", "section": "crops"},
-    {"id": "ra12", "q": "Which measure would best reduce post-harvest losses?", "options": ["Burning bush", "Better storage and processing facilities", "Shorter fallow periods", "More gas flaring"], "answer": 1, "explanation": "Good storage and processing keep crops from spoiling after harvest.", "section": "problems"}
+    {
+      "id": "ra1",
+      "q": "Which of these is a non-renewable resource?",
+      "options": [
+        "Forest",
+        "Water",
+        "Crude oil",
+        "Fish"
+      ],
+      "answer": 2,
+      "explanation": "Crude oil exists in fixed amounts and cannot be replaced once used.",
+      "section": "types",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ra2",
+      "q": "Commercial crude oil was first discovered in Nigeria at",
+      "options": [
+        "Bonny",
+        "Oloibiri",
+        "Warri",
+        "Port Harcourt"
+      ],
+      "answer": 1,
+      "explanation": "Oil was discovered at Oloibiri in 1956.",
+      "section": "minerals",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ra3",
+      "q": "Tin and columbite are mined mainly on the",
+      "options": [
+        "Udi Plateau",
+        "Jos Plateau",
+        "Mambilla Plateau",
+        "Obudu Plateau"
+      ],
+      "answer": 1,
+      "explanation": "The Jos Plateau is Nigeria's main tin and columbite area.",
+      "section": "minerals",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ra4",
+      "q": "Iron ore for the Ajaokuta steel complex comes from",
+      "options": [
+        "Itakpe",
+        "Enugu",
+        "Ewekoro",
+        "Abakaliki"
+      ],
+      "answer": 0,
+      "explanation": "Itakpe in Kogi State has Nigeria's main iron ore deposit.",
+      "section": "minerals",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ra5",
+      "q": "Limestone is the main raw material for",
+      "options": [
+        "steel",
+        "cement",
+        "glass only",
+        "fertiliser only"
+      ],
+      "answer": 1,
+      "explanation": "Cement plants at Ewekoro, Obajana and Nkalagu use local limestone.",
+      "section": "minerals",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ra6",
+      "q": "Leaving farmland to rest so that its fertility can recover is called",
+      "options": [
+        "irrigation",
+        "bush fallowing",
+        "plantation farming",
+        "mixed farming"
+      ],
+      "answer": 1,
+      "explanation": "Bush fallowing restores soil fertility; it is shortened when land is scarce.",
+      "section": "farming",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ra7",
+      "q": "Cocoa is grown mainly in",
+      "options": [
+        "the far north",
+        "the south-west",
+        "the Chad Basin",
+        "the Sokoto Plains"
+      ],
+      "answer": 1,
+      "explanation": "Cocoa needs high rainfall and forest soils, found in states such as Ondo, Osun and Ogun.",
+      "section": "crops",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ra8",
+      "q": "Which crop is typical of the Sudan savanna?",
+      "options": [
+        "Rubber",
+        "Cocoa",
+        "Groundnuts",
+        "Oil palm"
+      ],
+      "answer": 2,
+      "explanation": "Groundnuts, millet, sorghum and cotton suit the shorter wet season of the north.",
+      "section": "crops",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ra9",
+      "q": "The movement of herders with their animals in search of pasture is",
+      "options": [
+        "mixed farming",
+        "pastoral nomadism",
+        "plantation agriculture",
+        "shifting cultivation"
+      ],
+      "answer": 1,
+      "explanation": "Pastoral nomads move seasonally to find grazing and water.",
+      "section": "farming",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ra10",
+      "q": "Which is a major environmental problem linked to oil production in the Niger Delta?",
+      "options": [
+        "Desertification",
+        "Oil spills and gas flaring",
+        "Glacial erosion",
+        "Volcanic activity"
+      ],
+      "answer": 1,
+      "explanation": "Oil spills and gas flaring pollute land, water and air in the Delta.",
+      "section": "minerals",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ra11",
+      "q": "Benue State is often described as the",
+      "options": [
+        "centre of excellence",
+        "food basket of the nation",
+        "home of peace",
+        "coal city state"
+      ],
+      "answer": 1,
+      "explanation": "Benue produces large amounts of yams, grains and soybeans.",
+      "section": "crops",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ra12",
+      "q": "Which measure would best reduce post-harvest losses?",
+      "options": [
+        "Burning bush",
+        "Better storage and processing facilities",
+        "Shorter fallow periods",
+        "More gas flaring"
+      ],
+      "answer": 1,
+      "explanation": "Good storage and processing keep crops from spoiling after harvest.",
+      "section": "problems",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture",
+      "difficulty": "hard"
+    },
+    {
+      "id": "ra13",
+      "q": "Rubber is grown mainly in",
+      "options": [
+        "Edo and Delta states",
+        "Sokoto State",
+        "Borno State",
+        "Kano State"
+      ],
+      "answer": 0,
+      "explanation": "Rubber needs heavy rainfall and a long wet season, which are found in the forest south, for example Edo and Delta states.",
+      "section": "crops",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture"
+    },
+    {
+      "id": "ra14",
+      "q": "Mixed farming is best described as",
+      "options": [
+        "growing crops and keeping livestock on the same farm",
+        "growing only one cash crop on a large estate",
+        "moving herds in search of pasture",
+        "catching fish in rivers and lakes"
+      ],
+      "answer": 0,
+      "explanation": "In mixed farming, crops and animals support each other: manure fertilises the fields and crop waste feeds the animals.",
+      "section": "farming",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture"
+    },
+    {
+      "id": "ra15",
+      "q": "Coal was first mined in Nigeria at",
+      "options": [
+        "Enugu",
+        "Jos",
+        "Itakpe",
+        "Oloibiri"
+      ],
+      "answer": 0,
+      "explanation": "Coal mining began at Enugu (Udi area) in the early 20th century. Jos is known for tin, Itakpe for iron ore and Oloibiri for the first commercial oil discovery.",
+      "section": "minerals",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture"
+    },
+    {
+      "id": "ra16",
+      "q": "Why have fallow periods become shorter in many parts of Nigeria?",
+      "options": [
+        "Population growth has increased the demand for land",
+        "Rainfall has doubled",
+        "Fertiliser is free for all farmers",
+        "Farmers have stopped growing crops"
+      ],
+      "answer": 0,
+      "explanation": "More people need more farmland, so land is used again before its fertility has fully recovered.",
+      "section": "farming",
+      "difficulty": "hard",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture"
+    },
+    {
+      "id": "ra17",
+      "q": "Groundnuts, millet and cotton grow well in northern Nigeria mainly because",
+      "options": [
+        "the shorter wet season and lighter soils suit them",
+        "rainfall is heavy throughout the year",
+        "the soils are waterlogged swamp soils",
+        "the climate is cool and highland"
+      ],
+      "answer": 0,
+      "explanation": "These crops need less water and a dry period for ripening and harvesting, which suits the savanna climate.",
+      "section": "crops",
+      "difficulty": "hard",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture"
+    },
+    {
+      "id": "ra18",
+      "q": "Which of these is a renewable resource?",
+      "options": [
+        "Forests",
+        "Crude oil",
+        "Coal",
+        "Tin"
+      ],
+      "answer": 0,
+      "explanation": "Forests can regrow if they are managed carefully. Oil, coal and tin exist in fixed amounts.",
+      "section": "types",
+      "difficulty": "easy",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture"
+    },
+    {
+      "id": "ra19",
+      "q": "Farmers' cooperatives help their members mainly by",
+      "options": [
+        "pooling resources to obtain credit, inputs and better prices",
+        "banning the use of fertiliser",
+        "reducing the size of farms",
+        "increasing post-harvest losses"
+      ],
+      "answer": 0,
+      "explanation": "Working together gives small farmers more bargaining power and access to credit, storage and processing.",
+      "section": "problems",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture"
+    },
+    {
+      "id": "ra20",
+      "q": "Lead and zinc are found mainly around",
+      "options": [
+        "Abakaliki",
+        "Sokoto",
+        "Lagos",
+        "Maiduguri"
+      ],
+      "answer": 0,
+      "explanation": "The Abakaliki area of Ebonyi State has lead and zinc deposits.",
+      "section": "minerals",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture"
+    },
+    {
+      "id": "ra21",
+      "q": "Using water from rivers or dams to grow crops in the dry season is called",
+      "options": [
+        "irrigation",
+        "leaching",
+        "fallowing",
+        "grazing"
+      ],
+      "answer": 0,
+      "explanation": "Irrigation allows farming in the dry season, for example on fadama land and in northern irrigation schemes.",
+      "section": "farming",
+      "difficulty": "easy",
+      "subject": "geography",
+      "topic": "ng-resources-agriculture"
+    }
   ],
   "structured": [
     {
@@ -141,7 +646,10 @@
         "(a) Crude oil and natural gas — Niger Delta; coal — Enugu; tin and columbite — Jos Plateau; iron ore — Itakpe; limestone — Ewekoro, Obajana or Nkalagu (any four with correct locations).",
         "(b) 1. Positive: oil provides most export earnings and government revenue, used to fund development. 2. Positive: it creates jobs and supports industries such as refining and petrochemicals. 3. Negative: oil spills and gas flaring pollute farmland, creeks and air in the Niger Delta, harming fishing and farming. (Overdependence on one commodity and neglect of agriculture are also accepted.)"
       ],
-      "points": ["(a) 1 mark for each mineral and 1 for each correct location (8).", "(b) Up to 7 marks for three effects, explained."]
+      "points": [
+        "(a) 1 mark for each mineral and 1 for each correct location (8).",
+        "(b) Up to 7 marks for three effects, explained."
+      ]
     },
     {
       "q": "(a) Describe the main features of subsistence agriculture in Nigeria. (b) Outline four problems facing agriculture and suggest a solution to each.",
@@ -150,11 +658,52 @@
         "(a) Small farms, often scattered; simple tools such as hoes and cutlasses; family labour; mixed cropping of food crops; low yields; produce mainly for the family, with any surplus sold locally; bush fallowing to restore fertility.",
         "(b) Lack of capital — credit schemes and cooperatives. Poor storage — better storage and processing facilities. Poor rural roads — road building and maintenance. Pests and diseases — extension services and improved seeds and chemicals. (Land tenure, erosion and farmer–herder conflict with suitable solutions are also accepted.)"
       ],
-      "points": ["(a) Up to 5 marks for features.", "(b) Up to 10 marks: problem and matching solution."]
+      "points": [
+        "(a) Up to 5 marks for features.",
+        "(b) Up to 10 marks: problem and matching solution."
+      ]
+    },
+    {
+      "q": "(a) Name three mineral resources of Nigeria and state where each is found. (b) Explain two benefits and two problems of oil production to Nigeria.",
+      "marks": 10,
+      "model": [
+        "(a) For example: crude oil and gas in the Niger Delta (Rivers, Bayelsa, Delta, Akwa Ibom); tin and columbite on the Jos Plateau; limestone at Ewekoro, Obajana or Nkalagu; iron ore at Itakpe; coal at Enugu.",
+        "(b) Benefits: 1. the main source of export earnings and government revenue; 2. jobs and raw materials for refineries, petrochemicals and power. Problems: 1. pollution from oil spills and gas flaring that damages farmland, fisheries and health in the Niger Delta; 2. dependence on one commodity, so the economy suffers when oil prices fall."
+      ],
+      "points": [
+        "1 mark for each mineral named and 1 mark for its location (up to 4 marks).",
+        "1–2 marks for each benefit and problem explained (6 marks)."
+      ]
     }
   ],
   "references": [
-    {"title": "Geography of Nigeria — Niger Delta oil and gas output", "url": "https://en.wikipedia.org/wiki/Geography_of_Nigeria"},
-    {"title": "Natural Earth vector data (maps in this lesson)", "url": "https://www.naturalearthdata.com/"}
-  ]
+    {
+      "title": "Geography of Nigeria — Niger Delta oil and gas output",
+      "url": "https://en.wikipedia.org/wiki/Geography_of_Nigeria"
+    },
+    {
+      "title": "Natural Earth vector data (maps in this lesson)",
+      "url": "https://www.naturalearthdata.com/"
+    },
+    {
+      "title": "WAEC (WASSCE) Geography syllabus, as published in a third-party copy of the official text",
+      "url": "https://waecsyllabus.com/download/ssce/GEOGRAPHY.pdf"
+    },
+    {
+      "title": "SS1 Geography scheme of work (new national curriculum, NERDC-based), topics by term",
+      "url": "https://www.headteacher.ng/product/ss1-geography-scheme-of-work-2026-new-national-curriculum/"
+    },
+    {
+      "title": "WHO Disease Outbreak News: lead poisoning in Zamfara State, Nigeria (July 2010)",
+      "url": "https://www.who.int/emergencies/disease-outbreak-news/item/2010_07_07-en"
+    }
+  ],
+  "subject": "geography",
+  "level": [
+    "SSS 1",
+    "SSS 2"
+  ],
+  "level_note": "Natural resources of Nigeria is an SSS 1 topic in the new NERDC-based scheme; agriculture is usually taught in SSS 2. Examined in WASSCE.",
+  "version": 1,
+  "review_status": "pending"
 }

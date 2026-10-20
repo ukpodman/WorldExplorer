@@ -13,7 +13,8 @@
     "describe and explain the distribution of population in Nigeria;",
     "discuss the effects of rapid population growth and migration;",
     "classify settlements by size, pattern and function, with Nigerian examples;",
-    "explain the problems of urbanisation and suggest solutions."
+    "explain the problems of urbanisation and suggest solutions.",
+    "calculate population density and the dependency ratio, and explain the causes and problems of urbanisation;"
   ],
   "intro": [
     "Nigeria has the largest population in Africa, and it is growing quickly. Where people live, why they live there and how settlements grow are central questions in human geography. This lesson connects population with the physical setting you have already studied and with the economic activities you will study next."
@@ -110,6 +111,10 @@
         {
           "type": "p",
           "text": "**Migration** is the movement of people from one place to another to live or work. In Nigeria the most important type is **rural–urban migration**, as young people move to cities in search of jobs, education and better services (**pull factors**), leaving behind poverty, lack of amenities and limited farm work (**push factors**). Seasonal migration also occurs, for example when people from the north move south during the dry season."
+        },
+        {
+          "type": "p",
+          "text": "The **dependency ratio** compares the number of people in the dependent age groups (under 15, and 65 and over) with the number of working age (15–64). Because so many Nigerians are young, the country has a high dependency ratio: each working adult supports many children."
         }
       ]
     },
@@ -145,6 +150,10 @@
       "id": "urban",
       "title": "Functions of towns and urban problems",
       "blocks": [
+        {
+          "type": "p",
+          "text": "**Urbanisation** is the increase in the proportion of a country's population that lives in towns and cities. In Nigeria it is caused by rural–urban migration, natural increase within the towns, and the growth of large villages into towns. Lagos, Kano, Ibadan, Abuja and Port Harcourt are among the largest and fastest-growing urban areas."
+        },
         {
           "type": "table",
           "head": [
@@ -220,6 +229,14 @@
     [
       "Site and situation",
       "Site: the land a settlement is built on. Situation: its position relative to its surroundings."
+    ],
+    [
+      "Push factor",
+      "Something that encourages people to leave a place, such as unemployment or a lack of amenities."
+    ],
+    [
+      "Pull factor",
+      "Something that attracts people to a place, such as jobs, schools or hospitals."
     ]
   ],
   "worked": [
@@ -232,6 +249,16 @@
         "Always give the unit: people per square kilometre."
       ],
       "note": "Practice figures for the method."
+    },
+    {
+      "title": "Calculating a dependency ratio",
+      "problem": "A village has 4,400 people aged under 15, 300 aged 65 and over, and 5,300 aged 15–64. Calculate its dependency ratio.",
+      "steps": [
+        "Dependants = 4,400 + 300 = 4,700.",
+        "Dependency ratio = dependants ÷ working-age population × 100 = 4,700 ÷ 5,300 × 100.",
+        "= **88.7**, so there are about 89 dependants for every 100 people of working age."
+      ],
+      "note": "Illustrative figures, not census data for a real village."
     }
   ],
   "exam_tips": [
@@ -251,6 +278,14 @@
     {
       "q": "What is the difference between a settlement's site and its situation?",
       "a": "Site is the land it is built on; situation is its position relative to the surrounding area, such as routes and rivers."
+    },
+    {
+      "q": "Give two reasons why accurate censuses are difficult in Nigeria.",
+      "a": "The country is large and some rural areas are hard to reach; and population figures affect political representation and the sharing of revenue, which leads to disputes and possible inflation of figures."
+    },
+    {
+      "q": "Distinguish between the site and the situation of a settlement.",
+      "a": "The site is the actual land on which the settlement is built (for example an island or hilltop). The situation is its position in relation to the surrounding area, such as on a major route or at a river crossing."
     }
   ],
   "summary": [
@@ -271,7 +306,10 @@
       ],
       "answer": 1,
       "explanation": "The 2006 census counted 140,431,790 people.",
-      "section": "size"
+      "section": "size",
+      "subject": "geography",
+      "topic": "ng-population-settlement",
+      "difficulty": "easy"
     },
     {
       "id": "po2",
@@ -284,7 +322,10 @@
       ],
       "answer": 1,
       "explanation": "The National Population Commission (NPC) is responsible for censuses.",
-      "section": "size"
+      "section": "size",
+      "subject": "geography",
+      "topic": "ng-population-settlement",
+      "difficulty": "easy"
     },
     {
       "id": "po3",
@@ -297,7 +338,10 @@
       ],
       "answer": 1,
       "explanation": "The area around Kano is one of Nigeria's most densely populated.",
-      "section": "distribution"
+      "section": "distribution",
+      "subject": "geography",
+      "topic": "ng-population-settlement",
+      "difficulty": "medium"
     },
     {
       "id": "po4",
@@ -310,7 +354,10 @@
       ],
       "answer": 2,
       "explanation": "Density = number of people ÷ land area (people per km²).",
-      "section": "distribution"
+      "section": "distribution",
+      "subject": "geography",
+      "topic": "ng-population-settlement",
+      "difficulty": "easy"
     },
     {
       "id": "po5",
@@ -323,7 +370,10 @@
       ],
       "answer": 1,
       "explanation": "Pull factors attract people to the destination, such as jobs and services in cities.",
-      "section": "growth"
+      "section": "growth",
+      "subject": "geography",
+      "topic": "ng-population-settlement",
+      "difficulty": "medium"
     },
     {
       "id": "po6",
@@ -336,7 +386,10 @@
       ],
       "answer": 2,
       "explanation": "A nucleated pattern has houses grouped together.",
-      "section": "settlement"
+      "section": "settlement",
+      "subject": "geography",
+      "topic": "ng-population-settlement",
+      "difficulty": "easy"
     },
     {
       "id": "po7",
@@ -349,7 +402,10 @@
       ],
       "answer": 0,
       "explanation": "Linear settlements stretch along a route or water body.",
-      "section": "settlement"
+      "section": "settlement",
+      "subject": "geography",
+      "topic": "ng-population-settlement",
+      "difficulty": "easy"
     },
     {
       "id": "po8",
@@ -362,7 +418,10 @@
       ],
       "answer": 2,
       "explanation": "Both are major university towns.",
-      "section": "urban"
+      "section": "urban",
+      "subject": "geography",
+      "topic": "ng-population-settlement",
+      "difficulty": "medium"
     },
     {
       "id": "po9",
@@ -375,7 +434,10 @@
       ],
       "answer": 1,
       "explanation": "Births greatly exceed deaths, giving a high rate of natural increase.",
-      "section": "growth"
+      "section": "growth",
+      "subject": "geography",
+      "topic": "ng-population-settlement",
+      "difficulty": "medium"
     },
     {
       "id": "po10",
@@ -388,7 +450,10 @@
       ],
       "answer": 1,
       "explanation": "Rapid growth causes congestion, slums and pressure on services.",
-      "section": "urban"
+      "section": "urban",
+      "subject": "geography",
+      "topic": "ng-population-settlement",
+      "difficulty": "medium"
     },
     {
       "id": "po11",
@@ -401,7 +466,10 @@
       ],
       "answer": 1,
       "explanation": "Site refers to the actual land; situation is the position relative to surroundings.",
-      "section": "settlement"
+      "section": "settlement",
+      "subject": "geography",
+      "topic": "ng-population-settlement",
+      "difficulty": "medium"
     },
     {
       "id": "po12",
@@ -414,7 +482,154 @@
       ],
       "answer": 1,
       "explanation": "Past slave raids and the tsetse fly historically discouraged settlement in parts of the Middle Belt.",
-      "section": "distribution"
+      "section": "distribution",
+      "subject": "geography",
+      "topic": "ng-population-settlement",
+      "difficulty": "hard"
+    },
+    {
+      "id": "po13",
+      "q": "A local government area has 600,000 people and an area of 1,500 km². Its population density is",
+      "options": [
+        "400 people per km²",
+        "2,500 people per km²",
+        "900,000 people per km²",
+        "0.0025 people per km²"
+      ],
+      "answer": 0,
+      "explanation": "Density = population ÷ area = 600,000 ÷ 1,500 = 400 people per km². Dividing the area by the population gives the wrong answer.",
+      "section": "distribution",
+      "difficulty": "hard",
+      "subject": "geography",
+      "topic": "ng-population-settlement"
+    },
+    {
+      "id": "po14",
+      "q": "Which of these is a push factor in rural–urban migration?",
+      "options": [
+        "A lack of amenities in villages",
+        "Better hospitals in cities",
+        "More jobs in cities",
+        "Entertainment in cities"
+      ],
+      "answer": 0,
+      "explanation": "Push factors drive people away from where they live; a lack of electricity, schools or clinics in villages is one. The other three are pull factors that attract people to cities.",
+      "section": "growth",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-population-settlement"
+    },
+    {
+      "id": "po15",
+      "q": "Which statement about Nigeria's population figures after 2006 is correct?",
+      "options": [
+        "They are estimates, not census counts",
+        "They come from a census held in 2016",
+        "They show the population falling",
+        "They show that the 2006 census counted 228 million people"
+      ],
+      "answer": 0,
+      "explanation": "The 2006 census is the most recent count used in this lesson. Later figures, such as the UN estimate of about 228 million in 2023, are estimates.",
+      "section": "size",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-population-settlement"
+    },
+    {
+      "id": "po16",
+      "q": "Houses scattered among farms form a",
+      "options": [
+        "dispersed settlement",
+        "nucleated settlement",
+        "linear settlement",
+        "conurbation"
+      ],
+      "answer": 0,
+      "explanation": "In a dispersed pattern each homestead stands on its own farmland, as in parts of the south-east.",
+      "section": "settlement",
+      "difficulty": "easy",
+      "subject": "geography",
+      "topic": "ng-population-settlement"
+    },
+    {
+      "id": "po17",
+      "q": "A town grew where a major road crosses a river. This describes the town's",
+      "options": [
+        "situation",
+        "site",
+        "function",
+        "density"
+      ],
+      "answer": 0,
+      "explanation": "Situation is a settlement's position in relation to its surroundings, such as a route or river crossing. Site is the actual land it is built on.",
+      "section": "settlement",
+      "difficulty": "hard",
+      "subject": "geography",
+      "topic": "ng-population-settlement"
+    },
+    {
+      "id": "po18",
+      "q": "Makoko in Lagos is an example of",
+      "options": [
+        "a slum",
+        "an industrial estate",
+        "a university town",
+        "a game reserve"
+      ],
+      "answer": 0,
+      "explanation": "Makoko is a crowded informal settlement on the Lagos Lagoon, a result of rapid urban growth and housing shortages.",
+      "section": "urban",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-population-settlement"
+    },
+    {
+      "id": "po19",
+      "q": "A high dependency ratio means that",
+      "options": [
+        "many people depend on a relatively small working-age population",
+        "most people are aged 15–64",
+        "the population is falling",
+        "there are very few children"
+      ],
+      "answer": 0,
+      "explanation": "The ratio compares dependants (under 15 and over 64) with people of working age. A high ratio means each worker supports more dependants.",
+      "section": "growth",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-population-settlement"
+    },
+    {
+      "id": "po20",
+      "q": "Which measure would best reduce rural–urban migration?",
+      "options": [
+        "Rural development such as roads, schools and electricity in villages",
+        "Building more slums in cities",
+        "Closing rural schools",
+        "Raising only city wages"
+      ],
+      "answer": 0,
+      "explanation": "Improving life in rural areas reduces the push factors that drive people to the cities.",
+      "section": "urban",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-population-settlement"
+    },
+    {
+      "id": "po21",
+      "q": "Which factor helps to explain the high population of the Kano area?",
+      "options": [
+        "A long history of trade and fertile farmland",
+        "Swampy, waterlogged land",
+        "Tsetse fly infestation",
+        "Rugged mountains"
+      ],
+      "answer": 0,
+      "explanation": "Kano has been a trading city for centuries, and the surrounding plains are intensively farmed. Swamps, tsetse fly and rugged relief discourage settlement.",
+      "section": "distribution",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-population-settlement"
     }
   ],
   "structured": [
@@ -440,12 +655,46 @@
       "points": [
         "(a) 2 marks; (b) 2 marks for each cause and effect."
       ]
+    },
+    {
+      "q": "(a) What is rural–urban migration? (b) Give two push factors and two pull factors. (c) Describe two effects of rural–urban migration on Nigerian cities.",
+      "marks": 10,
+      "model": [
+        "(a) Rural–urban migration is the movement of people from villages and rural areas to live and work in towns and cities.",
+        "(b) Push: poverty and low farm incomes; lack of amenities such as electricity, schools and hospitals. Pull: better job opportunities; better schools, hospitals and services in cities.",
+        "(c) 1. Overcrowding, housing shortages and the growth of slums such as Makoko in Lagos. 2. Unemployment and pressure on water, electricity, transport and waste services, causing traffic congestion and poor sanitation."
+      ],
+      "points": [
+        "2 marks for the definition.",
+        "1 mark for each push and pull factor (4 marks).",
+        "2 marks for each effect, described with an example (4 marks)."
+      ]
     }
   ],
   "references": [
     {
       "title": "Demographics of Nigeria (2006 census, UN and World Bank estimates, age structure, urbanisation)",
       "url": "https://en.wikipedia.org/wiki/Demographics_of_Nigeria"
+    },
+    {
+      "title": "WAEC (WASSCE) Geography syllabus, as published in a third-party copy of the official text",
+      "url": "https://waecsyllabus.com/download/ssce/GEOGRAPHY.pdf"
+    },
+    {
+      "title": "SS1 Geography scheme of work (new national curriculum, NERDC-based), topics by term",
+      "url": "https://www.headteacher.ng/product/ss1-geography-scheme-of-work-2026-new-national-curriculum/"
+    },
+    {
+      "title": "Nigeria population pyramid and estimates, 2023 (based on UN World Population Prospects)",
+      "url": "https://www.populationpyramid.net/nigeria/2023/"
     }
-  ]
+  ],
+  "subject": "geography",
+  "level": [
+    "SSS 1",
+    "SSS 2"
+  ],
+  "level_note": "Population and settlement of Nigeria is an SSS 1 topic in the new NERDC-based scheme; older schemes place population and settlement in SSS 2. Examined in WASSCE.",
+  "version": 1,
+  "review_status": "pending"
 }

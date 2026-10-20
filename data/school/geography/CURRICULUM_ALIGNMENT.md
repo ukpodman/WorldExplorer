@@ -1,79 +1,80 @@
-# SSS Geography: curriculum alignment report (World Explorer School Learning, V24)
+# SSS Geography curriculum report (World Explorer School Learning, V24)
 
-**Status:** educational review pending. No teacher has reviewed this content yet. World Explorer is **not approved or
-endorsed by WAEC or NERDC**, and the app never claims that it is.
+**Review status: Educational review pending.** No teacher has reviewed the content yet. World Explorer is **not approved, endorsed or
+certified by WAEC or NERDC**, and the app never claims that it is. The sources are in `SOURCES.md` and a review checklist is in
+`TEACHER_REVIEW_CHECKLIST.md`.
+
+## Completed lessons
+
+| # | Lesson | Class level (from NERDC-based schemes) | Pages | Practice questions (easy / medium / hard) | Definitions | Worked examples | Checks | Structured questions | Diagrams |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | Location and Physical Setting of Nigeria | SSS 1 | 9 | 21 (7 / 11 / 3) | 9 | 2 | 5 | 3 | relief and drainage map |
+| 2 | Climate of Nigeria | SSS 1–2 | 11 | 21 (8 / 11 / 2) | 11 | 3 | 5 | 3 | ITD map, rainfall chart |
+| 3 | Vegetation and Soils of Nigeria | SSS 1–2 | 10 | 21 (6 / 13 / 2) | 10 | 2 | 5 | 3 | vegetation map |
+| 4 | Population and Settlement in Nigeria | SSS 1–2 | 10 | 21 (6 / 12 / 3) | 9 | 2 | 5 | 3 | population map, settlement patterns |
+| 5 | Natural Resources and Agriculture | SSS 1–2 | 10 | 21 (7 / 11 / 3) | 11 | 2 | 5 | 3 | minerals map |
+| 6 | Transport, Communication and Industrial Development | SSS 2 | 10 | 21 (7 / 11 / 3) | 8 | 2 | 5 | 3 | transport map, photo |
+| 7 | Trade, Tourism and Environmental Issues | SSS 2–3 | 10 | 21 (7 / 10 / 4) | 9 | 2 | 5 | 3 | tourism and environment map |
+| | **Total** | | **70** | **147 (48 / 79 / 20)** | **67** | **15** | **35** | **21** | **9 diagrams + 1 photo** |
+
+Each lesson has learning objectives, notes split into sections (one page each), a glossary, worked examples, exam tips, general guidance
+for objective and structured questions, check-your-understanding questions with answers, structured questions with model answers and
+marking guidance, a revision summary and references. Every practice question has an id, subject and topic ids, four options, one answer, an
+explanation, a difficulty level and a link to the lesson section that teaches it.
 
 ## Sources compared
 
-| Source | What we could obtain | Reliability |
-|---|---|---|
-| WAEC (WASSCE) Geography syllabus | Full text from a third-party copy of the official syllabus (waecsyllabus.com, GEOGRAPHY.pdf). The official WAEC e-learning portal was not reachable from our environment. | Good: the text matches the official structure, but check it against the copy your school holds. |
-| NERDC Senior Secondary Geography curriculum | **The official NERDC document was not available.** Only schemes of work that say they follow it (lessonplan.com.ng, schemeofwork.com). | Indirect. |
-| Subject changes from 2025/26 | Reports that Nigerian History is compulsory from Primary to JSS 3 and that SSS History merges into Citizenship and Heritage Studies. | Shown only as "planned subjects". No content yet. |
+* **WAEC (WASSCE) Geography syllabus.** We used the full text from a third-party copy of the official syllabus. WAEC's portal was not reachable from our environment.
+* **NERDC senior secondary curriculum.** **The official document was not available.** We used NERDC-based schemes of work for class levels: the new national curriculum scheme for SSS 1, and SSS 2 course outlines. Class levels vary between schools.
 
 ## WAEC structure (Nigeria candidates)
 
-* Paper 1: 50 objective questions (1 hour).
-* Paper 2: answer 4 of 9 questions. Nigerian candidates answer 2 from Section A (economic and human geography) and 2 from Section B (regional geography of Nigeria).
-* Paper 3: map reading (compulsory) plus 3 others (statistical maps and diagrams, GIS and related topics).
-* Topics marked ** in the syllabus are for Nigeria only: GIS, climate change and all of Nigeria's regional topics. Topics marked * are for Ghana, Sierra Leone, Liberia and The Gambia only: elementary surveying, the hydrosphere, and vegetation and soil as world topics.
+* Paper 1: 50 objective questions.
+* Paper 2: 4 of 9 essay questions. Nigerian candidates answer 2 from economic and human geography and 2 from the regional geography of Nigeria.
+* Paper 3: map reading (compulsory) plus statistical maps, GIS and related topics.
+* Topics marked ** are for Nigeria only: GIS, climate change and all of Nigeria's regional items.
+* Topics marked * are for Ghana, Sierra Leone, Liberia and The Gambia only: elementary surveying, the hydrosphere, and vegetation and soil as world topics.
 
-## Our topics compared with the WAEC regional geography of Nigeria
+## Comparison with the Stage One outline
 
-| WAEC item (Nigeria) | World Explorer lesson | Result |
+The Stage One board's outline (31 topics) is not among the files available in this session, so a line-by-line comparison with it was not
+possible here. Instead, the curriculum file was checked directly against the WAEC syllabus and corrected. It now has **34 topics** in 5 sections, each with a class level and learning objectives:
+
+| Section | Topics | With full lessons |
 |---|---|---|
-| Broad outline (location, size, political divisions) | 1 Location and Physical Setting | Covered |
-| Physical setting: relief, drainage | 1 Location and Physical Setting | Covered |
-| Physical setting: climate | 2 Climate of Nigeria | Covered |
-| Physical setting: vegetation, soils | 3 Vegetation and Soils | Covered |
-| Population: size, distribution, structure, migration | 4 Population and Settlement | Covered |
-| Settlement (rural and urban) | 4 Population and Settlement | Covered (WAEC places settlement under human geography; we teach it with Nigeria's population) |
-| Resources (minerals, power, water, forest) | 5 Natural Resources and Agriculture | Covered |
-| Agriculture | 5 Natural Resources and Agriculture | Covered |
-| Transportation | 6 Transport, Communication and Industrial Development | Covered |
-| **Communication** | 6 (title extended) | **Discrepancy corrected**: our Stage One plan had "Transport and Industry" only. Communication (telecoms, GSM, postal, internet) is now a full section. |
-| Industry | 6 | Covered |
-| Trade (internal, external, balance of trade) | 7 Trade, Tourism and Environmental Issues | Covered |
-| Tourism | 7 | Covered |
-| Development and environmental issues | 7 | Covered (desertification, gully erosion, oil pollution, flooding, Lake Chad) |
-| **ECOWAS** | 7 (sub-section "ECOWAS and regional trade") | **Partly covered**: Lesson 7 introduces ECOWAS (Treaty of Lagos 1975, headquarters Abuja, aims, trade). A full ECOWAS lesson (members, achievements, problems) is "Coming later". |
-| **Geopolitical issues** | none yet | **Missing**: "Coming later". |
-| Fieldwork (Part D) | none yet | **Missing**: "Coming later". It is assessed in school. |
+| Practical geography and map work (Part A) | 6 | 0 |
+| Physical geography (Part A) | 11 | 0 |
+| Human and economic geography (Part B) | 6 | 0 |
+| Regional geography of Nigeria (Part C) | 10 | **7** |
+| Fieldwork (Part D) | 1 | 0 |
 
-## Other syllabus parts (shown as "Coming later" in the app)
+Corrections made against the WAEC syllabus:
 
-* Practical geography: map reading, scale, bearings, relief representation, map interpretation, statistical maps, GIS concepts and data (6 topics).
-* Physical geography: the earth in space, rocks, earth movements, landforms, weathering, agents of erosion, weather, climate classification, climate change, environmental resources and problems (11 topics).
-* Human and economic geography (world scale): population, settlement, transportation, industry, trade, tourism (6 topics).
+* **Missing topic added:** Communication. The WAEC Nigeria list names it next to transport, so Lesson 6 now teaches it.
+* **Missing topics added as "coming soon":** ECOWAS (introduced in Lesson 7, with a full lesson to come), geopolitical issues, local geography and fieldwork.
+* **Classification corrected:** vegetation and soils as *world* topics are marked * (not examined for Nigeria). Nigeria's own vegetation and soils are taught in Lesson 3 as part of its physical setting. The app explains this under "Topics not examined for Nigerian candidates".
+* **Nigeria-only topics marked:** climate change and GIS.
+* **Duplication avoided:** settlement is listed once as a world topic (Part B) and taught for Nigeria inside Lesson 4.
+* **Content added to the lessons** where the brief and syllabus require it:
+  * weather, weather instruments and climatic controls (Lesson 2);
+  * the importance of soils and soil degradation (Lesson 3);
+  * the dependency ratio and urbanisation (Lesson 4);
+  * environmental concerns of agriculture and mining (Lesson 5);
+  * the importance of transport (Lesson 6);
+  * the balance of trade and the causes of Lake Chad's shrinkage (Lesson 7).
 
-In total, 34 topics are mapped and 7 have full lessons.
+## Remaining topics (27, shown as "coming soon")
 
-## Corrections made during checking
-
-* Lesson 6 title and content now include **Communication**, as the WAEC Nigeria list requires.
-* "Vegetation and soils" as **world** topics is marked * (not for Nigeria). Nigeria's own vegetation and soils are taught in Lesson 3 as part of the physical setting. The app explains this under "Topics not examined for Nigerian candidates".
-* Climate change and GIS are marked Nigeria-only (**) and are listed in the syllabus map.
-* Population figures: we use the 2006 census (140,431,790) as the last official count, and the UN estimate (about 228 million in 2023) labelled as an estimate. No unofficial "census" figures are used.
-
-## Facts checked against published sources (examples)
-
-* Area 923,768 km² and coastline 853 km. Borders: Cameroon 1,690 km, Niger 1,497 km, Benin 773 km, Chad 87 km.
-* Highest point: Chappal Waddi, 2,419 m. Kainji Lake: about 1,243 km².
-* Rainfall: Bonny about 4,200 mm, Calabar about 3,070 mm and Sokoto about 650 mm a year. These are rounded climate summaries, labelled as approximate.
-* Oil was first found in commercial quantity at Oloibiri in 1956.
-* Standard-gauge railway lines opened: Abuja–Kaduna (2016), Warri–Itakpe (2020), Lagos–Ibadan (2021).
-* Lekki Deep Sea Port opened in January 2023.
-* Crude oil was about 69% of exports in Q4 2024 (NBS).
-* The 2022 floods killed more than 600 people and displaced more than 1.4 million.
-* Lake Chad has shrunk by about 90% since the 1960s (FAO).
-* UNESCO World Heritage sites: Sukur (1999) and Osun-Osogbo (2005).
-
-The sources are listed in each lesson's References.
+* **Practical:** map reading; direction, bearing and relief; map interpretation; statistical maps and diagrams; GIS concepts; GIS data and remote sensing.
+* **Physical:** the earth in space; earth structure and rocks; internal processes; landforms; weathering and mass movement; agents of erosion; weather (world); climate classification; climate change; environmental resources; environmental problems and conservation.
+* **Human and economic (world):** population, settlement, transportation, industry, trade, tourism.
+* **Regional (Nigeria):** ECOWAS (full lesson), geopolitical issues, local geography.
+* **Fieldwork:** planning and reporting a fieldwork study.
 
 ## Limitations
 
-1. The official NERDC curriculum could not be obtained. NERDC theme names are taken from schemes of work.
+1. The official NERDC curriculum could not be obtained, so class levels are taken from schemes of work.
 2. The WAEC text comes from a third-party copy.
-3. A qualified Geography teacher should review every lesson before the "Educational review pending" label is removed.
+3. A qualified Geography teacher must review every lesson and question before the "Educational review pending" label is removed.
 4. Maps are simplified teaching diagrams drawn from Natural Earth (public domain). Positions are approximate.
-5. Only one photograph is used: the app's existing licensed Lekki–Ikoyi Link Bridge photo (Chippla, CC BY-SA 3.0). New photo licences could not be verified from this environment, so diagrams carry the rest.
+5. Only the app's existing licensed photograph (Lekki–Ikoyi Link Bridge, Chippla, CC BY-SA 3.0) is used. New photo licences could not be verified from this environment, so diagrams carry the rest.

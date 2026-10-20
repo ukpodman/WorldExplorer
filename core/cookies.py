@@ -14,6 +14,9 @@ cookies from Python. Writes are therefore queued here and rendered as one short 
   we_handoff  random token           — set when a guest asks to save progress with Google, so the progress can
                                        be found again after Google's sign-in page; kept (30 minutes from the last
                                        attempt) until the account save that includes it succeeds
+  we_school   base64url JSON          — School Learning progress kept on this device, written ONLY after the student
+                                       switches on "Keep my progress on this device" (lesson positions and practice
+                                       scores; no name, e-mail or account id); deleted when switched off
 
 Limits (explained to the owner in README.md): cookies are per browser and per device; they are gone after
 clearing site data, in private windows when the window closes, and Safari keeps script-written cookies for at
@@ -28,7 +31,7 @@ import streamlit as st
 
 NAMES = {"we_consent": re.compile(r"^(granted|denied)$"), "we_aid": re.compile(r"^[0-9a-f]{32}$"),
          "we_test": re.compile(r"^1$"), "we_handoff": re.compile(r"^[A-Za-z0-9_-]{20,64}$"),
-         "we_gpc": re.compile(r"^1$"), "we_ref": re.compile(r"^WE[2-9A-HJ-NP-Z]{4}(\.[0-9a-f]{16})?$")}
+         "we_gpc": re.compile(r"^1$"), "we_school": re.compile(r"^[A-Za-z0-9_-]{4,3500}$"), "we_ref": re.compile(r"^WE[2-9A-HJ-NP-Z]{4}(\.[0-9a-f]{16})?$")}
 
 
 def read(name: str) -> str | None:

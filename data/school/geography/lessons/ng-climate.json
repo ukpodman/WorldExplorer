@@ -4,8 +4,12 @@
   "title": "Climate of Nigeria",
   "short": "Climate",
   "minutes": 30,
-  "syllabus": ["WAEC Geography, Regional Geography of Nigeria: physical setting (climate); Part A: weather and climate, climate change", "NERDC-based schemes: Weather; Climate I and II; Climatic classification"],
+  "syllabus": [
+    "WAEC Geography, Regional Geography of Nigeria: physical setting (climate); Part A: weather and climate, climate change",
+    "NERDC-based schemes: Weather; Climate I and II; Climatic classification"
+  ],
   "objectives": [
+    "distinguish weather from climate, name the instruments of a weather station and explain the main controls of Nigeria's climate;",
     "name the two air masses that control Nigeria's seasons and describe each one;",
     "explain how the movement of the Inter-Tropical Discontinuity (ITD) causes the wet and dry seasons;",
     "describe and explain the pattern of rainfall and temperature from south to north;",
@@ -17,70 +21,256 @@
   ],
   "sections": [
     {
+      "id": "weather",
+      "title": "Weather, climate and climatic controls",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "**Weather** is the condition of the atmosphere at a particular place and time: how hot, wet, windy or cloudy it is today. **Climate** is the average weather of a place measured over a long period, usually about 30 years or more. Weather can change within hours, while climate describes what is normal for a place."
+        },
+        {
+          "type": "table",
+          "head": [
+            "Element of weather",
+            "Instrument",
+            "Unit"
+          ],
+          "rows": [
+            [
+              "Temperature",
+              "Thermometer; maximum and minimum thermometers or Six's thermometer",
+              "°C"
+            ],
+            [
+              "Rainfall",
+              "Rain gauge",
+              "mm"
+            ],
+            [
+              "Relative humidity",
+              "Hygrometer (wet-and-dry bulb thermometer)",
+              "%"
+            ],
+            [
+              "Wind direction",
+              "Wind vane",
+              "Compass points"
+            ],
+            [
+              "Wind speed",
+              "Anemometer",
+              "km/h or knots"
+            ],
+            [
+              "Air pressure",
+              "Barometer",
+              "Millibars (hectopascals)"
+            ],
+            [
+              "Sunshine",
+              "Sunshine recorder (Campbell–Stokes)",
+              "Hours"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Instruments are kept at a **weather station**. Thermometers and the hygrometer are placed in a **Stevenson screen**: a white, louvred wooden box on legs that shades them from direct sunlight while letting air flow through, so that they measure the true air temperature."
+        },
+        {
+          "type": "h",
+          "text": "Climatic controls: why Nigeria's climate is the way it is"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Latitude:** Nigeria lies between about 4°N and 14°N, inside the tropics. The midday sun is always high, so temperatures are high all year.",
+            "**Distance from the sea:** the sea heats and cools slowly. Coastal places therefore have a small temperature range, while places far inland have hotter days, cooler nights and a larger range. This effect of distance from the sea is called **continentality**.",
+            "**Altitude:** temperature falls with height, on average by about 6.5 °C for every 1,000 m. This is why the Jos and Mambilla Plateaux are cooler than the lowlands around them.",
+            "**Air masses and winds:** the moist tropical maritime and dry tropical continental air masses decide when and where rain falls (see the next pages).",
+            "**Relief:** highlands that face the moist south-west winds receive extra relief rainfall.",
+            "**Cloud cover and vegetation:** thick cloud in the wet season lowers daytime temperatures, and bare ground heats up and cools down faster than forest."
+          ]
+        }
+      ]
+    },
+    {
       "id": "airmasses",
       "title": "Seasons and air masses",
       "blocks": [
-        {"type": "p", "text": "Nigeria has two main seasons: a **wet (rainy) season** and a **dry season**. They are controlled by two large bodies of air, called **air masses**, which move over West Africa during the year."},
-        {"type": "cards", "items": [
-          {"title": "Tropical maritime air (mT)", "tone": "teal", "text": "Forms over the Atlantic Ocean. Carried inland by the south-west winds. Warm and moist: it brings the rain."},
-          {"title": "Tropical continental air (cT)", "tone": "gold", "text": "Forms over the Sahara Desert. Carried by the north-east trade winds. Dry and dusty: it brings the Harmattan."}
-        ]},
-        {"type": "p", "text": "The **Harmattan** is the dry, dusty north-east wind from the Sahara. It is strongest from about **November to February**. It brings hazy skies, low humidity, cool nights and hot afternoons, especially in the north, and can affect health and visibility."}
+        {
+          "type": "p",
+          "text": "Nigeria has two main seasons: a **wet (rainy) season** and a **dry season**. They are controlled by two large bodies of air, called **air masses**, which move over West Africa during the year."
+        },
+        {
+          "type": "cards",
+          "items": [
+            {
+              "title": "Tropical maritime air (mT)",
+              "tone": "teal",
+              "text": "Forms over the Atlantic Ocean. Carried inland by the south-west winds. Warm and moist: it brings the rain."
+            },
+            {
+              "title": "Tropical continental air (cT)",
+              "tone": "gold",
+              "text": "Forms over the Sahara Desert. Carried by the north-east trade winds. Dry and dusty: it brings the Harmattan."
+            }
+          ]
+        },
+        {
+          "type": "p",
+          "text": "The **Harmattan** is the dry, dusty north-east wind from the Sahara. It is strongest from about **November to February**. It brings hazy skies, low humidity, cool nights and hot afternoons, especially in the north, and can affect health and visibility."
+        }
       ]
     },
     {
       "id": "itd",
       "title": "The Inter-Tropical Discontinuity (ITD)",
       "blocks": [
-        {"type": "p", "text": "The two air masses meet along a boundary called the **Inter-Tropical Discontinuity (ITD)**. Places south of the ITD lie under moist mT air and can receive rain; places north of it lie under dry cT air."},
-        {"type": "p", "text": "The ITD follows the apparent movement of the overhead sun. It moves northwards from about March and reaches its most northerly position, about **20°N, around August**. It then retreats southwards and lies near the coast around **January**. As it moves north, the rainy season begins earlier in the south and later in the north."},
-        {"type": "figure", "src": "west_africa_itd", "caption": "Simplified rainfall belts over West Africa and the position of the ITD in January and August.", "credit": "Map data: Natural Earth (public domain). Rainfall belts simplified."}
+        {
+          "type": "p",
+          "text": "The two air masses meet along a boundary called the **Inter-Tropical Discontinuity (ITD)**. Places south of the ITD lie under moist mT air and can receive rain; places north of it lie under dry cT air."
+        },
+        {
+          "type": "p",
+          "text": "The ITD follows the apparent movement of the overhead sun. It moves northwards from about March and reaches its most northerly position, about **20°N, around August**. It then retreats southwards and lies near the coast around **January**. As it moves north, the rainy season begins earlier in the south and later in the north."
+        },
+        {
+          "type": "figure",
+          "src": "west_africa_itd",
+          "caption": "Simplified rainfall belts over West Africa and the position of the ITD in January and August.",
+          "credit": "Map data: Natural Earth (public domain). Rainfall belts simplified."
+        }
       ]
     },
     {
       "id": "rainfall",
       "title": "Rainfall: decreasing from south to north",
       "blocks": [
-        {"type": "p", "text": "Because the rain-bearing south-west winds reach the south first and stay there longest, **total rainfall decreases, and the dry season lengthens, from south to north**. In the far south the wet season can last eight months or more; in the far north it may last only three or four months."},
-        {"type": "figure", "src": "rainfall_bars", "caption": "Mean annual rainfall at selected places (approximate figures).", "credit": "Figures rounded from published climate summaries (see References)."},
-        {"type": "list", "items": [
-          "**The Niger Delta and south-east coast** are the wettest parts: Bonny receives about 4,200 mm a year and Calabar about 3,070 mm.",
-          "**Central Nigeria** receives about 1,100 mm in the lowlands, but over 2,000 mm on the south-western edge of the Jos Plateau because of relief.",
-          "**The far north** is driest: about 650 mm at Sokoto and as little as about 400 mm in the far north of Yobe and Borno."
-        ]},
-        {"type": "p", "text": "Two further patterns are important. **Relief rainfall**: moist air forced to rise over highlands such as the Jos Plateau and the eastern highlands cools and gives more rain. **Double maxima**: in the south, rainfall has two peaks (around June–July and September–October), separated in the south-west by a short drier spell in August called the **August break**."}
+        {
+          "type": "p",
+          "text": "Because the rain-bearing south-west winds reach the south first and stay there longest, **total rainfall decreases, and the dry season lengthens, from south to north**. In the far south the wet season can last eight months or more; in the far north it may last only three or four months."
+        },
+        {
+          "type": "figure",
+          "src": "rainfall_bars",
+          "caption": "Mean annual rainfall at selected places (approximate figures).",
+          "credit": "Figures rounded from published climate summaries (see References)."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**The Niger Delta and south-east coast** are the wettest parts: Bonny receives about 4,200 mm a year and Calabar about 3,070 mm.",
+            "**Central Nigeria** receives about 1,100 mm in the lowlands, but over 2,000 mm on the south-western edge of the Jos Plateau because of relief.",
+            "**The far north** is driest: about 650 mm at Sokoto and as little as about 400 mm in the far north of Yobe and Borno."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Two further patterns are important. **Relief rainfall**: moist air forced to rise over highlands such as the Jos Plateau and the eastern highlands cools and gives more rain. **Double maxima**: in the south, rainfall has two peaks (around June–July and September–October), separated in the south-west by a short drier spell in August called the **August break**."
+        }
       ]
     },
     {
       "id": "temperature",
       "title": "Temperature",
       "blocks": [
-        {"type": "p", "text": "Temperatures are high throughout the year in the lowlands. Near the coast the sea keeps temperatures even, so the **annual range of temperature** is small. Further north, away from the sea's influence and under clear Harmattan skies, days are hotter, nights cooler and the annual range larger. The hottest months in the north are usually March to May, just before the rains; Maiduguri has recorded temperatures as high as 48 °C."},
-        {"type": "p", "text": "Temperature falls with height, so the **Jos and Mambilla Plateaux** are cooler than the surrounding lowlands. The Jos Plateau is cool for much of the year, with temperatures mostly between about 16 °C and 25 °C."}
+        {
+          "type": "p",
+          "text": "Temperatures are high throughout the year in the lowlands. Near the coast the sea keeps temperatures even, so the **annual range of temperature** is small. Further north, away from the sea's influence and under clear Harmattan skies, days are hotter, nights cooler and the annual range larger. The hottest months in the north are usually March to May, just before the rains; Maiduguri has recorded temperatures as high as 48 °C."
+        },
+        {
+          "type": "p",
+          "text": "Temperature falls with height, so the **Jos and Mambilla Plateaux** are cooler than the surrounding lowlands. The Jos Plateau is cool for much of the year, with temperatures mostly between about 16 °C and 25 °C."
+        }
       ]
     },
     {
       "id": "regions",
       "title": "Climatic regions",
       "blocks": [
-        {"type": "table", "head": ["Region", "Where", "Main features"], "rows": [
-          ["Humid tropical (rainforest type)", "Coastal south, e.g. Port Harcourt, Calabar", "Heavy rainfall, short dry season, small temperature range, high humidity"],
-          ["Tropical wet and dry (savanna type)", "Middle Belt and much of the north, e.g. Abuja, Kaduna", "Distinct wet and dry seasons; rainfall decreases northwards"],
-          ["Semi-arid (Sahel type)", "Far north and north-east, e.g. Maiduguri", "Low, unreliable rainfall; long dry season; large temperature range"],
-          ["Montane (highland)", "Jos and Mambilla Plateaux", "Cooler because of altitude; relief rainfall"]
-        ]},
-        {"type": "p", "text": "In the Köppen classification these correspond broadly to tropical monsoon and rainforest types (Am, Af) in the south, tropical savanna (Aw) in the middle belt and north, and hot semi-arid (BSh) in the far north. Climate change is affecting all regions, with concerns about more intense rainfall and flooding in some years and drought in the north."}
+        {
+          "type": "table",
+          "head": [
+            "Region",
+            "Where",
+            "Main features"
+          ],
+          "rows": [
+            [
+              "Humid tropical (rainforest type)",
+              "Coastal south, e.g. Port Harcourt, Calabar",
+              "Heavy rainfall, short dry season, small temperature range, high humidity"
+            ],
+            [
+              "Tropical wet and dry (savanna type)",
+              "Middle Belt and much of the north, e.g. Abuja, Kaduna",
+              "Distinct wet and dry seasons; rainfall decreases northwards"
+            ],
+            [
+              "Semi-arid (Sahel type)",
+              "Far north and north-east, e.g. Maiduguri",
+              "Low, unreliable rainfall; long dry season; large temperature range"
+            ],
+            [
+              "Montane (highland)",
+              "Jos and Mambilla Plateaux",
+              "Cooler because of altitude; relief rainfall"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "In the Köppen classification these correspond broadly to tropical monsoon and rainforest types (Am, Af) in the south, tropical savanna (Aw) in the middle belt and north, and hot semi-arid (BSh) in the far north. Climate change is affecting all regions, with concerns about more intense rainfall and flooding in some years and drought in the north."
+        }
       ]
     }
   ],
   "definitions": [
-    ["Weather", "The condition of the atmosphere at a particular place and time."],
-    ["Climate", "The average weather conditions of a place over a long period, usually 30 years or more."],
-    ["Air mass", "A very large body of air with similar temperature and humidity throughout."],
-    ["Harmattan", "The dry, dusty north-east wind from the Sahara, strongest from about November to February."],
-    ["ITD", "Inter-Tropical Discontinuity: the boundary where tropical maritime and tropical continental air meet."],
-    ["Annual range of temperature", "The difference between the mean temperature of the hottest month and that of the coolest month."],
-    ["Relief rainfall", "Rain formed when moist air is forced to rise over highland, cools and condenses."]
+    [
+      "Weather",
+      "The condition of the atmosphere at a particular place and time."
+    ],
+    [
+      "Climate",
+      "The average weather conditions of a place over a long period, usually 30 years or more."
+    ],
+    [
+      "Air mass",
+      "A very large body of air with similar temperature and humidity throughout."
+    ],
+    [
+      "Harmattan",
+      "The dry, dusty north-east wind from the Sahara, strongest from about November to February."
+    ],
+    [
+      "ITD",
+      "Inter-Tropical Discontinuity: the boundary where tropical maritime and tropical continental air meet."
+    ],
+    [
+      "Annual range of temperature",
+      "The difference between the mean temperature of the hottest month and that of the coolest month."
+    ],
+    [
+      "Relief rainfall",
+      "Rain formed when moist air is forced to rise over highland, cools and condenses."
+    ],
+    [
+      "Relative humidity",
+      "The amount of water vapour in the air compared with the most it could hold at that temperature, given as a percentage."
+    ],
+    [
+      "Stevenson screen",
+      "A white, louvred box that shades thermometers and the hygrometer while letting air circulate."
+    ],
+    [
+      "Continentality",
+      "The effect of distance from the sea: places far inland have a larger temperature range than coastal places."
+    ],
+    [
+      "Lapse rate",
+      "The rate at which temperature falls with height, on average about 6.5 °C for every 1,000 m."
+    ]
   ],
   "worked": [
     {
@@ -96,7 +286,20 @@
     {
       "title": "Mean annual rainfall from monthly figures",
       "problem": "A station's monthly rainfall totals (mm) for a year add up to 1,260 mm. What is the mean monthly rainfall?",
-      "steps": ["Mean monthly rainfall = total ÷ 12 = 1,260 ÷ 12 = **105 mm**.", "Remember: annual total rainfall is found by adding the twelve monthly totals; mean monthly rainfall divides that total by 12."]
+      "steps": [
+        "Mean monthly rainfall = total ÷ 12 = 1,260 ÷ 12 = **105 mm**.",
+        "Remember: annual total rainfall is found by adding the twelve monthly totals; mean monthly rainfall divides that total by 12."
+      ]
+    },
+    {
+      "title": "Estimating temperature on a plateau",
+      "problem": "A lowland town at 200 m above sea level has a mean temperature of 30 °C. Estimate the mean temperature at a nearby plateau village at 1,200 m, using an average lapse rate of 6.5 °C per 1,000 m.",
+      "steps": [
+        "Difference in height = 1,200 m − 200 m = 1,000 m.",
+        "Fall in temperature = 6.5 °C for each 1,000 m, so 6.5 × 1 = 6.5 °C.",
+        "Estimated temperature = 30 °C − 6.5 °C = **23.5 °C**."
+      ],
+      "note": "Illustrative figures. Real temperatures also depend on cloud, wind and season."
     }
   ],
   "exam_tips": [
@@ -105,9 +308,26 @@
     "Use named Nigerian places as examples; they earn marks."
   ],
   "checks": [
-    {"q": "Which air mass gives Nigeria its rain, and where does it come from?", "a": "Tropical maritime air (mT), from the Atlantic Ocean, carried by the south-west winds."},
-    {"q": "Where is the ITD in January, and what season does northern Nigeria have then?", "a": "Near the coast; the north lies under dry tropical continental air, so it has its dry (Harmattan) season."},
-    {"q": "Give one reason why the annual range of temperature is larger in the north.", "a": "It is far from the sea's moderating influence; clear, dry Harmattan skies also give hot days and cool nights."}
+    {
+      "q": "Which air mass gives Nigeria its rain, and where does it come from?",
+      "a": "Tropical maritime air (mT), from the Atlantic Ocean, carried by the south-west winds."
+    },
+    {
+      "q": "Where is the ITD in January, and what season does northern Nigeria have then?",
+      "a": "Near the coast; the north lies under dry tropical continental air, so it has its dry (Harmattan) season."
+    },
+    {
+      "q": "Give one reason why the annual range of temperature is larger in the north.",
+      "a": "It is far from the sea's moderating influence; clear, dry Harmattan skies also give hot days and cool nights."
+    },
+    {
+      "q": "Why does a coastal town have a smaller annual range of temperature than a town in the far north?",
+      "a": "The sea heats up and cools down slowly, so it keeps coastal temperatures even all year. Far inland there is no such moderating effect, and clear Harmattan skies give hot days and cool nights, so the range is larger (continentality)."
+    },
+    {
+      "q": "Which instrument measures wind speed, and which measures relative humidity?",
+      "a": "An anemometer measures wind speed. A hygrometer (wet-and-dry bulb thermometer) measures relative humidity."
+    }
   ],
   "summary": [
     "Two air masses control Nigeria's seasons: moist mT air from the Atlantic (south-west winds) and dry cT air from the Sahara (north-east trades, the Harmattan).",
@@ -116,18 +336,342 @@
     "Temperatures are high all year; the annual range increases northwards, and highlands are cooler."
   ],
   "practice": [
-    {"id": "cl1", "q": "Which air mass brings the Harmattan to Nigeria?", "options": ["Tropical maritime", "Tropical continental", "Polar maritime", "Equatorial maritime"], "answer": 1, "explanation": "The Harmattan is dry, dusty tropical continental air from the Sahara, carried by the north-east trade winds.", "section": "airmasses"},
-    {"id": "cl2", "q": "Which statement best describes rainfall in Nigeria?", "options": ["It increases from south to north", "It decreases from south to north", "It is about the same everywhere", "It is highest in the far north-east"], "answer": 1, "explanation": "The rain-bearing south-west winds reach the south first and stay longest, so rainfall falls northwards.", "section": "rainfall"},
-    {"id": "cl3", "q": "The 'August break' is best described as", "options": ["a short drier spell in the south during the wet season", "the start of the Harmattan", "heavy storms in the far north", "the coolest month on the Jos Plateau"], "answer": 0, "explanation": "Parts of southern Nigeria, especially the south-west, often have a short drier spell in August.", "section": "rainfall"},
-    {"id": "cl4", "q": "Why is the Jos Plateau cooler than the nearby lowlands?", "options": ["It is closer to the sea", "Temperature falls with height", "It gets the Harmattan first", "It lies south of the ITD all year"], "answer": 1, "explanation": "Temperature generally falls as altitude increases, and the Jos Plateau stands high above the lowlands.", "section": "temperature"},
-    {"id": "cl5", "q": "Around August, the ITD reaches about", "options": ["5°N", "10°N", "20°N", "30°N"], "answer": 2, "explanation": "The ITD reaches its most northerly position, about 20°N, around August.", "section": "itd"},
-    {"id": "cl6", "q": "The south-west winds that bring rain to Nigeria come from the", "options": ["Sahara Desert", "Atlantic Ocean", "Indian Ocean", "Mediterranean Sea"], "answer": 1, "explanation": "Tropical maritime air forms over the Atlantic Ocean.", "section": "airmasses"},
-    {"id": "cl7", "q": "A station's hottest month is 30 °C and its coolest month 26 °C. Its annual range of temperature is", "options": ["56 °C", "28 °C", "4 °C", "2 °C"], "answer": 2, "explanation": "Annual range = 30 − 26 = 4 °C, a small range typical of the coast.", "section": "temperature"},
-    {"id": "cl8", "q": "Which climatic region has low, unreliable rainfall and a long dry season?", "options": ["Humid tropical", "Montane", "Semi-arid (Sahel type)", "Tropical rainforest"], "answer": 2, "explanation": "The far north-east, e.g. Maiduguri, has a semi-arid climate.", "section": "regions"},
-    {"id": "cl9", "q": "Rain caused by moist air rising over a highland is called", "options": ["convectional rainfall", "relief rainfall", "frontal rainfall", "cyclonic rainfall"], "answer": 1, "explanation": "Relief (orographic) rainfall is common on the Jos Plateau and eastern highlands.", "section": "rainfall"},
-    {"id": "cl10", "q": "In which months is the Harmattan usually strongest?", "options": ["May to July", "August to September", "November to February", "March to April"], "answer": 2, "explanation": "The Harmattan is strongest from about November to February.", "section": "airmasses"},
-    {"id": "cl11", "q": "Southern Nigeria has two rainfall peaks in the year. This is called", "options": ["double maxima", "single maximum", "monsoon reversal", "temperature inversion"], "answer": 0, "explanation": "Rainfall in the south peaks around June–July and September–October: a double maxima regime.", "section": "rainfall"},
-    {"id": "cl12", "q": "Climate is best defined as", "options": ["the weather on a particular day", "the average weather over a long period", "the amount of rain in one month", "the direction of the wind"], "answer": 1, "explanation": "Climate is the average of weather conditions over a long period, usually 30 years or more.", "section": "airmasses"}
+    {
+      "id": "cl1",
+      "q": "Which air mass brings the Harmattan to Nigeria?",
+      "options": [
+        "Tropical maritime",
+        "Tropical continental",
+        "Polar maritime",
+        "Equatorial maritime"
+      ],
+      "answer": 1,
+      "explanation": "The Harmattan is dry, dusty tropical continental air from the Sahara, carried by the north-east trade winds.",
+      "section": "airmasses",
+      "subject": "geography",
+      "topic": "ng-climate",
+      "difficulty": "easy"
+    },
+    {
+      "id": "cl2",
+      "q": "Which statement best describes rainfall in Nigeria?",
+      "options": [
+        "It increases from south to north",
+        "It decreases from south to north",
+        "It is about the same everywhere",
+        "It is highest in the far north-east"
+      ],
+      "answer": 1,
+      "explanation": "The rain-bearing south-west winds reach the south first and stay longest, so rainfall falls northwards.",
+      "section": "rainfall",
+      "subject": "geography",
+      "topic": "ng-climate",
+      "difficulty": "easy"
+    },
+    {
+      "id": "cl3",
+      "q": "The 'August break' is best described as",
+      "options": [
+        "a short drier spell in the south during the wet season",
+        "the start of the Harmattan",
+        "heavy storms in the far north",
+        "the coolest month on the Jos Plateau"
+      ],
+      "answer": 0,
+      "explanation": "Parts of southern Nigeria, especially the south-west, often have a short drier spell in August.",
+      "section": "rainfall",
+      "subject": "geography",
+      "topic": "ng-climate",
+      "difficulty": "medium"
+    },
+    {
+      "id": "cl4",
+      "q": "Why is the Jos Plateau cooler than the nearby lowlands?",
+      "options": [
+        "It is closer to the sea",
+        "Temperature falls with height",
+        "It gets the Harmattan first",
+        "It lies south of the ITD all year"
+      ],
+      "answer": 1,
+      "explanation": "Temperature generally falls as altitude increases, and the Jos Plateau stands high above the lowlands.",
+      "section": "temperature",
+      "subject": "geography",
+      "topic": "ng-climate",
+      "difficulty": "medium"
+    },
+    {
+      "id": "cl5",
+      "q": "Around August, the ITD reaches about",
+      "options": [
+        "5°N",
+        "10°N",
+        "20°N",
+        "30°N"
+      ],
+      "answer": 2,
+      "explanation": "The ITD reaches its most northerly position, about 20°N, around August.",
+      "section": "itd",
+      "subject": "geography",
+      "topic": "ng-climate",
+      "difficulty": "medium"
+    },
+    {
+      "id": "cl6",
+      "q": "The south-west winds that bring rain to Nigeria come from the",
+      "options": [
+        "Sahara Desert",
+        "Atlantic Ocean",
+        "Indian Ocean",
+        "Mediterranean Sea"
+      ],
+      "answer": 1,
+      "explanation": "Tropical maritime air forms over the Atlantic Ocean.",
+      "section": "airmasses",
+      "subject": "geography",
+      "topic": "ng-climate",
+      "difficulty": "easy"
+    },
+    {
+      "id": "cl7",
+      "q": "A station's hottest month is 30 °C and its coolest month 26 °C. Its annual range of temperature is",
+      "options": [
+        "56 °C",
+        "28 °C",
+        "4 °C",
+        "2 °C"
+      ],
+      "answer": 2,
+      "explanation": "Annual range = 30 − 26 = 4 °C, a small range typical of the coast.",
+      "section": "temperature",
+      "subject": "geography",
+      "topic": "ng-climate",
+      "difficulty": "medium"
+    },
+    {
+      "id": "cl8",
+      "q": "Which climatic region has low, unreliable rainfall and a long dry season?",
+      "options": [
+        "Humid tropical",
+        "Montane",
+        "Semi-arid (Sahel type)",
+        "Tropical rainforest"
+      ],
+      "answer": 2,
+      "explanation": "The far north-east, e.g. Maiduguri, has a semi-arid climate.",
+      "section": "regions",
+      "subject": "geography",
+      "topic": "ng-climate",
+      "difficulty": "medium"
+    },
+    {
+      "id": "cl9",
+      "q": "Rain caused by moist air rising over a highland is called",
+      "options": [
+        "convectional rainfall",
+        "relief rainfall",
+        "frontal rainfall",
+        "cyclonic rainfall"
+      ],
+      "answer": 1,
+      "explanation": "Relief (orographic) rainfall is common on the Jos Plateau and eastern highlands.",
+      "section": "rainfall",
+      "subject": "geography",
+      "topic": "ng-climate",
+      "difficulty": "medium"
+    },
+    {
+      "id": "cl10",
+      "q": "In which months is the Harmattan usually strongest?",
+      "options": [
+        "May to July",
+        "August to September",
+        "November to February",
+        "March to April"
+      ],
+      "answer": 2,
+      "explanation": "The Harmattan is strongest from about November to February.",
+      "section": "airmasses",
+      "subject": "geography",
+      "topic": "ng-climate",
+      "difficulty": "easy"
+    },
+    {
+      "id": "cl11",
+      "q": "Southern Nigeria has two rainfall peaks in the year. This is called",
+      "options": [
+        "double maxima",
+        "single maximum",
+        "monsoon reversal",
+        "temperature inversion"
+      ],
+      "answer": 0,
+      "explanation": "Rainfall in the south peaks around June–July and September–October: a double maxima regime.",
+      "section": "rainfall",
+      "subject": "geography",
+      "topic": "ng-climate",
+      "difficulty": "medium"
+    },
+    {
+      "id": "cl12",
+      "q": "Climate is best defined as",
+      "options": [
+        "the weather on a particular day",
+        "the average weather over a long period",
+        "the amount of rain in one month",
+        "the direction of the wind"
+      ],
+      "answer": 1,
+      "explanation": "Climate is the average of weather conditions over a long period, usually 30 years or more.",
+      "section": "airmasses",
+      "subject": "geography",
+      "topic": "ng-climate",
+      "difficulty": "easy"
+    },
+    {
+      "id": "cl13",
+      "q": "Which instrument is used to measure relative humidity?",
+      "options": [
+        "Hygrometer",
+        "Barometer",
+        "Anemometer",
+        "Rain gauge"
+      ],
+      "answer": 0,
+      "explanation": "A hygrometer (wet-and-dry bulb thermometer) measures relative humidity. A barometer measures air pressure, an anemometer wind speed and a rain gauge rainfall.",
+      "section": "weather",
+      "difficulty": "easy",
+      "subject": "geography",
+      "topic": "ng-climate"
+    },
+    {
+      "id": "cl14",
+      "q": "Why are thermometers kept in a Stevenson screen?",
+      "options": [
+        "To shade them from direct sunlight while air circulates",
+        "To keep them warm at night",
+        "To measure wind direction",
+        "To collect rainfall"
+      ],
+      "answer": 0,
+      "explanation": "The white, louvred screen shades the thermometers so they record the true air temperature, not the heat of direct sunshine, while letting air flow freely.",
+      "section": "weather",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-climate"
+    },
+    {
+      "id": "cl15",
+      "q": "Temperature falls by about 6.5 °C for every 1,000 m of height. A lowland town at 200 m is 30 °C. The approximate temperature at 1,200 m nearby is",
+      "options": [
+        "23.5 °C",
+        "36.5 °C",
+        "30 °C",
+        "13 °C"
+      ],
+      "answer": 0,
+      "explanation": "The plateau is 1,000 m higher, so the temperature is about 6.5 °C lower: 30 − 6.5 = 23.5 °C. Temperature falls, not rises, with height.",
+      "section": "weather",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-climate"
+    },
+    {
+      "id": "cl16",
+      "q": "In January a town at 9°N is dry and dusty. The best explanation is that",
+      "options": [
+        "the ITD lies south of the town, so it is under dry tropical continental air",
+        "the ITD has reached about 20°N",
+        "moist tropical maritime air covers the town",
+        "it is the August break"
+      ],
+      "answer": 0,
+      "explanation": "In January the ITD lies near the coast. Places north of it, such as a town at 9°N, are under dry, dusty cT air carried by the Harmattan.",
+      "section": "itd",
+      "difficulty": "hard",
+      "subject": "geography",
+      "topic": "ng-climate"
+    },
+    {
+      "id": "cl17",
+      "q": "Which of these places receives the highest annual rainfall?",
+      "options": [
+        "Bonny",
+        "Kano",
+        "Sokoto",
+        "Maiduguri"
+      ],
+      "answer": 0,
+      "explanation": "Bonny in the Niger Delta receives about 4,200 mm a year. Rainfall decreases northwards, so Kano, Sokoto and Maiduguri are much drier.",
+      "section": "rainfall",
+      "difficulty": "easy",
+      "subject": "geography",
+      "topic": "ng-climate"
+    },
+    {
+      "id": "cl18",
+      "q": "The Jos and Mambilla Plateaux belong to which climatic region?",
+      "options": [
+        "Montane (highland)",
+        "Semi-arid (Sahel type)",
+        "Humid tropical (rainforest type)",
+        "Tropical wet and dry (savanna type)"
+      ],
+      "answer": 0,
+      "explanation": "Their height makes them cooler than the surrounding lowlands, and they receive relief rainfall: the montane climate.",
+      "section": "regions",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-climate"
+    },
+    {
+      "id": "cl19",
+      "q": "Northern towns are usually hottest from March to May because",
+      "options": [
+        "the sun is high and the rains have not yet brought cloud",
+        "the Harmattan is at its strongest",
+        "the ITD is at its most southerly position",
+        "they are close to the sea"
+      ],
+      "answer": 0,
+      "explanation": "Before the rains arrive, the sun is high overhead and the skies are clear, so temperatures peak. When the rains come, cloud and moisture lower daytime temperatures.",
+      "section": "temperature",
+      "difficulty": "hard",
+      "subject": "geography",
+      "topic": "ng-climate"
+    },
+    {
+      "id": "cl20",
+      "q": "A rainfall graph shows peaks in June and September with a dip in August. The station is most likely in",
+      "options": [
+        "south-western Nigeria",
+        "the far north-east",
+        "the Sokoto Plains",
+        "the Chad Basin"
+      ],
+      "answer": 0,
+      "explanation": "Two peaks with a short drier spell in August (the August break) are typical of the south-west. The north has a single, shorter rainy season.",
+      "section": "rainfall",
+      "difficulty": "medium",
+      "subject": "geography",
+      "topic": "ng-climate"
+    },
+    {
+      "id": "cl21",
+      "q": "Weather differs from climate because weather",
+      "options": [
+        "describes conditions at a particular place and time",
+        "is an average taken over about 30 years",
+        "refers only to rainfall",
+        "never changes"
+      ],
+      "answer": 0,
+      "explanation": "Weather is the state of the atmosphere at a given time; climate is the long-term average of the weather.",
+      "section": "weather",
+      "difficulty": "easy",
+      "subject": "geography",
+      "topic": "ng-climate"
+    }
   ],
   "structured": [
     {
@@ -137,7 +681,10 @@
         "(a) Rainfall is highest in the Niger Delta and on the south-east coast (over 3,000 mm a year; about 4,200 mm at Bonny) and decreases northwards to about 650 mm at Sokoto and about 400 mm in the far north-east. The length of the wet season also decreases from south to north. Highlands such as the Jos Plateau receive more rain than the surrounding lowlands.",
         "(b) 1. The moist tropical maritime air and south-west winds come from the Atlantic, so they reach the south first and remain longest as the ITD moves north and south. 2. Relief: moist air forced to rise over highlands cools and gives relief rainfall. (Distance from the sea is also accepted.)"
       ],
-      "points": ["Up to 4 marks for (a): pattern with direction and figures.", "3 marks for each reason in (b), stated and explained."]
+      "points": [
+        "Up to 4 marks for (a): pattern with direction and figures.",
+        "3 marks for each reason in (b), stated and explained."
+      ]
     },
     {
       "q": "Explain how the movement of the Inter-Tropical Discontinuity (ITD) produces the wet and dry seasons in Nigeria.",
@@ -145,11 +692,47 @@
       "model": [
         "The ITD is the boundary between moist tropical maritime air and dry tropical continental air. It follows the overhead sun. From about March it moves northwards, so more of Nigeria comes under mT air and the rainy season begins, first in the south and later in the north. By August it reaches about 20°N and the whole country has its wet season (with the August break in the south-west). From September it retreats south; the north comes under dry cT air and the Harmattan, and by about January the ITD lies near the coast, giving most of Nigeria its dry season."
       ],
-      "points": ["Definition of the ITD (2), northward movement and onset of rains (3), maximum position (2), southward retreat and dry season (3)."]
+      "points": [
+        "Definition of the ITD (2), northward movement and onset of rains (3), maximum position (2), southward retreat and dry season (3)."
+      ]
+    },
+    {
+      "q": "(a) Distinguish between weather and climate. (b) Explain three factors that influence the climate of Nigeria.",
+      "marks": 10,
+      "model": [
+        "(a) Weather is the state of the atmosphere at a particular place and time (for example today's rain or temperature). Climate is the average weather of a place over a long period, usually 30 years or more.",
+        "(b) 1. Latitude: Nigeria lies within the tropics, so the sun is high and temperatures are high all year. 2. Air masses and the ITD: moist mT air from the Atlantic brings the rainy season and dry cT air from the Sahara brings the dry season and the Harmattan. 3. Altitude: temperature falls with height, so the Jos and Mambilla Plateaux are cooler. Distance from the sea and relief are also accepted."
+      ],
+      "points": [
+        "2 marks for each correct definition (4 marks).",
+        "2 marks for each factor that is named and explained, with a Nigerian example (6 marks)."
+      ]
     }
   ],
   "references": [
-    {"title": "Geography of Nigeria — climate figures (rainfall at Bonny, Calabar, Port Harcourt, Sokoto; temperatures)", "url": "https://en.wikipedia.org/wiki/Geography_of_Nigeria"},
-    {"title": "Natural Earth vector data (maps in this lesson)", "url": "https://www.naturalearthdata.com/"}
-  ]
+    {
+      "title": "Geography of Nigeria — climate figures (rainfall at Bonny, Calabar, Port Harcourt, Sokoto; temperatures)",
+      "url": "https://en.wikipedia.org/wiki/Geography_of_Nigeria"
+    },
+    {
+      "title": "Natural Earth vector data (maps in this lesson)",
+      "url": "https://www.naturalearthdata.com/"
+    },
+    {
+      "title": "WAEC (WASSCE) Geography syllabus, as published in a third-party copy of the official text",
+      "url": "https://waecsyllabus.com/download/ssce/GEOGRAPHY.pdf"
+    },
+    {
+      "title": "SS1 Geography scheme of work (new national curriculum, NERDC-based), topics by term",
+      "url": "https://www.headteacher.ng/product/ss1-geography-scheme-of-work-2026-new-national-curriculum/"
+    }
+  ],
+  "subject": "geography",
+  "level": [
+    "SSS 1",
+    "SSS 2"
+  ],
+  "level_note": "Weather and the factors affecting climate appear in SSS 1 in NERDC-based schemes; climate and climatic classification are developed in SSS 2. Examined in WASSCE.",
+  "version": 1,
+  "review_status": "pending"
 }

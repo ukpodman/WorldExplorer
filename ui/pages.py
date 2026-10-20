@@ -369,6 +369,61 @@ def _tile(label: str, value: str) -> str:
     return f'<div class="fact-tile"><div class="fact-label">{e(label)}</div><div class="fact-value">{escape(value)}</div></div>'
 
 
+@st.cache_resource(show_spinner=False)
+def _country_shapes() -> dict:
+    """Simplified country outlines for the locator map (assets/country_shapes.json, built from Natural Earth)."""
+    import json
+    from pathlib import Path
+    path = Path(__file__).resolve().parent.parent / "assets" / "country_shapes.json"
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return {"countries": data["countries"], "borders": data.get("borders", [])}
+    except (OSError, ValueError, KeyError):
+        return {"countries": {}, "borders": []}
+
+
+def _locator_svg(c: dict) -> str | None:
+    """A small map centred on the country: it is highlighted, its surroundings drawn in a quiet land colour, and a
+    marker shows where it is (tiny places are only a marker). Classes are coloured by styles.css for light and dark.
+    Only the outlines that fall inside the view are sent, so the map stays small (typically 5–40 KB)."""
+    shapes = _country_shapes()["countries"]
+    me = shapes.get(c["id"])
+    if not me:
+        return None
+    x0, y0, x1, y1 = me["b"]
+    w, h = max(x1 - x0, 6.0), max(y1 - y0, 4.0)
+    width, height = max(w * 3.2, 46.0), max(h * 3.2, 28.75)
+    width, height = (max(width, height * 1.6), max(height, width / 1.6))
+    width, height = min(width, 1000.0), min(height, 625.0)
+    vx, vy = (x0 + x1) / 2 - width / 2, (y0 + y1) / 2 - height / 2
+    land = []
+    for code, shape in shapes.items():
+        a0, b0, a1, b1 = shape.get("a", shape["b"])
+        # neighbours of similar size keep their full outline (borders line up); very large ones use the lighter one
+        main_width = shape["b"][2] - shape["b"][0]
+        outline = shape["p"] if (width <= 110 and main_width <= 3 * width) or not shape.get("q") else shape["q"]
+        if code != c["id"] and outline and a1 >= vx and a0 <= vx + width and b1 >= vy and b0 <= vy + height:
+            land.append(outline)
+    lines = [b["d"] for b in _country_shapes()["borders"]
+             if b["b"][2] >= vx and b["b"][0] <= vx + width and b["b"][3] >= vy and b["b"][1] <= vy + height] if width <= 400 else []
+    cx, cy = me["c"]
+    r = width / 95
+    label = escape(t("Map showing the location of {name}", name=c["name"]), quote=True)
+    return (f'<svg class="locator" viewBox="{vx:.1f} {vy:.1f} {width:.1f} {height:.1f}" role="img" aria-label="{label}" '
+            f'preserveAspectRatio="xMidYMid slice"><rect class="lm-sea" x="{vx:.1f}" y="{vy:.1f}" width="{width:.1f}" height="{height:.1f}"/>'
+            f'<path class="lm-land" d="{"".join(land)}"/>' + (f'<path class="lm-me" d="{me["p"]}"/>' if me["p"] else "")
+            + (f'<path class="lm-border" d="{"".join(lines)}"/>' if lines else "")
+            + f'<circle class="lm-ring" cx="{cx}" cy="{cy}" r="{r * 2.2:.2f}"/><circle class="lm-pin" cx="{cx}" cy="{cy}" r="{r:.2f}"/></svg>')
+
+
+def _learn_map(c: dict) -> None:
+    svg = _locator_svg(c)
+    if not svg:
+        return
+    html(f'<figure class="learn-map">{svg}<figcaption><b>{e("Where {name} is", name=c["name"])}</b>'
+         f'<span>{e("Map data: Natural Earth (public domain)")}</span></figcaption></figure>')
+
+
 def _learn_media(c: dict) -> None:
     """A licensed destination photo when one is bundled; otherwise the flag on a calm continent-tinted panel."""
     photo = PHOTOS.get(c["id"])
@@ -627,6 +682,7 @@ def _world_learn() -> None:
         for note in (c.get("capital_note"), c.get("currency_note")):
             if note:
                 st.caption("ⓘ " + t(note))
+        _learn_map(c)
         _neighbour_buttons(c)
         if c["landmarks"]:
             html(f'<div class="learn-section desk-only">{e("Landmarks")}</div>')

@@ -4734,6 +4734,24 @@
    "Ningún país ni capital coincide con tu búsqueda.",
    "没有符合搜索的国家或首都。",
    "Нет стран или столиц, соответствующих поиску."
+  ],
+  "Where {name} is": [
+   "Wo {name} liegt",
+   "Dónde está {name}",
+   "{name}的位置",
+   "Где находится {name}"
+  ],
+  "Map data: Natural Earth (public domain)": [
+   "Kartendaten: Natural Earth (gemeinfrei)",
+   "Datos del mapa: Natural Earth (dominio público)",
+   "地图数据：Natural Earth（公有领域）",
+   "Картографические данные: Natural Earth (общественное достояние)"
+  ],
+  "Map showing the location of {name}": [
+   "Karte mit der Lage von {name}",
+   "Mapa que muestra la ubicación de {name}",
+   "显示{name}位置的地图",
+   "Карта с расположением: {name}"
   ]
  }
 }

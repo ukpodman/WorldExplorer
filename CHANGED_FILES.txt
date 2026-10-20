@@ -1,33 +1,38 @@
-World Explorer V24: Learn redesign (🌍 World Geography | 📚 School Learning) with Nigerian SSS Geography
-Based on GitHub production main 6857bd4 (Merge pull request #9). Copy each file to the same path in the repository.
-NOT merged, NOT deployed, no database change applied.
+World Explorer V24 Stage Two: Learn redesign (🌍 World Geography | 📚 School Learning) with Nigerian SSS Geography
+Branch v24-school-learning-staging, based on GitHub production main 6857bd4 (Merge pull request #9).
+NOT merged, NOT deployed, no database change applied. Installation: INSTALL_V24.md. Full list with checksums: FILE_MANIFEST.txt.
 
-ui/pages.py               Learn: two subtabs (World Geography default; the choice is remembered for the visit). World
-                          Geography gains a phone-friendly search (name, official name or capital) with tappable
-                          results and continent chips. All existing Learn controls and keys are unchanged.
-ui/state.py               learn_ids() follows Learn's continent chip (never empty); opening a country from Explore,
-                          neighbours or quiz review always returns to World Geography and clears a chip that hides it
-ui/school.py              NEW: School Learning screens (home, subject topics, lesson reader with contents / jump list,
-                          Previous/Next page and lesson, Mark complete, revision list, practice with the V23 answer
-                          cards, results, progress dashboard). English only. No rewards, points, badges or quiz code.
-core/school.py            NEW: subjects, curricula, lessons (validated), pages, reading progress, revision reasons,
-                          practice engine (10 of 12 questions, shuffled, double-answer safe)
-core/school_store.py      NEW: saving to the dedicated school_ tables, off unless [school] progress_storage =
-                          "supabase" AND the profile storage is configured
-data/school/              NEW: subjects.json (Geography available; Nigerian History, Citizenship and Heritage Studies
-                          planned), geography/curriculum.json (34 WAEC topics, 7 with lessons), geography/lessons/*.json
-                          (7 lessons), geography/figures/*.svg (9 diagrams), geography/CURRICULUM_ALIGNMENT.md
-tools/build_school_figures.py  NEW: rebuilds the diagrams from Natural Earth 1:10m (public domain)
-assets/styles.css         Learn subtabs and finder, School Learning styles, light and dark diagram colours, quiz answer
-                          card styles shared with School practice (the Quiz page's look is unchanged)
-data/translations.json    4 new texts in all five languages (World Geography, School Learning, continent filter, no
-                          search result). All existing texts are unchanged.
-tests/test_school.py      NEW: content, progress, practice, storage switch, Learn subtabs, search and filter, a guest
-                          flow with no points, and the migration on a local PostgreSQL
-supabase/school_learning_migration.sql  NEW, PROPOSED, NOT APPLIED: two dedicated tables, RLS on, server key only
-SCHOOL_LEARNING_SETUP.md  NEW: exact structure, security and the step-by-step migration plan for approval
+MODIFIED
+ui/pages.py               Learn has two subtabs (World Geography is the default; each keeps its place). World Geography gains:
+                          a full-width search (name, official name or capital) with tappable results; continent chips;
+                          and a locator map for every country. All existing Learn features and widget keys are unchanged.
+ui/state.py               learn_ids() follows Learn's continent chip. Opening a country from elsewhere returns to World Geography.
+core/cookies.py           one new optional cookie name, we_school (written only when a student switches on "Keep my
+                          progress on this device")
+assets/styles.css         Learn subtabs and finder, locator map, School Learning screens, diagram colours (light and dark),
+                          and the Quiz V23 answer-card styles shared with School practice (the Quiz page itself is unchanged)
+data/translations.json    7 new interface texts in all five languages (all existing texts are unchanged)
 README.md, CHANGED_FILES.txt   documentation
 
-Not changed: quiz engine, scoring and Quiz V23 page, background music, Explore, Badges, Google sign-in, accounts and
-profile saving, Founding 50, referrals, rewards, withdrawals and payouts, existing database schema and SQL files,
-.streamlit/config.toml, secrets.
+NEW
+ui/school.py              School Learning screens: home (subject search), topics (search plus section, class and status filters),
+                          lesson reader (contents or jump list, page and lesson navigation, complete, revision, practise),
+                          practice (V23 answer cards, explanations, areas to revise, retry without repeats), progress dashboard,
+                          and progress saving to the account (when approved) or to the device (opt-in)
+core/school.py            school → subject → level → topic → lesson → practice → progress engine. Validation, stable
+                          positions, versioning, progress rules, search, anti-repeat practice.
+core/school_store.py      saving to the dedicated school_ tables. Off unless [school] progress_storage = "supabase". Two access
+                          modes: server key, or a per-student token checked by row-level security.
+data/school/              subjects, curriculum (34 topics with class levels and objectives), 7 lessons (147 questions),
+                          9 diagrams, CONTENT_GUIDE.md, geography/CURRICULUM_ALIGNMENT.md, SOURCES.md, TEACHER_REVIEW_CHECKLIST.md
+assets/country_shapes.json  simplified country outlines for the locator map (Natural Earth, public domain; read on the server)
+tools/build_school_figures.py, tools/build_country_shapes.py   rebuild the diagrams and outlines from Natural Earth
+supabase/school_learning_migration.sql   PROPOSED, NOT APPLIED: 2 tables, RLS, per-student policies, verification, rollback
+SCHOOL_LEARNING_SETUP.md  structure, security, the access-mode decision and the migration plan for approval
+INSTALL_V24.md            how to install without touching user data
+tests/test_school.py      32 tests: content, question banks, progress rules, search, practice, storage, device cookie, app
+                          flows (guest, signed-in save and restore, failure shown, tabs, map), migration and RLS on PostgreSQL
+
+NOT CHANGED: app.py, the quiz engine and scoring, Quiz V23 and background music, quiz recovery, Explore, Badges, daily
+challenges, Google sign-in and accounts (core/accounts.py), profiles, Founding 50, referrals, rewards, withdrawals and payout
+safeguards, owner pages, existing SQL files, .streamlit/config.toml, secrets.

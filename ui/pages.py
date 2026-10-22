@@ -8,12 +8,12 @@ from html import escape
 
 import streamlit as st
 
-from core import accounts, records
+from core import accounts, photos, records
 from core import daily as daily_engine
 from core import learn as learn_engine
 from core import badges as badge_engine
 from core import quiz as engine
-from core.data import (AREAS, COLLECTIONS, WORLD, COUNTRIES, DEFAULT_COLLECTION, PHOTOS, STATE_STATUSES, STATUS_LABELS, STATUSES, flag_image,
+from core.data import (AREAS, COLLECTIONS, WORLD, COUNTRIES, DEFAULT_COLLECTION, PHOTO_RECORDS, STATE_STATUSES, STATUS_LABELS, STATUSES, flag_image,
                        get_countries, get_country, load_political_records)
 from core.quiz import CATEGORIES, DIFFICULTIES, QUESTION_COUNTS, currency_label
 
@@ -96,19 +96,41 @@ def _filtered(places: list[dict], selection: str) -> list[dict]:
         if needle and not any(needle in n.casefold() for n in names):
             continue
         out.append(c)
-    return out if needle else sorted(out, key=lambda c: (c["id"] not in PHOTOS, t(c["name"])))
+    return out if needle else sorted(out, key=lambda c: _alpha_key(t(c["name"])))
+
+
+def _alpha_key(name: str) -> str:
+    """Alphabetical order that ignores accents and case ("Åland" with the A's, "Côte d'Ivoire" with the C's)."""
+    import unicodedata
+    return "".join(ch for ch in unicodedata.normalize("NFKD", name) if not unicodedata.combining(ch)).casefold()
+
+
+PHOTO_SIZES = {"detail-photo-frame": "(max-width: 900px) 100vw, 480px", "learn-photo-frame": "(max-width: 900px) 100vw, 640px"}
 
 
 def _photo_figure(photo: dict, cls: str) -> str:
-    """A destination photo (loaded online) with its caption and credit in one line underneath.
+    """A country photograph (Wikimedia Commons) with its description and full credit underneath.
 
-    It is a real <img> with no fixed height: if the photo cannot load (offline, a blocked network, the image host
-    unavailable) the image collapses and only the one-line caption and credit remain, never a large empty box.
-    The caption carries the description, so the image itself is marked decorative for screen readers."""
-    credit = (f'{escape(photo["author"])} · <a href="{escape(photo["license_url"], quote=True)}" target="_blank" '
-              f'rel="noopener">{escape(photo["license"])}</a>')
-    return (f'<figure class="photo-frame {cls}"><img src="{escape(photo["url"], quote=True)}" alt="" loading="lazy" '
-            f'decoding="async"><figcaption><span class="photo-caption">{escape(photo["caption"])}</span> — {credit}</figcaption></figure>')
+    Mobile-friendly: the browser picks the smallest Commons thumbnail that is sharp enough for the screen (srcset),
+    loads it lazily and asynchronously, and the stored size reserves the right proportions before it arrives (no
+    jump, no stretching). If it cannot load, a calm placeholder of the same proportions says so (CSS) and the
+    credit line stays. The description is in the caption, so the image itself is decorative for screen readers."""
+    src, srcset = photos.sources(photo)
+    w, h = photo.get("width"), photo.get("height")
+    dims = f' width="{int(w)}" height="{int(h)}" style="aspect-ratio:{int(w)}/{int(h)}"' if w and h else ""
+    responsive = f' srcset="{escape(srcset, quote=True)}" sizes="{PHOTO_SIZES.get(cls, "100vw")}"' if srcset else ""
+    licence = escape(photo["license"])
+    if photo.get("license_url"):
+        licence = f'<a href="{escape(photo["license_url"], quote=True)}" target="_blank" rel="noopener">{licence}</a>'
+    credit = (f'{e("Photo")}: {escape(photo["author"])} · {licence} · '
+              f'<a href="{escape(photo["page"], quote=True)}" target="_blank" rel="noopener">Wikimedia Commons</a>')
+    return (f'<figure class="photo-frame {cls}"><img src="{escape(src, quote=True)}"{responsive}{dims} alt="" loading="lazy" '
+            f'decoding="async" referrerpolicy="no-referrer" data-fail="{e("Photo unavailable")}"><figcaption><span class="photo-caption">{escape(photo["caption"])}</span>'
+            f'<span class="photo-credit">{credit}</span></figcaption></figure>')
+
+
+def _country_photo(c: dict) -> dict | None:
+    return photos.resolve(PHOTO_RECORDS.get(c["id"]))
 
 
 def _flag_img(c: dict, cls: str, alt: str = "") -> str:
@@ -185,9 +207,14 @@ def _country_detail(c: dict, selection: str) -> None:
     html(f'<div class="detail-head">{_flag_img(c, "detail-flag", t("Flag of {name}", name=c["name"]))}<div>'
          f'<h3 class="detail-name" tabindex="-1">{e(c["name"])}</h3>'
          f'<div class="detail-region">{escape(region)}{status_chip(c)}</div></div></div>')
-    photo = PHOTOS.get(c["id"])
+    photo = _country_photo(c)
     if photo:
         html(_photo_figure(photo, "detail-photo-frame"))
+    else:   # no verified photograph yet: where the country is, instead of an empty space
+        svg = _locator_svg(c)
+        if svg:
+            html(f'<figure class="learn-map detail-locator">{svg}<figcaption>{e("Where {name} is", name=c["name"])} · '
+                 f'{e("Map data: Natural Earth (public domain)")}</figcaption></figure>')
     none = t("Not included yet")
     capitals = "; ".join(f"{x['name']} ({t(x['role'])})" if len(c["capitals"]) > 1 else x["name"] for x in c["capitals"]) or t("No capital listed")
     html('<div class="detail-facts">'
@@ -467,7 +494,7 @@ def _learn_map(c: dict) -> None:
 
 def _learn_media(c: dict) -> None:
     """A licensed destination photo when one is bundled; otherwise the flag on a calm continent-tinted panel."""
-    photo = PHOTOS.get(c["id"])
+    photo = _country_photo(c)
     if photo:
         html(_photo_figure(photo, "learn-photo-frame"))
         with st.container(key="learn_flag_small"):

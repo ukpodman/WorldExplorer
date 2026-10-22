@@ -82,7 +82,6 @@ html[data-we-theme="dark"] .stApp .st-key-continent_buttons button[kind="primary
 .st-key-detail_learn button { width:auto !important; white-space:nowrap; padding:0 16px !important; border:0 !important; background:transparent !important; }
 .st-key-detail_learn button :is(p, [data-testid="stIconMaterial"]) { color:var(--teal-dark) !important; }
 .st-key-stage_detail .detail-facts { grid-template-columns:repeat(2,minmax(0,1fr)); }
-.st-key-stage_detail .detail-photo-frame img { max-height:200px; }
 
 /* ---------- tablets and phones: stacked (map, pills, list) ---------- */
 @media (max-width:900px) {
@@ -117,3 +116,23 @@ html[data-we-theme="dark"] .stApp .st-key-continent_buttons button[kind="primary
   .st-key-stage_detail .detail-facts { grid-template-columns:minmax(0,1fr); }
 }
 @media (prefers-reduced-motion:reduce) { [class*="st-key-country_row_"] { transition:none; } }
+
+/* ---------- country photographs (Explore detail and Learn) ---------- */
+/* Natural proportions from the stored size (no stretching); a very tall photo is trimmed rather than taking the
+   whole panel. The tinted box shows only while the photo loads, or with a short note if it cannot load. */
+.photo-frame { gap:6px; }
+.photo-frame img { position:relative; display:block; width:100%; height:auto; max-height:360px; object-fit:cover; object-position:center;
+  border-radius:14px; background:linear-gradient(135deg, var(--surface-3), var(--surface-2)); color:transparent; }
+.detail-photo-frame img { max-height:340px; }
+.learn-photo-frame img { max-height:420px; }
+.photo-frame img::after { content:attr(data-fail); position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  padding:12px; text-align:center; font-size:.85rem; color:var(--slate); background:linear-gradient(135deg, var(--surface-3), var(--surface-2));
+  border-radius:14px; }
+.photo-frame figcaption { display:flex; flex-direction:column; gap:1px; font-size:.8rem; line-height:1.4; }
+.photo-frame .photo-caption { font-style:normal; font-weight:600; color:var(--navy); }
+.photo-frame .photo-credit { color:var(--slate); overflow-wrap:anywhere; }
+.photo-frame .photo-credit a { color:var(--teal-dark); }
+.learn-map.detail-locator { margin:0; }
+.learn-map.detail-locator svg { max-height:240px; }
+.learn-map.detail-locator figcaption { font-size:.8rem; justify-content:flex-start; }
+@media (max-width:700px) { .detail-photo-frame img { max-height:300px; } .learn-map.detail-locator svg { max-height:200px; } }

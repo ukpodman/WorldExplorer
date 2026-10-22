@@ -4770,6 +4770,18 @@
    "Busca un país o una capital",
    "搜索任意国家或首都",
    "Найдите любую страну или столицу"
+  ],
+  "Photo": [
+   "Foto",
+   "Foto",
+   "照片",
+   "Фото"
+  ],
+  "Photo unavailable": [
+   "Foto nicht verfügbar",
+   "Foto no disponible",
+   "照片暂不可用",
+   "Фото недоступно"
   ]
  }
 }

@@ -1368,7 +1368,7 @@ class ContinentMapTests(unittest.TestCase):
             self.assertIn('src="data:image/webp;base64,', row)
 
     def test_chosen_country_takes_the_lists_place(self):
-        at = self.new(explore_selected="Africa")
+        at = self.new(explore_selected="Africa", explore_search="Nigeria")      # the list is alphabetical
         at.button(key="discover_NGA").click().run()
         self.assertTrue(at.session_state["explore_detail_open"])
         self.assertTrue(any('class="detail-name"' in m.value for m in at.markdown))

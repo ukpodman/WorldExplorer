@@ -491,7 +491,8 @@ class SchoolAppTests(unittest.TestCase):
             self.assertFalse(any("is saved to your account" in m.value for m in at.markdown))
 
     def test_opening_a_country_from_explore_returns_to_world_geography(self):
-        at = self.new(page="Explore", explore_selected="Africa", learn_tab_saved="school", learn_continent="Europe")
+        at = self.new(page="Explore", explore_selected="Africa", explore_search="Nigeria",   # the list is alphabetical
+                      learn_tab_saved="school", learn_continent="Europe")
         at.button(key="discover_NGA").click().run()
         at.button(key="detail_learn").click().run()
         self.clean(at)

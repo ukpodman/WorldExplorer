@@ -86,7 +86,10 @@ COUNTRIES: tuple[dict, ...] = tuple(sorted(
     (c for c in map(normalize_country, _load("countries.json")) if c), key=lambda c: c["name"]))
 COUNTRY_BY_ID: dict[str, dict] = {c["id"]: c for c in COUNTRIES}
 STATES: tuple[dict, ...] = tuple(c for c in COUNTRIES if c["status"] in STATE_STATUSES)
-PHOTOS: dict[str, dict] = {k: v for k, v in _load("photos.json").items() if k in COUNTRY_BY_ID}
+# Every photo record (data/photos.json), and the subset whose credits are already recorded in the file. Pages show
+# photos through core.photos.resolve(), which can complete a record's credits from Wikimedia Commons.
+PHOTO_RECORDS: dict[str, dict] = {k: v for k, v in _load("photos.json").items() if k in COUNTRY_BY_ID}
+PHOTOS: dict[str, dict] = {k: v for k, v in PHOTO_RECORDS.items() if v.get("author") and v.get("license") and v.get("url")}
 
 
 def is_state(country: dict) -> bool:

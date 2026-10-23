@@ -357,7 +357,7 @@ class SchoolAppTests(unittest.TestCase):
         at = self.new(page="Learn", learn_country="NGA")
         self.clean(at)
         self.assertEqual(at.session_state["learn_tab"], "world")
-        for key in ("learn_prev_top", "learn_next_bottom", "learn_surprise", "learn_quiz_me"):
+        for key in ("learn_prev_top", "learn_next_top", "learn_surprise", "learn_quiz_me"):
             self.assertIn(key, [b.key for b in at.button])
         self.assertFalse(self.keys(at, "sl_"))
         maps = [m.value for m in at.markdown if '<figure class="learn-map"' in m.value]

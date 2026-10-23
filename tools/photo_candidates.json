@@ -1,0 +1,1640 @@
+{
+ "_about": "Input for tools/photo_credits.py --add. Hand-picked Wikimedia Commons files per country, best first. Nothing here is shown by the app: the tool checks each file on Commons (photographer, allowed licence, size, landscape shape) and writes the first one that passes into data/photos.json with its verified credits.",
+ "add": {
+  "AFG": {
+   "country": "Afghanistan",
+   "caption": "Band-e Amir lakes, Bamyan",
+   "files": [
+    "File:Band-e-Amir,_Afghanistan.jpg",
+    "File:Lake_Band-e-Amir,_Afghanistan_d.jpg",
+    "File:Lake_in_National_park_in_Band-e_Amir,_Bamyan.JPG"
+   ]
+  },
+  "AGO": {
+   "country": "Angola",
+   "caption": "Kalandula Falls on the Lucala River",
+   "files": [
+    "File:Kalandula_waterfalls_of_the_Lucala-River_in_Malange,_Angola.JPG",
+    "File:Kalandula_waterfalls_of_the_Lucala-River_in_Malange,_Angola_(2).JPG"
+   ]
+  },
+  "ALB": {
+   "country": "Albania",
+   "caption": "Old town of Berat",
+   "files": [
+    "File:Old_Town,_Berat,_Albania.jpg",
+    "File:Berat_UNESCO_2016_Albania.jpg",
+    "File:Berat,_Mangalem_quarter,_Albania.JPG"
+   ]
+  },
+  "AND": {
+   "country": "Andorra",
+   "caption": "Andorra la Vella in the Pyrenees",
+   "files": [
+    "File:Andorra_la_Vella_-_view.jpg",
+    "File:Pyrénées_Andorra.jpg",
+    "File:Andorra_la_Vella_2025.jpg"
+   ]
+  },
+  "ARE": {
+   "country": "United Arab Emirates",
+   "caption": "Dunes of the Liwa Desert, Abu Dhabi",
+   "files": [
+    "File:Liwa_Desert_-_Empty_Quarter_-_Abu_Dhabi_UAE.jpg",
+    "File:Rub_al_Khali_002.JPG",
+    "File:Dune_ranges_(4184948167).jpg"
+   ]
+  },
+  "ARM": {
+   "country": "Armenia",
+   "caption": "Khor Virap Monastery and Mount Ararat",
+   "files": [
+    "File:Khor_Virap_Monastery_and_Mount_Ararat,_Armenia.jpg",
+    "File:Khor_Virap_State_Sanctuary_and_Ararat_Mountain.jpg",
+    "File:Monasterio_Khor_Virap,_Armenia,_2016-10-01,_DD_25.jpg"
+   ]
+  },
+  "ATG": {
+   "country": "Antigua and Barbuda",
+   "caption": "Nelson's Dockyard, English Harbour",
+   "files": [
+    "File:Nelson's_Dockyard_~_English_Harbour.jpg",
+    "File:Antigua_English_Harbour_Nelson's_Dockyard_2.jpg",
+    "File:Shirley_Heights_-_Antigua.jpg"
+   ]
+  },
+  "AUT": {
+   "country": "Austria",
+   "caption": "Hallstatt on Lake Hallstatt",
+   "files": [
+    "File:Hallstatt,_from_opposite_side_of_the_lake.jpg",
+    "File:Hallstatt_at_Lake_Hallstatt_-_2.jpg",
+    "File:1141-1143_-_Hallstatt_-_Hallstätter_See.jpg"
+   ]
+  },
+  "AZE": {
+   "country": "Azerbaijan",
+   "caption": "Ateshgah fire temple, Baku",
+   "files": [
+    "File:Templo_de_fuego,_Baku,_Azerbaiyán,_2016-09-27,_DD_21.jpg"
+   ]
+  },
+  "BDI": {
+   "country": "Burundi",
+   "caption": "Lake Tanganyika near Bujumbura",
+   "files": [
+    "File:Lac_Tanganyika_au_Burundi_5.jpg",
+    "File:Burundi_landscape.jpg",
+    "File:Bujumbura_&_Lake_Tanganyika.JPG"
+   ]
+  },
+  "BEL": {
+   "country": "Belgium",
+   "caption": "Grand-Place, Brussels",
+   "files": [
+    "File:Grand_Place,_Brussels,_Belgium.jpg",
+    "File:Grand_place_brussels_WQ3.jpg",
+    "File:Bruxelles_Grand_Place.JPG"
+   ]
+  },
+  "BEN": {
+   "country": "Benin",
+   "caption": "Ganvié, the village on Lake Nokoué",
+   "files": [
+    "File:The_village_of_Ganvié_on_Lake_Nokoué.jpg",
+    "File:Ganvie_Benin.jpg",
+    "File:Benin_village_on_water_Ganvié.jpg"
+   ]
+  },
+  "BFA": {
+   "country": "Burkina Faso",
+   "caption": "Grand Mosque of Bobo-Dioulasso",
+   "files": [
+    "File:BoboDioulasso-GrandMosqueN.JPG",
+    "File:Bobo-Dioulasso_Mosque.jpg",
+    "File:BoboDioulasso-GrandMosqueE.JPG"
+   ]
+  },
+  "BGD": {
+   "country": "Bangladesh",
+   "caption": "Mangrove forest of the Sundarbans",
+   "files": [
+    "File:Mangrove_and_river_in_Sundarbans.JPG",
+    "File:Sundarban_mangrove.jpg",
+    "File:Mangrove_Forest.jpg"
+   ]
+  },
+  "BGR": {
+   "country": "Bulgaria",
+   "caption": "Rila Monastery",
+   "files": [
+    "File:Bulgaria_Rila_Monastery.jpg",
+    "File:Rila-monastery-imagesfrombulgaria.JPG"
+   ]
+  },
+  "BHR": {
+   "country": "Bahrain",
+   "caption": "Qal'at al-Bahrain (Bahrain Fort)",
+   "files": [
+    "File:Bahrain_Fort_March_2015.JPG",
+    "File:Bahrain_Fort_1.jpg",
+    "File:Bahrain_Fort_2.jpg"
+   ]
+  },
+  "BHS": {
+   "country": "Bahamas",
+   "caption": "Emerald Bay, Great Exuma",
+   "files": [
+    "File:Emerald_bay_great_exuma_bahamas.jpg",
+    "File:Barracuda_Beach,_Williams_Cay,_Great_Exuma,_Bahamas_-_panoramio.jpg",
+    "File:Highborne_Cay_(Exuma_Islands,_Bahamas)_1.jpg"
+   ]
+  },
+  "BIH": {
+   "country": "Bosnia and Herzegovina",
+   "caption": "Stari Most, Mostar",
+   "files": [
+    "File:Stari_Most_(Old_Bridge)_Mostar.jpg",
+    "File:Stari_Most_Mostar_Bosnia_and_Herzegovina.jpg",
+    "File:Old_Bridge,_Mostar,_Herzegovina.JPG"
+   ]
+  },
+  "BLR": {
+   "country": "Belarus",
+   "caption": "Mir Castle",
+   "files": [
+    "File:Belarus_Mir_Castle_Complex_(248358971).jpeg"
+   ]
+  },
+  "BLZ": {
+   "country": "Belize",
+   "caption": "Great Blue Hole, Lighthouse Reef",
+   "files": [
+    "File:Great_Blue_Hole.jpg",
+    "File:Great_Blue_Hole_Belize.jpg",
+    "File:Lighthouse_Reef_Belize.jpg"
+   ]
+  },
+  "BOL": {
+   "country": "Bolivia",
+   "caption": "Salar de Uyuni salt flat",
+   "files": [
+    "File:Salar_de_Uyuni,_Bolivia.jpg",
+    "File:Salar_de_Uyuni,_Bolivia,_2016-02-04,_DD_10-12_HDR.JPG",
+    "File:Isla_Incahuasi,_Salar_de_Uyuni,_Bolivia_(14630608277).jpg"
+   ]
+  },
+  "BRB": {
+   "country": "Barbados",
+   "caption": "Atlantic coast at Bathsheba",
+   "files": [
+    "File:Bathsheba,_Barbados_39.jpg",
+    "File:Bathsheba_Barbados.JPG",
+    "File:Bathsheba,_Barbados_17.jpg"
+   ]
+  },
+  "BRN": {
+   "country": "Brunei",
+   "caption": "Omar Ali Saifuddien Mosque, Bandar Seri Begawan",
+   "files": [
+    "File:Sultan_Omar_Ali_Saifuddien_Mosque,_Brunei;_2009.jpg",
+    "File:Omar_Ali_Saifuddien_Mosque,_Bandar_Seri_Begawan;_March_2009.jpg",
+    "File:Sultan_Omar_Ali_Saifuddien_Mosque._Brunei._(47006027504).jpg"
+   ]
+  },
+  "BTN": {
+   "country": "Bhutan",
+   "caption": "Paro Taktsang (Tiger's Nest)",
+   "files": [
+    "File:The_Tiger's_Nest_(_Paro_Taktsang_).jpg",
+    "File:Paro_Taktsang,_Bhutan_(49694480001).jpg",
+    "File:Takstang_Monastery.jpg"
+   ]
+  },
+  "BWA": {
+   "country": "Botswana",
+   "caption": "Okavango Delta from the air",
+   "files": [
+    "File:Vista_aérea_del_delta_del_Okavango,_Botsuana,_2018-08-01,_DD_46.jpg",
+    "File:Okavango_Delta,_Botswana_(2674364913).jpg",
+    "File:A_view_down_into_the_Okavango_Delta.jpg"
+   ]
+  },
+  "CAF": {
+   "country": "Central African Republic",
+   "caption": "Boali Falls",
+   "files": [
+    "File:Republique_Centrafricaine_-_Boali_-_Chutes_de_Boali.jpg",
+    "File:Ubangi_river_near_Bangui.jpg",
+    "File:Bangui,_CAR.jpg",
+    "File:Bangui_City_Centre.jpg"
+   ],
+   "captions": {
+    "File:Ubangi_river_near_Bangui.jpg": "The Ubangi River near Bangui",
+    "File:Bangui,_CAR.jpg": "Bangui, the capital",
+    "File:Bangui_City_Centre.jpg": "Central Bangui"
+   }
+  },
+  "CHE": {
+   "country": "Switzerland",
+   "caption": "The Matterhorn above Zermatt",
+   "files": [
+    "File:Zermatt_and_Matterhorn.jpg",
+    "File:Matterhorn_from_mountain_side_between_Zermatt_and_Gornergrat,_Wallis,_Switzerland,_2012_August.jpg",
+    "File:3802_-_Zermatt_-_Matterhorn_viewed_from_Gornergratbahn.JPG"
+   ]
+  },
+  "CHL": {
+   "country": "Chile",
+   "caption": "Torres del Paine National Park",
+   "files": [
+    "File:Torres_del_Paine-Chile.jpg",
+    "File:Cordillera_del_Paine,_Torres_del_Paine_National_Park.jpg",
+    "File:Torres_del_Paine,_Lago_Toro.jpg"
+   ]
+  },
+  "CIV": {
+   "country": "Ivory Coast",
+   "caption": "Basilica of Our Lady of Peace, Yamoussoukro",
+   "files": [
+    "File:Basilique_Notre-Dame_de_la_Paix_Yamoussoukro.jpg",
+    "File:Basilique_notre_Dame_de_la_Paix_de_Yamoussoukro_16.jpg",
+    "File:Basilique_notre_Dame_de_la_Paix_de_Yamoussoukro_21.jpg"
+   ]
+  },
+  "CMR": {
+   "country": "Cameroon",
+   "caption": "Mount Cameroon",
+   "files": [
+    "File:Mount_Cameroon_from_Tiko.jpg",
+    "File:Mount_fako_(mount_Cameroon).jpg",
+    "File:Mount_Cameroon_from_douala_Cameroon.jpg"
+   ]
+  },
+  "COD": {
+   "country": "DR Congo",
+   "caption": "Virunga National Park",
+   "files": [
+    "File:Virunga_National_Park_(31437399312).jpg",
+    "File:Volcano_Nyiamulagira_-_Virunga_National_Park_(20874664158).jpg",
+    "File:Lava_Lake_Nyiragongo_Volcano.jpg"
+   ]
+  },
+  "COG": {
+   "country": "Congo",
+   "caption": "The Congo River at Brazzaville",
+   "files": [
+    "File:Le_fleuve_Congo_à_bord_du_pont_du_djoué_de_Brazzaville.jpg"
+   ]
+  },
+  "COL": {
+   "country": "Colombia",
+   "caption": "Walled city of Cartagena",
+   "files": [
+    "File:Cartagena_Old_City.JPG",
+    "File:Ciudad_Amurallada_Cartagena_de_Indias.jpg",
+    "File:Cartagena_skyline_from_the_city_walls.JPG"
+   ]
+  },
+  "COM": {
+   "country": "Comoros",
+   "caption": "Moroni harbour, Grande Comore",
+   "files": [
+    "File:Moroni-Harbour.jpg",
+    "File:Moroni,_Comoros.jpg",
+    "File:Moroni_harbour_(2).jpg"
+   ]
+  },
+  "CPV": {
+   "country": "Cape Verde",
+   "caption": "Pico do Fogo volcano",
+   "files": [
+    "File:Cape_Verde_Pico_do_Fogo_wide.jpg",
+    "File:Fogo,_Cape_Verde_Islands.jpg",
+    "File:Cape_Verde_Fogo_landscape_with_volcanic_cone.jpg"
+   ]
+  },
+  "CRI": {
+   "country": "Costa Rica",
+   "caption": "Arenal Volcano",
+   "files": [
+    "File:Arenal_Volcano_seen_from_La_Fortuna,_Costa_Rica.jpg",
+    "File:Arenal_volcano._Costa_Rica.jpg",
+    "File:Landscape_of_Arenal_Volcano_(5861946349).jpg"
+   ]
+  },
+  "CUB": {
+   "country": "Cuba",
+   "caption": "Old Havana",
+   "files": [
+    "File:Old_Havana_Cuba.jpg",
+    "File:Calle_de_la_Habana_vieja,_Cuba.jpg",
+    "File:Havana_-_Empedrado_Street.jpg"
+   ]
+  },
+  "CYP": {
+   "country": "Cyprus",
+   "caption": "Petra tou Romiou (Aphrodite's Rock)",
+   "files": [
+    "File:Petra_Tou_Romiou_00669.jpg",
+    "File:Aphrodite's_Rock_5313.jpg",
+    "File:Petra_tou_romiou_1.jpg"
+   ]
+  },
+  "CZE": {
+   "country": "Czechia",
+   "caption": "Prague Castle and Charles Bridge",
+   "files": [
+    "File:Prague_Castle_and_Charles_Bridge,_Czech_Republic_-_Diliff.jpg",
+    "File:Charles_Bridge_(Karlův_most),_Vltava_River,_Prague,_2015.jpg",
+    "File:The_Vltava,_Charles_Bridge,_Old_Town_Bridge_Tower_and_Church_of_St._Francis_of_Assisi._Prague,_Czech_Republic.jpg"
+   ]
+  },
+  "DJI": {
+   "country": "Djibouti",
+   "caption": "Lake Assal",
+   "files": [
+    "File:Lake_Assal_1-Djibouti.jpg",
+    "File:Lake_Assal_2-Djibouti.jpg",
+    "File:Assal_Lake,_2024.jpg"
+   ]
+  },
+  "DMA": {
+   "country": "Dominica",
+   "caption": "Trafalgar Falls, Morne Trois Pitons National Park",
+   "files": [
+    "File:Dominica_(Caribbean)_-_Trafalgar_Falls_-_double-falls_(32724044870).jpg",
+    "File:Rainforest_at_Trafalgar_Falls_(Dominica).jpg",
+    "File:Chutes_de_Trafalgar.jpg"
+   ]
+  },
+  "DNK": {
+   "country": "Denmark",
+   "caption": "Nyhavn, Copenhagen",
+   "files": [
+    "File:Nyhavn-Copenhagen.JPG",
+    "File:Kopenhagen_(DK),_Nyhavn_--_2017_--_1447.jpg",
+    "File:Nyhavn,_Copenhague.jpg"
+   ]
+  },
+  "DOM": {
+   "country": "Dominican Republic",
+   "caption": "Colonial Zone of Santo Domingo",
+   "files": [
+    "File:Zona_Colonial_-_Santo_Domingo,_Dominican_Republic.jpg",
+    "File:Santo_Domingo_-_Alcázar_de_Colón_0910.JPG",
+    "File:Zona_colonial.jpg"
+   ]
+  },
+  "DZA": {
+   "country": "Algeria",
+   "caption": "Roman ruins of Timgad",
+   "files": [
+    "File:Timgad_Ruins_Panorama.jpg",
+    "File:Timgad-_A_Roman_Colonial_City_and_UNESCO_World_Heritage_Site_in_the_Aurès_Mountains_57.jpg",
+    "File:Timgad_Trajan.jpg"
+   ]
+  },
+  "ECU": {
+   "country": "Ecuador",
+   "caption": "Pinnacle Rock, Bartolomé Island, Galápagos",
+   "files": [
+    "File:Bartolomé_Island_Pinnacle_Rock.jpg",
+    "File:Galapagos.jpg",
+    "File:Galápagos_Islands_Aerial_photograph.JPG"
+   ]
+  },
+  "ERI": {
+   "country": "Eritrea",
+   "caption": "Fiat Tagliero building, Asmara",
+   "files": [
+    "File:Asmara_Eritrea_Fiat_Tagliero_Building_(30476150040).jpg",
+    "File:Fiat_Tagliero_petrol_station_in_Asmara.jpg",
+    "File:Fiat_tagliero,_01.JPG"
+   ]
+  },
+  "ESP": {
+   "country": "Spain",
+   "caption": "The Alhambra, Granada",
+   "files": [
+    "File:View_of_the_Alhambra_and_Sierra_Nevada_-_Granada_-_Spain.jpg",
+    "File:Alhambra_Granada_Mirador_san_Nicolas.jpg",
+    "File:The_whole_Alhambra_Granada_Spain.jpg"
+   ]
+  },
+  "EST": {
+   "country": "Estonia",
+   "caption": "Old town of Tallinn",
+   "files": [
+    "File:Tallinna_vanalinn_2015.jpg",
+    "File:Tallinn-old-town.jpg",
+    "File:Old_Town_of_Tallinn,_Tallinn,_Estonia_-_panoramio_(58).jpg"
+   ]
+  },
+  "ETH": {
+   "country": "Ethiopia",
+   "caption": "Church of Saint George, Lalibela",
+   "files": [
+    "File:Bete_Giyorgis_01.jpg",
+    "File:Bete_Giyorgis_Lalibela_Ethiopia.jpg",
+    "File:Ethiopia_-_sunset_at_Church_of_Saint_George,_Lalibela_01.jpg"
+   ]
+  },
+  "FIN": {
+   "country": "Finland",
+   "caption": "Senate Square and Helsinki Cathedral",
+   "files": [
+    "File:Senate_Square_and_Lutheran_Cathedral_in_Helsinki.jpg",
+    "File:Senate_Square_in_Helsinki.jpg",
+    "File:Helsinki_Cathedral.jpg"
+   ]
+  },
+  "FJI": {
+   "country": "Fiji",
+   "caption": "Islands of the Mamanuca group",
+   "files": [
+    "File:Tivua_Island,_Mamanucas_Islands,_Fiji,_2011.jpg",
+    "File:Monuriki_Island_20150108.jpg",
+    "File:Bounty_Island_beach_Fiji.jpg"
+   ]
+  },
+  "FSM": {
+   "country": "Micronesia",
+   "caption": "Nan Madol, Pohnpei",
+   "files": [
+    "File:Nan_Madol_megalithic_site,_Pohnpei_(Federated_States_of_Micronesia)_5.jpg",
+    "File:Nan_madol.jpg",
+    "File:Nan_Madol_2.jpg"
+   ]
+  },
+  "GAB": {
+   "country": "Gabon",
+   "caption": "Lopé National Park",
+   "files": [
+    "File:La_lope.jpg",
+    "File:Loango_National_Park.jpg"
+   ]
+  },
+  "GEO": {
+   "country": "Georgia",
+   "caption": "Ushguli in Svaneti",
+   "files": [
+    "File:Ushguli_Svaneti_Georgia.JPG",
+    "File:Ushguli,_Svaneti.jpg",
+    "File:Svaneti,_georgia.jpg"
+   ]
+  },
+  "GIN": {
+   "country": "Guinea",
+   "caption": "Fouta Djallon highlands",
+   "files": [
+    "File:Fouta_Djallon_(14582291826).jpg",
+    "File:Fouta_Djallon_(14625360573).jpg",
+    "File:Guinee_Fouta_Djalon_Doucky.jpg"
+   ]
+  },
+  "GMB": {
+   "country": "Gambia",
+   "caption": "The Gambia River at Janjanbureh",
+   "files": [
+    "File:RiverGambia_Janjanbureh_20190122_Upstream.jpg",
+    "File:Sunrise_at_the_Gambia_River_in_Banjul,_the_Gambia.jpg",
+    "File:The_river_of_the_Gambia.JPG"
+   ]
+  },
+  "GNB": {
+   "country": "Guinea-Bissau",
+   "caption": "Bijagós Islands",
+   "files": [
+    "File:Ilhas_Bijagos,_GUine_Bissau.jpg",
+    "File:DSC_9292_Ilha_de_Bolama_Bijagos,_Bolama,_Guiné-Bissau.jpg"
+   ]
+  },
+  "GNQ": {
+   "country": "Equatorial Guinea",
+   "caption": "Santa Isabel Cathedral, Malabo",
+   "files": [
+    "File:Santa_Isabel_Malabo_20131224_140118.jpg",
+    "File:Malabo_20131224_142231.jpg"
+   ]
+  },
+  "GRC": {
+   "country": "Greece",
+   "caption": "Parthenon on the Acropolis, Athens",
+   "files": [
+    "File:Parthenon_on_Acropolis_in_Athens.jpg",
+    "File:Acropolis_Parthenon_Athens_Greece.jpg",
+    "File:The_Parthenon_in_Athens.jpg"
+   ]
+  },
+  "GRD": {
+   "country": "Grenada",
+   "caption": "The Carenage, St. George's",
+   "files": [
+    "File:The_Carenage,_St_George's,_Grenada.jpg",
+    "File:The_Carenage_Grenada.jpg",
+    "File:St._George's_Wharf,_Grenada.jpg"
+   ]
+  },
+  "GTM": {
+   "country": "Guatemala",
+   "caption": "Temples of Tikal",
+   "files": [
+    "File:Tikal_temples_1_2_3_5_2009.JPG",
+    "File:Tikal_Guatemala_Templo_I_2008.jpg",
+    "File:Tikal_Temple_V_-_Guatemala.jpg"
+   ]
+  },
+  "GUY": {
+   "country": "Guyana",
+   "caption": "Kaieteur Falls",
+   "files": [
+    "File:Kaieteur_Falls,_Guyana.jpg",
+    "File:Kaieteur_Falls_Guyana_(2)_2007.jpg",
+    "File:Kaieteur-falls.JPG"
+   ]
+  },
+  "HND": {
+   "country": "Honduras",
+   "caption": "Maya ruins of Copán",
+   "files": [
+    "File:Ruinas_MAYA_Copan_Honduras_12.jpg",
+    "File:05.Copán_(38).JPG"
+   ]
+  },
+  "HRV": {
+   "country": "Croatia",
+   "caption": "Old town of Dubrovnik",
+   "files": [
+    "File:Casco_viejo_de_Dubrovnik,_Croacia,_2014-04-14,_DD_07.JPG",
+    "File:Walls_of_Dubrovnik-3.jpg"
+   ]
+  },
+  "HTI": {
+   "country": "Haiti",
+   "caption": "Citadelle Laferrière",
+   "files": [
+    "File:The_Citadelle_Laferrière,_Haiti_(7761638618).jpg",
+    "File:Citadelle_La_Ferrière_Haiti_(8070539010).jpg",
+    "File:Citadelle_Laferrière_from_above.jpg"
+   ]
+  },
+  "HUN": {
+   "country": "Hungary",
+   "caption": "Hungarian Parliament on the Danube, Budapest",
+   "files": [
+    "File:Budapest_Parliament_Building_on_the_Danube.JPG",
+    "File:Parliament_Building_Budapest_Hungary.jpg",
+    "File:HUN-2015-Budapest-Hungarian_Parliament_(Budapest)_2015-02.jpg"
+   ]
+  },
+  "IDN": {
+   "country": "Indonesia",
+   "caption": "Borobudur temple, Central Java",
+   "files": [
+    "File:Borobudur-Nothwest-view.jpg",
+    "File:Borobudur_Temple.jpg",
+    "File:Borobudur-complete.jpg"
+   ]
+  },
+  "IRL": {
+   "country": "Ireland",
+   "caption": "Cliffs of Moher, County Clare",
+   "files": [
+    "File:Cliffs_of_Moher,_County_Clare,_Ireland.jpg",
+    "File:Cliffs_of_Moher,_Ireland_(8577753321).jpg",
+    "File:Falaises_de_Moher,_Irlande_(Cliffs_of_Moher,_Ireland).JPG"
+   ]
+  },
+  "IRN": {
+   "country": "Iran",
+   "caption": "Naqsh-e Jahan Square, Isfahan",
+   "files": [
+    "File:Naqsh-e_Jahan_Square,_Isfahan_city_in_Iran_D20130605d.jpg",
+    "File:Naghsh-e_Jahan_Square_Isfahan.JPG",
+    "File:Naqsh-e_Jahan_Square_from_the_gheisariye_Vault.jpg"
+   ]
+  },
+  "IRQ": {
+   "country": "Iraq",
+   "caption": "Great Ziggurat of Ur",
+   "files": [
+    "File:Ziggurat_of_Ur.jpg",
+    "File:Ziggurat_of_Ur_Iraq.jpg",
+    "File:Ziggarat_of_Ur_001.jpg"
+   ]
+  },
+  "ISL": {
+   "country": "Iceland",
+   "caption": "Skógafoss waterfall",
+   "files": [
+    "File:Skogafoss_waterfall_-_Iceland_-_Landscape_photography_(34692750741).jpg",
+    "File:Iceland_skogafoss.jpg",
+    "File:Skógafoss_Waterfall_in_the_winter.jpg"
+   ]
+  },
+  "ISR": {
+   "country": "Israel",
+   "caption": "Masada above the Dead Sea",
+   "files": [
+    "File:Israel-2013-Aerial_21-Masada.jpg",
+    "File:Masada_(1)_(cropped).jpg"
+   ]
+  },
+  "JAM": {
+   "country": "Jamaica",
+   "caption": "Blue Mountains",
+   "files": [
+    "File:Blue_Mountains,_Jamaica.jpg",
+    "File:Blue_Mountains_National_park.jpg",
+    "File:Blue_Mountain_Peak.jpg"
+   ]
+  },
+  "JOR": {
+   "country": "Jordan",
+   "caption": "Al-Khazneh (the Treasury), Petra",
+   "files": [
+    "File:Al-Khazneh_(The_Treasury),_Petra,_Jordan.jpg",
+    "File:Al_Khazneh_(The_Treasury)_-_Petra,_Jordan_-_14_Oct._2009.jpg",
+    "File:Al-Khazneh,_Petra,_Jordan.jpg"
+   ]
+  },
+  "KAZ": {
+   "country": "Kazakhstan",
+   "caption": "Charyn Canyon",
+   "files": [
+    "File:Charyn_Canyon,_Kazakhstan_02.jpg",
+    "File:Charyn_Canyon,_Kazakhstan_03.jpg",
+    "File:Charyn_Canyon.jpg"
+   ]
+  },
+  "KGZ": {
+   "country": "Kyrgyzstan",
+   "caption": "Song-Kul lake",
+   "files": [
+    "File:Song_Köl_lake,_Kyrgyzstan_(30035211076).jpg",
+    "File:Song-Kul,_Kyrgyzstan_(29641420357).jpg",
+    "File:Song-Kul,_Kyrgyzstan_(44580008121).jpg"
+   ]
+  },
+  "KHM": {
+   "country": "Cambodia",
+   "caption": "Angkor Wat, Siem Reap",
+   "files": [
+    "File:Angkor_Wat,_Camboya,_2013-08-16,_DD_079.JPG",
+    "File:Angkor_Wat,_Cambodia_(2211490487).jpg",
+    "File:Angkor_Wat_Aerial_View_Siem_Reap_Cambodia_2011.jpg"
+   ]
+  },
+  "KIR": {
+   "country": "Kiribati",
+   "caption": "Tarawa atoll",
+   "files": [
+    "File:Tarawa_beach_HD-SN-99-03001.JPEG",
+    "File:Teaoraereke,_South_Tarawa,_Kiribati.jpg",
+    "File:Tarawa.jpg",
+    "File:Tarawa,_Kiribati_ESA22224800.jpeg",
+    "File:Kiritimati_Atoll_ESA25382402.jpg"
+   ],
+   "captions": {
+    "File:Tarawa_beach_HD-SN-99-03001.JPEG": "A beach on Tarawa",
+    "File:Teaoraereke,_South_Tarawa,_Kiribati.jpg": "Teaoraereke, South Tarawa",
+    "File:Tarawa,_Kiribati_ESA22224800.jpeg": "Tarawa atoll from space",
+    "File:Kiritimati_Atoll_ESA25382402.jpg": "Kiritimati atoll from space"
+   }
+  },
+  "KNA": {
+   "country": "Saint Kitts and Nevis",
+   "caption": "Brimstone Hill Fortress, Saint Kitts",
+   "files": [
+    "File:Saint_Kitts_-_Brimstone_Hill_Fortress_01.JPG",
+    "File:Brimstone_Hill_from_the_sea,_St._Kitts.JPG",
+    "File:Saint_Kitts_-_Brimstone_Hill_Fortress_03.JPG"
+   ]
+  },
+  "KOR": {
+   "country": "South Korea",
+   "caption": "Gyeongbokgung Palace, Seoul",
+   "files": [
+    "File:Front_view_of_the_Imperial_Throne_Hall_Geunjeongjeon_at_Gyeongbokgung_Palace_with_blue_sky_in_Seoul.jpg",
+    "File:Seoul_Gyeongbokgung_palace_exterior_view.jpg",
+    "File:Gyeongbokgung_Palace,_Seoul,_1395_(77)_(39321056410).jpg"
+   ]
+  },
+  "KWT": {
+   "country": "Kuwait",
+   "caption": "Kuwait City skyline on the Arabian Gulf",
+   "files": [
+    "File:Kuwait_City_Skyline_1.jpg",
+    "File:Kuwait_City_skyline_(39710595225).jpg",
+    "File:Kuwait_city_skyline.jpg"
+   ]
+  },
+  "LAO": {
+   "country": "Laos",
+   "caption": "Wat Xieng Thong, Luang Prabang",
+   "files": [
+    "File:Temple_Wat_Xieng_Thong_-_Luang_Prabang_-_Laos.jpg",
+    "File:Luang_Phabang,_Wat_Xieng_Thong_(6172937572).jpg",
+    "File:Le_Mékong_et_les_grottes_sacrées_de_Pak_Ou_(Laos)_(4340832698).jpg"
+   ]
+  },
+  "LBN": {
+   "country": "Lebanon",
+   "caption": "Temple of Bacchus, Baalbek",
+   "files": [
+    "File:Lebanon,_Baalbek,_Temple_of_Bacchus.jpg",
+    "File:Lebanon,_Baalbek,_Temple_of_Bacchus_2.jpg",
+    "File:Baalbeck_Temple.jpg"
+   ]
+  },
+  "LBR": {
+   "country": "Liberia",
+   "caption": "Coast at Robertsport",
+   "files": [
+    "File:Robertsport_Liberia.jpg"
+   ]
+  },
+  "LBY": {
+   "country": "Libya",
+   "caption": "Roman city of Leptis Magna",
+   "files": [
+    "File:Leptis_Magna,_Al-Khums,_Libya.jpg",
+    "File:Leptis_Magna,_Al-Khums,_Libya_2.jpg",
+    "File:Triumphal_arch,_Leptis_Magna.jpg"
+   ]
+  },
+  "LCA": {
+   "country": "Saint Lucia",
+   "caption": "The Pitons near Soufrière",
+   "files": [
+    "File:The_Pitons,_Soufriere_district,_Saint_Lucia.jpg",
+    "File:Gros_Piton_and_Petit_Piton_in_Saint_Lucia.JPG",
+    "File:The_Pitons_at_Soufriere_Saint_Lucia.jpg"
+   ]
+  },
+  "LIE": {
+   "country": "Liechtenstein",
+   "caption": "Vaduz Castle above Vaduz",
+   "files": [
+    "File:Schloss_Vaduz_-_Liechtenstein.jpg",
+    "File:Liechtenstein-00188_-_Vaduz_Castle_(19467376849).jpg",
+    "File:Castillo,_Vaduz,_Liechtenstein,_2022-10-23,_DD_65.jpg"
+   ]
+  },
+  "LKA": {
+   "country": "Sri Lanka",
+   "caption": "Sigiriya rock fortress",
+   "files": [
+    "File:Sigiriya_Rock_Fortress_View_from_Pidurangala_Rock.jpg",
+    "File:The_Lion_Rock,_Sigiriya,_Sri_Lanka.jpg",
+    "File:Sigiriya_rock_fortress_from_afar.jpg"
+   ]
+  },
+  "LSO": {
+   "country": "Lesotho",
+   "caption": "Maletsunyane Falls, Semonkong",
+   "files": [
+    "File:Lesotho_maletsunyane_falls.jpg",
+    "File:Maletsunyanefalls.JPG",
+    "File:Lesotho_Landscape.jpg"
+   ]
+  },
+  "LTU": {
+   "country": "Lithuania",
+   "caption": "Trakai Island Castle",
+   "files": [
+    "File:Trakai_Island_Castle,_Lithuania_-_Diliff.jpg",
+    "File:Trakai_castle_2016.jpg",
+    "File:Trakai_island_castle_in_winter.jpg"
+   ]
+  },
+  "LUX": {
+   "country": "Luxembourg",
+   "caption": "The Grund, Luxembourg City",
+   "files": [
+    "File:Luxembourg_City_-_Grund_from_Corniche.jpg",
+    "File:Grund,_Luxembourg.jpg",
+    "File:Grund,_Luxembourg_from_wall_above.jpg"
+   ]
+  },
+  "LVA": {
+   "country": "Latvia",
+   "caption": "Old town of Riga",
+   "files": [
+    "File:Old_city_of_Riga_from_Mūkusalas_iela.jpg",
+    "File:Riga_Skyline_Panorama,_Latvia_-_Diliff.jpg",
+    "File:Riga_Old_Town_-_panoramio_(1).jpg"
+   ]
+  },
+  "MCO": {
+   "country": "Monaco",
+   "caption": "Port Hercule and Monte Carlo",
+   "files": [
+    "File:Monte_Carlo_harbor.jpg",
+    "File:MonacoView.jpg",
+    "File:Port_Hercule_Monaco_IMG_1155.jpg"
+   ]
+  },
+  "MDA": {
+   "country": "Moldova",
+   "caption": "Orheiul Vechi",
+   "files": [
+    "File:Orheiul_Vechi_-_Moldova_(by_David_Stanley).jpg",
+    "File:Moldova_Orheiul_Vechi.jpg",
+    "File:Soroca_Fort..JPG",
+    "File:Cetatea_Soroca.jpg",
+    "File:Soroca_fortress_3_(2103623426).jpg"
+   ],
+   "captions": {
+    "File:Soroca_Fort..JPG": "Soroca Fortress on the Dniester",
+    "File:Cetatea_Soroca.jpg": "Soroca Fortress on the Dniester",
+    "File:Soroca_fortress_3_(2103623426).jpg": "Soroca Fortress on the Dniester"
+   }
+  },
+  "MDG": {
+   "country": "Madagascar",
+   "caption": "Avenue of the Baobabs near Morondava",
+   "files": [
+    "File:Avenue_of_Baobabs,_Madagascar_(22558139260).jpg",
+    "File:The_Avenue_of_the_Baobabs_in_Madagascar_near_the_city_of_Morondava_at_sunrise_(34).jpg",
+    "File:Allée_des_baobabs_Madagascar.jpg"
+   ]
+  },
+  "MDV": {
+   "country": "Maldives",
+   "caption": "Islands of Baa Atoll",
+   "files": [
+    "File:Baa_atoll_islands.JPG",
+    "File:Aerial_view_of_Hoarafushi,_Haa_Alif_Atoll,_Maldives.jpg",
+    "File:1_Maldives,_Indian_Ocean,_Asia.jpg"
+   ]
+  },
+  "MHL": {
+   "country": "Marshall Islands",
+   "caption": "Eneko Islet, Majuro Atoll",
+   "files": [
+    "File:Eneko_Islet_05.JPG",
+    "File:Eneko_Islet_02.JPG"
+   ]
+  },
+  "MKD": {
+   "country": "North Macedonia",
+   "caption": "Church of St. John at Kaneo, Lake Ohrid",
+   "files": [
+    "File:Iglesia_San_Juan_Kaneo,_Ohrid,_Macedonia_del_Norte,_2014-04-17,_DD_19.jpg",
+    "File:Church_of_St._John_at_Kaneo_6.jpg",
+    "File:Sv_Jovan_Bogoslov_Kaneo,_Ohrid,_Macedonia.JPG"
+   ]
+  },
+  "MLI": {
+   "country": "Mali",
+   "caption": "Great Mosque of Djenné",
+   "files": [
+    "File:Great_Mosque_of_Djenné_1.jpg",
+    "File:Great_Mosque_of_Djenné_3.jpg",
+    "File:Mali_-_mosque_in_Djenné.jpg"
+   ]
+  },
+  "MLT": {
+   "country": "Malta",
+   "caption": "Valletta and the Grand Harbour",
+   "files": [
+    "File:Valletta,_Malta's_Grand_Harbor.jpg",
+    "File:Grand_Harbour_and_Ta_Liesse_Church_(8583026362).jpg"
+   ]
+  },
+  "MMR": {
+   "country": "Myanmar",
+   "caption": "Temples of Bagan",
+   "files": [
+    "File:Bagan,_Myanmar,_Ancient_temples_at_sunset.jpg",
+    "File:Templos_de_Bagan,_Myanmar.jpg",
+    "File:Bagan,_Myanmar,_Dhammayangyi_Temple.jpg"
+   ]
+  },
+  "MNE": {
+   "country": "Montenegro",
+   "caption": "Bay of Kotor",
+   "files": [
+    "File:Bay_of_Kotor_2015.JPG",
+    "File:Bahía_de_Kotor.jpg",
+    "File:Risan,_Bahía_de_Kotor,_Montenegro,_2014-04-19,_DD_01.JPG"
+   ]
+  },
+  "MNG": {
+   "country": "Mongolia",
+   "caption": "Mongolian steppe",
+   "files": [
+    "File:Mongolian_steppe.jpg",
+    "File:Mongolia_steppe.JPG",
+    "File:Mongolian_yurt_in_steppe.jpg"
+   ]
+  },
+  "MOZ": {
+   "country": "Mozambique",
+   "caption": "Island of Mozambique",
+   "files": [
+    "File:Ilha_de_Mocambique.jpg",
+    "File:Mozambique_Island_Bridge.jpg",
+    "File:Boat_Mozambique_Island.jpg"
+   ]
+  },
+  "MRT": {
+   "country": "Mauritania",
+   "caption": "Dunes of the Adrar near Chinguetti",
+   "files": [
+    "File:Adrar_sands.JPG",
+    "File:Chinguetti_Mosque_2007.jpg",
+    "File:مسجد_شنقيط_التاريخي.jpg"
+   ]
+  },
+  "MUS": {
+   "country": "Mauritius",
+   "caption": "Le Morne Brabant peninsula",
+   "files": [
+    "File:Le_Morne_Peninsula_in_Mauritius_(53697779236).jpg",
+    "File:Le_Morne,_Mauritius2.JPG",
+    "File:Le_Morne_mountain_morning_shadow.jpg"
+   ]
+  },
+  "MWI": {
+   "country": "Malawi",
+   "caption": "Lake Malawi at Cape Maclear",
+   "files": [
+    "File:Otter_Point,_Cape_Maclear_(Malawi).jpg",
+    "File:Cape_McLear,_Malawi_(2498445835).jpg",
+    "File:Lake_Malawi_(2489696873).jpg"
+   ]
+  },
+  "MYS": {
+   "country": "Malaysia",
+   "caption": "Kuala Lumpur and the Petronas Towers",
+   "files": [
+    "File:Kuala_Lumpur_with_Petronas_Towers.jpg",
+    "File:Petronas_Towers,_Kuala_Lumpur_(3323152170).jpg",
+    "File:Petronas_Twin_Towers_in_Kuala_Lumpur_(2)_(10498382174).jpg"
+   ]
+  },
+  "NAM": {
+   "country": "Namibia",
+   "caption": "Dunes of Sossusvlei, Namib Desert",
+   "files": [
+    "File:Sossusvlei_Dune_Namib_Desert_Namibia_Luca_Galuzzi_2004.JPG",
+    "File:Duna_en_Sossusvlei,_Namibia,_2018-08-06,_DD_002.jpg",
+    "File:006_Dune_45_in_Sossusvlei_at_sunrise_Photo_by_Giles_Laurent.jpg"
+   ]
+  },
+  "NER": {
+   "country": "Niger",
+   "caption": "Grand Mosque of Agadez",
+   "files": [
+    "File:Niger,_Agadez_(43),_Grand_Mosque.jpg",
+    "File:Niger,_Agadez_(35),_auberge_Tellit_and_Grand_Mosque,_old_town.jpg",
+    "File:1997_277-9A_Agadez_mosque.jpg"
+   ]
+  },
+  "NIC": {
+   "country": "Nicaragua",
+   "caption": "Concepción volcano, Ometepe Island",
+   "files": [
+    "File:Concepción_(volcano)._Conceptcion._Ometepe_Island,_Nicaragua_06.jpg",
+    "File:Beach_Vista_-_Santo_Domingo_-_Ometepe_Island_-_Nicaragua_-_01_(30987215553).jpg"
+   ]
+  },
+  "NLD": {
+   "country": "Netherlands",
+   "caption": "Windmills of Kinderdijk",
+   "files": [
+    "File:Windmills_of_Kinderdijk_(6).JPG",
+    "File:KinderdijkMolens01.jpg",
+    "File:KinderdijkMolens02.jpg"
+   ]
+  },
+  "NOR": {
+   "country": "Norway",
+   "caption": "Geirangerfjord",
+   "files": [
+    "File:Geirangerfjord_-_Flydalsjuvet.jpg",
+    "File:GeirangerFjord.jpg",
+    "File:Geirangerfjord_(6-2007).jpg"
+   ]
+  },
+  "NPL": {
+   "country": "Nepal",
+   "caption": "Annapurna range from Pokhara",
+   "files": [
+    "File:The_Annapurna_range_from_Pokhara.jpg",
+    "File:Annapurna_mountain_range_from_pokhara.jpg",
+    "File:AnapurnaFromPokhara.jpg"
+   ]
+  },
+  "NRU": {
+   "country": "Nauru",
+   "caption": "Nauru from the air",
+   "files": [
+    "File:Aerial_view_of_Nauru.jpg",
+    "File:View_of_north_of_Nauru.jpg",
+    "File:Coral_reef_on_Nauru.jpg"
+   ]
+  },
+  "NZL": {
+   "country": "New Zealand",
+   "caption": "Milford Sound, Fiordland",
+   "files": [
+    "File:Milford_Sound_(New_Zealand).JPG",
+    "File:Milford_Sound_New_Zealand_2016.jpg",
+    "File:Milford_Sound_NZ.jpg"
+   ]
+  },
+  "OMN": {
+   "country": "Oman",
+   "caption": "Nizwa Fort",
+   "files": [
+    "File:Nizwa_Fort_-_Oman.jpg",
+    "File:Nizwa_Fort_and_Minaret_of_Friday_Mosque.JPG",
+    "File:Bahla_Fort_-_Oman.jpg"
+   ]
+  },
+  "PAK": {
+   "country": "Pakistan",
+   "caption": "Badshahi Mosque, Lahore",
+   "files": [
+    "File:Badshahi_Masjid,_the_Royal_Mosque_in_Lahore,_Pakistan.jpg",
+    "File:Badshahi_Mosque,_Lahore_I.jpg",
+    "File:Long_shot_of_Badshahi_Mosque_from_adjacent_Iqbal_Park_(Lahore).jpg"
+   ]
+  },
+  "PAN": {
+   "country": "Panama",
+   "caption": "Miraflores Locks, Panama Canal",
+   "files": [
+    "File:Panama_Canal,_view_from_Miraflores_Locks_2019-10-24-1.jpg",
+    "File:Panama_Canal_Miraflores_Locks.jpg",
+    "File:PanamaCanalMirafloresLocks001.JPG"
+   ]
+  },
+  "PHL": {
+   "country": "Philippines",
+   "caption": "Banaue Rice Terraces, Ifugao",
+   "files": [
+    "File:Banaue_Rice_Terraces_of_the_Philippines.jpg",
+    "File:Batad_Rice_Terraces,_Banaue,_Ifugao,_Philippines.jpg",
+    "File:Banaue_Rice_Terraces,_Philippines.jpg"
+   ]
+  },
+  "PLW": {
+   "country": "Palau",
+   "caption": "Rock Islands",
+   "files": [
+    "File:Aerial_view_of_uplifted_limestone_islands_in_Palau.jpg",
+    "File:Rock_Islands_near_German_Channel,_Palau_(9971717656).jpg",
+    "File:Palau-rock-islands20071222.jpg"
+   ]
+  },
+  "PNG": {
+   "country": "Papua New Guinea",
+   "caption": "Chuave, Chimbu Province",
+   "files": [
+    "File:Chuave,_Chimbu,_Papua_New_Guinea.jpg",
+    "File:Papua_New_Guinea_(5986602743).jpg"
+   ]
+  },
+  "POL": {
+   "country": "Poland",
+   "caption": "Main Market Square, Kraków",
+   "files": [
+    "File:Main_Market_Square,_view_from_S,_Old_Town,_Kraków,_Poland.jpg",
+    "File:Sukiennice_and_Main_Market_Square_Krakow_Poland.JPG",
+    "File:Krakow-PL-(Rynek_Główny-Hauptmarkt-Main_square-1)-damir-zg.jpg"
+   ]
+  },
+  "PRK": {
+   "country": "North Korea",
+   "caption": "Heaven Lake on Mount Paektu",
+   "files": [
+    "File:Paektu_Mountain's_Heaven_Lake.jpg",
+    "File:Paekdusan_(Mt._Paekdu_Lake_Chonji)_(14316372341).jpg"
+   ]
+  },
+  "PRT": {
+   "country": "Portugal",
+   "caption": "Belém Tower, Lisbon",
+   "files": [
+    "File:Torre_de_Belém,_Lisboa,_Portugal,_2012-05-12,_DD_01.JPG",
+    "File:Belem_Tower,_Lisbon,_Portugal.JPG",
+    "File:Torre_de_Belém_-_Belém_Tower,_Lisbon_(23332962505).jpg"
+   ]
+  },
+  "PRY": {
+   "country": "Paraguay",
+   "caption": "Jesuit mission of La Santísima Trinidad de Paraná",
+   "files": [
+    "File:Jesuit_Missions_of_La_Santísima_Trinidad_-_panoramio_(1).jpg",
+    "File:Torre_y_columnata,_Ruinas_Jesuíticas_Santísima_Trinidad_del_Paraná,_Encarnación,_Paraguay_-_panoramio.jpg",
+    "File:TrinidadKirche.jpg"
+   ]
+  },
+  "PSE": {
+   "country": "Palestine",
+   "caption": "Church of the Nativity, Bethlehem",
+   "files": [
+    "File:Church_of_the_Nativity_(Bethlehem,_2008).jpg"
+   ]
+  },
+  "QAT": {
+   "country": "Qatar",
+   "caption": "The Corniche, Doha",
+   "files": [
+    "File:Corniche_Doha_Qatar.jpg",
+    "File:Doha_Corniche_1.jpg",
+    "File:Corniche_in_Doha,_Promenade.jpg"
+   ]
+  },
+  "ROU": {
+   "country": "Romania",
+   "caption": "Peleș Castle, Sinaia",
+   "files": [
+    "File:Peles_Castle,_Sinaia_(Romania).jpg",
+    "File:Romania-1727_-_Peles_Castle_(7614450302).jpg",
+    "File:Peleș_Castle.jpg"
+   ]
+  },
+  "RUS": {
+   "country": "Russia",
+   "caption": "Saint Basil's Cathedral, Red Square, Moscow",
+   "files": [
+    "File:Saint_Basil's_Cathedral,_Red_Square,_Moscow,_Russia.jpg",
+    "File:St._Basil's_Cathedral,_Red_Square.jpg",
+    "File:Cathedral_of_Intercession_aka_Cathedral_of_St._Basil_the_Blessed_Red_Square,_Moscow,_Russia.jpg"
+   ]
+  },
+  "RWA": {
+   "country": "Rwanda",
+   "caption": "Lake Kivu near Gisenyi",
+   "files": [
+    "File:View_of_Lake_Kivu_from_Rubona_peninsula,_Gisenyi,_Rwanda_(174132).jpg",
+    "File:Lake_Kivu_(Karongi)_in_Gisenyi,_Rwanda.jpg",
+    "File:Lake_Kivu_shoreline_at_Gisenyi.jpg"
+   ]
+  },
+  "SAU": {
+   "country": "Saudi Arabia",
+   "caption": "Nabataean tombs of Hegra, AlUla",
+   "files": [
+    "File:Mada'in_Saleh_Al-Hijr_Hegra_(مدائن_صالح)_(8136618664).jpg",
+    "File:Qasr_al_Farid.JPG",
+    "File:Elephant_rock,_Al-'Ula.jpg"
+   ]
+  },
+  "SDN": {
+   "country": "Sudan",
+   "caption": "Pyramids of Meroë",
+   "files": [
+    "File:Meroe_pyramids_-_Sudan.jpg",
+    "File:Sudan_Meroe_Pyramids_30sep2005.jpg",
+    "File:Sudan,_Nubian_pyramids_(31522670076).jpg"
+   ]
+  },
+  "SEN": {
+   "country": "Senegal",
+   "caption": "Gorée Island",
+   "files": [
+    "File:Goree_Island,_Senegal.jpg",
+    "File:Senegal_Gorée_island_harbor.jpg",
+    "File:Côtes_de_l'île_de_Gorée_au_Sénégal_05.jpg"
+   ]
+  },
+  "SGP": {
+   "country": "Singapore",
+   "caption": "Marina Bay, Singapore",
+   "files": [
+    "File:Central_Business_District_skyline_viewed_from_the_Lower_Boardwalk_of_Marina_Bay,_Singapore_-_20120730.jpg",
+    "File:Skyline_of_Singapore_from_Marina_Bay_Sands.jpg",
+    "File:Marina_Bay_Singapore-3499.jpg"
+   ]
+  },
+  "SLB": {
+   "country": "Solomon Islands",
+   "caption": "Coast of the Solomon Islands",
+   "files": [
+    "File:Solomon_Coast.jpg",
+    "File:Visale,_Solomon_Islands.JPG",
+    "File:Solomon_Shoreline.jpg"
+   ]
+  },
+  "SLE": {
+   "country": "Sierra Leone",
+   "caption": "Banana Islands",
+   "files": [
+    "File:Banana_Islands_(Sierra_Leone).jpg",
+    "File:Lumley_Beach_(Sierra_Leone).jpg",
+    "File:Lumley_Beach_Freetown.JPG"
+   ]
+  },
+  "SLV": {
+   "country": "El Salvador",
+   "caption": "Santa Ana Volcano (Ilamatepec)",
+   "files": [
+    "File:Volcán_Santa_Ana_o_Ilamatepec_en_el_SV.jpg",
+    "File:Lago_de_Coatepeque-El_Salvador.JPG",
+    "File:Cerro_Verde_from_Santa_Ana_Volcano.jpg"
+   ]
+  },
+  "SMR": {
+   "country": "San Marino",
+   "caption": "Guaita tower on Monte Titano",
+   "files": [
+    "File:Guaita_Fortress_-_San_Marino,_2023.jpg",
+    "File:Torre_Guaita_(San_Marino)_large_view.jpg",
+    "File:Torre_Guaita,_San_Marino,_2022-09-20,_DD_43.jpg"
+   ]
+  },
+  "SOM": {
+   "country": "Somalia",
+   "caption": "Laas Geel rock-art site",
+   "files": [
+    "File:Laas_Geel.jpg",
+    "File:Laas_Gaal_in_Somaliland.jpg",
+    "File:Laas_Geel_rock_paintings.JPG"
+   ]
+  },
+  "SRB": {
+   "country": "Serbia",
+   "caption": "Belgrade Fortress above the Sava and Danube",
+   "files": [
+    "File:The_confluence_of_the_Sava_into_the_Danube_at_Belgrade.jpg",
+    "File:Kalemegdan,_Belgrade_Fortress.jpg",
+    "File:Belgrade_Fortress_Kalemegdan-9878.NEF.jpg"
+   ]
+  },
+  "SSD": {
+   "country": "South Sudan",
+   "caption": "The White Nile at Juba",
+   "files": [
+    "File:Juba_Nile_Bridge.jpg",
+    "File:Sudan_Juba_bridge.jpg",
+    "File:AERIAL_VIEW_OF_JUBA,_SOUTH_SUDAN.jpg"
+   ]
+  },
+  "STP": {
+   "country": "São Tomé and Príncipe",
+   "caption": "Pico Cão Grande, São Tomé",
+   "files": [
+    "File:São_Tomé_-_Pico_Cão_Grande.jpg",
+    "File:Cão_Grande_et_Cão_Pequeno_à_São_Tomé_(3).jpg",
+    "File:Pico_Cão_Grande.jpg"
+   ]
+  },
+  "SUR": {
+   "country": "Suriname",
+   "caption": "Historic inner city of Paramaribo",
+   "files": [
+    "File:Historic_Inner_City_of_Paramaribo-113557.jpg",
+    "File:Paramaribo,_Suriname_(11987836025).jpg",
+    "File:Palmentuin_Paramaribo-_Suriname.jpg"
+   ]
+  },
+  "SVK": {
+   "country": "Slovakia",
+   "caption": "Bratislava Castle above the Danube",
+   "files": [
+    "File:Bratislava_-_Dunaj_202008.jpg",
+    "File:Bratislava_Castle,_20210727_1006_0260.jpg",
+    "File:Danube_in_Bratislava,_Panorama,_Winter_2009.jpg"
+   ]
+  },
+  "SVN": {
+   "country": "Slovenia",
+   "caption": "Bled Island in Lake Bled",
+   "files": [
+    "File:Bled_(SLO)_-_Insel_im_Bleder_See_mit_Marienkirche_(tone-mapping).jpg",
+    "File:Bled_island,_bled,_slovenia.jpg",
+    "File:Lac_de_Bled_-_Slovénie_3_(53431097905).jpg"
+   ]
+  },
+  "SWE": {
+   "country": "Sweden",
+   "caption": "Gamla stan, Stockholm",
+   "files": [
+    "File:Stockholm,_Gamla_stan_och_Riddarholmen.jpg",
+    "File:Stockholm_Gamla_Stan_Riddarholmen_Kungsholmen.jpg",
+    "File:Aerial_view_of_Gamla_Stan,_Stockholm.jpg"
+   ]
+  },
+  "SWZ": {
+   "country": "Eswatini",
+   "caption": "Landscape of Eswatini",
+   "files": [
+    "File:Eswatini_landscape.jpg"
+   ]
+  },
+  "SYC": {
+   "country": "Seychelles",
+   "caption": "Anse Source d'Argent, La Digue",
+   "files": [
+    "File:Anse_Source_d'Argent_2-La_Digue.jpg",
+    "File:Anse_Source_d'Argent_3-La_Digue.jpg",
+    "File:La_Digue_(Seychelles)_coastal_scenery.jpg"
+   ]
+  },
+  "SYR": {
+   "country": "Syria",
+   "caption": "Krak des Chevaliers",
+   "files": [
+    "File:Krak_des_Chevaliers,_NW_Syria_-_3.jpg",
+    "File:Krak_des_Chevaliers_Castle,_Syria.jpg",
+    "File:Il_Krak_dei_Cavalieri.jpg"
+   ]
+  },
+  "TCD": {
+   "country": "Chad",
+   "caption": "Ennedi Mountains",
+   "files": [
+    "File:Aloba_Arch_in_the_Ennedi_Mountains_-_northeastern_Chad_2015.jpg",
+    "File:Wadi_Archei_in_the_Ennedi_Mountains_-_northeastern_Chad_2015.jpg",
+    "File:Lake_Boukou_(24358058671).jpg",
+    "File:Tousside,_Tibesti_Mountains,_Chad.jpg",
+    "File:Emi_Koussi-Tibesti_Mountains-Chad.jpg",
+    "File:Tibesti_east_of_bardai.jpg",
+    "File:Ounianga_Serir.jpg",
+    "File:Elephant_Rock_in_the_Ennedi_Mountains_-_northeastern_Chad_2015.jpg",
+    "File:Guelta_d'Archei_Chad.jpg",
+    "File:Sandstone_pinnacles_at_Abaike_in_the_Ennedi_Mountains_-_northeastern_Chad_2015.jpg",
+    "File:Five_Arch_Rock_in_the_Ennedi_Mountains_-_northeastern_Chad_2015.jpg",
+    "File:Ennedi_Hoodoos_in_the_Ennedi_Mountains_-_northeastern_Chad_2015.jpg",
+    "File:Weathered_Sandstone_Pinnacles_at_Abaike_in_the_Ennedi_Mountains_of_northeastern_Chad.jpg",
+    "File:The_Mask_rock_formation_in_the_Ennedi_Mountains_-_northeastern_Chad_2015.jpg",
+    "File:Elephant_du_parc_national_de_Zakouma.jpg",
+    "File:Chari_River.jpg",
+    "File:View_of_Chari.jpg",
+    "File:ISS-64_Sahara_Desert,_Ounianga,_Chad.jpg",
+    "File:Ounianga_Lakes_from_ISS.jpg"
+   ],
+   "captions": {
+    "File:Guelta_d'Archei_Chad.jpg": "Guelta d'Archei, Ennedi",
+    "File:Aloba_Arch_in_the_Ennedi_Mountains_-_northeastern_Chad_2015.jpg": "Aloba Arch, Ennedi Mountains",
+    "File:Wadi_Archei_in_the_Ennedi_Mountains_-_northeastern_Chad_2015.jpg": "Wadi Archei, Ennedi Mountains",
+    "File:Lake_Boukou_(24358058671).jpg": "Lake Boukou, Lakes of Ounianga",
+    "File:Tousside,_Tibesti_Mountains,_Chad.jpg": "Toussidé volcano, Tibesti Mountains",
+    "File:Emi_Koussi-Tibesti_Mountains-Chad.jpg": "Emi Koussi, Tibesti Mountains",
+    "File:Tibesti_east_of_bardai.jpg": "Tibesti Mountains near Bardaï",
+    "File:Ounianga_Serir.jpg": "Ounianga Serir lakes",
+    "File:Elephant_du_parc_national_de_Zakouma.jpg": "Elephant in Zakouma National Park",
+    "File:Chari_River.jpg": "The Chari River",
+    "File:View_of_Chari.jpg": "The Chari River",
+    "File:ISS-64_Sahara_Desert,_Ounianga,_Chad.jpg": "The Lakes of Ounianga in the Sahara, seen from space",
+    "File:Ounianga_Lakes_from_ISS.jpg": "The Lakes of Ounianga seen from space"
+   }
+  },
+  "TGO": {
+   "country": "Togo",
+   "caption": "Takienta houses of Koutammakou",
+   "files": [
+    "File:Togo_Taberma_house_02.jpg",
+    "File:Tata_Tamberma.jpg",
+    "File:Aboukey_Tata_Temberma_Togo.jpg"
+   ]
+  },
+  "THA": {
+   "country": "Thailand",
+   "caption": "Wat Arun on the Chao Phraya, Bangkok",
+   "files": [
+    "File:Wat_Arun_from_Chao_Phraya_River.jpg",
+    "File:Wat_Arun_from_Chao_Phraya_River_at_sunset.jpg",
+    "File:Chao_Phraya_-_Wat_Arun.JPG"
+   ]
+  },
+  "TJK": {
+   "country": "Tajikistan",
+   "caption": "Iskanderkul lake, Fann Mountains",
+   "files": [
+    "File:Iskander-kul,_Tajikistan.JPG",
+    "File:Tajikistan._Iskander-Kul.jpg",
+    "File:Tajikistan_Fan-Mountains_-_landscape_07.JPG"
+   ]
+  },
+  "TKM": {
+   "country": "Turkmenistan",
+   "caption": "Darvaza gas crater, Karakum Desert",
+   "files": [
+    "File:Darvaza_gas_crater,_Jähennem_derwezesi,_Door_to_Hell,_Gates_of_Hell,_Derweze,_Turkmenistan_at_night.jpg",
+    "File:Darvaza_Gas_Crater.jpg",
+    "File:Darvasa_gas_crater_panorama_crop_(cropped).jpg"
+   ]
+  },
+  "TLS": {
+   "country": "Timor-Leste",
+   "caption": "Cristo Rei beach, Dili",
+   "files": [
+    "File:Cristo_Rei_beach,_Dili,_2018_(02).jpg",
+    "File:Praia_de_Cristo_Rei,_Dili.jpg",
+    "File:Cristo_Rei_of_Dili,_Timor-Leste.jpg"
+   ]
+  },
+  "TON": {
+   "country": "Tonga",
+   "caption": "Coast of Tongatapu",
+   "files": [
+    "File:Coastline_in_Tonga.jpg",
+    "File:TO-Mapu_a_Vaea.JPG",
+    "File:'Atā_island,_Tonga_(Tongatapu).jpg"
+   ]
+  },
+  "TTO": {
+   "country": "Trinidad and Tobago",
+   "caption": "Maracas Bay, Trinidad",
+   "files": [
+    "File:Maracas_beachTrinidad_03_2012_974.JPG",
+    "File:Maracas.jpg",
+    "File:Maracas_beach_bigwave.jpg"
+   ]
+  },
+  "TUN": {
+   "country": "Tunisia",
+   "caption": "Sidi Bou Said above the Gulf of Tunis",
+   "files": [
+    "File:View_of_Sidi_Bou_Said_port._Northern_Tunisia,_Mediterranean_Sea,_Northern_Africa.jpg",
+    "File:Sidi_Bou_Said,_Tunisia,_19_March_2018_DSC_8004.jpg",
+    "File:Tunisie_Sidi_Bou_Said_10.jpg"
+   ]
+  },
+  "TUR": {
+   "country": "Türkiye",
+   "caption": "Hot-air balloons over Cappadocia",
+   "files": [
+    "File:Hot_air_balloons_over_Cappadocia_1.jpg",
+    "File:CAPPADOCIA_Göreme_National_Park_and_the_Rock_Sites._World_Heritage_List._Turkey._Hot_Air_Ballooning_Cappadocia.jpg",
+    "File:Hot_air_balloons_in_Cappadocia.jpg"
+   ]
+  },
+  "TUV": {
+   "country": "Tuvalu",
+   "caption": "Funafuti atoll",
+   "files": [
+    "File:Tuvalu_Funafuti_atoll_beach.jpg",
+    "File:Tuvalu_Funafuti_Atoll.JPG",
+    "File:Northern_Funafuti.jpg"
+   ]
+  },
+  "TZA": {
+   "country": "Tanzania",
+   "caption": "Mount Kilimanjaro",
+   "files": [
+    "File:Mount_Kilimanjaro_Dormant_Volcano_In_United_Republic_Of_Tanzania_kibo_Mawenzi_Shira_Highest_Peaks-168.jpg",
+    "File:Mount_Kilimanjaro.jpg",
+    "File:Kilimanjaro,_Tanzânia,_África.jpg"
+   ]
+  },
+  "UGA": {
+   "country": "Uganda",
+   "caption": "Murchison Falls on the Victoria Nile",
+   "files": [
+    "File:Murchison_Falls.jpg",
+    "File:Murchison_Falls_-_by_Boschlech.jpg",
+    "File:Beautiful_nature_along_Nile_River_01.jpg"
+   ]
+  },
+  "UKR": {
+   "country": "Ukraine",
+   "caption": "Kyiv Pechersk Lavra above the Dnipro",
+   "files": [
+    "File:Kyiv_Pechersk_Lavra_View_from_the_Dnieper_River.jpg",
+    "File:Perchersk_Lavra,_Kyiv_Panorama.jpg",
+    "File:2005-08-15_Pechersk_Lavra_seen_from_river_Dnepr_Kiev_311.JPG"
+   ]
+  },
+  "URY": {
+   "country": "Uruguay",
+   "caption": "Historic quarter of Colonia del Sacramento",
+   "files": [
+    "File:ColoniaDelSacramentoCalleDeLosSuspiros2013.JPG",
+    "File:Colonia_del_Sacramento_calle_típica.JPG",
+    "File:Colonia_de_Sacramento.jpg"
+   ]
+  },
+  "UZB": {
+   "country": "Uzbekistan",
+   "caption": "The Registan, Samarkand",
+   "files": [
+    "File:Registan_square_Samarkand.jpg",
+    "File:The_Registan,_Samarkand,_Uzbekistan_(6133992233).jpg",
+    "File:Registan_Samarkand_Uzbekistan.JPG"
+   ]
+  },
+  "VAT": {
+   "country": "Vatican City",
+   "caption": "St. Peter's Square from the dome",
+   "files": [
+    "File:Saint_Peter's_Square_from_the_dome.jpg",
+    "File:Rome,_Vatican,_Italy,_Saint_Peter's_Square_as_seen_from_Michelangelo_dome.jpg",
+    "File:St_Peter's_Square,_Vatican_City_-_April_2007.jpg"
+   ]
+  },
+  "VCT": {
+   "country": "Saint Vincent and the Grenadines",
+   "caption": "Wallilabou Bay, Saint Vincent",
+   "files": [
+    "File:Saint-Vincent_Wallilabou_Bay.jpg"
+   ]
+  },
+  "VEN": {
+   "country": "Venezuela",
+   "caption": "Angel Falls, Canaima National Park",
+   "files": [
+    "File:Angel_Falls_in_Venezuela.jpg",
+    "File:Salto_del_Angel-Canaima-Venezuela16.JPG",
+    "File:Salto_Ángel_(2004)_05.jpg"
+   ]
+  },
+  "VNM": {
+   "country": "Vietnam",
+   "caption": "Ha Long Bay",
+   "files": [
+    "File:Ha_Long_Bay_on_a_sunny_day.jpg",
+    "File:Halong_Bay_in_Vietnam.jpg",
+    "File:Ha_Long_Bay,_Vietnam,_View_from_above.jpg"
+   ]
+  },
+  "VUT": {
+   "country": "Vanuatu",
+   "caption": "Mount Yasur volcano, Tanna",
+   "files": [
+    "File:Mt_Yasur_volcano,_Tanna,_Vanuatu.JPG",
+    "File:Vanuatu_Tanna_Yasur.JPG",
+    "File:Tanna_Mount_Yasur.jpg"
+   ]
+  },
+  "WSM": {
+   "country": "Samoa",
+   "caption": "To Sua Ocean Trench, Upolu",
+   "files": [
+    "File:To_Sua_Ocean_Trench_-_Lotofaga_village_-_Samoa.jpg",
+    "File:Trench_hole_from_the_water_To_Sua_Ocean_Trench_Samoa_with_ladder.jpg"
+   ]
+  },
+  "YEM": {
+   "country": "Yemen",
+   "caption": "Mud-brick tower houses of Shibam",
+   "files": [
+    "File:Shibam_Wadi_Hadhramaut_Yemen.jpg",
+    "File:مدينة_شبام_حضرموت.jpg",
+    "File:Shibam_details_Wadi_Hadhramaut_Yemen.jpg"
+   ]
+  },
+  "ZMB": {
+   "country": "Zambia",
+   "caption": "Victoria Falls (Mosi-oa-Tunya)",
+   "files": [
+    "File:Zambia_-_Mosi-oa-Tunya.jpg",
+    "File:Victoria_falls,_zambia.jpg",
+    "File:Cataratas_Victoria,_Zambia-Zimbabue,_2018-07-27,_DD_04.jpg"
+   ]
+  },
+  "ZWE": {
+   "country": "Zimbabwe",
+   "caption": "Great Enclosure, Great Zimbabwe",
+   "files": [
+    "File:Great-Zimbabwe.jpg",
+    "File:Exterior_of_great_enclosure,G.Zimbabwe.JPG",
+    "File:Wall_of_the_great_enclosure,_Great_Zimbabwe.JPG"
+   ]
+  }
+ },
+ "landscape_review": {
+  "FRA": {
+   "country": "France",
+   "caption": "Mont-Saint-Michel, Normandy",
+   "files": [
+    "File:Mont-Saint-Michel_depuis_la_mer.jpg",
+    "File:Mont-Saint-Michel_vu_du_ciel.jpg",
+    "File:Mont-Saint-Michel_Panoramique_(3840955768).jpg",
+    "File:Le_Mont_Saint_Michel_et_sa_baie_14.jpg",
+    "File:Mont_Saint-Michel_France.jpg",
+    "File:Le_Mont-Saint-Michel_(Vue_sur_la_baie_à_marée_basse_2_).JPG"
+   ]
+  },
+  "ITA": {
+   "country": "Italy",
+   "caption": "Colosseum, Rome",
+   "files": [
+    "File:Exterior_of_the_Coliseum_Rome_Italy.jpg",
+    "File:ColosseumAtEvening.jpg",
+    "File:Colosseum_in_rome.jpg",
+    "File:Colosseum_exterior_at_night,_Rome,_Italy_(Ank_Kumar)_01.jpg",
+    "File:The_night_view_of_the_Roman_Colosseum.jpg"
+   ]
+  },
+  "USA": {
+   "country": "United States",
+   "caption": "Grand Canyon, Arizona",
+   "files": [
+    "File:Grand_Canyon_Mather_Point02.jpg",
+    "File:Grand_Canyon_South_Rim_at_Sunset.jpg",
+    "File:Grand_Canyon_South_Rim_0506.jpg",
+    "File:A252,_Grand_Canyon_National_Park,_Arizona,_USA,_south_rim,_desert_viewpoint,_2008.JPG",
+    "File:Grand_Canyon_(Arizona,_USA),_South_Rim_nahe_Tusayan_--_2012_--_5895.jpg"
+   ]
+  }
+ }
+}

@@ -131,7 +131,7 @@ def _fetch(titles: list[str]) -> dict[str, dict]:
         out[name] = {"author": _plain(meta.get("Artist", {}).get("value")) or _plain(meta.get("Credit", {}).get("value")),
                      "license": _plain(meta.get("LicenseShortName", {}).get("value")),
                      "license_url": _plain(meta.get("LicenseUrl", {}).get("value")),
-                     "url": info.get("url", ""), "page": info.get("descriptionurl", "") or page_url(name),
+                     "url": original_url(name), "page": info.get("descriptionurl", "") or page_url(name),
                      "width": info.get("width"), "height": info.get("height")}
     return out
 

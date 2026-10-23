@@ -4782,6 +4782,18 @@
    "Foto no disponible",
    "照片暂不可用",
    "Фото недоступно"
+  ],
+  "{name} is a country in {region}, bordered by {n} {n:plural:country|countries}.": [
+   "{name} ist ein Land in {region} mit {n} {n:plural:Nachbarland|Nachbarländern}.",
+   "{name} es un país de {region} que limita con {n} {n:plural:país|países}.",
+   "{name}是位于{region}的国家，与{n}个国家接壤。",
+   "{name} — страна в регионе {region}, граничит с {n} {n:plural:страной|странами|странами}."
+  ],
+  "{name} is a country in {region} with no land borders.": [
+   "{name} ist ein Land in {region} ohne Landgrenzen.",
+   "{name} es un país de {region} sin fronteras terrestres.",
+   "{name}是位于{region}的国家，没有陆地边界。",
+   "{name} — страна в регионе {region}, не имеющая сухопутных границ."
   ]
  }
 }

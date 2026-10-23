@@ -136,3 +136,81 @@ html[data-we-theme="dark"] .stApp .st-key-continent_buttons button[kind="primary
 .learn-map.detail-locator svg { max-height:240px; }
 .learn-map.detail-locator figcaption { font-size:.8rem; justify-content:flex-start; }
 @media (max-width:700px) { .detail-photo-frame img { max-height:300px; } .learn-map.detail-locator svg { max-height:200px; } }
+
+/* =====================================================================================================================
+   Project Atlas — Learn · World Geography (v2): introduction + facts beside the photograph; a band below with the
+   compact locator map beside neighbours, landmarks and the size comparison. One Previous / Next row, at the top.
+   ===================================================================================================================== */
+.learn-head { margin:0 0 4px; }
+.st-key-learn_tabs { margin-top:4px; }
+.st-key-learn_tabs button { min-height:46px; }
+.st-key-learn_toolbar { background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:12px 14px !important;
+  gap:10px !important; box-shadow:var(--shadow); }
+.st-key-learn_toolbar .st-key-learn_finder { background:transparent; border:0; box-shadow:none; padding:0 !important; }
+.st-key-learn_picker label p { font-size:.8rem !important; color:var(--slate) !important; font-weight:600 !important; }
+.st-key-learn_status { justify-content:space-between; gap:10px !important; flex-wrap:nowrap !important; }
+.st-key-learn_status > :first-child { flex:1 1 auto !important; width:auto !important; min-width:0 !important; }
+.st-key-learn_status .st-key-learn_nav_top { display:flex !important; flex:0 0 auto !important; width:auto !important; flex-wrap:nowrap !important; margin-left:auto; }
+.st-key-learn_status .st-key-learn_nav_top > * { flex:0 0 auto !important; min-width:0 !important; }
+.st-key-learn_status .st-key-learn_nav_top button { padding:0 16px !important; }
+
+/* the card */
+.st-key-learn_card { padding:24px 26px !important; gap:18px !important; }
+.st-key-learn_card .country-top { display:flex !important; margin-bottom:6px; }
+.st-key-learn_card .country-code { width:auto; height:auto; padding:3px 8px; border-radius:8px; font-size:.72rem; }
+.st-key-learn_card .country-region { font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gold-text); font-weight:700; }
+.st-key-learn_card .name-flag { display:block !important; width:52px; height:auto; max-height:36px; object-fit:contain; border-radius:5px; border:1px solid var(--line); }
+.stApp .st-key-learn_card .country-name { font-family:var(--serif) !important; font-weight:600 !important; font-size:2.35rem !important; line-height:1.08; }
+.st-key-learn_card .official-name { display:block !important; color:var(--slate); margin-top:2px; }
+.learn-intro { margin:12px 0 0 !important; font-family:var(--serif); font-size:1.12rem !important; line-height:1.5 !important; color:var(--navy) !important; }
+.learn-facts { grid-template-columns:1fr 1fr; gap:10px; margin:16px 0 4px; }
+.learn-facts .detail-fact { align-items:flex-start; }
+.st-key-learn_quiz_action { margin-top:8px; }
+/* the photograph is the main picture */
+.st-key-learn_card .learn-photo-frame img { max-height:430px; border-radius:16px; box-shadow:0 10px 28px rgba(23,40,59,.14); }
+.st-key-learn_card .learn-photo-frame figcaption { margin-top:4px; }
+/* without a verified photo the map takes the picture place, at a moderate size */
+.st-key-learn_card .learn-map { margin:0; }
+.st-key-learn_card .learn-map svg { max-height:330px; aspect-ratio:16 / 10; }
+.st-key-learn_card .learn-map figcaption { font-size:.8rem; }
+/* the band under the introduction */
+.st-key-learn_band { border-top:1px solid var(--line); padding-top:18px !important; }
+.st-key-learn_map_compact .learn-map svg { max-height:200px; aspect-ratio:4 / 3; }
+.st-key-learn_more_side { gap:10px !important; }
+.st-key-learn_card .learn-section { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--gold-text); margin-top:.2rem; }
+.st-key-learn_card .learn-section:first-child { margin-top:0; }
+@media (max-width:1024px) {
+  /* stacked: the photograph first, then the introduction and facts, then the band */
+  .st-key-learn_card [data-testid="stHorizontalBlock"]:has(.st-key-learn_quiz_action) { row-gap:16px !important; }
+  .st-key-learn_card [data-testid="stHorizontalBlock"]:has(.st-key-learn_quiz_action) > [data-testid="stColumn"]:last-child {
+    display:flex !important; order:-1 !important; flex:1 1 100% !important; width:100% !important; }
+  .st-key-learn_band [data-testid="stHorizontalBlock"] { flex-direction:column !important; row-gap:14px !important; }
+  .st-key-learn_band [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] { width:100% !important; flex:1 1 100% !important; min-width:0 !important; }
+  .st-key-learn_map_compact .learn-map svg { max-height:220px; aspect-ratio:16 / 9; }
+}
+@media (max-width:900px) {
+  .st-key-learn_card { padding:16px !important; }
+  .stApp .st-key-learn_card .country-name { font-size:1.85rem !important; }
+  .st-key-learn_card .learn-photo-frame img { max-height:300px; }
+}
+@media (max-width:700px) {
+  .st-key-learn_toolbar { padding:10px !important; }
+  .st-key-learn_status .st-key-learn_nav_top button { padding:0 12px !important; }
+  .learn-intro { font-size:1.02rem !important; }
+  .st-key-learn_card .learn-map svg { max-height:220px; }
+  .st-key-learn_map_compact .learn-map svg { max-height:180px; }
+  .st-key-learn_card .learn-photo-frame img { max-height:240px; }
+}
+@media (max-width:420px) { .learn-facts { grid-template-columns:1fr; gap:8px; } }
+
+/* ---------- School Learning overview: compact subject search (the subject-card rules also matched this bar) ---------- */
+.stApp .st-key-sl_subject_bar, .stApp .st-key-sl_subject_search { background:transparent !important; border:0 !important; box-shadow:none !important;
+  padding:0 !important; min-height:0 !important; height:auto !important; flex:0 1 auto !important; }
+.stApp .st-key-sl_subject_bar { margin:4px 0 0 !important; align-items:center !important; justify-content:space-between; width:100% !important; }
+.stApp .st-key-sl_subject_bar > :last-child { flex:0 1 360px !important; max-width:360px; }
+.stApp .st-key-sl_subject_search { width:100% !important; }
+.stApp .st-key-sl_subject_bar .sl-h { margin:0 !important; font-family:var(--serif) !important; font-weight:600 !important; font-size:1.4rem !important; }
+.stApp .sl-intro h2 { font-family:var(--serif) !important; font-weight:600 !important; }
+@media (max-width:700px) { .stApp .st-key-sl_subject_bar > :last-child { flex:1 1 100% !important; max-width:none; } }
+/* phones: a little air between the photo credit and the country name */
+@media (max-width:1024px) { .st-key-learn_card .learn-photo-frame { margin-bottom:6px; } }

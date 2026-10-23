@@ -492,18 +492,6 @@ def _learn_map(c: dict) -> None:
          f'<span>{e("Map data: Natural Earth (public domain)")}</span></figcaption></figure>')
 
 
-def _learn_media(c: dict) -> None:
-    """A licensed destination photo when one is bundled; otherwise the flag on a calm continent-tinted panel."""
-    photo = _country_photo(c)
-    if photo:
-        html(_photo_figure(photo, "learn-photo-frame"))
-        with st.container(key="learn_flag_small"):
-            _flag(c, 96, t("Flag of {name}", name=c["name"]))
-    else:
-        with st.container(key=f"learn_flag_panel_{c['continent'].replace(' ', '_')}"):
-            _flag(c, 200, t("Flag of {name}", name=c["name"]))
-
-
 def _learn_nav(current: str, where: str) -> None:
     """Previous / Next. The top row is desktop-only (hidden by CSS on phones and tablets); the bottom row is everywhere.
     They only change the Learn selection, never a quiz round."""
@@ -518,7 +506,9 @@ def _learn_position(current: str) -> None:
     if current in scope and len(scope) == 1:
         st.caption(t("Only one country is in your exploration area ({scope}).", scope=state.scope_label()))
     elif current in scope:
-        st.caption(t("{n} of {total} · {scope}", n=scope.index(current) + 1, total=len(scope), scope=state.scope_label()))
+        continent = st.session_state.get("learn_continent") or "All"
+        where = t(continent) if continent != "All" else state.scope_label()
+        st.caption(t("{n} of {total} · {scope}", n=scope.index(current) + 1, total=len(scope), scope=where))
     else:
         st.caption(t("Outside your exploration area ({scope}). Next and Previous return to it.", scope=state.scope_label()))
 
@@ -632,8 +622,9 @@ def _keep_learn_tab() -> None:
 def learn() -> None:
     """Learn has two parts: 🌍 World Geography (the country collection) and 📚 School Learning (ui/school.py).
     The choice is remembered for the visit; World Geography is the default."""
-    hero("The country collection", "Get to know the world.",
-         "Build your knowledge, one country at a time. The details make all the difference.", variant="compact")
+    # Project Atlas: the same calm heading as Explore (no banner)
+    html(f'<div class="atlas-head learn-head"><div class="atlas-overline">{e("The country collection")}</div>'
+         f'<h1 class="atlas-title">{e("Get to know the world.")}</h1></div>')
     ss = st.session_state
     if ss.get("learn_tab") not in LEARN_TABS:
         ss.learn_tab = ss.get("learn_tab_saved") if ss.get("learn_tab_saved") in LEARN_TABS else "world"
@@ -697,7 +688,13 @@ def _learn_finder() -> None:
 
 
 def _world_learn() -> None:
-    _learn_finder()
+    with st.container(key="learn_toolbar"):
+        _learn_finder()
+        _learn_picker_row()
+    _learn_country()
+
+
+def _learn_picker_row() -> None:
     ids = state.learn_ids()
     requested = st.session_state.get("learn_country")
     if get_country(requested) and requested not in ids:
@@ -709,54 +706,75 @@ def _world_learn() -> None:
         chosen = pick.selectbox(t("Choose a country"), ids, format_func=country_formatter(), key="learn_country")
         others = [i for i in state.learn_ids() if i != chosen]
         surprise.button(t("Surprise me"), key="learn_surprise", disabled=not others, on_click=state.learn_surprise,
-                        width="stretch")
-    c = get_country(chosen)
-    _learn_position(c["id"])
-    _learn_nav(c["id"], "top")
+                        width="stretch", icon=":material/shuffle:")
+
+
+def _learn_intro(c: dict) -> str:
+    """One sentence built only from the dataset (region and land borders), never invented. States only: a
+    territory keeps its status note instead."""
+    if c["status"] not in STATE_STATUSES:
+        return ""
+    neighbours = sum(1 for b in c["borders"] if get_country(b) and get_country(b)["status"] in STATE_STATUSES)
+    if neighbours:
+        return t("{name} is a country in {region}, bordered by {n} {n:plural:country|countries}.",
+                 name=c["name"], region=c["region"], n=neighbours)
+    return t("{name} is a country in {region} with no land borders.", name=c["name"], region=c["region"])
+
+
+def _learn_country() -> None:
+    """Project Atlas Learn: introduction and key facts beside the photograph (the main picture), then a band with the
+    compact locator map beside neighbours, landmarks and the size comparison. One Previous / Next, at the top."""
+    c = get_country(st.session_state.learn_country)
+    with st.container(key="learn_status", horizontal=True, vertical_alignment="center"):
+        _learn_position(c["id"])
+        _learn_nav(c["id"], "top")
     none = t("Not included yet")
     leader = load_political_records().get(c["id"])
     flag = flag_image(c)
     small_flag = (f'<img class="name-flag" src="data:image/webp;base64,{base64.b64encode(flag).decode()}" alt="" aria-hidden="true">'
                   if flag else "")
     region = " · ".join([" / ".join(t(x) for x in c["continents"]), c["region"]]).strip(" ·")
+    capitals = "; ".join(f"{x['name']} ({t(x['role'])})" for x in c["capitals"]) or t("No capital listed")
+    codes = " · ".join(c["calling_codes"] + c["domains"]) or none
+    photo = _country_photo(c)
+    intro = _learn_intro(c)
     with st.container(key="learn_card"):
-        top, art = st.columns([3, 2], vertical_alignment="center", gap="large")
-        with top:
-            # Desktop keeps code, region and official name here; phones and tablets show a small flag beside the
-            # name and one region line, with the code and official name in "More details".
-            html(f'<div class="country-top desk-only"><span class="country-code">{c["id"]}</span>'
-                 f'<span class="country-region">{escape(c["region"])}</span>{status_chip(c)}</div>'
+        text_side, picture_side = st.columns([1, 1.12], vertical_alignment="top", gap="large")
+        with text_side:
+            html(f'<div class="country-top"><span class="country-code">{c["id"]}</span>'
+                 f'<span class="country-region">{escape(region)}</span>{status_chip(c)}</div>'
                  f'<div class="name-row">{small_flag}<h2 class="country-name">{e(c["name"])}</h2></div>'
-                 f'<div class="official-name desk-only">{escape(c.get("official_name", ""))}</div>'
-                 f'<div class="region-line mobile-only">{escape(region)}{status_chip(c)}</div>')
+                 f'<div class="official-name">{escape(c.get("official_name", ""))}</div>'
+                 + (f'<p class="learn-intro">{escape(intro)}</p>' if intro else ""))
             if c["status_note"]:
                 st.caption(t(c["status_note"]))
+            facts = [("capital", "Capital roles", capitals),
+                     ("currency", "Currencies", ", ".join(map(currency_label, c["currencies"])) or none),
+                     ("language", "Languages with official status or wide use", ", ".join(c["languages"]) or none),
+                     ("area", "Total area", f"{c['area_km2']:,.0f} km²" if c["area_km2"] else none)]
+            html('<div class="fact-grid learn-facts">' + "".join(_fact(kind, label, value) for kind, label, value in facts) + "</div>")
+            for note in (c.get("capital_note"), c.get("currency_note")):
+                if note:
+                    st.caption("ⓘ " + t(note))
             with st.container(key="learn_quiz_action"):
-                st.button(t("Quiz me on this country"), key="learn_quiz_me", type="primary",
+                st.button(t("Quiz me on this country"), key="learn_quiz_me", type="primary", icon=":material/help:",
                           on_click=rewards_hooks.explored, args=(c["id"], state.quiz_on_country, c["id"]),
                           help=t("Opens the quiz setup with this country selected."))
-        with art:
-            _learn_media(c)
-        capitals = "; ".join(f"{x['name']} ({t(x['role'])})" for x in c["capitals"]) or t("No capital listed")
-        codes = " · ".join(c["calling_codes"] + c["domains"]) or none
-        facts = [("Continent / region", region, True),
-                 ("Capital roles", capitals, False),
-                 ("Currencies", ", ".join(map(currency_label, c["currencies"])) or none, False),
-                 ("Languages with official status or wide use", ", ".join(c["languages"]) or none, False),
-                 ("Total area", f"{c['area_km2']:,.0f} km²" if c["area_km2"] else none, False),
-                 ("Calling codes and internet domains", codes, True)]
-        html('<div class="fact-grid">' + "".join(_tile(label, value).replace('class="fact-tile"', 'class="fact-tile desk-only"', 1)
-                                               if extra else _tile(label, value) for label, value, extra in facts) + "</div>")
-        for note in (c.get("capital_note"), c.get("currency_note")):
-            if note:
-                st.caption("ⓘ " + t(note))
-        _learn_map(c)
-        _neighbour_buttons(c)
-        if c["landmarks"]:
-            html(f'<div class="learn-section desk-only">{e("Landmarks")}</div>')
-            with st.expander(t("Landmarks") + f" ({len(c['landmarks'])})", key="learn_landmarks_box"):
-                st.markdown(" · ".join(f"[{s['name']}]({s['source']})" for s in c["landmarks"]))
-        _size_comparison(c)
+        with picture_side:
+            if photo:
+                html(_photo_figure(photo, "learn-photo-frame"))       # the photograph is the main picture
+            else:
+                _learn_map(c)                                          # no verified photo yet: the map is the picture
+        with st.container(key="learn_band"):
+            if photo:
+                map_side, more_side = st.columns([1, 1.6], vertical_alignment="top", gap="large")
+                with map_side, st.container(key="learn_map_compact"):
+                    _learn_map(c)                                      # compact: context, not the centrepiece
+                with more_side, st.container(key="learn_more_side"):
+                    _learn_sections(c)
+            else:
+                with st.container(key="learn_more_side"):
+                    _learn_sections(c)
         _open_sections_on_desktop(c["id"])
         with st.container(key="learn_meta_desktop"):
             _source_lines(c, leader)
@@ -765,7 +783,15 @@ def _world_learn() -> None:
                        ("Calling codes and internet domains", codes)]
             html('<div class="more-details">' + "".join(f'<div><span>{e(k)}</span><b>{escape(v)}</b></div>' for k, v in details) + "</div>")
             _source_lines(c, leader)
-    _learn_nav(c["id"], "bottom")
+
+
+def _learn_sections(c: dict) -> None:
+    _neighbour_buttons(c)
+    if c["landmarks"]:
+        html(f'<div class="learn-section desk-only">{e("Landmarks")}</div>')
+        with st.expander(t("Landmarks") + f" ({len(c['landmarks'])})", key="learn_landmarks_box"):
+            st.markdown(" · ".join(f"[{s['name']}]({s['source']})" for s in c["landmarks"]))
+    _size_comparison(c)
 
 
 # --------------------------------------------------------------------------- Quiz

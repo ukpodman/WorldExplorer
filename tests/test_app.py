@@ -64,7 +64,8 @@ class AppTests(unittest.TestCase):
         self.assertClean(at)
         text = " ".join(m.value for m in at.markdown)
         self.assertTrue(any("has no land borders with other places in this dataset." in c.value for c in at.caption))
-        self.assertGreaterEqual(len(at.get("image")), 1)
+        self.assertIn('class="name-flag"', text)                               # the flag beside the name (Project Atlas)
+        self.assertIn("Sri Lanka is a country in Southern Asia with no land borders.", text)   # intro from the dataset
         at = self.new(page="Learn", learn_country="VAT")
         self.assertIn("UN observer state", " ".join(m.value for m in at.markdown))
 
@@ -408,7 +409,7 @@ class RefinementTests(unittest.TestCase):
         at.button(key="learn_next_top").click().run()
         self.assertEqual(at.session_state["learn_country"], "GAB")             # alphabetical, as in the dropdown
         self.assertEqual(at.selectbox(key="learn_country").value, "GAB")
-        at.button(key="learn_prev_bottom").click().run()
+        at.button(key="learn_prev_top").click().run()
         self.assertEqual(at.selectbox(key="learn_country").value, "FRA")
         at.button(key="nb_DEU").click().run()                                    # neighbour button
         self.assertEqual((at.session_state["learn_country"], at.selectbox(key="learn_country").value), ("DEU", "DEU"))
@@ -427,7 +428,7 @@ class RefinementTests(unittest.TestCase):
         at = self.new(page="Learn", learn_country="ESP", scope_collection="All countries and territories")
         self.assertIn("nb_GIB", [b.key for b in at.button])
         at = self.new(page="Learn", scope_mode="One country", scope_country="NGA", learn_country="NGA")
-        for key in ("learn_prev_top", "learn_next_top", "learn_surprise", "learn_next_bottom"):
+        for key in ("learn_prev_top", "learn_next_top", "learn_surprise", "learn_next_top"):
             self.assertTrue(at.button(key=key).disabled, key)
         self.assertTrue(any("Only one country" in c.value for c in at.caption))
         at = self.new(page="Learn", learn_country="ISL")
@@ -461,7 +462,7 @@ class RefinementTests(unittest.TestCase):
         at.button(key=f"answer_{quiz['serial']}_0_{qn['choices'].index(qn['answer'])}").click().run()
         snapshot = (quiz["serial"], quiz["index"], quiz["score"], len(quiz["history"]))
         at.button(key="nav_Learn").click().run()
-        for key in ("learn_next_top", "learn_surprise", "learn_prev_bottom"):
+        for key in ("learn_next_top", "learn_surprise", "learn_prev_top"):
             at.button(key=key).click().run()
         at.selectbox(key="learn_country").select("FRA").run()
         at.button(key="nb_DEU").click().run()
@@ -1169,15 +1170,24 @@ class ContinentMapTests(unittest.TestCase):
 
     def test_destination_photo_collapses_when_it_cannot_load(self):
         """Photos are real images without a fixed-height box, with caption and licence in one line underneath."""
-        at = self.new(explore_selected="Africa", explore_country="NGA")
-        figure = next(m.value for m in at.markdown if 'class="photo-frame detail-photo-frame"' in m.value)
-        self.assertIn('<img src="https://upload.wikimedia.org/', figure)
-        self.assertNotIn("background-image", figure)
-        self.assertIn("CC BY-SA 3.0", figure)
-        at = self.new(explore_selected="Africa", explore_country="DZA")         # no bundled photo: nothing at all
-        self.assertFalse(any("photo-frame" in m.value for m in at.markdown if "<figure" in m.value))
-        at = self.new(page="Learn", learn_country="NGA")
-        self.assertTrue(any('class="photo-frame learn-photo-frame"' in m.value for m in at.markdown))
+        # The test brings its own records, so it does not depend on how many photos data/photos.json holds (20 or 195).
+        import core.data
+        nga = {"file": "File:Lekki_Ikoyi_Link_Bridge.jpg", "caption": "Lekki–Ikoyi Link Bridge, Lagos", "author": "Chippla",
+               "license": "CC BY-SA 3.0", "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+               "url": "https://upload.wikimedia.org/wikipedia/commons/7/74/Lekki_Ikoyi_Link_Bridge.jpg",
+               "page": "https://commons.wikimedia.org/wiki/File:Lekki_Ikoyi_Link_Bridge.jpg",
+               "width": 1600, "height": 1067, "verified": "2026-10-23"}
+        with mock.patch.dict(core.data.PHOTO_RECORDS, {"NGA": nga}):
+            core.data.PHOTO_RECORDS.pop("DZA", None)
+            at = self.new(explore_selected="Africa", explore_country="NGA")
+            figure = next(m.value for m in at.markdown if 'class="photo-frame detail-photo-frame"' in m.value)
+            self.assertIn('<img src="https://upload.wikimedia.org/', figure)
+            self.assertNotIn("background-image", figure)
+            self.assertIn("CC BY-SA 3.0", figure)
+            at = self.new(explore_selected="Africa", explore_country="DZA")     # no photo record: nothing at all
+            self.assertFalse(any("photo-frame" in m.value for m in at.markdown if "<figure" in m.value))
+            at = self.new(page="Learn", learn_country="NGA")
+            self.assertTrue(any('class="photo-frame learn-photo-frame"' in m.value for m in at.markdown))
 
     def test_quiz_this_continent_opens_setup_and_keeps_rounds(self):
         from datetime import date

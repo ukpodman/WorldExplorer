@@ -32,6 +32,11 @@ ERRORS = {
     "note_too_long": "Please keep the note under 500 characters.",
     "unknown_application": "This application no longer exists. Press Refresh.",
     "invalid_action": "That action is not possible.",
+    "invalid_email": "Please enter a valid email address (the Google address the person signs in with).",
+    "not_invited": "That address is not on the invitation list.",
+    "confirmation_required": "Please tick the confirmation first.",
+    "terms_required": "Record the approved terms first: the pilot terms before switching the pilot on, the public "
+                      "programme rules before allowing public applications.",
 }
 ACTION_LABEL = {"approve": "✅ Approve", "waitlist": "⏳ Waiting list", "reject": "✖ Reject"}
 
@@ -279,9 +284,119 @@ def render(include_test: bool) -> None:
     st.markdown("### 🌟 Founding 50 Applications")
     st.caption("Anyone can apply; only you approve. Only approved participants can earn money — the database refuses "
                "enrolment and pays ₦0 for everyone else.")
+    _pilot_controls(s, d)
+    st.divider()
     names = _names(d)
     rows = _dashboard(d, include_test, month)
     _new_list(s, rows, names)
     st.divider()
     shown = _table_section(rows, names)
     _review(s, d, shown, names, month)
+
+
+# --------------------------------------------------------------------------- Friends & Family Pilot (invitations)
+
+def _pilot_action(fn, message: str) -> None:
+    try:
+        fn()
+    except StoreError as error:
+        st.error(_error(error))
+        return
+    except Exception:
+        st.error("That did not work just now. Please try again.")
+        return
+    hooks.pilot_switch(refresh=True)
+    st.session_state.pop("rw_invited", None)
+    _invalidate()
+    st.session_state.rw_f_flash = message
+    st.rerun()
+
+
+def _pilot_controls(s, d: dict) -> None:
+    """Three independent modes: public educational access (always), the invitation-only Friends & Family Pilot (this
+    switch and list), and public rewards enrolment (the Public Rewards Programme switch AND invitation-only OFF).
+    Every change is made by a database function that checks the owner list and writes the audit log."""
+    from core import legal
+    st.markdown("### 🤝 Friends & Family Pilot (invitation only)")
+    status = s.pilot_status()
+    if not status.get("installed"):
+        st.warning("The invitation-only pilot is not installed in the database yet. After your approval, run "
+                   "supabase/pilot_invitations_migration.sql in Supabase. Until then nobody can enter the pilot, and "
+                   "real applications stay closed unless the public programme is ON (the earlier rule).")
+        return
+    actor = _actor()
+    invites = s.invitations()
+    active = [i for i in invites if not i.get("revoked_at")]
+    approved = sum(1 for a in d["applications"] if a["status"] == "approved" and not a.get("test"))
+    docs = legal.pilot_ready()
+    _tiles([("Pilot switch", "ON" if status["enabled"] else "OFF"),
+            ("Pilot open to invited people", "YES" if hooks.pilot_open() else "no"),
+            ("Invitations", str(len(active))),
+            ("Approved participants", f"{approved} / {legal.PILOT_MAX_PLACES}")])
+    if status["enabled"] and not docs:
+        st.info("The pilot switch is ON, but the pilot stays closed until the Privacy Policy, Terms of Use and pilot "
+                "terms are published (⚖️ Legal & switches).")
+    st.caption("Invited people can apply; you still approve every application (at most 50). Activity earns ₦0 while "
+               "the public programme is OFF, and no payment switch is changed here.")
+    current, recorded = legal.pilot_terms_id(), status.get("terms_version")
+    st.markdown(f"**Participation terms applicants accept:** recorded `{recorded or 'none'}` · published pilot terms "
+                f"`{current}`" + (" ✅" if recorded == current else ""))
+    if recorded != current:
+        if legal.doc_live("pilot"):
+            st.info("Applications are paused until you record the published pilot terms (after any change to them, "
+                    "record them again).")
+            if st.button("Record the published pilot terms as the approved version", key="pilot_terms_record"):
+                _pilot_action(lambda: s.set_participation_terms("pilot", current, actor),
+                              f"Applicants must now accept the pilot terms {current}.")
+        else:
+            st.caption("The pilot terms are not published yet (⚖️ Legal & switches), so they cannot be recorded.")
+    if status["enabled"]:
+        if st.button("Switch the pilot OFF", key="pilot_off"):
+            _pilot_action(lambda: s.set_pilot(False, actor), "The Friends & Family Pilot was switched off.")
+    else:
+        sure = st.checkbox("I confirm the pilot may accept applications from invited people.", key="pilot_on_confirm")
+        if st.button("Switch the pilot ON", key="pilot_on", type="primary", disabled=not sure):
+            _pilot_action(lambda: s.set_pilot(True, actor, confirmed=True), "The Friends & Family Pilot was switched on.")
+
+    with st.form("pilot_invite", border=True, clear_on_submit=True):
+        st.markdown("**Invite a person** (the Google address they sign in with)")
+        email = st.text_input("Email", max_chars=254, key="pilot_invite_email")
+        note = st.text_input("Note (optional, for you)", max_chars=founding.INVITE_NOTE_MAX, key="pilot_invite_note")
+        if st.form_submit_button("Add invitation"):
+            if not founding.email_ok(email):
+                st.error(ERRORS["invalid_email"])
+            else:
+                _pilot_action(lambda: s.invite(email, actor, note or None),
+                              f"{founding.normalize_email(email)} was invited.")
+    if invites:
+        _table([{"Email": i["email"], "Note": i.get("note") or "", "Invited": str(i.get("invited_at") or "")[:10],
+                 "Status": "revoked" if i.get("revoked_at") else "invited"} for i in invites])
+    if active:
+        one, two = st.columns([3, 1], vertical_alignment="bottom")
+        pick = one.selectbox("Revoke an invitation", [i["email"] for i in active], index=None, key="pilot_revoke_pick",
+                             help="Stops new applications from this address. An existing application and your "
+                                  "decision on it are not changed.")
+        if two.button("Revoke", key="pilot_revoke", disabled=not pick):
+            _pilot_action(lambda: s.revoke_invitation(pick, actor), f"The invitation for {pick} was revoked.")
+
+    with st.expander("Public rewards enrolment (separate decision)", key="pilot_public_entry"):
+        public_now, public_rec = rewards.TERMS_VERSION, status.get("public_terms_version")
+        st.markdown(f"**Public programme rules applicants accept:** recorded `{public_rec or 'none'}` · current rules "
+                    f"`{public_now}`" + (" ✅" if public_rec == public_now else ""))
+        if public_rec != public_now and st.button("Record the current public programme rules as approved",
+                                                  key="public_terms_record"):
+            _pilot_action(lambda: s.set_participation_terms("public", public_now, actor),
+                          f"Public applicants must now accept the programme rules {public_now}.")
+        if status["invitation_only"]:
+            st.markdown("**Invitation only: ON** (recommended). Even when the Public Rewards Programme switch is ON, "
+                        "only invited people can apply.")
+            sure = st.checkbox("I confirm that opening applications to everyone has been separately authorised.",
+                               key="pilot_public_confirm")
+            if st.button("Allow public applications", key="invitation_only_off", disabled=not sure):
+                _pilot_action(lambda: s.set_invitation_only(False, actor, confirmed=True),
+                              "Invitation only was switched off: when the public programme is ON, anyone may apply.")
+        else:
+            st.warning("Invitation only: OFF. When the Public Rewards Programme switch is ON, anyone signed in may apply "
+                       "(you still approve each application). The pilot itself always requires an invitation.")
+            if st.button("Switch invitation only back ON", key="invitation_only_on"):
+                _pilot_action(lambda: s.set_invitation_only(True, actor), "Invitation only was switched back on.")

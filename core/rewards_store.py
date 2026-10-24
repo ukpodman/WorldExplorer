@@ -30,7 +30,11 @@ TABLES = ("reward_program_settings", "reward_accounts", "reward_enrolments", "re
 CASHOUT_TABLES = ("reward_cashout_settings", "reward_cashout_requests", "reward_cashout_months",
                   "reward_cashout_payments", "reward_owner_notifications")   # supabase/withdrawals_migration.sql
 FOUNDING_TABLES = (founding.TABLE,)                                            # supabase/founding50_migration.sql
+PILOT_TABLES = (founding.INVITES,)                                             # supabase/pilot_invitations_migration.sql
 PAGE = 1000
+PILOT_COLUMNS = ("pilot_enabled", "pilot_changed_at", "pilot_changed_by", "invitation_only", "invitation_changed_at",
+                 "invitation_changed_by", "pilot_terms_version", "public_terms_version", "terms_changed_at",
+                 "terms_changed_by")
 
 
 class StoreError(Exception):
@@ -283,11 +287,14 @@ class RewardsStore:
         return self.select(founding.TABLE, {"status": status} if status else None, order="applied_at")
 
     def apply_founding(self, profile_id: str, state: str, note: str | None, adult: bool, resident: bool,
-                       terms: bool) -> dict:
-        """Submit a Founding 50 application (one per person; the database refuses duplicates)."""
+                       terms: bool, terms_version: str | None = None) -> dict:
+        """Submit a Funding 50 application (one per person; the database refuses duplicates). terms_version is the
+        participation terms the applicant was shown and accepted; the database requires it to equal the owner's
+        approved version (reward_program_settings.participation_terms_version) and keeps it with the application."""
         return self._one(self.rpc("reward_founding_apply", {
             "p_profile": profile_id, "p_state": state, "p_note": note, "p_adult": bool(adult),
-            "p_resident": bool(resident), "p_terms": bool(terms), "p_terms_version": rewards.TERMS_VERSION}))
+            "p_resident": bool(resident), "p_terms": bool(terms),
+            "p_terms_version": terms_version or rewards.TERMS_VERSION}))
 
     def decide_founding(self, application_id: int, action: str, actor: str, note: str | None = None) -> dict:
         """Owner only (checked by the database): approve, reject or waitlist."""
@@ -297,6 +304,58 @@ class RewardsStore:
     def mark_founding_seen(self, actor: str, application_id: int | None = None) -> int:
         return int(self._one(self.rpc("reward_founding_mark_seen", {
             "p_actor": actor, "p_id": int(application_id) if application_id is not None else None})) or 0)
+
+    # ---- Friends & Family Pilot: invitation-only entry (supabase/pilot_invitations_migration.sql)
+    def pilot_status(self) -> dict:
+        """{'installed', 'enabled', 'invitation_only', ...}. Until the migration has run: not installed, pilot OFF and
+        invitation-only (the safe reading: nobody can be let in by it)."""
+        rows = self.select("reward_program_settings", {"id": 1}, limit=1)
+        row = rows[0] if rows else {}
+        if "pilot_enabled" not in row:
+            return {"installed": False, "enabled": False, "invitation_only": True, "terms_version": None,
+                    "public_terms_version": None, "changed_at": None, "changed_by": None}
+        return {"installed": True, "enabled": bool(row.get("pilot_enabled")),
+                "invitation_only": row.get("invitation_only") is not False,
+                "terms_version": row.get("pilot_terms_version"),            # the pilot's approved terms
+                "public_terms_version": row.get("public_terms_version"),
+                "changed_at": row.get("pilot_changed_at"), "changed_by": row.get("pilot_changed_by")}
+
+    def set_pilot(self, enabled: bool, actor: str, confirmed: bool = False) -> dict:
+        """Owner-only (checked by the database). Switching ON needs confirmed=True. Audited."""
+        return self._one(self.rpc("reward_set_pilot", {"p_enabled": bool(enabled), "p_actor": actor,
+                                                       "p_confirmed": bool(confirmed)}))
+
+    def set_invitation_only(self, value: bool, actor: str, confirmed: bool = False) -> dict:
+        """Owner-only. Switching invitation-only OFF (public applications) needs confirmed=True. Audited."""
+        return self._one(self.rpc("reward_set_invitation_only", {"p_value": bool(value), "p_actor": actor,
+                                                                 "p_confirmed": bool(confirmed)}))
+
+    def set_participation_terms(self, mode: str, version: str, actor: str) -> dict:
+        """Owner-only: record the approved participation terms for one way in ('pilot' or 'public'), audited."""
+        return self._one(self.rpc("reward_set_participation_terms", {"p_mode": mode, "p_version": version,
+                                                                     "p_actor": actor}))
+
+    def invite(self, email: str, actor: str, note: str | None = None) -> dict:
+        return self._one(self.rpc("reward_pilot_invite", {"p_email": email, "p_actor": actor, "p_note": note}))
+
+    def revoke_invitation(self, email: str, actor: str) -> dict:
+        return self._one(self.rpc("reward_pilot_revoke", {"p_email": email, "p_actor": actor}))
+
+    def invitations(self) -> list[dict]:
+        try:
+            return self.select(founding.INVITES, None, order="invited_at")
+        except StoreError:
+            return []           # not installed yet
+
+    def pilot_invited(self, email: str | None) -> bool:
+        e = founding.normalize_email(email)
+        if not e:
+            return False
+        try:
+            rows = self.select(founding.INVITES, {"email": e}, limit=1)
+        except StoreError:
+            return False
+        return bool(rows) and not rows[0].get("revoked_at")
 
     # ---- cash withdrawals (supabase/withdrawals_migration.sql; the database functions decide)
     @staticmethod
@@ -462,15 +521,17 @@ class MemoryStore(RewardsStore):
             "reward_payments": ("profile_id", "month"), "reward_audit_log": ("id",),
             "reward_cashout_settings": ("id",), "reward_cashout_requests": ("id",),
             "reward_cashout_months": ("request_id", "month"), "reward_cashout_payments": ("id",),
-            "reward_owner_notifications": ("id",), founding.TABLE: ("id",)}
+            "reward_owner_notifications": ("id",), founding.TABLE: ("id",), founding.INVITES: ("email",)}
 
     def __init__(self, settings: Settings | None = None, owner_emails: list[str] | None = None,
                  public_enabled: bool = False):
         self.lock = threading.RLock()
-        self.tables: dict[str, list[dict]] = {t: [] for t in TABLES + CASHOUT_TABLES + FOUNDING_TABLES}
+        self.tables: dict[str, list[dict]] = {t: [] for t in TABLES + CASHOUT_TABLES + FOUNDING_TABLES + PILOT_TABLES}
         row = (settings or Settings()).as_row()
         row.update(id=1, updated_at=_now(), updated_by=None, public_enabled=bool(public_enabled),
-                   public_changed_at=None, public_changed_by=None)
+                   public_changed_at=None, public_changed_by=None, pilot_enabled=False, pilot_changed_at=None,
+                   pilot_changed_by=None, invitation_only=True, invitation_changed_at=None, invitation_changed_by=None,
+                   pilot_terms_version=None, public_terms_version=None, terms_changed_at=None, terms_changed_by=None)
         self.tables["reward_program_settings"].append(row)
         self.tables["reward_cashout_settings"].append({"id": 1, "live_requests": False, "real_payouts": False,
                                                        "min_days": withdrawals.MIN_DAYS,
@@ -562,6 +623,9 @@ class MemoryStore(RewardsStore):
                 if table == "reward_program_settings" and not self._public_fn and any(
                         new.get(k) != old.get(k) for k in ("public_enabled", "public_changed_at", "public_changed_by")):
                     raise StoreError("the public programme switch changes only through reward_set_public_programme")
+                if table == "reward_program_settings" and not getattr(self, "_pilot_fn", False) and any(
+                        new.get(k) != old.get(k) for k in PILOT_COLUMNS):
+                    raise StoreError("the pilot switches change only through reward_set_pilot / reward_set_invitation_only")
                 if table == "reward_program_settings":
                     problems = Settings.from_row(new).validate()
                     if problems:
@@ -840,6 +904,101 @@ class MemoryStore(RewardsStore):
                  {"public_enabled": bool(p_enabled), "confirmed": bool(p_confirmed)})
         return row
 
+    # ---- Friends & Family Pilot (supabase/pilot_invitations_migration.sql)
+    def _settings_row(self) -> dict:
+        return self.tables["reward_program_settings"][0]
+
+    def _pilot_on(self) -> bool:
+        return bool(self._settings_row().get("pilot_enabled"))
+
+    def _invitation_only(self) -> bool:
+        return self._settings_row().get("invitation_only") is not False
+
+    def _invited(self, email) -> bool:
+        e = founding.normalize_email(email)
+        return bool(e) and any(r["email"] == e and not r.get("revoked_at") for r in self.tables[founding.INVITES])
+
+    def _set_pilot_columns(self, changes: dict, actor: str) -> dict:
+        self._pilot_fn = True
+        try:
+            return self.update("reward_program_settings", {"id": 1}, {**changes, "updated_at": _now(), "updated_by": actor})[0]
+        finally:
+            self._pilot_fn = False
+
+    def _rpc_reward_set_pilot(self, p_enabled, p_actor, p_confirmed=False):
+        if not self._owner(p_actor):
+            raise StoreError("not_owner")
+        if p_enabled is None:
+            raise StoreError("invalid_value")
+        if p_enabled and not p_confirmed:
+            raise StoreError("confirmation_required")
+        if p_enabled and not self._settings_row().get("pilot_terms_version"):
+            raise StoreError("terms_required")
+        row = self._set_pilot_columns({"pilot_enabled": bool(p_enabled), "pilot_changed_at": _now(),
+                                       "pilot_changed_by": p_actor}, p_actor)
+        self.log(p_actor, "pilot_on" if p_enabled else "pilot_off", "settings",
+                 {"pilot_enabled": bool(p_enabled), "confirmed": bool(p_confirmed)})
+        return row
+
+    def _rpc_reward_set_invitation_only(self, p_value, p_actor, p_confirmed=False):
+        if not self._owner(p_actor):
+            raise StoreError("not_owner")
+        if p_value is None:
+            raise StoreError("invalid_value")
+        if not p_value and not p_confirmed:
+            raise StoreError("confirmation_required")
+        if not p_value and not self._settings_row().get("public_terms_version"):
+            raise StoreError("terms_required")
+        row = self._set_pilot_columns({"invitation_only": bool(p_value), "invitation_changed_at": _now(),
+                                       "invitation_changed_by": p_actor}, p_actor)
+        self.log(p_actor, "invitation_only_on" if p_value else "invitation_only_off", "settings",
+                 {"invitation_only": bool(p_value), "confirmed": bool(p_confirmed)})
+        return row
+
+    def _rpc_reward_set_participation_terms(self, p_mode, p_version, p_actor):
+        if not self._owner(p_actor):
+            raise StoreError("not_owner")
+        if p_mode not in ("pilot", "public"):
+            raise StoreError("invalid_mode")
+        v = str(p_version or "").strip()
+        if not v or len(v) > 120:
+            raise StoreError("invalid_value")
+        row = self._set_pilot_columns({f"{p_mode}_terms_version": v, "terms_changed_at": _now(),
+                                       "terms_changed_by": p_actor}, p_actor)
+        self.log(p_actor, f"{p_mode}_terms_set", "settings", {"mode": p_mode, "terms_version": v})
+        return row
+
+    def _rpc_reward_pilot_invite(self, p_email, p_actor, p_note=None):
+        if not self._owner(p_actor):
+            raise StoreError("not_owner")
+        e = founding.normalize_email(p_email)
+        if not founding.email_ok(e):
+            raise StoreError("invalid_email")
+        if len(p_note or "") > founding.INVITE_NOTE_MAX:
+            raise StoreError("note_too_long")
+        row = {"email": e, "note": (p_note or "").strip() or None, "invited_by": p_actor, "invited_at": _now(),
+               "revoked_at": None, "revoked_by": None, "updated_at": _now()}
+        rows = self.tables[founding.INVITES]
+        for i, r in enumerate(rows):
+            if r["email"] == e:
+                rows[i] = row
+                break
+        else:
+            rows.append(row)
+        self.log(p_actor, "pilot_invited", e, dict(row))
+        return dict(row)
+
+    def _rpc_reward_pilot_revoke(self, p_email, p_actor):
+        if not self._owner(p_actor):
+            raise StoreError("not_owner")
+        e = founding.normalize_email(p_email)
+        for r in self.tables[founding.INVITES]:
+            if r["email"] == e and not r.get("revoked_at"):
+                r.update(revoked_at=_now(), revoked_by=p_actor, updated_at=_now())
+                self.log(p_actor, "pilot_revoked", e, dict(r))
+                return dict(r)
+        raise StoreError("not_invited")
+
     def _real_payouts(self) -> bool:
         return bool(self.tables["reward_cashout_settings"][0].get("real_payouts"))
 
@@ -1050,7 +1209,12 @@ class MemoryStore(RewardsStore):
                                    p_terms_version):
         account = self.account(p_profile)
         error = founding.apply_error(account, self._founding_row(p_profile), p_state, p_note, p_adult, p_resident,
-                                     p_terms, self._public_on())
+                                     p_terms, self._public_on(), pilot_on=self._pilot_on(),
+                                     invitation_only=self._invitation_only(),
+                                     invited=self._invited((account or {}).get("email")),
+                                     terms_version=p_terms_version,
+                                     pilot_terms=self._settings_row().get("pilot_terms_version"),
+                                     public_terms=self._settings_row().get("public_terms_version"))
         if error is None and not str(p_terms_version or "").strip():
             error = "declarations_required"
         if error:

@@ -8,7 +8,7 @@ from html import escape
 
 import streamlit as st
 
-from core import analytics, metrics
+from core import analytics, legal, metrics
 
 PERIODS = {"Last 7 days": 7, "Last 28 days": 28, "All data": None}
 MODE_LABELS = {"regular": "Quiz rounds (quiz setup)", "daily": "Daily Challenge — first counted attempt",
@@ -60,13 +60,61 @@ def render() -> None:
     owner_founding.alert()      # new Founding 50 applications (in-app notification), refreshes itself as well
     # Only the open tab is drawn: Rewards & Referral Management reads about 30 tables/rows sets from Supabase, which
     # used to run on every visit and every rerun of the dashboard even while Pilot analytics was shown.
-    analytics_tab, rewards_tab = st.tabs(["Pilot analytics", REWARDS_TAB], key="owner_tab", on_change="rerun")
+    analytics_tab, rewards_tab, legal_tab = st.tabs(["Pilot analytics", REWARDS_TAB, LEGAL_TAB], key="owner_tab",
+                                                     on_change="rerun")
     with analytics_tab:
         if analytics_tab.open is not False:
             _pilot_analytics()
     with rewards_tab:
         if rewards_tab.open:
             owner_rewards.render()
+    with legal_tab:
+        if legal_tab.open:
+            _legal_and_switches()
+
+
+LEGAL_TAB = "⚖️ Legal & switches"
+
+
+def _legal_and_switches() -> None:
+    """Read-only overview: who operates the app, which legal documents are published (and what is missing), and every
+    switch that keeps the pilot, public rewards enrolment and money closed. Nothing here changes anything."""
+    from . import rewards_hooks as hooks
+    cfg = legal.config()
+    verified = legal.operator_verified(cfg)
+    st.markdown(f"**Operator:** {legal.identification(verified=verified)}")
+    st.markdown(f"**Public identification (shown once a document is published):** {legal.operator_line()}")
+    general, pilot = legal.live(cfg), legal.pilot_ready(cfg)
+    (st.success if general else st.warning)(
+        "The Privacy Policy and Terms of Use are PUBLISHED (Settings → Legal information)." if general else
+        "The Privacy Policy and Terms of Use are NOT published. Public rewards enrolment, withdrawals and payouts stay "
+        "closed. Each document needs: the operator confirmed, a contact email and the registered address, no draft "
+        "notice or [open items], a final version, and your approval of that exact version.")
+    rows = [{"Requirement": r["switch"], "State": "OK" if r["on"] else "missing", "Details": r["controls"]}
+            for r in legal.status(cfg)]
+    cfgr = hooks.config()
+    public, pilot_sw = hooks.public_state(), hooks.pilot_switch()
+    rows += [
+        {"Requirement": "Friends & Family Pilot (effective)", "State": "OPEN" if hooks.pilot_open() else "closed",
+         "Details": f"Pilot switch {'ON' if pilot_sw.get('enabled') else 'off'} · pilot documents "
+                    f"{'published' if pilot else 'not published'} · invited people only · at most "
+                    f"{legal.PILOT_MAX_PLACES} approved (Founding 50 tab)."},
+        {"Requirement": "[rewards] enabled", "State": "ON" if hooks.deployment_enabled() else "off",
+         "Details": "Deployment safety switch for the public rewards programme."},
+        {"Requirement": "Public Rewards Programme (dashboard)", "State": "ON" if public.get("owner") else "off",
+         "Details": "The owner's switch in 💰 Rewards & Referral Management → Settings."},
+        {"Requirement": "Invitation only", "State": "ON" if pilot_sw.get("invitation_only", True) else "OFF",
+         "Details": "While ON, even the public programme accepts invited people only (Founding 50 tab)."},
+        {"Requirement": "Public rewards enrolment (effective)", "State": "OPEN" if hooks.enabled() else "closed",
+         "Details": public.get("reason", "")},
+        {"Requirement": "[rewards] withdrawals_active", "State": "ON" if cfgr.get("withdrawals_active") else "off",
+         "Details": "Real withdrawal requests (effective: " + ("open" if hooks.withdrawals_active() else "closed") + ")."},
+        {"Requirement": "[rewards] payouts_active", "State": "ON" if cfgr.get("payouts_active") else "off",
+         "Details": "Approving and paying real money (effective: " + ("open" if hooks.payouts_active() else "closed") + ")."},
+    ]
+    _table(rows)
+    st.caption("Preview the documents in Settings → Legal information (owners see the drafts). Checklist: "
+               "legal/OPERATOR_VERIFICATION.md.")
 
 
 def _pilot_analytics() -> None:

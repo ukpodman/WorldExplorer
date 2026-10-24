@@ -9,6 +9,7 @@ from unittest import mock
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+import legal_fixtures  # noqa: E402  (completed sample documents for published-legal tests)
 sys.path.insert(0, str(ROOT / "tests"))
 
 from core import rewards, withdrawals  # noqa: E402
@@ -244,6 +245,7 @@ class PublicSwitchAppTests(unittest.TestCase):
     def app(self, who, enabled=True, page="Owner"):
         at = AppTest.from_file(str(ROOT / "app.py"), default_timeout=60)
         at.secrets["rewards"] = {"enabled": enabled, "tester_emails": ["player@example.com"]}
+        at.secrets["legal"] = legal_fixtures.secrets()   # reviewed documents published
         at.secrets["analytics"] = {"owner_emails": [OWNER]}
         at.session_state["page"] = page
         if page == "Owner":   # the owner opens the rewards tab (the dashboard draws only the open tab)

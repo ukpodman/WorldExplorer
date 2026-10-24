@@ -16,7 +16,7 @@ import time
 
 import streamlit as st
 
-from core import accounts, analytics, cookies, rewards
+from core import accounts, analytics, cookies, legal, rewards
 from core.rewards_store import MemoryStore, RewardsStore, StoreError, SupabaseStore
 
 REF_COOKIE = "we_ref"
@@ -59,10 +59,17 @@ def owner_switch(refresh: bool = False) -> dict:
     return status
 
 
+def legal_live() -> bool:
+    """The reviewed legal documents and the operator identification are published ([legal] published and
+    operator_verified, both default off; see core/legal.py). Nothing public or payable opens before that."""
+    return legal.live()
+
+
 def enabled() -> bool:
-    """Public participation is open: BOTH the deployment safety switch and the owner's dashboard switch are on.
+    """Public participation is open: the deployment safety switch AND the owner's dashboard switch are on, AND the
+    reviewed legal documents participants agree to are published (core/legal.py).
     (The separate pause setting is shown on top of this; it stops new rewards and enrolments but keeps the page.)"""
-    return deployment_enabled() and bool(owner_switch().get("enabled"))
+    return deployment_enabled() and bool(owner_switch().get("enabled")) and legal_live()
 
 
 def public_state() -> dict:
@@ -83,25 +90,30 @@ def public_state() -> dict:
                                      "secrets" + (" — the owner switch is ON but has no effect" if owner else "") + ".")
     elif not owner:
         state, reason = "disabled", "The owner switch is OFF."
+    elif not legal_live():
+        state, reason = "disabled", ("Blocked until the legal documents are published: set [legal] operator_verified and "
+                                     "[legal] published in Streamlit secrets after legal review (legal/OPERATOR_VERIFICATION.md).")
     elif paused:
         state, reason = "paused", "Both switches are ON, but the programme is paused (no new rewards or enrolments)."
     else:
         state, reason = "enabled", "Both switches are ON and the programme is not paused."
-    return {"state": state, "reason": reason, "deployment": deployment, "owner": owner, "paused": paused,
+    return {"state": state, "reason": reason, "deployment": deployment, "owner": owner, "paused": paused, "legal": legal_live(),
             "installed": bool(switch.get("installed")), "changed_at": switch.get("changed_at"),
             "changed_by": switch.get("changed_by")}
 
 
 def payouts_active() -> bool:
-    """Real money can be approved and paid (owner switch, after legal review). Default off."""
-    return bool(config().get("payouts_active"))
+    """Real money can be approved and paid (owner switch, after legal review). Default off. Also needs the legal
+    documents to be published (core/legal.py)."""
+    return bool(config().get("payouts_active")) and legal_live()
 
 
 def withdrawals_active() -> bool:
     """Real withdrawal requests may be submitted (owner switch, after legal review). Default off. The database has its
     own switch as well (reward_cashout_settings.live_requests): real requests need both. Test accounts can always
-    simulate the process; their records are test records and are never payable."""
-    return bool(config().get("withdrawals_active"))
+    simulate the process; their records are test records and are never payable. Also needs the legal documents to
+    be published (core/legal.py)."""
+    return bool(config().get("withdrawals_active")) and legal_live()
 
 
 def fingerprint_key() -> str:
@@ -127,9 +139,79 @@ def tester() -> bool:
     return bool(email) and email in {str(x).strip().lower() for x in listed if str(x).strip()}
 
 
+def pilot_switch(refresh: bool = False) -> dict:
+    """The owner's Friends & Family Pilot switches in Supabase (reward_program_settings.pilot_enabled and
+    invitation_only), cached briefly. Not installed (supabase/pilot_invitations_migration.sql not run): pilot OFF."""
+    cache = _health_cache()
+    hit = cache.get("pilot_switch")
+    if hit and not refresh and time.time() - hit[1] < PUBLIC_TTL:
+        return hit[0]
+    try:
+        s = _supabase() if store_health() == "ok" else _memory_store()
+        status = s.pilot_status()
+    except Exception:
+        status = {"installed": False, "enabled": False, "invitation_only": True, "error": True}
+    cache["pilot_switch"] = (status, time.time())
+    return status
+
+
+def pilot_open() -> bool:
+    """The Friends & Family Pilot accepts invited people: the owner's pilot switch is ON and the documents they agree
+    to (Privacy Policy, Terms of Use, pilot terms) are published (core/legal.py). Independent of the public switch."""
+    return bool(pilot_switch().get("enabled")) and legal.pilot_ready()
+
+
+def invited(refresh: bool = False) -> bool:
+    """Is the signed-in person's Google-verified email on the owner's invitation list (not revoked)? Cached for a
+    minute per session. No verified email: not invited."""
+    email = _verified_email()
+    if not email:
+        return False
+    hit = st.session_state.get("rw_invited")
+    if hit and not refresh and hit[0] == email and time.time() - hit[2] < 60:
+        return hit[1]
+    try:
+        s = store(for_tester=False) or (_memory_store() if tester() else None)
+        value = bool(s and s.pilot_invited(email))
+    except Exception:
+        value = False
+    st.session_state.rw_invited = (email, value, time.time())
+    return value
+
+
+def pilot_terms_current() -> bool:
+    """The participation terms recorded in the database are exactly the published pilot terms (same version label and
+    content checksum). After any edit to the pilot terms, applications pause until the owner records the new
+    approved version; the database refuses mismatches as well ('terms_outdated')."""
+    return pilot_switch().get("terms_version") == legal.pilot_terms_id()
+
+
+def entry_label(menu: bool = False) -> str:
+    """The label of the participant page in menus: the Friends & Family Pilot while public rewards are not ON."""
+    if not enabled():
+        return "🤝 " + t_label("Friends & Family Pilot")
+    return "💰 " + t_label("My Rewards" if menu else "Rewards")
+
+
+def t_label(text: str) -> str:
+    from .state import t   # local import: state imports this module indirectly
+    return t(text)
+
+
+def may_apply() -> bool:
+    """May this (real, non-test) person apply now? Mirrors the database rule: the pilot or the public programme is
+    open, and an invitation is held — always for the pilot, and for the public programme unless the owner has
+    separately switched invitation-only off. The database checks it again."""
+    public, pilot = enabled(), pilot_open()
+    if not (public or pilot):
+        return False
+    return invited() or (public and pilot_switch().get("invitation_only") is False)
+
+
 def visible() -> bool:
-    """Show the 💰 Rewards entry points (top bar and Settings)."""
-    return enabled() or tester()
+    """Show the 💰 Rewards entry points (top bar and Settings): the public programme, owners/testers, or an invited
+    person while the Friends & Family Pilot is open. An ordinary visitor sees nothing while only the pilot is open."""
+    return enabled() or tester() or (pilot_open() and invited())
 
 
 def app_url() -> str:

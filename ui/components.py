@@ -11,7 +11,7 @@ from pathlib import Path
 import streamlit as st
 from PIL import Image, ImageOps, UnidentifiedImageError
 
-from core import accounts, analytics, cookies
+from core import accounts, analytics, cookies, legal
 from core.data import COLLECTIONS, CONTINENTS, COUNTRIES, PHOTOS, STATES, STATUS_LABELS, get_countries, get_country
 from core.i18n import LANGUAGES
 from core.quiz import CATEGORIES
@@ -243,7 +243,7 @@ def _account_menu(who: dict) -> None:
     html(f'<style>.st-key-account_menu button {{ --avatar: url("{avatar}"); }}</style>')
     if rewards_hooks.visible():  # owners/testers while the programme is off; everyone signed in once it is on
         # No tooltip: on touch screens a tooltip can swallow the first tap.
-        st.button("💰 " + t("Rewards"), key="rewards_menu",
+        st.button(rewards_hooks.entry_label(), key="rewards_menu",
                   type="primary" if st.session_state.page == "Rewards" else "secondary",
                   on_click=navigate, args=("Rewards",))
     with st.popover(name, key="account_menu"):
@@ -255,7 +255,7 @@ def _account_menu(who: dict) -> None:
              f'<div class="account-card-status">{e("Signed in with Google")}'
              f'{(" · " + e("progress saved")) if saved else ""}</div></div></div>')
         if rewards_hooks.visible():
-            st.button("💰 " + t("My Rewards"), key="menu_rewards", width="stretch", type="tertiary",
+            st.button(rewards_hooks.entry_label(menu=True), key="menu_rewards", width="stretch", type="tertiary",
                       on_click=_menu_go, args=("Rewards",))
         st.button("⚙️ " + t("Profile and settings"), key="settings_menu", width="stretch",
                   type="tertiary", on_click=open_settings)
@@ -524,7 +524,7 @@ def _sound_controls() -> tuple[bool, int]:
 def _rewards_entry() -> None:
     if not rewards_hooks.visible():
         return
-    if st.button("💰 " + t("Rewards"), key="settings_rewards", width="stretch"):
+    if st.button(rewards_hooks.entry_label(), key="settings_rewards", width="stretch"):
         navigate("Rewards")
         st.rerun()
     if analytics.is_owner() and not analytics.enabled():  # with analytics on, the owner button is under Privacy
@@ -571,11 +571,45 @@ def _settings_body() -> None:
         st.rerun()
     st.caption(t("Signed-in profiles save online when the account connection is ready. Guest profiles last for this session."))
     data_sources()
+    legal_information()
     st.caption(f"{t('Version')} {UI_BUILD}")
 
 
 def _settings_dialog() -> None:
     st.dialog(t("Settings"), width="small")(_settings_body)()
+
+
+# --------------------------------------------------------------------------- legal information
+
+def legal_information() -> None:
+    """The published Privacy Policy and Terms of Use (and pilot terms) with the operator identification (core/legal.py).
+    A document is shown only once it is complete and the owner has approved its exact version; the company is named
+    only after its role as operator is confirmed. Owners also see a labelled preview of every draft and what is still
+    missing. Everyone else sees nothing until something is published."""
+    owner = analytics.is_owner()
+    cfg = legal.config()
+    shown = legal.live_documents(cfg)
+    if not (shown or owner):
+        return
+    title = t("Legal information") if shown else "Legal information (draft preview, owners only)"
+    with st.expander(title, key="legal_info"):
+        if shown:
+            st.markdown(f"**{legal.operator_line()}**")
+            st.caption(legal.identification())
+            contact = legal.contact_email(cfg)
+            if contact:
+                st.caption(f"{t('Contact')}: {contact}")
+        if owner:
+            pending = [k for k in legal.DOCUMENTS if k not in shown]
+            if pending:
+                st.warning("Owners only — not published: " + ", ".join(legal.DOCUMENTS[k][0] for k in pending) + ". "
+                           + ("" if legal.operator_verified(cfg) else legal.identification(verified=False) + " ")
+                           + "See ⚖️ Legal & switches in the Owner dashboard for what is missing.")
+        keys = shown + ([k for k in legal.DOCUMENTS if k not in shown] if owner else [])
+        labels = [legal.DOCUMENTS[k][0] + ("" if k in shown else " (draft)") for k in keys]
+        for tab, key in zip(st.tabs(labels), keys):
+            with tab:
+                st.markdown(legal.document(key, cfg))
 
 
 # --------------------------------------------------------------------------- credits

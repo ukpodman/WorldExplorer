@@ -1,5 +1,9 @@
-"""🌟 World Explorer Founding 50 — the player's part of 💰 My Rewards (Option B: anyone can apply, only the Owner
-approves). World Explorer and its geography features stay free for everyone; applying is optional.
+"""The participant's application card. Internally the programme is "Funding 50" (tables and code keep the earlier
+"founding" names); participants see:
+  * while the public rewards programme is OFF (now): "World Explorer — Friends & Family Pilot", the published pilot terms
+    (legal/PILOT_TERMS.md, the exact approved version is recorded with the application) and no money language;
+  * once public rewards are separately authorised and ON (later): the earlier Founding 50 rewards texts.
+World Explorer and its geography features stay free for everyone; applying is optional.
 
 Only approved participants can earn money. The database enforces that again (supabase/founding50_migration.sql):
 one application per person, owner-only decisions, no enrolment and no paid activity without approval, and the 30-day
@@ -9,7 +13,7 @@ from __future__ import annotations
 
 import streamlit as st
 
-from core import founding
+from core import founding, legal, rewards
 from core.rewards_store import StoreError
 
 from . import rewards_hooks as hooks
@@ -20,6 +24,9 @@ TEST_LABEL = "🧪 Test application — not payable"
 APPLY_ERRORS = {
     "already_applied": "You have already applied. Each person can apply once.",
     "programme_off": "Applications are closed at the moment. Please try again later.",
+    "not_invited": "The Friends & Family Pilot is by invitation only. You can keep using all of World Explorer for free.",
+    "terms_outdated": "The pilot terms have been updated. Please read the current terms and apply again.",
+    "terms_required": "Applications are closed at the moment. Please try again later.",
     "declarations_required": "Please confirm all three statements to apply.",
     "state_required": "Please choose your state of residence.",
     "note_too_long": "Please keep your message under 300 characters.",
@@ -33,6 +40,21 @@ STATUS_TEXT = {
                             "for free."),
     "approved": ("success", "Your Founding 50 application was approved!"),
 }
+
+
+PILOT_STATUS_TEXT = {
+    "pending": ("info", "Your application to the Friends & Family Pilot was received on {date} and is waiting for review."),
+    "waitlist": ("info", "You are on the Friends & Family Pilot waiting list. This page will show it when a place is "
+                         "offered to you."),
+    "rejected": ("warning", "Your application was not accepted this time. You can keep using all of World Explorer "
+                            "for free."),
+    "approved": ("success", "Welcome to the Friends & Family Pilot! Your application was approved."),
+}
+
+
+def pilot_mode() -> bool:
+    """Participants see the Friends & Family Pilot (not the rewards programme) while public rewards are not ON."""
+    return not hooks.enabled()
 
 
 def _places(s) -> tuple[int, int]:
@@ -56,6 +78,61 @@ def _intro(s) -> None:
          f'<div class="rw-stat-label">{t("Places available")}</div></div></div>')
 
 
+def _pilot_intro(s) -> None:
+    left, total = _places(s)
+    st.subheader(t("World Explorer — Friends & Family Pilot"))
+    st.markdown(t("An invitation-only testing phase for up to {n} adults in Nigeria. You help us test World Explorer "
+                  "before a wider launch; the World Explorer team reviews every application.", n=total))
+    st.caption(t("Educational points and badges have no monetary value. No payments are available during the pilot."))
+    html(f'<div class="rw-stats"><div class="rw-stat"><div class="rw-stat-value">{left} / {total}</div>'
+         f'<div class="rw-stat-label">{t("Places available")}</div></div></div>')
+
+
+def _pilot_apply_form(s, who: dict, account: dict) -> None:
+    """The application with the published Friends & Family Pilot terms; the exact version shown is the version the
+    applicant accepts, and the database checks it against the owner's approved version."""
+    terms_id = legal.pilot_terms_id()
+    with st.expander("📜 " + t("Friends & Family Pilot terms") + f" ({legal.version('pilot')})", expanded=False):
+        st.caption(t("The pilot terms are available in English."))
+        st.markdown(legal.document("pilot"))
+    with st.form("rw_founding_apply", border=True):
+        st.markdown("**" + t("Apply to the Friends & Family Pilot") + "**")
+        state = st.selectbox(t("State of residence"), founding.STATES, index=None,
+                             placeholder=t("Choose your state"), key="rw_f_state")
+        note = st.text_area(t("Why would you like to take part? (optional)"), max_chars=founding.NOTE_MAX,
+                            key="rw_f_note", height=90)
+        adult = st.checkbox(t("I am 18 years or older."), key="rw_f_adult")
+        resident = st.checkbox(t("I live in Nigeria."), key="rw_f_resident")
+        terms = st.checkbox(t("I have read and accept the Friends & Family Pilot terms."), key="rw_f_terms")
+        st.caption(t("Applying does not guarantee a place. We do not ask for bank details."))
+        submitted = st.form_submit_button(t("Apply to the Friends & Family Pilot"), type="primary", width="stretch")
+    if submitted:
+        _submit(s, who, state, note, adult, resident, terms, terms_id,
+                t("Thank you! Your application to the Friends & Family Pilot was sent. The World Explorer team will "
+                  "review it."))
+
+
+def _submit(s, who: dict, state, note, adult: bool, resident: bool, terms: bool, terms_version: str,
+            thanks: str) -> None:
+    if not (adult and resident and terms):
+        st.error(t(APPLY_ERRORS["declarations_required"]))
+        return
+    if not state:
+        st.error(t(APPLY_ERRORS["state_required"]))
+        return
+    try:
+        s.apply_founding(who["profile_id"], state, note, adult, resident, terms, terms_version=terms_version)
+    except StoreError as error:
+        key = next((k for k in APPLY_ERRORS if k in str(error)), None)
+        st.error(t(APPLY_ERRORS[key]) if key else t("Your application could not be sent. Please try again."))
+        return
+    except Exception:
+        st.error(t("Your application could not be sent. Please try again."))
+        return
+    st.session_state.rw_flash = (thanks, "success")
+    st.rerun()
+
+
 def _apply_form(s, who: dict, account: dict) -> None:
     from .rewards_page import TERMS, _naira   # the programme rules shown when joining (one text)
     settings = s.settings()
@@ -75,33 +152,16 @@ def _apply_form(s, who: dict, account: dict) -> None:
         st.caption(t("Applying does not guarantee a place. Only approved participants earn rewards. We do not ask for "
                      "bank details here."))
         submitted = st.form_submit_button(t("Apply for the Founding 50"), type="primary", width="stretch")
-    if not submitted:
-        return
-    if not (adult and resident and terms):
-        st.error(t(APPLY_ERRORS["declarations_required"]))
-        return
-    if not state:
-        st.error(t(APPLY_ERRORS["state_required"]))
-        return
-    try:
-        s.apply_founding(who["profile_id"], state, note, adult, resident, terms)
-    except StoreError as error:
-        key = next((k for k in APPLY_ERRORS if k in str(error)), None)
-        st.error(t(APPLY_ERRORS[key]) if key else t("Your application could not be sent. Please try again."))
-        return
-    except Exception:
-        st.error(t("Your application could not be sent. Please try again."))
-        return
-    st.session_state.rw_flash = (t("Thank you! Your Founding 50 application was sent. The World Explorer team will review it."),
-                                 "success")
-    st.rerun()
+    if submitted:
+        _submit(s, who, state, note, adult, resident, terms, rewards.TERMS_VERSION,
+                t("Thank you! Your Founding 50 application was sent. The World Explorer team will review it."))
 
 
 def _status(application: dict, member: bool) -> None:
-    kind, text = STATUS_TEXT[application["status"]]
+    kind, text = (PILOT_STATUS_TEXT if pilot_mode() else STATUS_TEXT)[application["status"]]
     getattr(st, kind)(t(text, date=str(application.get("applied_at") or "")[:10]),
                       icon={"success": "✅", "warning": "ℹ️", "info": "⏳"}[kind])
-    if application["status"] == "approved" and not member:
+    if application["status"] == "approved" and not member and not pilot_mode():
         st.caption(t("Confirm your declarations below to take your place. Your 30-day withdrawal waiting period "
                      "starts when you take your place."))
 
@@ -116,14 +176,21 @@ def section(s, who: dict, account: dict) -> bool:
     if approved and not test and member:
         return True                         # an approved participant: the normal rewards page, nothing extra
     with st.container(border=True, key="rw_founding"):
+        pilot = pilot_mode()
         if test:
             html(f'<div class="rw-test-label">{t(TEST_LABEL)}</div>')
-        _intro(s)
+        _pilot_intro(s) if pilot else _intro(s)
         if application:
             _status(application, member)
+        elif not (test or hooks.may_apply()):   # invitation only (the database refuses it as well)
+            st.info(t(APPLY_ERRORS["not_invited"]))
+        elif pilot and not hooks.pilot_terms_current():
+            st.info(t(APPLY_ERRORS["terms_required"]))   # the approved terms are not recorded yet (owner)
+        elif pilot:
+            _pilot_apply_form(s, who, account)
         else:
             _apply_form(s, who, account)
-        if member and not approved:
+        if member and not approved and not pilot:
             st.caption(t("Your activity is recorded, but it earns rewards only after your Founding 50 application is "
                          "approved."))
     return approved

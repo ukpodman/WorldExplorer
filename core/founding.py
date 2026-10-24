@@ -8,6 +8,8 @@ official enrolment after the first approval.
 """
 from __future__ import annotations
 
+import re
+
 from core.rewards import _dt
 
 STATUSES = ("pending", "approved", "waitlist", "rejected")
@@ -20,6 +22,9 @@ STATES = ("Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue
 NOTE_MAX = 300
 DECISION_NOTE_MAX = 500
 TABLE = "reward_founding_applications"
+INVITES = "reward_pilot_invitations"                 # supabase/pilot_invitations_migration.sql
+INVITE_NOTE_MAX = 200
+INVITE_EMAIL = re.compile(r"[^@\s]+@[^@\s]+\.[^@\s]+")
 
 
 def approved(application: dict | None, account: dict | None) -> bool:
@@ -50,8 +55,15 @@ def clock_start(application: dict | None, account: dict | None):
 
 
 def apply_error(account: dict | None, existing: dict | None, state: str | None, note: str | None, adult: bool,
-                resident: bool, terms: bool, public_on: bool) -> str | None:
-    """Why an application is refused (the database checks the same), or None."""
+                resident: bool, terms: bool, public_on: bool, pilot_on: bool = False, invitation_only: bool = True,
+                invited: bool = False, terms_version: str | None = None, pilot_terms: str | None = None,
+                public_terms: str | None = None) -> str | None:
+    """Why an application is refused (the database checks the same, supabase/pilot_invitations_migration.sql), or None.
+
+    Two independent ways in, each with its own owner-approved participation terms:
+      * the Friends & Family Pilot: pilot ON + invited                             + exactly the approved pilot terms;
+      * public rewards enrolment:   public ON + (invited, or invitation_only OFF)  + exactly the approved public terms.
+    Owner/tester (test) accounts may always try; their records are test records."""
     if not account:
         return "no_account"
     if existing:
@@ -62,11 +74,33 @@ def apply_error(account: dict | None, existing: dict | None, state: str | None, 
         return "state_required"
     if len(note or "") > NOTE_MAX:
         return "note_too_long"
-    if not account.get("test") and account.get("membership") == "suspended":
+    if terms_version is not None and not str(terms_version).strip():
+        return "declarations_required"
+    if account.get("test"):
+        return None
+    if account.get("membership") == "suspended":
         return "suspended"
-    if not account.get("test") and not public_on:
+    if not (public_on or pilot_on):
         return "programme_off"
-    return None
+    via_pilot = bool(pilot_on and invited)
+    via_public = bool(public_on and (invited or not invitation_only))
+    if not (via_pilot or via_public):
+        return "not_invited"
+    accepted = str(terms_version or "").strip()
+    if (via_pilot and pilot_terms and accepted == pilot_terms) or (via_public and public_terms and accepted == public_terms):
+        return None
+    if (not via_pilot or not pilot_terms) and (not via_public or not public_terms):
+        return "terms_required"
+    return "terms_outdated"
+
+
+def normalize_email(email) -> str:
+    return str(email or "").strip().lower()
+
+
+def email_ok(email) -> bool:
+    e = normalize_email(email)
+    return bool(INVITE_EMAIL.fullmatch(e)) and len(e) <= 254
 
 
 def decide_error(application: dict | None, action: str, note: str | None, approved_count: int,

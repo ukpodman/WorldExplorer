@@ -10,6 +10,7 @@ from unittest import mock
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+import legal_fixtures  # noqa: E402  (completed sample documents for published-legal tests)
 sys.path.insert(0, str(ROOT / "tests"))
 APP = str(ROOT / "app.py")
 
@@ -49,6 +50,7 @@ class WithdrawalAppTests(unittest.TestCase):
         at = AppTest.from_file(APP, default_timeout=60)
         at.secrets["rewards"] = {"enabled": True, "tester_emails": ["player@example.com"], "withdrawals_active": live,
                                  "payouts_active": payouts, **rewards_cfg}
+        at.secrets["legal"] = legal_fixtures.secrets()
         at.secrets["analytics"] = {"owner_emails": ["owner@example.com"]}
         at.session_state["page"] = page
         if page == "Owner":   # the owner opens the rewards tab (the dashboard draws only the open tab)

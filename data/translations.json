@@ -4920,6 +4920,132 @@
    "Faltan {n} continentes para desbloquearla.",
    "再覆盖 {n} 个大洲即可解锁。",
    "Осталось континентов: {n}."
+  ],
+  "Legal information": [
+   "Rechtliche Informationen",
+   "Información legal",
+   "法律信息",
+   "Правовая информация"
+  ],
+  "Contact": [
+   "Kontakt",
+   "Contacto",
+   "联系方式",
+   "Контакт"
+  ],
+  "The Friends & Family Pilot is by invitation only. You can keep using all of World Explorer for free.": [
+   "Der Friends-&-Family-Pilot ist nur auf Einladung. Du kannst World Explorer weiterhin kostenlos nutzen.",
+   "El piloto Friends & Family es solo por invitación. Puedes seguir usando World Explorer gratis.",
+   "Friends & Family 试点仅限受邀者参加。你可以继续免费使用 World Explorer 的全部功能。",
+   "Пилот Friends & Family — только по приглашению. Вы можете и дальше бесплатно пользоваться World Explorer."
+  ],
+  "World Explorer — Friends & Family Pilot": [
+   "World Explorer — Friends-&-Family-Pilot",
+   "World Explorer — Piloto Friends & Family",
+   "World Explorer — Friends & Family 试点",
+   "World Explorer — пилот Friends & Family"
+  ],
+  "Friends & Family Pilot": [
+   "Friends-&-Family-Pilot",
+   "Piloto Friends & Family",
+   "Friends & Family 试点",
+   "Пилот Friends & Family"
+  ],
+  "Invitation only": [
+   "Nur auf Einladung",
+   "Solo por invitación",
+   "仅限受邀",
+   "Только по приглашению"
+  ],
+  "Help us test World Explorer before a wider launch.": [
+   "Hilf uns, World Explorer vor dem breiteren Start zu testen.",
+   "Ayúdanos a probar World Explorer antes de un lanzamiento más amplio.",
+   "在正式推广前帮助我们测试 World Explorer。",
+   "Помогите нам протестировать World Explorer перед широким запуском."
+  ],
+  "An invitation-only testing phase for up to {n} adults in Nigeria. You help us test World Explorer before a wider launch; the World Explorer team reviews every application.": [
+   "Eine Testphase nur auf Einladung für bis zu {n} Erwachsene in Nigeria. Du hilfst uns, World Explorer vor dem breiteren Start zu testen; das World-Explorer-Team prüft jede Bewerbung.",
+   "Una fase de prueba solo por invitación para hasta {n} adultos en Nigeria. Nos ayudas a probar World Explorer antes de un lanzamiento más amplio; el equipo de World Explorer revisa cada solicitud.",
+   "仅限受邀的测试阶段，面向尼日利亚最多 {n} 名成年人。你将帮助我们在正式推广前测试 World Explorer；World Explorer 团队会审核每一份申请。",
+   "Этап тестирования только по приглашению — до {n} взрослых участников в Нигерии. Вы помогаете нам протестировать World Explorer перед широким запуском; команда World Explorer рассматривает каждую заявку."
+  ],
+  "Educational points and badges have no monetary value. No payments are available during the pilot.": [
+   "Lernpunkte und Abzeichen haben keinen Geldwert. Während des Pilots gibt es keine Zahlungen.",
+   "Los puntos educativos y las insignias no tienen valor monetario. Durante el piloto no hay pagos.",
+   "学习积分和徽章没有货币价值。试点期间不提供任何付款。",
+   "Учебные очки и значки не имеют денежной стоимости. Во время пилота выплаты не производятся."
+  ],
+  "Educational points and badges have no monetary value. No payments are available during the pilot. Thank you for helping us test World Explorer.": [
+   "Lernpunkte und Abzeichen haben keinen Geldwert. Während des Pilots gibt es keine Zahlungen. Danke, dass du World Explorer testest.",
+   "Los puntos educativos y las insignias no tienen valor monetario. Durante el piloto no hay pagos. Gracias por ayudarnos a probar World Explorer.",
+   "学习积分和徽章没有货币价值。试点期间不提供任何付款。感谢你帮助我们测试 World Explorer。",
+   "Учебные очки и значки не имеют денежной стоимости. Во время пилота выплаты не производятся. Спасибо, что помогаете тестировать World Explorer."
+  ],
+  "Friends & Family Pilot terms": [
+   "Bedingungen des Friends-&-Family-Pilots",
+   "Condiciones del piloto Friends & Family",
+   "Friends & Family 试点条款",
+   "Условия пилота Friends & Family"
+  ],
+  "The pilot terms are available in English.": [
+   "Die Pilotbedingungen sind auf Englisch verfügbar.",
+   "Las condiciones del piloto están disponibles en inglés.",
+   "试点条款提供英文版本。",
+   "Условия пилота доступны на английском языке."
+  ],
+  "Apply to the Friends & Family Pilot": [
+   "Für den Friends-&-Family-Pilot bewerben",
+   "Solicitar el piloto Friends & Family",
+   "申请参加 Friends & Family 试点",
+   "Подать заявку на пилот Friends & Family"
+  ],
+  "Why would you like to take part? (optional)": [
+   "Warum möchtest du teilnehmen? (optional)",
+   "¿Por qué te gustaría participar? (opcional)",
+   "你为什么想参加？（可选）",
+   "Почему вы хотите принять участие? (необязательно)"
+  ],
+  "I have read and accept the Friends & Family Pilot terms.": [
+   "Ich habe die Bedingungen des Friends-&-Family-Pilots gelesen und akzeptiere sie.",
+   "He leído y acepto las condiciones del piloto Friends & Family.",
+   "我已阅读并接受 Friends & Family 试点条款。",
+   "Я прочитал(а) и принимаю условия пилота Friends & Family."
+  ],
+  "Applying does not guarantee a place. We do not ask for bank details.": [
+   "Eine Bewerbung garantiert keinen Platz. Wir fragen nicht nach Bankdaten.",
+   "Solicitar no garantiza una plaza. No pedimos datos bancarios.",
+   "提交申请并不保证获得名额。我们不会索取银行信息。",
+   "Заявка не гарантирует место. Мы не запрашиваем банковские реквизиты."
+  ],
+  "Thank you! Your application to the Friends & Family Pilot was sent. The World Explorer team will review it.": [
+   "Danke! Deine Bewerbung für den Friends-&-Family-Pilot wurde gesendet. Das World-Explorer-Team prüft sie.",
+   "¡Gracias! Tu solicitud para el piloto Friends & Family se ha enviado. El equipo de World Explorer la revisará.",
+   "谢谢！你的 Friends & Family 试点申请已提交。World Explorer 团队会进行审核。",
+   "Спасибо! Ваша заявка на пилот Friends & Family отправлена. Команда World Explorer её рассмотрит."
+  ],
+  "Your application to the Friends & Family Pilot was received on {date} and is waiting for review.": [
+   "Deine Bewerbung für den Friends-&-Family-Pilot ist am {date} eingegangen und wartet auf Prüfung.",
+   "Tu solicitud para el piloto Friends & Family se recibió el {date} y está pendiente de revisión.",
+   "你的 Friends & Family 试点申请已于 {date} 收到，正在等待审核。",
+   "Ваша заявка на пилот Friends & Family получена {date} и ожидает рассмотрения."
+  ],
+  "You are on the Friends & Family Pilot waiting list. This page will show it when a place is offered to you.": [
+   "Du stehst auf der Warteliste des Friends-&-Family-Pilots. Diese Seite zeigt es an, sobald dir ein Platz angeboten wird.",
+   "Estás en la lista de espera del piloto Friends & Family. Esta página lo mostrará cuando se te ofrezca una plaza.",
+   "你已进入 Friends & Family 试点候补名单。有名额时，此页面会显示。",
+   "Вы в листе ожидания пилота Friends & Family. Эта страница сообщит, когда вам предложат место."
+  ],
+  "Welcome to the Friends & Family Pilot! Your application was approved.": [
+   "Willkommen im Friends-&-Family-Pilot! Deine Bewerbung wurde angenommen.",
+   "¡Bienvenido/a al piloto Friends & Family! Tu solicitud fue aprobada.",
+   "欢迎加入 Friends & Family 试点！你的申请已获批准。",
+   "Добро пожаловать в пилот Friends & Family! Ваша заявка одобрена."
+  ],
+  "The pilot terms have been updated. Please read the current terms and apply again.": [
+   "Die Pilotbedingungen wurden aktualisiert. Bitte lies die aktuellen Bedingungen und bewirb dich erneut.",
+   "Las condiciones del piloto se han actualizado. Lee las condiciones actuales y vuelve a solicitarlo.",
+   "试点条款已更新。请阅读最新条款后重新申请。",
+   "Условия пилота обновлены. Пожалуйста, прочитайте актуальные условия и подайте заявку снова."
   ]
  }
 }

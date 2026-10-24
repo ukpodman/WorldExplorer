@@ -9,6 +9,7 @@ from unittest import mock
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+import legal_fixtures  # noqa: E402  (completed sample documents for published-legal tests)
 sys.path.insert(0, str(ROOT / "tests"))
 APP = str(ROOT / "app.py")
 
@@ -40,6 +41,7 @@ class RewardsAppTests(unittest.TestCase):
         at = AppTest.from_file(APP, default_timeout=60)
         if rewards is not None:
             at.secrets["rewards"] = rewards
+            at.secrets["legal"] = legal_fixtures.secrets()
         if owner:
             at.secrets["analytics"] = {"owner_emails": ["owner@example.com"]}
         for k, v in state.items():
@@ -269,7 +271,7 @@ class RewardsAppTests(unittest.TestCase):
         at.button(key="settings_menu").click().run()                      # Profile and settings opens Settings
         self.assertTrue([b for b in at.button if b.key == "profile_logout"])
         at = self.app(who=who, rewards={"tester_emails": ["player@example.com"]}).run()
-        self.assertIn("💰", at.button(key="rewards_menu").label)
+        self.assertEqual(at.button(key="rewards_menu").label, "🤝 Friends & Family Pilot")   # public rewards off
         at.button(key="menu_rewards").click().run()
         self.assertEqual(at.session_state["page"], "Rewards")
         self.assertEqual([e.value for e in at.exception], [])
@@ -292,7 +294,7 @@ class RewardsAppTests(unittest.TestCase):
         at = self.app(who=OWNER, rewards={}, owner=True).run()
         self.assertTrue([b for b in at.button if b.key == "settings_menu_m"])          # ☰ beside the photo (phones)
         labels = {b.key: b.label for b in at.button}
-        self.assertTrue(labels["menu_rewards"].startswith("💰"))
+        self.assertTrue(labels["menu_rewards"].startswith("🤝"))   # the pilot label while public rewards are off
         self.assertTrue(labels["settings_menu"].startswith("⚙️"))
         self.assertTrue(labels["menu_logout"].startswith("🚪"))
         self.assertTrue(any("My account" in str(m.value) for m in at.markdown))
@@ -429,7 +431,11 @@ class RewardsAppTests(unittest.TestCase):
         self.assertFalse(self.store().settings().paused)
         at.number_input[[n.label for n in at.number_input].index("Places")].set_value(60)
         at.button[[b.label for b in at.button].index("Save settings")].click().run()
-        self.assertEqual(self.store().settings().max_places, 60)
+        self.assertTrue(any("limited to 50" in e.value for e in at.error))   # Friends & Family Pilot: 50 places at most
+        self.assertEqual(self.store().settings().max_places, 50)
+        at.number_input[[n.label for n in at.number_input].index("Places")].set_value(40)
+        at.button[[b.label for b in at.button].index("Save settings")].click().run()
+        self.assertEqual(self.store().settings().max_places, 40)
         at.number_input[[n.label for n in at.number_input].index("Active day: ₦ each")].set_value(1)
         at.button[[b.label for b in at.button].index("Save settings")].click().run()
         self.assertTrue(at.error)                                   # unreachable without referrals: refused

@@ -284,7 +284,11 @@ def render() -> None:
     if not hooks.visible():
         st.info(t("This page is not available."))
         return
-    hero("Rewards pilot", "My Rewards", "Learn, explore and earn rewards every month.", variant="compact")
+    if hooks.enabled():
+        hero("Rewards pilot", "My Rewards", "Learn, explore and earn rewards every month.", variant="compact")
+    else:   # the Friends & Family Pilot: no money language
+        hero("Invitation only", "Friends & Family Pilot", "Help us test World Explorer before a wider launch.",
+             variant="compact")
     who = accounts.identity()
     if not who:
         _banner(None)
@@ -320,6 +324,13 @@ def render() -> None:
         may_join = True
     else:
         may_join = founding_ui.section(fs, who, account)
+    if not hooks.enabled() and not account.get("test"):
+        # Friends & Family Pilot only (the public rewards programme is closed): the application and its status, and
+        # nothing about joining, earning, invitation links or withdrawals. The database pays ₦0 and refuses
+        # enrolment while the public switch is off, so the pilot creates no money liability.
+        st.info(t("Educational points and badges have no monetary value. No payments are available during the pilot. "
+                  "Thank you for helping us test World Explorer."))
+        return
     if account.get("membership") == "member":
         _status_line(ctx.get("enrolment"), ctx["settings"])
         with st.container(border=True, key="rw_progress"):

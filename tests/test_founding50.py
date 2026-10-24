@@ -13,6 +13,8 @@ from unittest import mock
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+import legal_fixtures  # noqa: E402  (completed sample documents for published-legal tests)
+from core import rewards as rewards_module  # noqa: E402
 sys.path.insert(0, str(ROOT / "tests"))
 
 from core import founding, rewards, withdrawals  # noqa: E402
@@ -26,6 +28,8 @@ try:
 except ImportError:  # pragma: no cover
     AppTest = None
 
+PUBLIC_TERMS = rewards_module.TERMS_VERSION              # the public programme rules (future public enrolment)
+TERMS = "2026-11-05#test0000000000000"   # approved participation terms recorded in the test stores
 OWNER = "owner@example.com"
 TODAY = withdrawals.today()
 CUR = withdrawals.month_of(TODAY)
@@ -79,6 +83,11 @@ class Scenarios:
         s.update("reward_cashout_settings", {"id": 1}, {"owner_emails": [OWNER], "live_requests": True,
                                                         "real_payouts": True})   # local test database only
         s.set_public(True, OWNER, confirmed=True)
+        # these tests cover public applications ("anyone can apply"), which now also need invitation-only switched
+        # off — a separate, confirmed owner decision (supabase/pilot_invitations_migration.sql); the invitation-only
+        # pilot has its own tests (PilotInvitationTests)
+        s.set_participation_terms("public", TERMS, OWNER)             # the approved public programme rules
+        s.set_invitation_only(False, OWNER, confirmed=True)
         return s
 
     def person(self, s, n, test=False):
@@ -87,7 +96,7 @@ class Scenarios:
 
     def apply(self, s, n, state="Lagos", note=None, test=False):
         p = self.person(s, n, test)
-        return s.apply_founding(p, state, note, True, True, True)
+        return s.apply_founding(p, state, note, True, True, True, terms_version=TERMS)
 
     def approve(self, s, n, note=None):
         app = s.founding_application(pid(n))
@@ -107,7 +116,7 @@ class Scenarios:
         self.assertEqual((app["status"], app["state"], app["test"], app["seen_at"]), ("pending", "Lagos", False, None))
         self.assertEqual(app["note"], "I love geography")
         with self.assertRaises(StoreError) as caught:                 # a second application is refused
-            s.apply_founding(pid(1), "Kano", None, True, True, True)
+            s.apply_founding(pid(1), "Kano", None, True, True, True, terms_version=TERMS)
         self.assertIn("already_applied", str(caught.exception))
         self.assertEqual(len(s.founding_applications()), 1)
         self.assertEqual(s.founding_application(pid(1))["state"], "Lagos")   # the first one is unchanged
@@ -134,7 +143,7 @@ class Scenarios:
             self.assertIn(error, str(caught.exception))
         self.assertEqual(s.founding_applications(), [])
         with self.assertRaises(StoreError) as caught:                 # no account, no application
-            s.apply_founding(pid(99), "Lagos", None, True, True, True)
+            s.apply_founding(pid(99), "Lagos", None, True, True, True, terms_version=TERMS)
         self.assertIn("no_account", str(caught.exception))
 
     def test_real_applications_wait_for_the_public_switch_test_accounts_never_count(self):
@@ -156,7 +165,7 @@ class Scenarios:
         p = self.person(s, 1)
         s.update_account(p, {"membership": "suspended"})
         with self.assertRaises(StoreError) as caught:
-            s.apply_founding(p, "Lagos", None, True, True, True)
+            s.apply_founding(p, "Lagos", None, True, True, True, terms_version=TERMS)
         self.assertIn("suspended", str(caught.exception))
 
     # ------------------------------------------------------------------ the Owner decides
@@ -261,7 +270,7 @@ class Scenarios:
         for n, step in ((1, None), (2, "pending"), (3, "waitlist"), (4, "rejected")):
             p = self.person(s, n)
             if step:
-                s.apply_founding(p, "Lagos", None, True, True, True)
+                s.apply_founding(p, "Lagos", None, True, True, True, terms_version=TERMS)
                 if step != "pending":
                     self.decide(s, n, {"waitlist": "waitlist", "rejected": "reject"}[step], "No")
             for attempt in (lambda: s.join(p, CUR), lambda: s.enrol(p, CUR)):
@@ -475,6 +484,228 @@ class Scenarios:
                          (after["live_requests"], after["real_payouts"]))
         self.assertTrue(s.public_status()["enabled"])                 # decisions never change the public switch
 
+    # ------------------------------------------------------------------ Friends & Family Pilot: invitation only
+    # (supabase/pilot_invitations_migration.sql; the same rules in MemoryStore and in the real SQL)
+
+    def pilot_store(self, terms=True):
+        """Fresh store with defaults: public OFF, pilot OFF, invitation-only ON (approved terms recorded)."""
+        s = self.make_store()
+        s.save_settings(Settings(start_date=f"{M1}-01"), OWNER)
+        s.update("reward_cashout_settings", {"id": 1}, {"owner_emails": [OWNER]})
+        if terms:
+            s.set_participation_terms("pilot", TERMS, OWNER)
+        return s
+
+    def refused(self, s, n, reason, test=False):
+        with self.assertRaises(StoreError) as caught:
+            self.apply(s, n, test=test)
+        self.assertIn(reason, str(caught.exception))
+
+    def test_defaults_keep_the_pilot_closed_and_invitation_only(self):
+        s = self.pilot_store()
+        self.assertEqual({k: s.pilot_status()[k] for k in ("installed", "enabled", "invitation_only")},
+                         {"installed": True, "enabled": False, "invitation_only": True})
+        s.invite("p1@example.com", OWNER)
+        self.refused(s, 1, "programme_off")                           # invited, but nothing is open yet
+
+    def test_public_switch_alone_never_admits_uninvited_people(self):
+        s = self.pilot_store()
+        s.set_public(True, OWNER, confirmed=True)
+        self.refused(s, 1, "not_invited")                             # an ordinary member of the public
+        s.invite("P2@Example.com ", OWNER, "a friend")                # stored lower-case and trimmed
+        self.refused_with(s, 2, PUBLIC_TERMS, "terms_required")       # no public terms approved yet (NULL-safe)
+        s.set_participation_terms("public", PUBLIC_TERMS, OWNER)
+        self.assertEqual(self.apply_with(s, 2, PUBLIC_TERMS)["status"], "pending")   # invited, public rules accepted
+
+    def test_pilot_admits_invited_people_only_whatever_invitation_only_says(self):
+        s = self.pilot_store()
+        s.set_pilot(True, OWNER, confirmed=True)
+        s.invite("p1@example.com", OWNER)
+        self.assertEqual(self.apply(s, 1)["status"], "pending")
+        self.refused(s, 2, "not_invited")
+        s.set_participation_terms("public", PUBLIC_TERMS, OWNER)
+        s.set_invitation_only(False, OWNER, confirmed=True)           # meant for public enrolment only
+        self.refused(s, 3, "not_invited")                             # the pilot still needs an invitation
+        self.assertTrue(self.apply(s, 4, test=True)["test"])          # owner/tester simulation still works
+
+    def test_separately_authorised_public_enrolment(self):
+        s = self.pilot_store()
+        s.set_public(True, OWNER, confirmed=True)
+        s.set_participation_terms("public", PUBLIC_TERMS, OWNER)
+        s.set_invitation_only(False, OWNER, confirmed=True)
+        app = s.apply_founding(self.person(s, 1), "Lagos", None, True, True, True, terms_version=PUBLIC_TERMS)
+        self.assertEqual(app["status"], "pending")                    # public applications, still owner-approved
+
+    def test_pilot_switches_are_owner_only_confirmed_and_guarded(self):
+        s = self.pilot_store()
+        for call, reason in ((lambda: s.set_pilot(True, "p1@example.com", confirmed=True), "not_owner"),
+                             (lambda: s.set_pilot(True, OWNER), "confirmation_required"),
+                             (lambda: s.set_invitation_only(False, OWNER), "confirmation_required"),
+                             (lambda: s.invite("p1@example.com", "p1@example.com"), "not_owner"),
+                             (lambda: s.invite("not an email", OWNER), "invalid_email"),
+                             (lambda: s.revoke_invitation("nobody@example.com", OWNER), "not_invited")):
+            with self.assertRaises(StoreError) as caught:
+                call()
+            self.assertIn(reason, str(caught.exception))
+        for column, value in (("pilot_enabled", True), ("invitation_only", False)):
+            with self.assertRaises(StoreError):                       # not through the ordinary settings update
+                s.update("reward_program_settings", {"id": 1}, {column: value})
+        self.assertEqual((s.pilot_status()["enabled"], s.pilot_status()["invitation_only"]), (False, True))
+
+    def test_revoked_invitations_stop_new_applications_only(self):
+        s = self.pilot_store()
+        s.set_pilot(True, OWNER, confirmed=True)
+        for n in (1, 2):
+            s.invite(f"p{n}@example.com", OWNER)
+        self.apply(s, 1)
+        s.revoke_invitation("p1@example.com", OWNER)
+        s.revoke_invitation("p2@example.com", OWNER)
+        self.refused(s, 2, "not_invited")
+        self.assertEqual(s.founding_application(pid(1))["status"], "pending")   # existing application unchanged
+        self.assertFalse(s.pilot_invited("p1@example.com"))
+        s.invite("p2@example.com", OWNER)                             # invited again
+        self.assertTrue(s.pilot_invited("p2@example.com"))
+        actions = [a["action"] for a in s.select("reward_audit_log", None, order="id")]
+        for action in ("pilot_on", "pilot_invited", "pilot_revoked"):
+            self.assertIn(action, actions)
+
+    def test_approved_pilot_participants_earn_nothing_and_cannot_enrol(self):
+        s = self.pilot_store()
+        s.set_pilot(True, OWNER, confirmed=True)
+        s.invite("p1@example.com", OWNER)
+        self.apply(s, 1)
+        self.approve(s, 1)                                            # the owner approves as before
+        with self.assertRaises(StoreError):                           # the public programme is OFF: no enrolment
+            s.join(pid(1), CUR)
+        row = self.quiz(s, pid(1), "q1")
+        self.assertEqual(row["amount"], 0)                            # activity is recorded, ₦0
+        self.assertEqual(sum(e["amount"] for e in s.events(pid(1))), 0)
+
+    def test_applicants_must_accept_the_approved_terms_version(self):
+        s = self.pilot_store(terms=False)
+        with self.assertRaises(StoreError) as caught:                 # no approved terms: the pilot cannot start
+            s.set_pilot(True, OWNER, confirmed=True)
+        self.assertIn("terms_required", str(caught.exception))
+        s.set_participation_terms("pilot", "2026-11-05#aaaaaaaaaaaaaaaa", OWNER)
+        s.set_pilot(True, OWNER, confirmed=True)
+        s.invite("p1@example.com", OWNER)
+        s.invite("p2@example.com", OWNER)
+        p = self.person(s, 1)
+        for version in (None, "2026-10-24#bbbbbbbbbbbbbbbb", rewards_module.TERMS_VERSION):   # old, other or missing
+            with self.assertRaises(StoreError) as caught:
+                s.apply_founding(p, "Lagos", None, True, True, True, terms_version=version)
+            self.assertIn("terms_outdated", str(caught.exception), version)
+        app = s.apply_founding(p, "Lagos", None, True, True, True, terms_version="2026-11-05#aaaaaaaaaaaaaaaa")
+        self.assertEqual(app["terms_version"], "2026-11-05#aaaaaaaaaaaaaaaa")   # the accepted version is kept
+        s.set_participation_terms("pilot", "2026-12-01#cccccccccccccccc", OWNER)   # terms changed and re-approved
+        self.assertEqual(s.founding_application(p)["terms_version"], "2026-11-05#aaaaaaaaaaaaaaaa")   # history kept
+        with self.assertRaises(StoreError) as caught:
+            s.apply_founding(self.person(s, 2), "Lagos", None, True, True, True,
+                             terms_version="2026-11-05#aaaaaaaaaaaaaaaa")
+        self.assertIn("terms_outdated", str(caught.exception))
+        log = [a for a in s.select("reward_audit_log", None, order="id")]
+        self.assertEqual([a["action"] for a in log].count("pilot_terms_set"), 2)
+        applied = next(a for a in log if a["action"] == "founding_applied")
+        self.assertEqual((applied.get("new_value") or {}).get("terms_version"), "2026-11-05#aaaaaaaaaaaaaaaa")
+
+    def test_only_the_owner_records_the_terms_and_not_through_settings(self):
+        s = self.pilot_store(terms=False)
+        for call, reason in ((lambda: s.set_participation_terms("pilot", "v#1", "p1@example.com"), "not_owner"),
+                             (lambda: s.set_participation_terms("pilot", "  ", OWNER), "invalid_value"),
+                             (lambda: s.set_participation_terms("other", "v#1", OWNER), "invalid_mode")):
+            with self.assertRaises(StoreError) as caught:
+                call()
+            self.assertIn(reason, str(caught.exception))
+        with self.assertRaises(StoreError):
+            s.update("reward_program_settings", {"id": 1}, {"pilot_terms_version": "v#1"})
+        with self.assertRaises(StoreError):
+            s.update("reward_program_settings", {"id": 1}, {"public_terms_version": "v#1"})
+        self.assertIsNone(s.pilot_status()["terms_version"])
+
+    # ---- regression: the two ways in validate their own approved terms independently
+
+    def modes_store(self):
+        """Pilot ON with its approved pilot terms; public terms approved; public switch OFF; invitation-only ON."""
+        s = self.pilot_store(terms=False)
+        s.set_participation_terms("pilot", TERMS, OWNER)
+        s.set_participation_terms("public", PUBLIC_TERMS, OWNER)
+        s.set_pilot(True, OWNER, confirmed=True)
+        s.invite("p1@example.com", OWNER)
+        return s
+
+    def apply_with(self, s, n, terms):
+        return s.apply_founding(self.person(s, n), "Lagos", None, True, True, True, terms_version=terms)
+
+    def refused_with(self, s, n, terms, reason):
+        with self.assertRaises(StoreError, msg=(n, terms)) as caught:
+            self.apply_with(s, n, terms)
+        self.assertIn(reason, str(caught.exception))
+
+    def test_regression_1_invited_pilot_participant_applies_with_the_pilot_terms(self):
+        s = self.modes_store()
+        app = self.apply_with(s, 1, TERMS)
+        self.assertEqual((app["status"], app["terms_version"]), ("pending", TERMS))
+
+    def test_regression_2_uninvited_people_cannot_join_the_restricted_pilot(self):
+        s = self.modes_store()
+        for terms in (TERMS, PUBLIC_TERMS):
+            self.refused_with(s, 2, terms, "not_invited")
+        s.set_participation_terms("public", PUBLIC_TERMS, OWNER)
+        s.set_invitation_only(False, OWNER, confirmed=True)         # even with public applications allowed ...
+        self.refused_with(s, 2, TERMS, "not_invited")               # ... the pilot needs an invitation (public is OFF)
+        self.assertIsNone(s.founding_application(pid(2)))
+
+    def test_regression_3_public_applicants_use_the_public_terms_only_after_separate_authorisation(self):
+        s = self.modes_store()
+        s.set_public(True, OWNER, confirmed=True)
+        self.refused_with(s, 3, PUBLIC_TERMS, "not_invited")        # public ON alone: not authorised yet
+        s.set_invitation_only(False, OWNER, confirmed=True)         # public enrolment separately authorised
+        self.refused_with(s, 3, TERMS, "terms_outdated")            # the pilot terms are not the public rules
+        app = self.apply_with(s, 3, PUBLIC_TERMS)
+        self.assertEqual((app["status"], app["terms_version"]), ("pending", PUBLIC_TERMS))
+
+    def test_regression_3b_public_authorisation_needs_approved_public_terms(self):
+        s = self.pilot_store(terms=False)
+        with self.assertRaises(StoreError) as caught:
+            s.set_invitation_only(False, OWNER, confirmed=True)
+        self.assertIn("terms_required", str(caught.exception))
+
+    def test_regression_4_outdated_or_incorrect_terms_are_rejected(self):
+        s = self.modes_store()
+        s.invite("p2@example.com", OWNER)
+        self.refused_with(s, 1, PUBLIC_TERMS, "terms_outdated")     # public rules through the pilot
+        self.refused_with(s, 1, "2026-10-24#0000000000000000", "terms_outdated")   # an older pilot version
+        self.refused_with(s, 1, "made-up", "terms_outdated")
+        self.refused_with(s, 1, None, "terms_outdated")             # the app's old default
+        s.set_participation_terms("pilot", "2026-12-01#1111111111111111", OWNER)   # pilot terms updated
+        self.refused_with(s, 2, TERMS, "terms_outdated")            # the previously approved version is now outdated
+        self.assertEqual(self.apply_with(s, 2, "2026-12-01#1111111111111111")["status"], "pending")
+        self.assertIsNone(s.founding_application(pid(1)))           # nothing recorded for the refused attempts
+
+    def test_regression_4b_missing_approved_terms_never_admit_anyone(self):
+        """No approved terms recorded for the way in: refused in SQL as in Python (a NULL comparison is not a pass)."""
+        s = self.pilot_store(terms=False)
+        s.set_public(True, OWNER, confirmed=True)
+        s.invite("p1@example.com", OWNER)
+        for terms in (PUBLIC_TERMS, TERMS, "anything"):
+            self.refused_with(s, 1, terms, "terms_required")
+        self.assertIsNone(s.founding_application(pid(1)))
+
+    def test_regression_6_payouts_stay_disabled_for_pilot_participants(self):
+        s = self.modes_store()
+        self.apply_with(s, 1, TERMS)
+        self.approve(s, 1)
+        self.assertFalse(s.cashout_settings()["real_payouts"])      # the database payment switch is untouched
+        self.assertFalse(s.cashout_settings()["live_requests"])
+        self.assertEqual(self.quiz(s, pid(1), "q1")["amount"], 0)   # ₦0 while the public programme is OFF
+
+    def test_at_most_fifty_approved_pilot_participants(self):
+        s = self.pilot_store()
+        s.set_pilot(True, OWNER, confirmed=True)
+        self.assertEqual(s.settings().max_places, 50)
+        problems = s.save_settings(Settings(start_date=f"{M1}-01", max_places=51), OWNER)
+        self.assertTrue(any("limited to 50" in p for p in problems))
+
 
 class MemoryFoundingTests(Scenarios, unittest.TestCase):
     def make_store(self):
@@ -552,6 +783,7 @@ class SqlFoundingTests(Scenarios, unittest.TestCase):
         before = (s.founding_applications(), s.enrolments(), s.events(), s.accounts())
         CLUSTER.psql_file(s.db, pg_harness.FOUNDING)
         CLUSTER.psql_file(s.db, pg_harness.FOUNDING)
+        CLUSTER.psql_file(s.db, pg_harness.PILOT)        # re-run after founding50 (documented in the pilot migration)
         after = (s.founding_applications(), s.enrolments(), s.events(), s.accounts())
         self.assertEqual(json.dumps(before, sort_keys=True, default=str), json.dumps(after, sort_keys=True, default=str))
         self.assertEqual(s.founding_application(pid(2))["status"], "pending")     # nobody approved automatically
@@ -600,11 +832,15 @@ class FoundingAppTests(unittest.TestCase):
         rewards_hooks._health_cache.clear()
         self.s = rewards_hooks._memory_store()
         self.s.tables["reward_program_settings"][0]["public_enabled"] = True    # both switches ON for these tests
+        self.s.tables["reward_program_settings"][0]["invitation_only"] = False  # public applications authorised
+        # the public form accepts the rewards programme rules; the owner recorded them as the approved terms
+        self.s.tables["reward_program_settings"][0]["public_terms_version"] = rewards_module.TERMS_VERSION
         self.s.tables["reward_cashout_settings"][0]["owner_emails"] = [OWNER]
 
     def app(self, who, page="Rewards", language=None):
         at = AppTest.from_file(str(ROOT / "app.py"), default_timeout=60)
         at.secrets["rewards"] = {"enabled": True}
+        at.secrets["legal"] = legal_fixtures.secrets()
         at.secrets["analytics"] = {"owner_emails": [OWNER]}
         at.session_state["page"] = page
         if page == "Owner":   # the owner opens the rewards tab (the dashboard draws only the open tab)
@@ -663,7 +899,7 @@ class FoundingAppTests(unittest.TestCase):
 
     def test_owner_approves_then_the_player_takes_their_place(self):
         self.s.ensure_account(PLAYER["profile_id"], PLAYER["email"], PLAYER["name"], True, False)
-        self.s.apply_founding(PLAYER["profile_id"], "Lagos", None, True, True, True)
+        self.s.apply_founding(PLAYER["profile_id"], "Lagos", None, True, True, True, terms_version=rewards_module.TERMS_VERSION)
         owner = self.app(OWNER_ID, page="Owner").run()
         self.assertIn("(1)", self.owner_tab(owner).label)
         app_id = self.s.founding_application(PLAYER["profile_id"])["id"]
@@ -681,7 +917,7 @@ class FoundingAppTests(unittest.TestCase):
 
     def test_owner_reject_needs_a_reason(self):
         self.s.ensure_account(PLAYER["profile_id"], PLAYER["email"], PLAYER["name"], True, False)
-        self.s.apply_founding(PLAYER["profile_id"], "Lagos", None, True, True, True)
+        self.s.apply_founding(PLAYER["profile_id"], "Lagos", None, True, True, True, terms_version=rewards_module.TERMS_VERSION)
         app_id = self.s.founding_application(PLAYER["profile_id"])["id"]
         owner = self.app(OWNER_ID, page="Owner").run()
         owner.button(key=f"rw_f_reject_{app_id}").click().run()
@@ -696,7 +932,7 @@ class FoundingAppTests(unittest.TestCase):
 
     def test_players_cannot_reach_the_applications(self):
         self.s.ensure_account(PLAYER["profile_id"], PLAYER["email"], PLAYER["name"], True, False)
-        self.s.apply_founding(PLAYER["profile_id"], "Lagos", None, True, True, True)
+        self.s.apply_founding(PLAYER["profile_id"], "Lagos", None, True, True, True, terms_version=rewards_module.TERMS_VERSION)
         at = self.app(PLAYER, page="Owner").run()
         self.assertEqual([t for t in at.tabs if t.label.startswith("🌟 Founding 50")], [])
         self.assertEqual([b for b in at.button if (b.key or "").startswith("rw_f_approve")], [])
@@ -704,7 +940,7 @@ class FoundingAppTests(unittest.TestCase):
     def test_dashboard_figures(self):
         for n in range(1, 5):
             self.s.ensure_account(pid(n), f"p{n}@example.com", f"P{n}", True, False)
-            self.s.apply_founding(pid(n), "Lagos", None, True, True, True)
+            self.s.apply_founding(pid(n), "Lagos", None, True, True, True, terms_version=rewards_module.TERMS_VERSION)
         ids = {n: self.s.founding_application(pid(n))["id"] for n in range(1, 5)}
         self.s.decide_founding(ids[1], "approve", OWNER)
         self.s.decide_founding(ids[2], "approve", OWNER)

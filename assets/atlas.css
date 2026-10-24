@@ -345,3 +345,62 @@ html[data-we-theme="dark"] .stApp .st-key-continent_buttons button[kind="primary
 }
 /* the points chip stays on the verdict line (only correct answers have one, and "Correct!" is short) */
 .st-key-view_quiz [class*="st-key-quiz_feedback_"] .feedback-chips { flex-basis:auto; padding-left:0; margin-left:auto; }
+
+/* =====================================================================================================================
+   Premium Badges (Project Atlas). Presentation only: the badges, their rules and progress come from core/badges.py.
+   One summary card, then a responsive gallery: earned badges (gold medal) first, then every locked badge (muted),
+   closest to completion first, each with its exact progress and what is still needed.
+   ===================================================================================================================== */
+.st-key-view_badges .badges-head { padding:2px 2px 0; }
+.st-key-badge_summary { background:var(--paper); border:1px solid var(--line); border-radius:20px; padding:20px 24px !important;
+  box-shadow:var(--shadow); gap:14px !important; }
+.badges-overview { display:flex; flex-direction:column; gap:10px; color:var(--navy); }
+.bs-count { font-family:var(--serif); font-weight:600; font-size:1.6rem; line-height:1.2; letter-spacing:-.01em; }
+.bs-bar, .award-bar { height:8px; border-radius:999px; background:var(--track); overflow:hidden; }
+.bs-bar { height:10px; max-width:560px; }
+.bs-bar span, .award-bar span { display:block; height:100%; border-radius:999px; background:var(--teal); }
+.bs-bar span { background:linear-gradient(90deg, var(--teal), var(--gold)); }
+.stApp .bs-line { display:flex; flex-wrap:wrap; gap:4px 18px; margin:2px 0 0 !important; font-size:.9rem; color:var(--slate); }
+.bs-line b { color:var(--navy); font-variant-numeric:tabular-nums; }
+.stApp .st-key-badge_summary .badge-note { margin:0 !important; font-size:.82rem; line-height:1.45; color:var(--slate); }
+.st-key-badge_actions { gap:10px !important; flex-wrap:wrap !important; }
+.st-key-badge_actions > * { flex:0 1 auto !important; width:auto !important; }
+.st-key-badge_actions button { min-height:44px; border-radius:12px; padding:0 18px; font-weight:650; }
+.st-key-view_badges .badge-section { font-family:var(--serif) !important; font-weight:600 !important; font-size:1.3rem !important; margin:1.1rem 0 .1rem !important; }
+
+/* the gallery */
+.award-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:14px; }
+.award-card { display:flex; gap:14px; align-items:flex-start; padding:16px 18px; border-radius:16px; border:1px solid var(--line);
+  background:var(--paper); min-width:0; }
+.award-card .award-medal { width:52px; height:52px; margin:0; font-size:1.4rem; flex-shrink:0; }
+.award-card.earned { box-shadow:var(--shadow); border-color:var(--chip-gold-border); }
+.award-card.earned .award-medal { background:radial-gradient(circle at 35% 30%, #F6E7C1, #E2C27E 75%); border:2px solid var(--gold); color:#5E4310; }
+.award-card.locked { background:var(--surface-2); }
+.award-card.locked .award-medal { background:var(--surface-3); border:1px dashed var(--disabled-border); color:var(--slate); filter:none; opacity:1; }
+.award-body { display:flex; flex-direction:column; gap:6px; min-width:0; flex:1 1 auto; }
+.award-card .award-name { font-size:1.02rem; margin:0; }
+.award-card.locked .award-name { color:var(--navy); }
+.stApp .award-desc { margin:0 !important; font-size:.86rem; line-height:1.4; color:var(--slate); }
+.award-card .award-state { align-self:flex-start; margin-top:2px; font-size:.76rem; padding:2px 10px; }
+.award-card.earned .award-state.earned { background:var(--gold-soft); color:var(--gold-deep); border:1px solid var(--chip-gold-border); }
+.stApp .award-progress { margin:0 !important; font-size:.8rem; line-height:1.35; color:var(--slate); }
+.award-progress b { color:var(--navy); font-variant-numeric:tabular-nums; }
+.award-card .award-bar { margin-top:4px; }
+html[data-we-theme="dark"] .award-card.earned .award-medal { background:radial-gradient(circle at 35% 30%, #6E5A2E, #3E3218 75%); color:#F3DFAE; }
+@media (prefers-color-scheme:dark) { html:not([data-we-theme]) .award-card.earned .award-medal {
+  background:radial-gradient(circle at 35% 30%, #6E5A2E, #3E3218 75%); color:#F3DFAE; } }
+
+@media (max-width:700px) {
+  .st-key-badge_summary { padding:16px !important; border-radius:18px; box-shadow:none; }
+  .bs-count { font-size:1.3rem; }
+  .stApp .bs-line { font-size:.82rem; gap:2px 12px; }
+  .st-key-badge_actions > * { flex:1 1 100% !important; }
+  .st-key-badge_actions button { width:100%; }
+  .award-grid { grid-template-columns:minmax(0,1fr); gap:8px; }
+  .award-card { gap:12px; padding:12px 14px; border-radius:14px; }
+  .award-body { gap:4px; }
+  .award-card .award-medal { width:40px; height:40px; font-size:1.1rem; }
+  .award-card .award-name { font-size:.94rem; }
+  .stApp .award-desc { font-size:.8rem; }
+  .stApp .award-progress { font-size:.76rem; }
+}

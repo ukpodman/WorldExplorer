@@ -4818,6 +4818,108 @@
    "Puntos y clave de colores",
    "得分与颜色说明",
    "Очки и обозначения"
+  ],
+  "Celebrate your progress.": [
+   "Feiere deine Fortschritte.",
+   "Celebra tu progreso.",
+   "为你的进步喝彩。",
+   "Отмечайте свои успехи."
+  ],
+  "{earned} of {total} badges earned": [
+   "{earned} von {total} Abzeichen erhalten",
+   "{earned} de {total} insignias conseguidas",
+   "已获得 {earned}/{total} 枚徽章",
+   "Получено значков: {earned} из {total}"
+  ],
+  "Answer one question correctly to unlock.": [
+   "Beantworte eine Frage richtig, um es freizuschalten.",
+   "Responde una pregunta correctamente para desbloquearla.",
+   "答对一道题即可解锁。",
+   "Ответьте правильно на один вопрос, чтобы открыть."
+  ],
+  "1 more point to unlock.": [
+   "Noch 1 Punkt bis zur Freischaltung.",
+   "Falta 1 punto para desbloquearla.",
+   "再得 1 分即可解锁。",
+   "Осталось очков: 1."
+  ],
+  "{n} more points to unlock.": [
+   "Noch {n} Punkte bis zur Freischaltung.",
+   "Faltan {n} puntos para desbloquearla.",
+   "再得 {n} 分即可解锁。",
+   "Осталось очков: {n}."
+  ],
+  "Complete one quiz round to unlock.": [
+   "Schließe eine Quizrunde ab, um es freizuschalten.",
+   "Completa una ronda del quiz para desbloquearla.",
+   "完成一轮测验即可解锁。",
+   "Завершите один раунд викторины, чтобы открыть."
+  ],
+  "1 more round to unlock.": [
+   "Noch 1 Runde bis zur Freischaltung.",
+   "Falta 1 ronda para desbloquearla.",
+   "再完成 1 轮即可解锁。",
+   "Осталось раундов: 1."
+  ],
+  "{n} more rounds to unlock.": [
+   "Noch {n} Runden bis zur Freischaltung.",
+   "Faltan {n} rondas para desbloquearla.",
+   "再完成 {n} 轮即可解锁。",
+   "Осталось раундов: {n}."
+  ],
+  "One perfect round to unlock.": [
+   "Eine fehlerfreie Runde bis zur Freischaltung.",
+   "Una ronda perfecta para desbloquearla.",
+   "完成一轮全对即可解锁。",
+   "Нужен один безошибочный раунд."
+  ],
+  "1 more correct flag to unlock.": [
+   "Noch 1 richtige Flagge bis zur Freischaltung.",
+   "Falta 1 bandera correcta para desbloquearla.",
+   "再答对 1 面国旗即可解锁。",
+   "Осталось верно угаданных флагов: 1."
+  ],
+  "{n} more correct flags to unlock.": [
+   "Noch {n} richtige Flaggen bis zur Freischaltung.",
+   "Faltan {n} banderas correctas para desbloquearla.",
+   "再答对 {n} 面国旗即可解锁。",
+   "Осталось верно угаданных флагов: {n}."
+  ],
+  "1 more correct answer to unlock.": [
+   "Noch 1 richtige Antwort bis zur Freischaltung.",
+   "Falta 1 respuesta correcta para desbloquearla.",
+   "再答对 1 题即可解锁。",
+   "Осталось правильных ответов: 1."
+  ],
+  "{n} more correct answers to unlock.": [
+   "Noch {n} richtige Antworten bis zur Freischaltung.",
+   "Faltan {n} respuestas correctas para desbloquearla.",
+   "再答对 {n} 题即可解锁。",
+   "Осталось правильных ответов: {n}."
+  ],
+  "1 more correct answer about {continent} to unlock.": [
+   "Noch 1 richtige Antwort zu {continent} bis zur Freischaltung.",
+   "Falta 1 respuesta correcta sobre {continent} para desbloquearla.",
+   "再答对 1 道关于{continent}的题即可解锁。",
+   "Осталось правильных ответов о регионе «{continent}»: 1."
+  ],
+  "{n} more correct answers about {continent} to unlock.": [
+   "Noch {n} richtige Antworten zu {continent} bis zur Freischaltung.",
+   "Faltan {n} respuestas correctas sobre {continent} para desbloquearla.",
+   "再答对 {n} 道关于{continent}的题即可解锁。",
+   "Осталось правильных ответов о регионе «{continent}»: {n}."
+  ],
+  "1 more continent to unlock.": [
+   "Noch 1 Kontinent bis zur Freischaltung.",
+   "Falta 1 continente para desbloquearla.",
+   "再覆盖 1 个大洲即可解锁。",
+   "Осталось континентов: 1."
+  ],
+  "{n} more continents to unlock.": [
+   "Noch {n} Kontinente bis zur Freischaltung.",
+   "Faltan {n} continentes para desbloquearla.",
+   "再覆盖 {n} 个大洲即可解锁。",
+   "Осталось континентов: {n}."
   ]
  }
 }

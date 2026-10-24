@@ -287,10 +287,11 @@ class RefinementTests(unittest.TestCase):
         for b in status:
             name = b["name"].format(**b["fields"]) if b["fields"] else b["name"]
             self.assertEqual(markup.count(f'<div class="award-name">{name}</div>'), 1, name)
-        earned, upcoming, rest = badges.arrange(status)
-        more = [e for e in at.expander if e.label.startswith("See all badges")]
-        self.assertEqual(len(more), 1)
-        self.assertIn(f"({len(rest)} more)", more[0].label)
+        # Premium Badges: every badge is visible (no "See all badges" expander); locked ones show their progress
+        self.assertFalse([e for e in at.expander if e.label.startswith("See all badges")])
+        for b in status:
+            if not b["earned"]:
+                self.assertIn(f'<b>{b["value"]}/{b["target"]}</b>', markup)
         before = (dict(at.session_state["stats"]), at.session_state["points"], at.session_state["rounds_finished"])
         at.run(); at.run()
         self.assertEqual((dict(at.session_state["stats"]), at.session_state["points"], at.session_state["rounds_finished"]), before)

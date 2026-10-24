@@ -1500,49 +1500,86 @@ def _badge_name(b: dict) -> str:
     return t(b["name"], **b["fields"]) if b["fields"] else t(b["name"])
 
 
-def _award_card(b: dict) -> None:
-    with st.container(key=f"award_card_{b['id']}"):
-        html(f'<div class="award-head"><div class="award-medal {"" if b["earned"] else "locked"}" aria-hidden="true">{b["symbol"]}</div>'
-             f'<div><div class="award-name">{escape(_badge_name(b))}</div>'
-             f'<span class="award-state {"earned" if b["earned"] else ""}">{e("Earned" if b["earned"] else "In progress")}</span></div></div>')
-        st.caption(t(b["description"], **b["fields"]))
-        st.progress(b["value"] / b["target"], text=t("{value} of {target}", value=b["value"], target=b["target"]))
+# What is still needed for a badge, in words: (singular, plural) templates keyed by badge id ("continent" for the six
+# continent badges). Built only from the badge's own progress (value and target), never from new tracking.
+_REMAINING = {
+    "first_steps": ("Answer one question correctly to unlock.", None),
+    "century": ("1 more point to unlock.", "{n} more points to unlock."),
+    "round_finisher": ("Complete one quiz round to unlock.", None),
+    "five_rounds": ("1 more round to unlock.", "{n} more rounds to unlock."),
+    "perfect_round": ("One perfect round to unlock.", None),
+    "flag_spotter": ("1 more correct flag to unlock.", "{n} more correct flags to unlock."),
+    "fifty_correct": ("1 more correct answer to unlock.", "{n} more correct answers to unlock."),
+    "continent": ("1 more correct answer about {continent} to unlock.", "{n} more correct answers about {continent} to unlock."),
+    "globetrotter": ("1 more continent to unlock.", "{n} more continents to unlock."),
+}
 
 
-def _award_grid(group: list[dict]) -> None:
-    for row in range(0, len(group), 3):
-        for column, b in zip(st.columns(3), group[row:row + 3]):
-            with column:
-                _award_card(b)
+def _remaining_text(b: dict) -> str:
+    one, many = _REMAINING["continent" if b["id"].startswith("continent_") else b["id"]]
+    n = b["target"] - b["value"]
+    return t(one if n == 1 or many is None else many, n=n, **b["fields"])
+
+
+def _award_card(b: dict) -> str:
+    """One badge as a gallery card (HTML only: no widgets, so the whole gallery is a single light element)."""
+    name, desc = escape(_badge_name(b)), escape(t(b["description"], **b["fields"]))
+    if b["earned"]:
+        foot = f'<span class="award-state earned">{e("Earned")}</span>'
+    else:
+        pct = 100 * b["value"] / b["target"]
+        foot = (f'<div class="award-bar" role="progressbar" aria-label="{name}" aria-valuemin="0" aria-valuemax="{b["target"]}" '
+                f'aria-valuenow="{b["value"]}"><span style="width:{pct:.0f}%"></span></div>'
+                f'<p class="award-progress"><b>{b["value"]}/{b["target"]}</b> · {escape(_remaining_text(b))}</p>')
+    return (f'<div class="award-card {"earned" if b["earned"] else "locked"}" role="listitem">'
+            f'<div class="award-medal{"" if b["earned"] else " locked"}" aria-hidden="true">{b["symbol"]}</div>'
+            f'<div class="award-body"><div class="award-name">{name}</div><p class="award-desc">{desc}</p>{foot}</div></div>')
+
+
+def _award_grid(group: list[dict], label: str) -> None:
+    html(f'<div class="award-grid" role="list" aria-label="{escape(label, quote=True)}">' + "".join(_award_card(b) for b in group) + "</div>")
+
+
+def _practise_from_badges(badge_id: str) -> None:
+    """The existing practice shortcut (quiz setup aimed at the badge), opened on the Quiz page."""
+    _practise_for(badge_id)
+    state.navigate("Quiz")
 
 
 def badges() -> None:
-    hero("Your explorer passport", "Badges",
-         "Every right answer is a step forward. Collect milestones as your knowledge grows.", variant="compact")
-    points, rounds = st.session_state.points, st.session_state.rounds_finished
-    status = badge_engine.evaluate(st.session_state.stats, points, rounds)  # read-only: viewing never changes progress
+    """Premium Badges: the Atlas heading, one compact summary, then every badge (earned first, the rest closest first).
+    Read-only: viewing never changes progress; the badge rules and unlock logic live in core/badges.py, unchanged."""
+    html(f'<div class="atlas-head badges-head"><div class="atlas-overline">{e("Your explorer passport")}</div>'
+         f'<h1 class="atlas-title">{e("Celebrate your progress.")}</h1></div>')
+    ss = st.session_state
+    points, rounds = ss.points, ss.rounds_finished
+    status = badge_engine.evaluate(ss.stats, points, rounds)  # read-only: viewing never changes progress
     earned, upcoming, rest = badge_engine.arrange(status)
-    html('<div class="badge-stats">'
-         f'<div><b>{points:,}</b><span>{e("Points")}</span></div>'
-         f'<div><b>{rounds}</b><span>{e("Rounds")}</span></div>'
-         f'<div><b>{len(earned)}/{len(status)}</b><span>{e("Badges")}</span></div>'
-         f'<div><b>🔥 {daily_engine.current_streak(st.session_state.daily, state.today())}</b><span>{e("Day streak")}</span></div></div>'
-         f'<p class="badge-note">{e("Badges count answers and rounds you complete. Progress is saved with your account when you are signed in.")}</p>')
-    st.caption(t("Best day streak: {n} · Daily challenges completed: {count}", n=st.session_state.daily["best"],
-                 count=len(st.session_state.daily["results"])))
-    _practise_button("badges_practise")
+    locked = upcoming + rest                                  # closest to completion first (the engine's order)
+    pct = 100 * len(earned) / len(status)
+    streak = daily_engine.current_streak(ss.daily, state.today())
+    with st.container(key="badge_summary"):
+        html(f'<div class="badges-overview"><b class="bs-count">{e("{earned} of {total} badges earned", earned=len(earned), total=len(status))}</b>'
+             f'<div class="bs-bar" role="progressbar" aria-label="{e("Badges")}" aria-valuemin="0" aria-valuemax="{len(status)}" '
+             f'aria-valuenow="{len(earned)}"><span style="width:{pct:.0f}%"></span></div>'
+             f'<p class="bs-line"><span><b>{points:,}</b> {e("Points")}</span><span><b>{rounds}</b> {e("Rounds")}</span>'
+             f'<span>🔥 <b>{streak}</b> {e("Day streak")}</span>'
+             f'<span>{e("Best day streak: {n} · Daily challenges completed: {count}", n=ss.daily["best"], count=len(ss.daily["results"]))}</span></p>'
+             f'<p class="badge-note">{e("Badges count answers and rounds you complete. Progress is saved with your account when you are signed in.")}</p></div>')
+        with st.container(key="badge_actions", horizontal=True):
+            _practise_button("badges_practise")
+            nearest = locked[0] if locked else None
+            if nearest and (nearest["id"].startswith("continent_") or nearest["id"] == "flag_spotter"):
+                label = (t("Practise {continent}", continent=nearest["fields"]["continent"]) if nearest["fields"] else t("Practise flags"))
+                st.button(label, key="badges_practise_goal", on_click=_practise_from_badges, args=(nearest["id"],))
     html(f'<h2 class="badge-section">{e("Earned badges")}</h2>')
     if earned:
-        _award_grid(earned)
+        _award_grid(earned, t("Earned badges"))
     else:
         html(f'<p class="badge-empty">{e("No badges yet. Answer quiz questions to earn your first one.")}</p>')
-    if upcoming:
+    if locked:
         html(f'<h2 class="badge-section">{e("Next goals")}</h2>')
-        _award_grid(upcoming)
-    if rest:
-        # Opening the list only reveals cards; it does not rerun the script or touch progress.
-        with st.expander(t("See all badges ({count} more)", count=len(rest)), key="badges_more"):
-            _award_grid(rest)
+        _award_grid(locked, t("Next goals"))
 
 
 ROUTES = {"Explore": explore, "Learn": learn, "Quiz": quiz, "Badges": badges, "Owner": owner.render,

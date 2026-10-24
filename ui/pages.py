@@ -105,7 +105,8 @@ def _alpha_key(name: str) -> str:
     return "".join(ch for ch in unicodedata.normalize("NFKD", name) if not unicodedata.combining(ch)).casefold()
 
 
-PHOTO_SIZES = {"detail-photo-frame": "(max-width: 900px) 100vw, 480px", "learn-photo-frame": "(max-width: 900px) 100vw, 640px"}
+PHOTO_SIZES = {"detail-photo-frame": "(max-width: 900px) 100vw, 480px", "learn-photo-frame": "(max-width: 900px) 100vw, 640px",
+               "quiz-photo-frame": "(max-width: 700px) 100vw, 280px"}
 
 
 def _photo_figure(photo: dict, cls: str) -> str:
@@ -813,6 +814,7 @@ QUIZ_ICONS = {
     "clock": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
     "bulb": '<svg viewBox="0 0 24 24" fill="none" stroke="#B58A3A" stroke-width="1.7" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/></svg>',
     "trend": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 16l5-5 4 4 7-7M15 8h5v5"/></svg>',
+    "pin": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>',
     "bars": '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="13" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="11" rx="1"/><rect x="16" y="5" width="4" height="15" rx="1" opacity=".35"/></svg>',
 }
 
@@ -978,6 +980,7 @@ def _start_panel(settings: dict) -> None:
     with st.container(key="quiz_intro"):
         html(f'<div class="quiz-intro"><span class="eyebrow">{e("Ready when you are")}</span>'
              f'<b class="quiz-intro-title">{e("Your quiz: {category} · {difficulty} · {n} questions", category=t(settings["category"]), difficulty=t(settings["difficulty"]), n=settings["count"])}</b>'
+             f'<span class="quiz-where"><span class="q-ico">{QUIZ_ICONS["pin"]}</span>{escape(_where_summary(settings["collection"], settings["continent"], settings["country_id"]))}</span>'
              f'<p>{e("Capitals, flags, currencies, languages and the places in between. Every question comes from a sourced fact, in a new mix each round.")}</p>'
              f'<div class="quiz-tiles">'
              f'<div class="qt gold"><b>{e("100 points × difficulty")}</b><span>{e("Easy ×1, Medium ×1.25, Difficult ×1.5, Expert ×2.")}</span></div>'
@@ -1062,14 +1065,22 @@ def _feedback(quiz, q, record, fresh: bool) -> tuple[str, str]:
         link = f' <a href="{escape(fact["source"], quote=True)}" target="_blank" rel="noopener">{e("Source")}</a>' if fact.get("source") else ""
         fact_html = f'<p class="fact-line"><b>{e("Did you know?")}</b> {escape(parts(fact["parts"]))}{link}</p>'
     source = f'<a href="{escape(q["source"], quote=True)}" target="_blank" rel="noopener">{e("Source")}</a>'
+    # After answering: the photograph of the country the question was about, from the same verified collection as
+    # Explore and Learn (credited; lazy-loaded thumbnail; nothing is shown for a place without a verified photo).
+    country = get_country(q.get("country_id"))
+    photo = _country_photo(country) if country else None
+    photo_html = _photo_figure(photo, "quiz-photo-frame") if photo else ""
     head_html = (f'<div class="feedback feedback-{tone} feedback-top{" fx" if fresh else ""}" role="status">'
                  f'<div class="feedback-head"><span class="feedback-icon" aria-hidden="true">{icon}</span><span>{head}</span>'
                  + (f'<span class="feedback-chips">{badge}</span>' if badge else "") + '</div></div>')
-    body_html = (f'<div class="feedback feedback-{tone} feedback-body">'
-                 f'<p class="feedback-explain">{escape(parts(q["explanation"]))} {source}</p>{fact_html}'
-                 + "".join(f'<p class="feedback-note">{n}</p>' for n in notes)
+    # The explanation, the fact and the photograph stay in view; the points arithmetic and the colour key are secondary,
+    # so they sit in a small closed section (a native <details>: opening it never reruns the page or the question).
+    secondary = ("".join(f'<p class="feedback-note">{n}</p>' for n in notes)
                  + f'<p class="answer-key"><span class="key-ok" aria-hidden="true">✓</span>{e("Solid green border = correct answer")}'
-                   f'<span class="key-bad" aria-hidden="true">✕</span>{e("Dashed red border = wrong answer")}</p></div>')
+                   f'<span class="key-bad" aria-hidden="true">✕</span>{e("Dashed red border = wrong answer")}</p>')
+    body_html = (f'<div class="feedback feedback-{tone} feedback-body{" has-photo" if photo_html else ""}">{photo_html}'
+                 f'<p class="feedback-explain">{escape(parts(q["explanation"]))} {source}</p>{fact_html}'
+                 f'<details class="feedback-more"><summary>{e("Points and answer key")}</summary>{secondary}</details></div>')
     return head_html, body_html
 
 
@@ -1187,7 +1198,7 @@ def _review_entry(i: int, record: dict) -> None:
     q = record["question"]
     mark = "Correct" if record["correct"] else "Timed out" if record["timed_out"] else "Incorrect"
     symbol = "✓" if record["correct"] else "⏱" if record["timed_out"] else "✕"
-    with st.expander(f"{symbol} {i}. {t(mark)} · {parts(q['prompt'])}", expanded=not record["correct"]):
+    with st.expander(f"{symbol} {i}. {t(mark)} · {parts(q['prompt'])}"):   # closed: a compact list, open one to read it
         if q.get("flag"):
             _flag(get_country(q["flag"]), 140, t("Flag of {name}", name=get_country(q["flag"])["name"]))
         st.write(f"{t('Your answer')}: **{t(record['answer']) if record['answer'] else t('Unanswered')}**")
@@ -1348,16 +1359,17 @@ def _results(quiz) -> None:
             chips.append(("record", e("Streak record (any round): {n}", n=outcome["best_streak"])))
         if chips:
             html('<div class="record-row">' + "".join(f'<span class="{cls}">{text}</span>' for cls, text in chips) + "</div>")
-        if mode == "daily":
-            st.caption(t("Records compare your daily challenges."))
-        elif mode == "practice":
-            st.caption(t("Records compare your mistake-practice rounds."))
-        elif not replay:
-            st.caption(t("Records compare rounds with the same settings: {settings}", settings=_settings_label(settings, stats["total"])))
-        if accounts.connection_state() == "guest":
-            st.caption(t("Guest records last for this browser session."))
-        st.caption(t("Incorrect / unanswered: {wrong} · Timed out: {timeout} · Average response time: {seconds} seconds",
-                     wrong=stats["incorrect"], timeout=stats["timed_out"], seconds=f"{stats['average_time']:.1f}"))
+        with st.expander(t("Round details"), key="round_details"):   # the fine print, one tap away
+            if mode == "daily":
+                st.caption(t("Records compare your daily challenges."))
+            elif mode == "practice":
+                st.caption(t("Records compare your mistake-practice rounds."))
+            elif not replay:
+                st.caption(t("Records compare rounds with the same settings: {settings}", settings=_settings_label(settings, stats["total"])))
+            if accounts.connection_state() == "guest":
+                st.caption(t("Guest records last for this browser session."))
+            st.caption(t("Incorrect / unanswered: {wrong} · Timed out: {timeout} · Average response time: {seconds} seconds",
+                         wrong=stats["incorrect"], timeout=stats["timed_out"], seconds=f"{stats['average_time']:.1f}"))
         status = badge_engine.evaluate(st.session_state.stats, st.session_state.points, st.session_state.rounds_finished)
         before = set(quiz.get("badges_before", []))
         new = [b for b in status if b["earned"] and b["id"] not in before]
@@ -1436,6 +1448,11 @@ def _music_switch(where: str) -> None:
 def quiz() -> None:
     current = st.session_state.quiz
     music.player()
+    # Project Atlas: the same calm heading as Explore and Learn. During a question it is hidden (CSS), so the question
+    # and its Next button stay as high on the screen as before.
+    playing = bool(current) and not current["finished"] and not st.session_state.show_setup
+    html(f'<div class="atlas-head quiz-head{" playing" if playing else ""}"><div class="atlas-overline">{e("The quiz")}</div>'
+         f'<h1 class="atlas-title">{e("Test what you know.")}</h1></div>')
     _quiz_top()
     if not current or st.session_state.show_setup:
         # Before a round: the compact setup on the left, a welcoming start panel on the right (no question yet).

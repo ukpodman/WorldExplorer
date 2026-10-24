@@ -4794,6 +4794,30 @@
    "{name} es un país de {region} sin fronteras terrestres.",
    "{name}是位于{region}的国家，没有陆地边界。",
    "{name} — страна в регионе {region}, не имеющая сухопутных границ."
+  ],
+  "The quiz": [
+   "Das Quiz",
+   "El quiz",
+   "测验",
+   "Викторина"
+  ],
+  "Test what you know.": [
+   "Teste dein Wissen.",
+   "Pon a prueba lo que sabes.",
+   "检验你的知识。",
+   "Проверьте свои знания."
+  ],
+  "Round details": [
+   "Details zur Runde",
+   "Detalles de la ronda",
+   "本轮详情",
+   "Подробности раунда"
+  ],
+  "Points and answer key": [
+   "Punkte und Farbschlüssel",
+   "Puntos y clave de colores",
+   "得分与颜色说明",
+   "Очки и обозначения"
   ]
  }
 }

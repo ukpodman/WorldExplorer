@@ -214,3 +214,134 @@ html[data-we-theme="dark"] .stApp .st-key-continent_buttons button[kind="primary
 @media (max-width:700px) { .stApp .st-key-sl_subject_bar > :last-child { flex:1 1 100% !important; max-width:none; } }
 /* phones: a little air between the photo credit and the country name */
 @media (max-width:1024px) { .st-key-learn_card .learn-photo-frame { margin-bottom:6px; } }
+
+/* =====================================================================================================================
+   Premium Quiz (Project Atlas). Visual layer only: the quiz engine, keys and states are unchanged.
+   The heading matches Explore and Learn; serif for the headline, the question and the result; calm paper cards
+   instead of pastel tiles; one neutral letter badge per answer (the right/wrong colours, border styles, ✓/✕ and
+   labels of the approved answer feedback stay exactly as they were).
+   ===================================================================================================================== */
+.st-key-view_quiz [data-testid="stElementContainer"]:has(> [data-testid="stHtml"] .quiz-head.playing),
+.st-key-view_quiz [data-testid="stElementContainer"]:has(.quiz-head.playing) { display:none !important; }
+.st-key-view_quiz .quiz-head { padding:2px 2px 0; }
+
+/* home: setup and the start panel */
+.st-key-view_quiz .setup-title b { font-family:var(--serif); font-weight:600; font-size:1.45rem; letter-spacing:-.01em; }
+.st-key-view_quiz .quiz-intro-title { font-family:var(--serif); font-weight:600; font-size:1.85rem; line-height:1.18; letter-spacing:-.01em; }
+.quiz-where { display:inline-flex; align-items:center; gap:7px; margin-top:12px; padding:5px 12px 5px 9px; border-radius:999px;
+  background:var(--surface-2); border:1px solid var(--line); color:var(--teal-dark); font-size:.9rem; font-weight:650; max-width:100%; }
+.quiz-where .q-ico svg { width:16px; height:16px; }
+.st-key-view_quiz .quiz-intro p { margin:12px 0 16px; }
+/* the three scoring rules: quiet rows with a small coloured marker instead of three pastel tiles */
+.st-key-view_quiz .quiz-tiles { grid-template-columns:minmax(0,1fr); gap:0; border-top:1px solid var(--line); }
+.st-key-view_quiz .quiz-tiles .qt { display:grid; grid-template-columns:minmax(150px,.85fr) minmax(0,1.3fr); gap:4px 18px; align-items:baseline;
+  background:none !important; border:0 !important; border-bottom:1px solid var(--line) !important; border-radius:0; padding:12px 2px 12px 22px; position:relative; }
+.st-key-view_quiz .quiz-tiles .qt::before { content:""; position:absolute; left:4px; top:19px; width:9px; height:9px; border-radius:50%; background:var(--gold); }
+.st-key-view_quiz .quiz-tiles .qt.teal::before { background:var(--teal); }
+.st-key-view_quiz .quiz-tiles .qt.lilac::before { background:var(--navy); }
+.st-key-view_quiz .quiz-tiles .qt b { margin:0; font-size:.98rem; color:var(--navy); }
+.st-key-view_quiz .quiz-tiles .qt span { font-size:.9rem; }
+
+/* the question */
+.st-key-view_quiz .st-key-question_card, .st-key-view_quiz [class*="st-key-quizcat_"] .st-key-question_card {
+  background:var(--surface-2); border:1px solid var(--line) !important; border-top:1px solid var(--line) !important; }
+.stApp .st-key-view_quiz .st-key-question_card h3 { font-family:var(--serif) !important; font-weight:600 !important; font-size:2.05rem !important;
+  line-height:1.2 !important; letter-spacing:-.012em; }
+.st-key-view_quiz .q-count { font-family:var(--serif); font-weight:600; font-size:1.2rem; }
+.st-key-view_quiz .q-chip { background:var(--paper) !important; border-color:var(--line) !important; }
+.st-key-view_quiz .q-chip small { color:var(--slate) !important; }
+.st-key-view_quiz .q-chip.streak b .mult { color:var(--teal-dark); }
+
+/* answers: paper cards with one calm letter badge (before answering); hover and focus in teal */
+.st-key-view_quiz .st-key-answers_grid [class*="st-key-ans"] button { padding-left:76px; border-radius:14px; }
+.st-key-view_quiz .st-key-answers_grid [class*="st-key-ans"] button:not(:disabled) { background:var(--paper) !important; border:1px solid var(--line) !important; }
+.st-key-view_quiz .st-key-answers_grid [class*="st-key-ans"] button::after { content:none !important; }
+.st-key-view_quiz .st-key-answers_grid [class*="st-key-ans"] button:not(:disabled)::before { background:var(--surface-2); color:var(--navy);
+  box-shadow:inset 0 0 0 1.5px var(--line); }
+.st-key-view_quiz .st-key-answers_grid [class*="st-key-ans"] button:not(:disabled):hover { border-color:var(--teal) !important; }
+.st-key-view_quiz .st-key-answers_grid [class*="st-key-ans"] button:not(:disabled):hover::before { background:var(--teal); color:#fff; box-shadow:none; }
+
+/* feedback: one paper panel with a coloured edge (green, red, gold) */
+.st-key-view_quiz [class*="st-key-quiz_feedback_"] { background:var(--paper); border:1px solid var(--line); border-left:5px solid var(--qa-ok); }
+.st-key-view_quiz .st-key-quiz_feedback_wrong { border-left-color:var(--qa-bad); }
+.st-key-view_quiz .st-key-quiz_feedback_timeout { border-left-color:var(--gold); }
+.st-key-view_quiz [class*="st-key-quiz_feedback_"] .feedback-head > span:nth-child(2) { font-family:var(--serif); font-weight:600; font-size:1.2rem; }
+.st-key-view_quiz .answer-key { font-size:.76rem; }
+/* the country's photograph beside the explanation (shared photo collection, credited) */
+.feedback-body.has-photo::after { content:""; display:block; clear:both; }
+.quiz-photo-frame { float:right; width:min(220px, 36%); margin:2px 0 6px 18px; }
+.quiz-photo-frame img { max-height:none; border-radius:10px; }          /* its own proportions: width sets the height */
+.quiz-photo-frame figcaption { font-size:.7rem; line-height:1.3; }
+.quiz-photo-frame .photo-credit { display:block; }
+/* secondary feedback: the points arithmetic and the colour key, one small closed line */
+.feedback-more { margin-top:8px; }
+.feedback-more summary { display:inline-flex; align-items:center; gap:6px; cursor:pointer; list-style:none; font-size:.8rem; font-weight:600;
+  color:var(--slate); padding:4px 0; min-height:32px; }
+.feedback-more summary::-webkit-details-marker { display:none; }
+.feedback-more summary::before { content:"›"; display:inline-block; font-size:1rem; line-height:1; transition:transform .15s ease; }
+.feedback-more[open] summary::before { transform:rotate(90deg); }
+.feedback-more summary:focus-visible { outline:3px solid #E2B55A; outline-offset:2px; border-radius:6px; }
+.stApp .feedback-more .feedback-note:first-of-type { margin-top:2px; }
+/* during a question the question leads: the top cards (today's challenge, points, badges) wait on the quiz home and
+   results, as they already did on phones; this round's points, streak and hints stay in the progress line */
+.st-key-view_quiz:has(.st-key-question_card) .st-key-quiz_top { display:none !important; }
+.st-key-view_quiz:has(.st-key-question_card) [data-testid="stLayoutWrapper"]:has(> .st-key-quiz_top),
+.st-key-view_quiz:has(.st-key-question_card) [data-testid="stElementContainer"]:has(> .st-key-quiz_top) { display:none !important; }
+/* the round's numbers as one quiet line: icon, value, small label, thin dividers (no boxes) */
+.st-key-view_quiz .q-chips { gap:0; }
+.st-key-view_quiz .q-chip { background:none !important; border:0 !important; border-radius:0; padding:2px 14px; }
+.st-key-view_quiz .q-chip + .q-chip { border-left:1px solid var(--line) !important; }
+.st-key-view_quiz .q-chip:last-child { padding-right:0; }
+.st-key-view_quiz .q-chip b { font-size:1.02rem; color:var(--navy); }
+
+/* results */
+.st-key-view_quiz .result-title b { font-family:var(--serif); font-weight:600; font-size:1.75rem; letter-spacing:-.01em; }
+.st-key-view_quiz .result-tiles .rt { background:var(--surface-2) !important; border:1px solid var(--line); }
+.st-key-view_quiz .result-tiles .rt span { color:var(--slate) !important; }
+.st-key-view_quiz .result-tiles .rt.gold b { color:var(--gold-text); }
+.st-key-view_quiz .st-key-review_card h3 { font-family:var(--serif) !important; font-weight:600 !important; }
+.st-key-view_quiz .st-key-round_details { margin-top:6px; }
+.st-key-view_quiz .st-key-round_details details { border:1px solid var(--line) !important; border-radius:14px !important; overflow:hidden; }
+.st-key-view_quiz .st-key-round_details summary { border-radius:0 !important; }
+.st-key-view_quiz .st-key-review_card [data-testid="stExpander"] summary p { font-size:.95rem; }
+
+@media (max-width:1024px) {
+  .st-key-view_quiz .quiz-tiles .qt { grid-template-columns:minmax(0,1fr); }
+  .st-key-view_quiz .result-tiles { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:700px) {
+  /* the heading replaces the old "Quiz" title line; points and badges stay as one small line under it */
+  .st-key-view_quiz .quiz-phone-title b { display:none; }
+  .st-key-view_quiz .quiz-head { margin-bottom:8px; }
+  .st-key-view_quiz .quiz-phone-title { justify-content:flex-start; padding:2px 0 6px; }
+  /* results: Play again on its own line, the other two side by side (no three cramped buttons) */
+  .st-key-result_card [data-testid="stHorizontalBlock"]:has(.st-key-play_again) { flex-wrap:wrap !important; gap:8px !important; }
+  .st-key-result_card [data-testid="stHorizontalBlock"]:has(.st-key-play_again) > [data-testid="stColumn"] { flex:1 1 calc(50% - 4px) !important; min-width:0 !important; width:auto !important; }
+  .st-key-result_card [data-testid="stHorizontalBlock"]:has(.st-key-play_again) > [data-testid="stColumn"]:first-child { flex-basis:100% !important; }
+  .st-key-view_quiz .setup-title b { font-size:1.25rem; }
+  .stApp .st-key-view_quiz .st-key-question_card h3 { font-size:1.42rem !important; }
+  .st-key-view_quiz .st-key-answers_grid [class*="st-key-ans"] button { padding-left:62px !important; }
+  .quiz-photo-frame { width:40%; margin:2px 0 4px 12px; }     /* a proportioned thumbnail beside the explanation */
+  .quiz-photo-frame figcaption { font-size:.66rem; }
+  .st-key-view_quiz .q-chip { padding:2px 8px; }
+  .st-key-view_quiz .q-chip b { font-size:.85rem; }
+  .st-key-view_quiz .result-title b { font-size:1.3rem; }
+  .st-key-view_quiz .result-tiles .rt { padding:10px 12px; }
+  .st-key-view_quiz .result-tiles .rt b { font-size:1.3rem; }
+}
+/* desktop and tablet: Next sits on the verdict line (right), the explanation and photo below it, so the next action
+   is in view straight after answering, whatever the length of the explanation */
+@media (min-width:701px) {
+  .stApp .st-key-view_quiz [class*="st-key-quiz_feedback_"] { display:grid !important; grid-template-columns:minmax(0,1fr) auto; align-items:center; column-gap:20px; }
+  .stApp .st-key-view_quiz [class*="st-key-quiz_feedback_"] > * { grid-column:1 / -1; width:auto !important; min-width:0; }
+  .stApp .st-key-view_quiz [class*="st-key-quiz_feedback_"] > :first-child { grid-column:1; }
+  .stApp .st-key-view_quiz [class*="st-key-quiz_feedback_"] > [data-testid="stLayoutWrapper"]:has(> .st-key-quiz_next_action) { order:0; grid-column:2; grid-row:1;
+    align-self:center; min-width:220px; }
+}
+/* tablets: setup full width, the start panel under it (two narrow columns squeezed the difficulty buttons) */
+@media (min-width:701px) and (max-width:900px) {
+  .st-key-view_quiz [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"] .st-key-settings_card) { flex-direction:column !important; gap:14px !important; }
+  .st-key-view_quiz [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"] .st-key-settings_card) > [data-testid="stColumn"] { width:100% !important; flex:1 1 auto !important; }
+}
+/* the points chip stays on the verdict line (only correct answers have one, and "Correct!" is short) */
+.st-key-view_quiz [class*="st-key-quiz_feedback_"] .feedback-chips { flex-basis:auto; padding-left:0; margin-left:auto; }

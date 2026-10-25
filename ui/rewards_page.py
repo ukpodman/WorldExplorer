@@ -85,7 +85,7 @@ def _banner(account: dict | None) -> None:
         st.warning(t("Test mode for owner and tester accounts only. It is separate from Friends & Family 10. "
                      "All amounts are simulated and non-payable, and these records are marked as test records."),
                    icon="🧪")
-    elif not hooks.payouts_active():
+    elif hooks.enabled() and not hooks.payouts_active():   # public programme only (the private pilot explains itself)
         st.info(t("Pilot preview: amounts are shown for information and are not payable until the programme is "
                   "officially launched."), icon="ℹ️")
     if hooks.preview_store():
@@ -328,15 +328,15 @@ def render() -> None:
     else:
         may_join = founding_ui.section(fs, who, account)
     member = hooks.ff10_member(refresh=True) if not hooks.enabled() else None
-    if member:   # Friends & Family 10: learning progress and provisional rewards (never payable as shown)
+    if member:   # Friends & Family 10: learning progress, provisional amounts and paid final allocations
         ff10_ui.progress(member)
     if not hooks.enabled() and not account.get("test"):
         # Friends & Family 10 only (the public rewards programme is closed): the application, its status and, once
         # approved, the provisional rewards above — nothing about joining, invitation links or withdrawals. The
-        # existing rewards ledger pays ₦0 while the public switch is off, and pilot payments are disabled.
-        st.info(t("Educational points and badges have no monetary value. Provisional rewards are not payable: any "
-                  "payment needs the monthly settlement, the Owner's approval and a separate authorisation, and "
-                  "payments are currently disabled. Thank you for helping us test World Explorer."))
+        # existing public ledger pays ₦0 while the public switch is off; the pilot pays approved allocations in cash.
+        st.info(t("Educational points and badges have no monetary value. Provisional amounts become final at the "
+                  "monthly settlement; approved final allocations are paid in naira by bank transfer to your verified "
+                  "account. Thank you for helping us test World Explorer."))
         return
     if not hooks.enabled():   # owner/tester accounts only: the public-programme screens with simulated amounts
         st.caption("🧪 " + t("Owner and tester preview: every ₦ amount below is simulated and non-payable."))

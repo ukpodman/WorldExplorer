@@ -5256,6 +5256,42 @@
    "completar el reto diario de hoy",
    "完成今日每日挑战",
    "пройти сегодняшнее испытание дня"
+  ],
+  "Provisional rewards are estimates until the month is settled. After each month, all participants' provisional rewards are added up. If the total is above the shared ₦50,000 monthly budget, every amount is reduced in the same proportion. Your final allocation is paid in naira by bank transfer after the Owner has approved it and verified your bank account.": [
+   "Vorläufige Prämien sind Schätzungen, bis der Monat abgerechnet ist. Nach jedem Monat werden die vorläufigen Prämien aller Teilnehmenden addiert. Liegt die Summe über dem gemeinsamen Monatsbudget von ₦50.000, wird jeder Betrag im gleichen Verhältnis gekürzt. Deine endgültige Zuteilung wird in Naira per Banküberweisung ausgezahlt, nachdem der Inhaber sie genehmigt und dein Bankkonto geprüft hat.",
+   "Las recompensas provisionales son estimaciones hasta que se liquida el mes. Al final de cada mes se suman las recompensas provisionales de todos los participantes. Si el total supera el presupuesto mensual compartido de ₦50.000, cada importe se reduce en la misma proporción. Tu asignación final se paga en nairas por transferencia bancaria después de que el propietario la apruebe y verifique tu cuenta bancaria.",
+   "在当月结算之前，暂定奖励只是估算。每月结束后，所有参与者的暂定奖励会被加总。如果总额超过共享的每月预算 ₦50,000，每个金额将按相同比例减少。所有者批准并核实你的银行账户后，你的最终分配将以奈拉通过银行转账支付。",
+   "Предварительные награды — это оценки до расчёта за месяц. После каждого месяца предварительные награды всех участников суммируются. Если сумма превышает общий месячный бюджет ₦50 000, каждая сумма уменьшается в одинаковой пропорции. Ваше окончательное распределение выплачивается в найрах банковским переводом после одобрения владельцем и проверки вашего банковского счёта."
+  ],
+  "Educational points and badges have no monetary value. Provisional amounts become final at the monthly settlement; approved final allocations are paid in naira by bank transfer to your verified account. Thank you for helping us test World Explorer.": [
+   "Lernpunkte und Abzeichen haben keinen Geldwert. Vorläufige Beträge werden bei der Monatsabrechnung endgültig; genehmigte endgültige Zuteilungen werden in Naira per Banküberweisung auf dein geprüftes Konto ausgezahlt. Danke, dass du uns beim Testen von World Explorer hilfst.",
+   "Los puntos educativos y las insignias no tienen valor monetario. Los importes provisionales pasan a ser definitivos en la liquidación mensual; las asignaciones finales aprobadas se pagan en nairas por transferencia bancaria a tu cuenta verificada. Gracias por ayudarnos a probar World Explorer.",
+   "学习积分和徽章没有货币价值。暂定金额在月度结算时确定；获批的最终分配将以奈拉通过银行转账支付到你已核实的账户。感谢你帮助我们测试 World Explorer。",
+   "Учебные очки и значки не имеют денежной ценности. Предварительные суммы становятся окончательными при ежемесячном расчёте; одобренные окончательные распределения выплачиваются в найрах банковским переводом на ваш проверенный счёт. Спасибо, что помогаете нам тестировать World Explorer."
+  ],
+  "Approved participants earn cash rewards for verified learning: up to ₦500 a day and ₦7,000 a month, from a shared ₦50,000 monthly budget. Daily amounts are provisional; after each month, approved final allocations are paid in naira by bank transfer.": [
+   "Angenommene Teilnehmende erhalten Geldprämien für bestätigtes Lernen: bis zu ₦500 pro Tag und ₦7.000 pro Monat aus einem gemeinsamen Monatsbudget von ₦50.000. Tagesbeträge sind vorläufig; nach jedem Monat werden genehmigte endgültige Zuteilungen in Naira per Banküberweisung ausgezahlt.",
+   "Los participantes aprobados ganan recompensas en efectivo por aprendizaje verificado: hasta ₦500 al día y ₦7.000 al mes, de un presupuesto mensual compartido de ₦50.000. Los importes diarios son provisionales; al final de cada mes, las asignaciones finales aprobadas se pagan en nairas por transferencia bancaria.",
+   "获批参与者可因经验证的学习获得现金奖励：每天最多 ₦500，每月最多 ₦7,000，来自共享的每月预算 ₦50,000。每日金额为暂定；每月结束后，获批的最终分配将以奈拉通过银行转账支付。",
+   "Одобренные участники получают денежные награды за подтверждённое обучение: до ₦500 в день и ₦7 000 в месяц из общего месячного бюджета ₦50 000. Дневные суммы предварительные; после каждого месяца одобренные окончательные распределения выплачиваются в найрах банковским переводом."
+  ],
+  "Educational points and badges have no monetary value.": [
+   "Lernpunkte und Abzeichen haben keinen Geldwert.",
+   "Los puntos educativos y las insignias no tienen valor monetario.",
+   "学习积分和徽章没有货币价值。",
+   "Учебные очки и значки не имеют денежной ценности."
+  ],
+  "Approved — bank transfer pending": [
+   "Genehmigt — Banküberweisung ausstehend",
+   "Aprobada — transferencia bancaria pendiente",
+   "已批准 — 银行转账待处理",
+   "Одобрено — банковский перевод ожидается"
+  ],
+  "Paid by bank transfer": [
+   "Per Banküberweisung ausgezahlt",
+   "Pagada por transferencia bancaria",
+   "已通过银行转账支付",
+   "Выплачено банковским переводом"
   ]
  }
 }

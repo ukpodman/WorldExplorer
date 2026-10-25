@@ -2,8 +2,8 @@
 
 Shown on the participant page to approved participants (and, with test records, to owners and testers). Real
 participants' figures come from the database's own calculation (pilot_month_days); test accounts' figures are
-calculated here with the same rules (core/pilot_rewards.py). Provisional amounts are never presented as earnings:
-they are not payable, the shared monthly budget may reduce them, and every final amount needs the Owner's approval.
+calculated here with the same rules (core/pilot_rewards.py). Provisional amounts are estimates until the monthly
+settlement (the shared budget may reduce them); approved final allocations are paid in real naira by bank transfer.
 """
 from __future__ import annotations
 
@@ -23,8 +23,8 @@ TIER_TEXT = (
     "45 minutes and a country you have not explored before",
     "60 minutes and today's Daily Challenge",
 )
-LINE_TEXT = {"pending_review": "Waiting for the Owner's review", "approved": "Approved — not paid (payments are disabled)",
-             "withheld": "Withheld after review", "paid": "Paid"}
+LINE_TEXT = {"pending_review": "Waiting for the Owner's review", "approved": "Approved — bank transfer pending",
+             "withheld": "Withheld after review", "paid": "Paid by bank transfer"}
 CACHE_SECONDS = 60
 
 
@@ -121,10 +121,10 @@ def _milestone(text: str) -> str:
 def _settlement(d: dict) -> None:
     with st.container(border=True, key="ff10_settlement_card"):
         st.markdown("**" + t("Monthly settlement") + "**")
-        st.caption(t("Provisional rewards are estimates, not earnings. After each month, all participants' provisional "
-                     "rewards are added up. If the total is above the shared ₦50,000 monthly budget, every amount is "
-                     "reduced in the same proportion. Final amounts need the Owner's approval, and payments are "
-                     "currently disabled."))
+        st.caption(t("Provisional rewards are estimates until the month is settled. After each month, all "
+                     "participants' provisional rewards are added up. If the total is above the shared ₦50,000 monthly "
+                     "budget, every amount is reduced in the same proportion. Your final allocation is paid in naira by "
+                     "bank transfer after the Owner has approved it and verified your bank account."))
         st.markdown("- " + t("This month ({month}): in progress — {amount} provisional", month=d["month"],
                              amount=_naira(d["month_total"])))
         for line in sorted(d["lines"], key=lambda r: r["month"], reverse=True):

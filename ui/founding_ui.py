@@ -87,10 +87,10 @@ def _pilot_intro(s) -> None:
     st.subheader(t("World Explorer — Friends & Family 10"))
     st.markdown(t("An invitation-only programme for up to {n} adults in Nigeria. You help us test World Explorer "
                   "before a wider launch; the World Explorer team reviews every application.", n=total))
-    st.caption(t("Approved participants see provisional rewards for genuine learning: up to ₦500 a day and ₦7,000 a "
-                 "month, from a shared ₦50,000 monthly budget. Provisional rewards are not earnings and are not "
-                 "payable."))
-    st.caption(t("Educational points and badges have no monetary value. No payments are available during the pilot."))
+    st.caption(t("Approved participants earn cash rewards for verified learning: up to ₦500 a day and ₦7,000 a month, "
+                 "from a shared ₦50,000 monthly budget. Daily amounts are provisional; after each month, approved final "
+                 "allocations are paid in naira by bank transfer."))
+    st.caption(t("Educational points and badges have no monetary value."))
     html(f'<div class="rw-stats"><div class="rw-stat"><div class="rw-stat-value">{left} / {total}</div>'
          f'<div class="rw-stat-label">{t("Places available")}</div></div></div>')
 

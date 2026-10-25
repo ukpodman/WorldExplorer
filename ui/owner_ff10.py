@@ -3,7 +3,10 @@
 Rendered only after analytics.is_owner() on the server. Every amount comes from the database's own calculation
 (pilot_month_days per participant, pilot_settlement_preview, pilot_settle_month); raw activity is loaded only for the
 participant and month the owner opens (review flags and the CSV download).
-Nothing here can pay money: pilot_mark_paid always refuses while payments are disabled.
+Real cash: approved final allocations are paid by the owner as manual Nigerian bank transfers OUTSIDE the app; the
+owner then records each transfer here (pilot_record_payment), after the monthly settlement, the beneficiary check and
+approval, and only while the owner has authorised pilot payments. The app never moves money itself, and Public
+Rewards, public payouts and withdrawals are not involved.
 """
 from __future__ import annotations
 
@@ -28,7 +31,20 @@ ERRORS = {
     "preview_changed": "The figures changed since the preview (for example a day was excluded). Check the new preview "
                        "and confirm again.",
     "month_settled": "This month is settled; its days can no longer change.",
-    "payments_disabled": "Payments are disabled. Nothing was paid.",
+    "payments_disabled": "Pilot payments are not authorised. Authorise them in “Cash payments” first.",
+    "terms_required": "Record the approved pilot terms first (🤝 Friends & Family 10 tab).",
+    "not_settled": "This month is not settled yet.",
+    "not_approved": "Approve this participant's final allocation first.",
+    "already_paid": "A payment is already recorded for this participant and month.",
+    "beneficiary_not_verified": "Verify this participant's identity and bank account name first.",
+    "amount_mismatch": "The amount must equal the approved final allocation exactly.",
+    "budget_exceeded": "This payment would exceed the month's settled total or the ₦50,000 budget.",
+    "reference_required": "Enter the bank transfer reference.",
+    "duplicate_reference": "This bank transfer reference is already recorded.",
+    "invalid_date": "The transfer date cannot be in the future or before the settlement.",
+    "invalid_account_last4": "Enter only the last 4 digits of the account number.",
+    "details_required": "Enter the account holder's legal name and the bank.",
+    "not_participant": "This person is not an approved, invited participant.",
     "no_change": "It already has that status.",
     "note_too_long": "Please keep the note under 500 characters.",
 }
@@ -57,6 +73,10 @@ def _load(s) -> dict:
             "invitations": [i for i in s.invitations() if not i.get("revoked_at")],
             "ledgers": {pid: [_summary(r) for r in s.ff10_ledger(pid, month)] for pid in people},
             "settlements": {r["month"]: r for r in s.ff10_settlements()}, "lines": lines}
+    data["cash"] = s.ff10_payments_health() == "ok"
+    data["payments"] = s.ff10_payments() if data["cash"] else []
+    data["beneficiaries"] = {b["profile_id"]: b for b in s.ff10_beneficiaries()} if data["cash"] else {}
+    data["payments_enabled"] = s.ff10_payments_enabled() if data["cash"] else False
     st.session_state.ff10_owner = data
     return data
 
@@ -104,10 +124,12 @@ def render() -> None:
         st.error("The Friends & Family 10 records could not be read just now. Players are not affected.")
         return
     month, today = rewards.month_key(), rewards.day_key()
-    st.caption("Provisional amounts are calculated from verified learning and are not payable. After a month ends you "
-               "finalise its settlement (shared ₦50,000 budget), then approve or withhold each participant's final "
-               "allocation. Payments stay disabled.")
+    st.caption("Provisional amounts are calculated from verified learning. After a month ends you finalise its "
+               "settlement (shared ₦50,000 budget), approve or withhold each final allocation, pay approved allocations "
+               "by bank transfer from the company account, and record each transfer here.")
     _overview(d, month, today)
+    st.divider()
+    _cash(s, d)
     st.divider()
     _participant_detail(s, d, month)
     st.divider()
@@ -124,7 +146,7 @@ def _overview(d: dict, month: str, today: str) -> None:
     total = sum(provisional.values())
     pending = sum(1 for line in d["lines"] if line["status"] == "pending_review")
     approved_total = sum(line["final"] for line in d["lines"] if line["status"] == "approved")
-    paid_total = sum(line["final"] for line in d["lines"] if line["status"] == "paid")
+    paid_total = sum(int(r["amount"]) for r in d["payments"])
     active = sum(1 for days in ledgers.values() if any(x.minutes > 0 for x in days))
     _tiles([("Invited", str(len(d["invitations"])), "active invitations"),
             ("Approved participants", f"{len(d['approved'])} / {pr.MAX_PARTICIPANTS}"),
@@ -133,8 +155,8 @@ def _overview(d: dict, month: str, today: str) -> None:
             ("Provisional this month", _naira(total), "before budget adjustment"),
             ("Remaining budget", _naira(max(pr.MONTHLY_BUDGET - total, 0)), "if the month ended now"),
             ("Pending settlement reviews", str(pending)),
-            ("Approved, not paid", _naira(approved_total), "all settled months"),
-            ("Paid", _naira(paid_total), "payments are disabled")])
+            ("Approved, payment pending", _naira(approved_total), "all settled months"),
+            ("Paid", _naira(paid_total), "recorded bank transfers")])
     if pr.scaled(provisional):
         st.info(f"This month's provisional total ({_naira(total)}) is above the budget: final allocations would be "
                 "reduced in proportion (estimate below).")
@@ -262,12 +284,123 @@ def _settled(s, d: dict) -> None:
                            format_func=lambda p: _who(d, p), key="ff10_decide_pick")
         note = st.text_input("Note (required to withhold, or to change an earlier decision)", max_chars=500,
                              key="ff10_decide_note")
-        one, two, three = st.columns(3)
+        one, two = st.columns(2)
         approve = one.form_submit_button("✅ Approve allocation")
         withhold = two.form_submit_button("✖ Withhold")
-        three.form_submit_button("Mark as paid", disabled=True, help="Payments are disabled.")
     if approve or withhold:
         action = "approve" if approve else "withhold"
         _act(lambda: s.ff10_decide(chosen, pid, action, _actor(), note or None),
-             f"{_who(d, pid)}: {chosen} allocation {'approved (not paid)' if approve else 'withheld'}.")
-    st.caption("Approving records your decision only. Payments are disabled; no money can be paid from here.")
+             f"{_who(d, pid)}: {chosen} allocation {'approved — payment pending' if approve else 'withheld'}.")
+    _record_payment(s, d, chosen, lines)
+
+
+def _record_payment(s, d: dict, month: str, lines: list[dict]) -> None:
+    """Record a manual bank transfer that has already been made from the company account."""
+    st.markdown("**Record a bank transfer**")
+    if not d["cash"]:
+        return
+    payable = [line for line in lines if line["status"] == "approved"]
+    if not d["payments_enabled"]:
+        st.caption("Pilot payments are not authorised yet (see “Cash payments” above).")
+        return
+    if not payable:
+        st.caption("No approved allocation is waiting for payment in this month.")
+        return
+    with st.form("ff10_pay", border=True, clear_on_submit=True):
+        pid = st.selectbox("Participant", [line["profile_id"] for line in payable], format_func=lambda p: (
+            f"{_who(d, p)} · {_naira(next(x['final'] for x in payable if x['profile_id'] == p))}"), key="ff10_pay_pick")
+        amount = st.number_input("Amount transferred (₦)", min_value=1, max_value=pr.MONTHLY_MAX, step=1,
+                                 key="ff10_pay_amount")
+        paid_on = st.date_input("Transfer date", value=rewards.lagos_now().date(), key="ff10_pay_date")
+        reference = st.text_input("Bank transfer reference", max_chars=100, key="ff10_pay_ref")
+        sure = st.checkbox("I confirm this transfer was made from the company account to the verified beneficiary, "
+                           "for exactly this amount.", key="ff10_pay_confirm")
+        submitted = st.form_submit_button("Record payment", type="primary")
+    if submitted:
+        _act(lambda: s.ff10_record_payment(month, pid, int(amount), paid_on.isoformat(), reference, _actor(),
+                                           confirmed=sure),
+             f"Payment recorded for {_who(d, pid)} ({month}).")
+
+
+def readiness(d: dict) -> list[tuple[str, bool, str]]:
+    """The private cash pilot's readiness checks: (requirement, met, detail). Nothing is filled in or assumed."""
+    from core import legal
+    problems = legal.pilot_activation_problems()
+    status = hooks.pilot_switch()
+    terms_ok = status.get("terms_version") == legal.pilot_terms_id()
+    return [
+        ("Operator verified ([legal] operator_verified)", legal.operator_verified(legal.config()),
+         "Confirm the company is the operator (legal/OPERATOR_VERIFICATION.md section A)."),
+        ("Contact email and registered address", bool(legal.contact_email(legal.config()))
+         and bool(legal.registered_address(legal.config())), "[legal] contact_email and registered_address."),
+        ("Privacy Policy, Terms of Use and cash-pilot terms published", not problems,
+         "; ".join(problems[:3]) + (" …" if len(problems) > 3 else "") if problems else "All three are published."),
+        ("Approved pilot terms recorded", terms_ok, "🤝 Friends & Family 10 tab → Record the published pilot terms."),
+        ("Applicable legal requirements reviewed", not problems,
+         "Your lawyer's review of cash rewards (e.g. FCCPC sales-promotion rules), tax and identity checks "
+         "(OPERATOR_VERIFICATION.md section D); confirmed by finalising and approving the documents."),
+        ("Invitation-only, at most 10 participants", len(d["approved"]) <= pr.MAX_PARTICIPANTS,
+         f"{len(d['approved'])} approved."),
+        ("Public Rewards OFF", not hooks.enabled(), "Must stay OFF for the private pilot."),
+    ]
+
+
+def _cash(s, d: dict) -> None:
+    st.markdown("#### 💵 Cash payments (private pilot)")
+    if not d["cash"]:
+        st.warning("Real cash payments are not installed in the database yet. After review and your approval, run "
+                   "supabase/friends_family10_payments_migration.sql in Supabase.")
+        return
+    checks = readiness(d)
+    _table([{"Requirement": name, "Status": "✅" if ok else "❌", "Detail": detail} for name, ok, detail in checks])
+    missing = [name for name, ok, _ in checks if not ok]
+    if d["payments_enabled"]:
+        st.success("Pilot payments are authorised. Pay approved allocations by bank transfer, then record them.")
+        if missing:
+            st.warning("Some readiness checks no longer pass: " + "; ".join(missing) + ". Consider suspending payments.")
+        if st.button("Suspend pilot payments", key="ff10_payments_off"):
+            _act(lambda: s.ff10_set_payments(False, _actor()), "Pilot payments were suspended.")
+    else:
+        if missing:
+            st.info("Pilot payments can be authorised once every check above passes.")
+        sure = st.checkbox("I authorise real cash payments for approved Friends & Family 10 allocations. The legal "
+                           "requirements above have genuinely been met.", key="ff10_payments_confirm",
+                           disabled=bool(missing))
+        if st.button("Authorise pilot payments", key="ff10_payments_on", type="primary",
+                     disabled=bool(missing) or not sure):
+            _act(lambda: s.ff10_set_payments(True, _actor(), confirmed=True), "Pilot payments were authorised.")
+    _beneficiaries(s, d)
+    if d["payments"]:
+        rows = [{"Month": r["month"], "Participant": _who(d, r["profile_id"]), "Beneficiary": r["beneficiary_name"],
+                 "Bank": r["bank_name"], "Account": "••••" + r["account_last4"], "Amount": _naira(r["amount"]),
+                 "Date": str(r["paid_on"])[:10], "Reference": r["bank_reference"], "Status": r["status"],
+                 "Recorded by": r["recorded_by"]} for r in reversed(d["payments"])]
+        st.markdown("**Payment ledger**")
+        _table(rows)
+        _download("Download payment ledger (CSV)", rows, "ff10-payments", "ff10_pay_csv")
+
+
+def _beneficiaries(s, d: dict) -> None:
+    people = [a["profile_id"] for a in d["approved"]]
+    st.markdown("**Beneficiary verification** (identity and bank account name checked by you; only the last 4 digits "
+                "of the account are kept)")
+    _table([{"Participant": _who(d, pid), "Verified": "✅" if d["beneficiaries"].get(pid) else "—",
+             "Name": (d["beneficiaries"].get(pid) or {}).get("legal_name", ""),
+             "Bank": (d["beneficiaries"].get(pid) or {}).get("bank_name", ""),
+             "Account": ("••••" + d["beneficiaries"][pid]["account_last4"]) if d["beneficiaries"].get(pid) else ""}
+            for pid in people], "No approved participants yet.")
+    if not people:
+        return
+    with st.form("ff10_beneficiary", border=True, clear_on_submit=True):
+        pid = st.selectbox("Participant", people, format_func=lambda p: _who(d, p), key="ff10_ben_pick")
+        name = st.text_input("Account holder's legal name (as on the bank account and ID)", max_chars=120,
+                             key="ff10_ben_name")
+        bank = st.text_input("Bank", max_chars=80, key="ff10_ben_bank")
+        last4 = st.text_input("Last 4 digits of the account number", max_chars=4, key="ff10_ben_last4")
+        note = st.text_input("How you verified (optional)", max_chars=500, key="ff10_ben_note")
+        sure = st.checkbox("I have checked this person's identity and that the account name matches.",
+                           key="ff10_ben_confirm")
+        submitted = st.form_submit_button("Save verification")
+    if submitted:
+        _act(lambda: s.ff10_verify_beneficiary(pid, name, bank, last4, _actor(), confirmed=sure, note=note or None),
+             f"Beneficiary verified for {_who(d, pid)}.")

@@ -280,9 +280,9 @@ def _review(s, d: dict, rows: list[dict], names: dict, month: str) -> None:
             st.caption(f"All {places(d['settings'])} places are taken — approve is unavailable. Use the waiting "
                        "list.")
         if pilot_mode():
-            st.caption("Approving lets the participant collect provisional Friends & Family 10 rewards for genuine "
-                       "learning. They are settled monthly within the ₦50,000 budget, need your approval, and are not "
-                       "payable: payments are disabled. No money moves.")
+            st.caption("Approving lets the participant earn Friends & Family 10 cash rewards for verified learning. "
+                       "They are settled monthly within the ₦50,000 budget; you approve each final allocation and pay it "
+                       "by bank transfer (📊 F&F 10 rewards). Approving an application moves no money.")
         else:
             st.caption("Approving does not enrol anybody and moves no money: the participant takes their place on "
                        "💰 My Rewards, and their 30-day withdrawal waiting period starts then.")
@@ -335,7 +335,7 @@ def render(include_test: bool) -> None:
         st.markdown("### 🤝 Friends & Family 10 — Applications")
         st.caption("Private programme, by invitation only. Only people you have invited can apply, and only "
                    f"participants you approve take part (at most {places(d['settings'])}). Everyone else keeps full, "
-                   "free educational access. No payments are available during the pilot.")
+                   "free educational access. Approved final allocations are paid by bank transfer (📊 F&F 10 rewards).")
     else:
         st.markdown("### 🌟 Founding 50 Applications")
         if not status.get("installed") or not status.get("invitation_only", True):

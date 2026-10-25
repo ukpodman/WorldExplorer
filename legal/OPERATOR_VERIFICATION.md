@@ -67,10 +67,10 @@ until both secrets are set: `[legal] operator_verified = true` and `[legal] publ
 2. **Identity checks** before any payment (beneficiary name match), plus record-keeping.
 3. **Friends and family.** Fairness and conflict-of-interest wording for participants related to the operator.
 3a. **Friends & Family 10 provisional rewards.** Review the earning rules, the shared ₦50,000 monthly budget with
-   proportional settlement, the owner's right to exclude days or withhold allocations, and the wording that provisional
-   amounts are not earnings (pilot terms section 4). Confirm the tax treatment and record-keeping before any payment,
-   and whether payments to friends and family need extra safeguards. Payments stay disabled in the database until a
-   further reviewed migration changes `pilot_reward_settings.payments_enabled`.
+   proportional settlement, the owner's right to exclude days or withhold allocations, and the real-cash payment
+   wording (pilot terms sections 4–5). Confirm the tax treatment and record-keeping before the first payment, and
+   whether payments to friends and family need extra safeguards. Pilot payments start only when the owner authorises
+   them in the app (`pilot_set_payments`), after every readiness check passes.
 4. **Rules wording.** Review the existing in-app rewards rules (`ui/rewards_page.py`, `TERMS`, version
    `2026-10-founding50-1`) so they name the company as operator. Bump `rewards.TERMS_VERSION` when the wording
    changes.
@@ -100,8 +100,11 @@ Owner dashboard → ⚖️ Legal & switches:
 5. **Open the Friends & Family 10:**
    - the database part (`supabase/pilot_invitations_migration.sql`) is already installed and verified; do not run
      it again;
-   - after its review and your approval, run `supabase/friends_family10_migration.sql` (provisional rewards, the
-     10-place limit and the monthly settlement; payments stay disabled);
+   - `supabase/friends_family10_migration.sql` (provisional rewards, the 10-place limit and the monthly
+     settlement) is installed;
+   - after its review and your approval, run `supabase/friends_family10_payments_migration.sql` (real cash
+     payments: authorisation, beneficiary checks, payment ledger);
+   - when every readiness check passes, authorise pilot payments in 📊 F&F 10 rewards → 💵 Cash payments;
    - in the 🤝 Friends & Family 10 tab, press "Record the published pilot terms": applicants must accept exactly that version,
      which is kept with each application;
    - invite people;

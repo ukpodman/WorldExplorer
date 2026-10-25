@@ -627,25 +627,139 @@ class Scenarios:
         self.assertEqual(sum("already_settled" in o for o in outcomes), 3, outcomes)
         self.assertEqual(len(s.ff10_lines(LAST)), 1)
 
-    # ---- 15, 16. public rewards stay OFF, payments stay disabled
-    def test_public_rewards_withdrawals_and_payments_stay_off(self):
-        s = self.store()
-        p1, _ = self.settled(s)
+    # ---- 15, 16. public rewards stay OFF; real cash payments only through the private-pilot mechanism
+    def approved_line(self, s, verify=True):
+        p1, p2 = self.settled(s)
         s.ff10_decide(LAST, p1, "approve", OWNER)
-        self.raises("payments_disabled", s.ff10_mark_paid, LAST, p1, OWNER, "ref")
-        self.assertFalse(s.public_status()["enabled"])
-        cash = s.cashout_settings()
-        self.assertEqual((cash["live_requests"], cash["real_payouts"]), (False, False))
-        self.assertFalse(s.select("pilot_reward_settings", {"id": 1})[0]["payments_enabled"])
-        self.assertEqual(s.ff10_lines(LAST, p1)[0]["status"], "approved")              # approved, not paid
-        event = s.add_event(p1, "quiz", "q-public", rewards.day_key(), reward=True, test=False)
-        self.assertEqual(int(event["amount"]), 0)        # the existing ledger still pays ₦0 while public is OFF
+        if verify:
+            s.ff10_verify_beneficiary(p1, "Player One", "Example Bank", "4321", OWNER, confirmed=True)
+        return p1, p2
 
-    def test_payments_enabled_cannot_be_switched_on(self):
+    def pay(self, s, p, amount=None, ref="TRF-0001", day=None, confirmed=True, actor=OWNER):
+        amount = s.ff10_lines(LAST, p)[0]["final"] if amount is None else amount
+        return s.ff10_record_payment(LAST, p, amount, day or rewards.day_key(), ref, actor, confirmed)
+
+    def test_payments_need_the_owners_authorisation_and_public_stays_off(self):
         s = self.store()
-        with self.assertRaises(StoreError):
+        p1, _ = self.approved_line(s)
+        self.raises("payments_disabled", self.pay, s, p1)
+        self.raises("not_owner", s.ff10_set_payments, True, "someone@example.com", True)
+        self.raises("confirmation_required", s.ff10_set_payments, True, OWNER, False)
+        self.assertTrue(s.ff10_set_payments(True, OWNER, confirmed=True)["payments_enabled"])
+        self.assertTrue(s.ff10_payments_enabled())
+        self.assertFalse(s.public_status()["enabled"])                                  # Public Rewards OFF
+        cash = s.cashout_settings()
+        self.assertEqual((cash["live_requests"], cash["real_payouts"]), (False, False))  # public payouts untouched
+        event = s.add_event(p1, "quiz", "q-public", rewards.day_key(), reward=True, test=False)
+        self.assertEqual(int(event["amount"]), 0)        # the public ledger still pays ₦0 while public is OFF
+        self.raises("use_pilot_record_payment", s.rpc, "pilot_mark_paid",
+                    {"p_month": LAST, "p_profile": p1, "p_actor": OWNER, "p_reference": "x"})   # the old path is closed
+        s.ff10_set_payments(False, OWNER)                                               # suspend again
+        self.raises("payments_disabled", self.pay, s, p1)
+        self.assertIn("pilot_payments_on", [a["action"] for a in s.audit()])
+
+    def test_authorisation_needs_the_recorded_pilot_terms(self):
+        s = self.make_store()
+        s.update("reward_cashout_settings", {"id": 1}, {"owner_emails": [OWNER]})
+        self.raises("terms_required", s.ff10_set_payments, True, OWNER, True)
+        with self.assertRaises(StoreError):                                             # only through the function
             s.update("pilot_reward_settings", {"id": 1}, {"payments_enabled": True})
-        self.assertFalse(s.select("pilot_reward_settings", {"id": 1})[0]["payments_enabled"])
+        self.assertFalse(s.ff10_payments_enabled())
+
+    def test_recording_a_manual_bank_transfer(self):
+        s = self.store()
+        p1, _ = self.approved_line(s)
+        s.ff10_set_payments(True, OWNER, confirmed=True)
+        row = self.pay(s, p1, ref="  FT2611051234  ")
+        self.assertEqual((row["amount"], row["bank_reference"], row["beneficiary_name"], row["bank_name"],
+                          row["account_last4"], row["status"], row["recorded_by"]),
+                         (500, "FT2611051234", "Player One", "Example Bank", "4321", "paid", OWNER))
+        self.assertEqual(str(row["paid_on"])[:10], rewards.day_key())
+        line = s.ff10_lines(LAST, p1)[0]
+        self.assertEqual((line["status"], line["payment_reference"]), ("paid", "FT2611051234"))
+        self.assertEqual(len(s.ff10_payments(LAST)), 1)
+        self.assertIn("pilot_payment_recorded", [a["action"] for a in s.audit()])
+        self.raises("already_paid", self.pay, s, p1, ref="FT-other")                     # never twice
+        with self.assertRaises(StoreError):
+            s.update("pilot_payments", {"id": row["id"]}, {"amount": 7000})
+        with self.assertRaises(StoreError):
+            s.delete("pilot_payments", {"id": row["id"]})
+        self.raises("already_paid", s.ff10_decide, LAST, p1, "withhold", OWNER, "too late")
+
+    def test_payment_safeguards(self):
+        s = self.store()
+        p1, p2 = self.approved_line(s, verify=False)
+        s.ff10_set_payments(True, OWNER, confirmed=True)
+        self.raises("not_owner", self.pay, s, p1, actor="someone@example.com")
+        self.raises("confirmation_required", self.pay, s, p1, confirmed=False)
+        self.raises("beneficiary_not_verified", self.pay, s, p1)
+        s.ff10_verify_beneficiary(p1, "Player One", "Example Bank", "4321", OWNER, confirmed=True)
+        self.raises("not_approved", self.pay, s, p2)                                     # still pending review
+        self.raises("amount_mismatch", self.pay, s, p1, amount=499)
+        self.raises("amount_mismatch", self.pay, s, p1, amount=501)
+        self.raises("reference_required", self.pay, s, p1, ref=" ")
+        tomorrow = (rewards.lagos_now() + __import__("datetime").timedelta(days=1)).date().isoformat()
+        self.raises("invalid_date", self.pay, s, p1, day=tomorrow)
+        yesterday = (rewards.lagos_now() - __import__("datetime").timedelta(days=1)).date().isoformat()
+        self.raises("invalid_date", self.pay, s, p1, day=yesterday)                      # before the settlement
+        self.raises("not_settled", s.ff10_record_payment, EARLIER, p1, 500, rewards.day_key(), "X-1234", OWNER, True)
+        self.pay(s, p1, ref="REF-1111")
+        s.ff10_verify_beneficiary(p2, "Player Two", "Other Bank", "9876", OWNER, confirmed=True)
+        s.ff10_decide(LAST, p2, "approve", OWNER)
+        self.raises("duplicate_reference", self.pay, s, p2, ref="REF-1111")              # a reference is used once
+        s.ff10_decide(LAST, p2, "withhold", OWNER, "Identity mismatch")
+        self.raises("not_approved", self.pay, s, p2, ref="REF-2222")                     # withheld: never paid
+
+    def test_beneficiary_verification_keeps_only_the_last_four_digits(self):
+        s = self.store()
+        p = self.participant(s, 1)
+        self.raises("invalid_account_last4", s.ff10_verify_beneficiary, p, "Player One", "Bank", "0123456789",
+                    OWNER, True)
+        self.raises("confirmation_required", s.ff10_verify_beneficiary, p, "Player One", "Bank", "6789", OWNER, False)
+        self.raises("not_owner", s.ff10_verify_beneficiary, p, "Player One", "Bank", "6789", "x@example.com", True)
+        s.ensure_account(pid(30), "stranger@example.com", "Stranger", True, False)
+        self.raises("not_participant", s.ff10_verify_beneficiary, pid(30), "Stranger", "Bank", "6789", OWNER, True)
+        row = s.ff10_verify_beneficiary(p, "Player One", "Bank", "6789", OWNER, True, "Checked ID and account name")
+        self.assertEqual((row["account_last4"], row["verified"]), ("6789", True))
+        self.assertNotIn("0123456789", str(s.ff10_beneficiaries()))
+
+    def test_full_month_paid_within_the_budget(self):
+        s = self.store()
+        people = [self.participant(s, n) for n in range(1, 9)]
+        for n, p in enumerate(people):
+            for d in range(1, 15):
+                self.top_day(s, p, f"{LAST}-{d:02d}", tag=f"{n}-{d}-")                     # ₦56,000 → ₦50,000
+        s.ff10_settle(LAST, OWNER, s.ff10_preview(LAST)["fingerprint"], confirmed=True)
+        s.ff10_set_payments(True, OWNER, confirmed=True)
+        for n, p in enumerate(people):
+            s.ff10_decide(LAST, p, "approve", OWNER)
+            s.ff10_verify_beneficiary(p, f"Player {n + 1}", "Example Bank", f"{1000 + n}", OWNER, True)
+            self.pay(s, p, ref=f"TRF-{n:04d}")
+        total = sum(int(r["amount"]) for r in s.ff10_payments(LAST))
+        self.assertEqual(total, 50000)
+        self.assertLessEqual(total, s.ff10_settlements()[0]["total_final"])
+        self.assertTrue(all(line["status"] == "paid" for line in s.ff10_lines(LAST)))
+
+    def test_concurrent_payment_attempts_pay_once(self):
+        s = self.store()
+        p1, _ = self.approved_line(s)
+        s.ff10_set_payments(True, OWNER, confirmed=True)
+        outcomes = []
+
+        def go(i):
+            try:
+                outcomes.append(self.pay(s, p1, ref=f"TRF-{i:04d}")["bank_reference"])
+            except StoreError as error:
+                outcomes.append(str(error))
+
+        threads = [threading.Thread(target=go, args=(i,)) for i in range(4)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+        self.assertEqual(sum(o.startswith("TRF-") for o in outcomes), 1, outcomes)
+        self.assertEqual(sum("already_paid" in o for o in outcomes), 3, outcomes)
+        self.assertEqual(len(s.ff10_payments(LAST)), 1)
 
     # ---- 17. existing records are untouched
     def test_existing_records_are_untouched(self):

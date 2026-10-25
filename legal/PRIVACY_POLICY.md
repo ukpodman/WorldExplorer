@@ -52,11 +52,15 @@ The programme is limited to **at most 10 individually approved adults**. If you 
 - if you are approved: records of your learning interactions (the type of interaction, the country, quiz or question
   concerned, and the time our server recorded it), the provisional rewards calculated from them, the monthly
   settlement and our review decisions, and an audit log of changes. We use them only to run the programme, calculate
-  provisional rewards and prevent abuse. We do not use device fingerprinting, location tracking or screen recording;
+  rewards, make and record payments and prevent abuse. We do not use device fingerprinting, location tracking or
+  screen recording;
+- if you receive cash payments: the account holder's legal name, the bank and the last four digits of the account
+  number (the full account number is not stored in the app), and each payment's amount, date and bank transfer
+  reference. Tax and accounting law may require us to keep payment records for a set period;
 - if a public rewards programme is later approved and you take part: invitation (referral) records and monthly reward
   amounts under that programme's rules.
 
-**Payments are not active.** If payments are approved in future, a withdrawal request records your full legal name
+**Public rewards payments are not active.** Friends & Family 10 cash payments are described above. If public payments are approved in future, a withdrawal request records your full legal name
 and your declarations. Bank details are **not** entered in the app; [describe the separate secure channel]. We keep
 a one-way, keyed fingerprint of the receiving account (not the account number) to detect duplicate accounts, and the
 bank's payment reference. Tax and accounting law may require us to keep payment records for a set period.

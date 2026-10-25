@@ -46,10 +46,11 @@ class FF10AppTests(unittest.TestCase):
         self.s.set_participation_terms("pilot", legal_fixtures.pilot_terms_id(), OWNER["email"])
         self.s.set_pilot(True, OWNER["email"], confirmed=True)
 
-    def app(self, who, page="Rewards", public=False):
+    def app(self, who, page="Rewards", public=False, legal=True):
         at = AppTest.from_file(str(ROOT / "app.py"), default_timeout=60)
         at.secrets["rewards"] = {"enabled": public}
-        at.secrets["legal"] = legal_fixtures.secrets()
+        if legal:
+            at.secrets["legal"] = legal_fixtures.secrets()
         at.secrets["analytics"] = {"owner_emails": [OWNER["email"]]}
         at.session_state["page"] = page
         if page == "Owner":
@@ -103,8 +104,10 @@ class FF10AppTests(unittest.TestCase):
         self.assertIn("₦350 / ₦500", text)
         self.assertIn("₦350 / ₦7,000", text)
         self.assertIn("Next milestone: 15 more minutes of active learning; complete today's Daily Challenge.", text)
-        self.assertIn("Provisional rewards are estimates, not earnings", text)
-        self.assertIn("payments are currently disabled", text)
+        self.assertIn("Provisional rewards are estimates until the month is settled", text)
+        self.assertIn("paid in naira by bank transfer", text)
+        self.assertNotIn("not payable", text)
+        self.assertNotIn("payments are currently disabled", text)
         self.assertNotIn("guaranteed", text.lower())
         self.assertNotIn("Test mode", text)
 
@@ -213,12 +216,60 @@ class FF10AppTests(unittest.TestCase):
         self.assertEqual([e.value for e in at.exception], [])
         self.assertEqual(self.s.ff10_settlements()[0]["total_final"], 750)
         self.assertEqual(self.s.ff10_lines(LAST, pid)[0]["status"], "pending_review")
-        paid = next(b for b in at.button if b.label == "Mark as paid")
-        self.assertTrue(paid.disabled)
         approve = next(b for b in at.button if b.label == "✅ Approve allocation")
         approve.click().run()
         self.assertEqual(self.s.ff10_lines(LAST, pid)[0]["status"], "approved")
         self.assertFalse(self.s.cashout_settings()["real_payouts"])
+
+    def test_owner_authorises_verifies_and_records_a_bank_transfer(self):
+        pid = self.join(FRIEND)
+        for d in range(1, 3):
+            self.session(pid, f"{LAST}-{d:02d}", 30, quizzes=2, tag=f"d{d}")       # 2 × ₦250
+        self.s.ff10_settle(LAST, OWNER["email"], self.s.ff10_preview(LAST)["fingerprint"], confirmed=True)
+        self.s.ff10_decide(LAST, pid, "approve", OWNER["email"])
+        at = self.app(OWNER, page="Owner").run()
+        self.assertEqual([e.value for e in at.exception], [])
+        html = " ".join(str(h.proto.body) for h in at.get("html"))
+        self.assertIn("Public Rewards OFF", html)
+        self.assertNotIn("❌", html)                                               # every readiness check passes
+        self.assertTrue(at.button(key="ff10_payments_on").disabled)                # needs the confirmation
+        at.checkbox(key="ff10_payments_confirm").check().run()
+        at.button(key="ff10_payments_on").click().run()
+        self.assertTrue(self.s.ff10_payments_enabled())
+        at.text_input(key="ff10_ben_name").input("Ada Friend")
+        at.text_input(key="ff10_ben_bank").input("Example Bank")
+        at.text_input(key="ff10_ben_last4").input("1234")
+        at.checkbox(key="ff10_ben_confirm").check()
+        next(b for b in at.button if b.label == "Save verification").click().run()
+        self.assertEqual(self.s.ff10_beneficiaries()[0]["account_last4"], "1234")
+        at.number_input(key="ff10_pay_amount").set_value(500)
+        at.text_input(key="ff10_pay_ref").input("FT26110512345")
+        at.checkbox(key="ff10_pay_confirm").check()
+        next(b for b in at.button if b.label == "Record payment").click().run()
+        self.assertEqual([e.value for e in at.exception], [])
+        payment = self.s.ff10_payments(LAST)[0]
+        self.assertEqual((payment["amount"], payment["bank_reference"], payment["beneficiary_name"]),
+                         (500, "FT26110512345", "Ada Friend"))
+        self.assertEqual(self.s.ff10_lines(LAST, pid)[0]["status"], "paid")
+        self.assertIn("FT26110512345", " ".join(str(h.proto.body) for h in at.get("html")))   # the ledger
+        self.assertFalse(self.s.public_status()["enabled"])
+        self.assertEqual((self.s.cashout_settings()["real_payouts"], self.s.cashout_settings()["live_requests"]),
+                         (False, False))
+        text = self.text(self.app(FRIEND).run())
+        self.assertIn(f"{LAST}: ₦500 provisional → ₦500 final allocation · Paid by bank transfer", text)
+
+    def test_payments_cannot_be_authorised_without_the_legal_requirements(self):
+        at = self.app(OWNER, page="Owner", legal=False)
+        legal_fixtures.use_real()
+        self.addCleanup(legal_fixtures.use_real)
+        at.run()
+        self.assertEqual([e.value for e in at.exception], [])
+        html = " ".join(str(h.proto.body) for h in at.get("html"))
+        self.assertIn("❌", html)
+        self.assertIn("Operator verified", html)
+        self.assertTrue(at.button(key="ff10_payments_on").disabled)
+        self.assertTrue(at.checkbox(key="ff10_payments_confirm").disabled)
+        self.assertFalse(self.s.ff10_payments_enabled())
 
     def test_owner_excludes_a_suspicious_day(self):
         pid = self.join(FRIEND)

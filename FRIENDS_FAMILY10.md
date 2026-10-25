@@ -1,9 +1,13 @@
-# World Explorer — Friends & Family 10: how it works (25 October 2026)
+# World Explorer — Friends & Family 10: a real-cash private pilot (updated 25 October 2026)
 
-**Branch:** `atlas-pilot-consolidated` @ `b4fc727`, plus the interface corrections `d3a7a01` and `d8e121b`, plus this
-package.
-**Status:** not deployed. Nothing has been pushed or merged, no SQL has been run, and production `main` is unchanged.
-Public Rewards, withdrawals and payments stay OFF.
+**Status:**
+- `friends_family10_migration.sql` is installed in Supabase (as you confirmed).
+- The real-cash additions (`friends_family10_payments_migration.sql`) are proposed and **not run**.
+- Nothing has been pushed, merged or deployed by Claude, and no payment has been made.
+- Public Rewards, public payouts and withdrawals stay OFF.
+
+Friends & Family 10 pays **real money**: approved final allocations are paid in naira by manual bank transfer from the
+company account, and each transfer is recorded in the app.
 
 ## 1. The programme
 
@@ -15,7 +19,7 @@ Public Rewards, withdrawals and payments stay OFF.
 | Monthly budget (all participants) | **₦50,000** | `pilot_reward_settings` (CHECK constraint) and the settlement |
 | Per participant | **₦500/day**, **₦7,000/month** | the ledger (`pilot_month_ledger`) |
 | Rewarded learning per day | 15–60 verified minutes | the daily tiers |
-| Payments | **disabled** | `payments_enabled = false` fixed by a CHECK constraint; `pilot_mark_paid` always refuses |
+| Payments | real cash by manual bank transfer, once the owner authorises pilot payments | `pilot_set_payments` (owner, confirmed, approved pilot terms recorded; the app also requires every readiness check), `pilot_record_payment` (section 4a) |
 
 The internal database names keep "founding50" and "pilot"; only the displayed name changed. The future public
 programme keeps the name Founding 50 and its own `max_places` setting (50).
@@ -88,9 +92,46 @@ programme keeps the name Founding 50 and its own `max_places` setting (50).
    activity and day reviews for that month are then refused.
 5. Each line then needs the owner's decision: **Approve** (not paid) or **Withhold** (a reason is required, and
    changing an earlier decision also needs a reason).
-6. **Mark as paid** is disabled in the app, and the database refuses it (`payments_disabled`).
+6. The owner pays each approved allocation by bank transfer and records it (section 4a).
 
 Provisional amounts are never called earnings. Participants see them as estimates that are not payable.
+
+## 4a. Real cash payments (proposed `friends_family10_payments_migration.sql`)
+
+1. **Authorise pilot payments.** In 📊 F&F 10 rewards → 💵 Cash payments, the readiness checks must all pass:
+   - operator verified;
+   - contact email and registered address set;
+   - Privacy Policy, Terms of Use and cash-pilot terms published (finalised, with checksums approved);
+   - approved pilot terms recorded;
+   - the legal requirements reviewed;
+   - invitation-only with at most 10 participants;
+   - Public Rewards OFF.
+
+   Then tick the confirmation and authorise. The database also requires the confirmation and the recorded pilot
+   terms. You can suspend payments at any time. This switch is separate from the public `real_payouts` switch, which
+   stays OFF.
+2. **Verify each beneficiary.** Record the account holder's legal name, the bank and the last 4 digits of the
+   account, and confirm that you checked their identity and the account name. Full account numbers are never stored.
+3. **After the monthly settlement and your approval**, pay the final allocation by bank transfer from the company
+   account, then record it:
+   - the amount, which must equal the approved final allocation;
+   - the transfer date;
+   - the bank reference.
+4. **The database refuses** a payment if:
+   - payments are not authorised;
+   - the month is not settled;
+   - the allocation is not approved, or was withheld;
+   - the beneficiary is not verified;
+   - the amount differs from the approved allocation;
+   - a payment already exists for that person and month;
+   - the reference was used before;
+   - the date is in the future or before the settlement;
+   - the month's payments would exceed the settled total or ₦50,000.
+
+   Payments for the same month are serialised by a lock.
+5. **The ledger** (`pilot_payments`) keeps, for every payment, the beneficiary name, bank, last 4 digits, amount,
+   date, reference, status, who recorded it and when. It is append-only and audited, and can be downloaded as CSV.
+   Participants see "Paid by bank transfer" against the month.
 
 ## 5. Screens
 
@@ -147,5 +188,7 @@ Provisional amounts are never called earnings. Participants see them as estimate
    The screens are covered by automated app tests.
 6. **More than 10 already approved.** If more than 10 participants were already approved before the migration,
    existing approvals stay, and new approvals are refused until the count is below 10.
-7. **Payments.** Turning payments on in future needs another reviewed migration that changes the fixed
-   `payments_enabled` constraint, plus the legal and identity steps.
+7. **Payments are manual.** The app does not move money. A payment recorded in error cannot be edited or deleted in
+   the app (the ledger is append-only); correcting one needs a reviewed database change and an audit note.
+8. **Bank details stay outside the app.** Only the account holder's name, the bank and the last four digits are
+   stored.

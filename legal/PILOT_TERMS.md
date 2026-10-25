@@ -1,7 +1,7 @@
-> **DRAFT for legal review — not published.** Version draft-2026-10-25. These participation terms sit alongside
-> the World Explorer Terms of Use and Privacy Policy. Items in [brackets] are to be confirmed. In particular, the
-> lawyer must confirm whether cash rewards for learning activity need any approval or registration before any payment
-> is made (see OPERATOR_VERIFICATION.md, section D).
+> **DRAFT for legal review — not published.** Version draft-2026-10-25-cash. These participation terms sit alongside the
+> World Explorer Terms of Use and Privacy Policy. Items in [brackets] are to be confirmed by the operator (and its
+> adviser) before publication, including whether cash rewards for learning activity need any approval, registration
+> or tax treatment (see OPERATOR_VERIFICATION.md, section D).
 
 # World Explorer — Friends & Family 10: Participation Terms
 
@@ -23,8 +23,8 @@ people use the app, fix problems and test a fair way of recognising genuine lear
   - live in Nigeria;
   - have a Google account to sign in;
   - accept these terms.
-- **Verification:** age and residence are self-declared. Before any payment could ever be made, we may ask you to
-  verify your identity and eligibility.
+- **Verification:** age and residence are self-declared. Before your first payment we verify your identity and
+  that the receiving bank account is in your name (section 5).
 - **Friends and family:** if you are related to, or work with, the operator's directors or staff, [disclose this when
   applying — lawyer to confirm the conflict-of-interest and fairness wording].
 
@@ -35,10 +35,15 @@ people use the app, fix problems and test a fair way of recognising genuine lear
   stop increasing after the daily limit.
 - Taking part is free. There is no paid entry and no element of chance.
 
-## 4. Provisional rewards
+## 4. Cash rewards: provisional amounts and final allocations
 
-**Provisional rewards are not earnings and are not payable.** They are estimates shown in the app to help us test
-the programme.
+Friends & Family 10 pays **real money**. Approved participants can receive cash rewards, in naira, for verified
+learning. The app shows two kinds of amount:
+
+- **Provisional amounts** are calculated each day from your verified learning. They are estimates until the month
+  is settled, and they may be reduced by the shared monthly budget (below).
+- **Final allocations** are fixed at the monthly settlement. Once we approve your final allocation, it is intended
+  to be paid to you by bank transfer (section 5).
 
 - **Verified learning time.** Only active learning counts: answering quiz questions, completing quizzes and the
   Daily Challenge, exploring countries and opening their details. Our server records the time of each of these
@@ -69,22 +74,37 @@ the programme.
   allocation where we reasonably believe the activity was not genuine (for example automated play, shared or
   duplicate accounts, or deliberately meaningless actions), and we will tell you if we do.
 - **Final allocations** are fixed when we finalise the monthly settlement and cannot be changed afterwards. Each one
-  still needs our approval.
+  still needs our approval; we may withhold an allocation for the reasons in "Review" above.
 
 ## 5. Payments
 
-- **No money is currently payable.** Payments are disabled in the app.
-- Approved final allocations could be paid only after we separately confirm in writing that payments may start,
-  [after the legal and regulatory review is complete], and after the identity checks in section 2. Until then, no
-  allocation is owed or payable, and nothing in the app is an offer to pay.
-- Points and badges have no monetary value.
+- **How you are paid.** Approved final allocations are paid in naira by bank transfer from the operator's company
+  bank account to a Nigerian bank account in your own name. We do not take card details, and you never pay anything
+  to take part.
+- **When.** We aim to pay approved allocations within [14] days after the monthly settlement. We start paying once
+  we have authorised pilot payments in the app; if we have not yet done so, approved allocations are paid when we
+  do.
+- **Before your first payment** we check your identity and that the bank account is in your name. You give us your
+  account details outside the app (for example in person or by phone). The app keeps only your name, your bank and
+  the last four digits of the account number.
+- **Record.** Each payment is recorded with the amount, the date, the bank transfer reference and the account it
+  was sent to. You can see its status in the app.
+- **Mistakes.** If an amount is paid in error (for example twice, or to the wrong account), we may ask for it to be
+  returned or set it against a later payment.
+- **Tax.** [Operator to confirm the tax treatment of the rewards and whether anything is deducted or reported.]
+- **Budget and limits.** We never pay more than your final allocation, at most ₦7,000 per month per participant,
+  and at most ₦50,000 per month for all participants together.
+- Points and badges have no monetary value. Provisional amounts are not payable until they become an approved final
+  allocation.
 
 ## 6. Data
 
 We process the personal data described in section 4 of the Privacy Policy: your Google email address and display
 name, your declarations and Nigerian state, an optional note, our decisions, and records of your learning
-interactions (the type of interaction, the country, quiz or question concerned, and the time). We use these records
-only to run the programme, calculate provisional rewards and review activity. We do not use device fingerprinting,
+interactions (the type of interaction, the country, quiz or question concerned, and the time), and for payments: the
+account holder's name, the bank, the last four digits of the account number, and each payment's amount, date and
+bank transfer reference. We use these records only to run the programme, calculate rewards, make and record payments
+and review activity. Accounting and tax law may require us to keep payment records for a set period. We do not use device fingerprinting,
 location tracking or recordings of your screen. Usage statistics remain optional and are controlled by you in
 Settings → Privacy.
 
@@ -106,4 +126,4 @@ effect.
 These terms are governed by the laws of the Federal Republic of Nigeria. The World Explorer Terms of Use and Privacy
 Policy also apply. If these terms and the Terms of Use conflict, these terms apply to the programme.
 
-*Version: draft-2026-10-25*
+*Version: draft-2026-10-25-cash*

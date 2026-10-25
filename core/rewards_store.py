@@ -31,7 +31,7 @@ CASHOUT_TABLES = ("reward_cashout_settings", "reward_cashout_requests", "reward_
                   "reward_cashout_payments", "reward_owner_notifications")   # supabase/withdrawals_migration.sql
 FOUNDING_TABLES = (founding.TABLE,)                                            # supabase/founding50_migration.sql
 PILOT_TABLES = (founding.INVITES,)                                             # supabase/pilot_invitations_migration.sql
-FF10_TABLES = pilot_rewards.TABLES                                             # supabase/friends_family10_migration.sql
+FF10_TABLES = pilot_rewards.TABLES + pilot_rewards.PAYMENT_TABLES             # friends_family10(_payments)_migration.sql
 PAGE = 1000
 PILOT_COLUMNS = ("pilot_enabled", "pilot_changed_at", "pilot_changed_by", "invitation_only", "invitation_changed_at",
                  "invitation_changed_by", "pilot_terms_version", "public_terms_version", "terms_changed_at",
@@ -418,9 +418,45 @@ class RewardsStore:
         return self._one(self.rpc("pilot_settlement_decide", {"p_month": month, "p_profile": profile_id,
                                                               "p_action": action, "p_actor": actor, "p_note": note}))
 
-    def ff10_mark_paid(self, month: str, profile_id: str, actor: str, reference: str | None = None) -> dict:
-        return self._one(self.rpc("pilot_mark_paid", {"p_month": month, "p_profile": profile_id, "p_actor": actor,
-                                                      "p_reference": reference}))
+    # ---- Friends & Family 10 real cash payments (supabase/friends_family10_payments_migration.sql)
+    def ff10_payments_health(self) -> str:
+        """'ok', 'missing_tables' (the payments migration has not been run) or 'error'."""
+        try:
+            self.select("pilot_payments", {"id": 0}, limit=1)
+            return "ok"
+        except StoreError as error:
+            return "missing_tables" if "missing" in str(error) or "does not exist" in str(error) else "error"
+        except Exception:
+            return "error"
+
+    def ff10_payments_enabled(self) -> bool:
+        rows = self.select("pilot_reward_settings", {"id": 1}, limit=1)
+        return bool(rows and rows[0].get("payments_enabled"))
+
+    def ff10_set_payments(self, enabled: bool, actor: str, confirmed: bool = False) -> dict:
+        """Owner only: authorise (or suspend) the private pilot's cash payments. Independent of public payouts."""
+        return self._one(self.rpc("pilot_set_payments", {"p_enabled": bool(enabled), "p_actor": actor,
+                                                         "p_confirmed": bool(confirmed)}))
+
+    def ff10_beneficiaries(self) -> list[dict]:
+        return self.select("pilot_beneficiaries", None, order="profile_id")
+
+    def ff10_verify_beneficiary(self, profile_id: str, legal_name: str, bank_name: str, account_last4: str,
+                                actor: str, confirmed: bool = False, note: str | None = None) -> dict:
+        """Owner only: the participant's identity and bank account name were checked (only the last 4 digits kept)."""
+        return self._one(self.rpc("pilot_verify_beneficiary", {
+            "p_profile": profile_id, "p_legal_name": legal_name, "p_bank_name": bank_name,
+            "p_account_last4": account_last4, "p_actor": actor, "p_confirmed": bool(confirmed), "p_note": note}))
+
+    def ff10_record_payment(self, month: str, profile_id: str, amount: int, paid_on: str, reference: str, actor: str,
+                            confirmed: bool = False) -> dict:
+        """Owner only: record a manual bank transfer of an approved final allocation (the database checks every rule)."""
+        return self._one(self.rpc("pilot_record_payment", {
+            "p_month": month, "p_profile": profile_id, "p_amount": int(amount), "p_paid_on": str(paid_on)[:10],
+            "p_reference": reference, "p_actor": actor, "p_confirmed": bool(confirmed)}))
+
+    def ff10_payments(self, month: str | None = None) -> list[dict]:
+        return self.select("pilot_payments", {"month": month} if month else None, order="id")
 
     # ---- cash withdrawals (supabase/withdrawals_migration.sql; the database functions decide)
     @staticmethod
@@ -588,7 +624,8 @@ class MemoryStore(RewardsStore):
             "reward_cashout_months": ("request_id", "month"), "reward_cashout_payments": ("id",),
             "reward_owner_notifications": ("id",), founding.TABLE: ("id",), founding.INVITES: ("email",),
             "pilot_reward_settings": ("id",), "pilot_activity": ("id",), "pilot_day_reviews": ("profile_id", "day"),
-            "pilot_settlements": ("month",), "pilot_settlement_lines": ("month", "profile_id")}
+            "pilot_settlements": ("month",), "pilot_settlement_lines": ("month", "profile_id"),
+            "pilot_beneficiaries": ("profile_id",), "pilot_payments": ("id",)}
 
     def __init__(self, settings: Settings | None = None, owner_emails: list[str] | None = None,
                  public_enabled: bool = False):
@@ -600,7 +637,7 @@ class MemoryStore(RewardsStore):
             "daily_max": pilot_rewards.DAILY_MAX, "monthly_max": pilot_rewards.MONTHLY_MAX,
             "min_minutes": pilot_rewards.MIN_MINUTES, "max_minutes": pilot_rewards.MAX_MINUTES,
             "inactivity_seconds": pilot_rewards.INACTIVITY_SECONDS, "repeat_seconds": pilot_rewards.REPEAT_SECONDS,
-            "payments_enabled": False, "created_at": _now()})
+            "payments_enabled": False, "payments_changed_at": None, "payments_changed_by": None, "created_at": _now()})
         self._ff10_fn = False      # like we.ff10: set only inside the settlement functions
         row = (settings or Settings()).as_row()
         row.update(id=1, updated_at=_now(), updated_by=None, public_enabled=bool(public_enabled),
@@ -662,10 +699,10 @@ class MemoryStore(RewardsStore):
                     row["id"] = self._ids[table]
             if table in FF10_TABLES and not self._ff10_fn:
                 raise StoreError("Friends & Family 10 records change only through the database functions")
-            if table == "pilot_activity" and row.get("id") is None:
+            if table in ("pilot_activity", "pilot_payments") and row.get("id") is None:
                 self._ids[table] = self._ids.get(table, 0) + 1
                 row["id"] = self._ids[table]
-            if table != "pilot_activity" and any(self._key(table, r) == self._key(table, row)
+            if table not in ("pilot_activity", "pilot_payments") and any(self._key(table, r) == self._key(table, row)
                                                  for r in self.tables[table]):
                 if ignore_duplicates:
                     return []
@@ -689,7 +726,7 @@ class MemoryStore(RewardsStore):
                 if not _match(old, where):
                     continue
                 if table in ("reward_activity_events", "reward_audit_log", "reward_cashout_payments",
-                             "pilot_activity", "pilot_settlements", "pilot_reward_settings"):
+                             "pilot_activity", "pilot_settlements", "pilot_reward_settings", "pilot_payments"):
                     raise StoreError("records cannot be changed")
                 if table == "pilot_settlement_lines":
                     self._guard_line(old, dict(old, **changes))
@@ -1516,17 +1553,92 @@ class MemoryStore(RewardsStore):
         return row
 
     def _rpc_pilot_mark_paid(self, p_month, p_profile, p_actor, p_reference=None):
+        raise StoreError("use_pilot_record_payment")
+
+    # ---- real cash payments (= supabase/friends_family10_payments_migration.sql)
+    def _rpc_pilot_set_payments(self, p_enabled, p_actor, p_confirmed=False):
         if not self._owner(p_actor):
             raise StoreError("not_owner")
-        if not self._ff10_settings()["payments_enabled"] or not self._real_payouts():
+        if p_enabled and not p_confirmed:
+            raise StoreError("confirmation_required")
+        if p_enabled and not str(self._settings_row().get("pilot_terms_version") or "").strip():
+            raise StoreError("terms_required")
+        row = self._ff10_settings()
+        row.update(payments_enabled=bool(p_enabled), payments_changed_at=_now(), payments_changed_by=p_actor)
+        self.log(p_actor, "pilot_payments_on" if p_enabled else "pilot_payments_off", "pilot_payments",
+                 {"payments_enabled": bool(p_enabled)})
+        return dict(row)
+
+    def _rpc_pilot_verify_beneficiary(self, p_profile, p_legal_name, p_bank_name, p_account_last4, p_actor,
+                                      p_confirmed, p_note=None):
+        if not self._owner(p_actor):
+            raise StoreError("not_owner")
+        if not p_confirmed:
+            raise StoreError("confirmation_required")
+        if not self._ff10_participant(p_profile):
+            raise StoreError("not_participant")
+        if not re.fullmatch(r"[0-9]{4}", str(p_account_last4 or "").strip()):
+            raise StoreError("invalid_account_last4")
+        name, bank = str(p_legal_name or "").strip(), str(p_bank_name or "").strip()
+        if len(name) < 3 or len(bank) < 2:
+            raise StoreError("details_required")
+        row = {"profile_id": p_profile, "legal_name": name[:120], "bank_name": bank[:80],
+               "account_last4": str(p_account_last4).strip(), "verified": True,
+               "note": (p_note or "").strip()[:500] or None, "verified_by": p_actor, "verified_at": _now()}
+        self.tables["pilot_beneficiaries"] = [r for r in self.tables["pilot_beneficiaries"] if r["profile_id"] != p_profile]
+        self._ff10_insert("pilot_beneficiaries", row)
+        self.log(p_actor, "pilot_beneficiary_verified", p_profile, row)
+        return row
+
+    def _rpc_pilot_record_payment(self, p_month, p_profile, p_amount, p_paid_on, p_reference, p_actor, p_confirmed):
+        from datetime import date as _date
+        if not self._owner(p_actor):
+            raise StoreError("not_owner")
+        if not p_confirmed:
+            raise StoreError("confirmation_required")
+        settings = self._ff10_settings()
+        if not settings["payments_enabled"]:
             raise StoreError("payments_disabled")
-        line = self._ff10_line(p_month, p_profile)          # unreachable while payments_enabled is fixed to False
+        settlement = next((r for r in self.tables["pilot_settlements"] if r["month"] == p_month), None)
+        if settlement is None:
+            raise StoreError("not_settled")
+        line = self._ff10_line(p_month, p_profile)
         if line is None:
             raise StoreError("unknown_line")
+        payments = [r for r in self.tables["pilot_payments"] if r["month"] == p_month]
+        if line["status"] == "paid" or any(r["profile_id"] == p_profile for r in payments):
+            raise StoreError("already_paid")
         if line["status"] != "approved":
             raise StoreError("not_approved")
-        return self._ff10_update_line(p_month, p_profile, {"status": "paid", "paid_at": _now(),
-                                                           "payment_reference": p_reference})
+        ben = next((r for r in self.tables["pilot_beneficiaries"] if r["profile_id"] == p_profile and r["verified"]), None)
+        if ben is None:
+            raise StoreError("beneficiary_not_verified")
+        if p_amount != line["final"] or line["final"] <= 0:
+            raise StoreError("amount_mismatch")
+        paid = sum(int(r["amount"]) for r in payments)
+        if paid + p_amount > settlement["total_final"] or paid + p_amount > settings["monthly_budget"]:
+            raise StoreError("budget_exceeded")
+        ref = str(p_reference or "").strip()
+        if len(ref) < pilot_rewards.REFERENCE_MIN:
+            raise StoreError("reference_required")
+        if any(r["bank_reference"] == ref for r in self.tables["pilot_payments"]):
+            raise StoreError("duplicate_reference")
+        try:
+            paid_on = _date.fromisoformat(str(p_paid_on)[:10])
+        except ValueError:
+            raise StoreError("invalid_date")
+        today = rewards.lagos_now().date()
+        settled_on = rewards.lagos_now(rewards._dt(settlement["finalised_at"])).date()
+        if paid_on > today or paid_on < settled_on:
+            raise StoreError("invalid_date")
+        row = self._ff10_insert("pilot_payments", {
+            "month": p_month, "profile_id": p_profile, "amount": int(p_amount), "paid_on": paid_on.isoformat(),
+            "bank_reference": ref, "beneficiary_name": ben["legal_name"], "bank_name": ben["bank_name"],
+            "account_last4": ben["account_last4"], "status": "paid", "recorded_by": p_actor, "recorded_at": _now()})
+        self._ff10_update_line(p_month, p_profile, {"status": "paid", "paid_at": _now(), "payment_reference": ref,
+                                                    "decided_by": p_actor, "decided_at": _now()})
+        self.log(p_actor, "pilot_payment_recorded", f"{p_profile} {p_month}", row)
+        return row
 
     def _email(self, profile_id) -> str | None:
         return (self.account(profile_id) or {}).get("email")

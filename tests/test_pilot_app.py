@@ -85,7 +85,7 @@ class PilotAppTests(unittest.TestCase):
         app = self.s.founding_application(FRIEND["profile_id"])
         self.assertEqual(app["status"], "pending")
         self.assertEqual(app["terms_version"], legal_fixtures.pilot_terms_id())   # the version shown and accepted
-        self.assertIn("No payments are available during the pilot", self.text(at))
+        self.assertIn("approved final allocations are paid in naira by bank transfer", self.text(at))
         labels = [b.label for b in at.button]
         self.assertNotIn("Join", labels)                              # no joining, earning or invitation links
         self.assertFalse(any("invitation link" in s.lower() for s in labels))
@@ -103,7 +103,7 @@ class PilotAppTests(unittest.TestCase):
         for money in ("earn rewards", "Founding 50", "guaranteed"):
             self.assertNotIn(money, text, money)
         # Friends & Family 10 shows the provisional reward limits, always as not payable
-        self.assertIn("Provisional rewards are not earnings and are not payable", text)
+        self.assertIn("Approved participants earn cash rewards for verified learning", text)
         self.assertIsNotNone(self.button(at, "Apply to Friends & Family 10"))
         self.assertIsNotNone(self.button(at, "🤝 Friends & Family 10"))           # the menu entry, no 💰
 

@@ -58,11 +58,13 @@ TIERS = (   # (amount, minutes, quizzes, new countries, daily challenge)
     (500, 60, 2, 1, True),
 )
 LINE_STATUSES = ("pending_review", "approved", "withheld", "paid")
-LINE_LABELS = {"pending_review": "Pending review", "approved": "Approved (not paid)", "withheld": "Withheld",
-               "paid": "Paid"}
+LINE_LABELS = {"pending_review": "Pending review", "approved": "Approved — payment pending", "withheld": "Withheld",
+               "paid": "Paid by bank transfer"}
 FAST_ANSWER_SECONDS = 2.0
 TABLES = ("pilot_reward_settings", "pilot_activity", "pilot_day_reviews", "pilot_settlements",
           "pilot_settlement_lines")
+PAYMENT_TABLES = ("pilot_beneficiaries", "pilot_payments")          # supabase/friends_family10_payments_migration.sql
+REFERENCE_MIN = 4
 
 
 @dataclass(frozen=True)

@@ -1,28 +1,57 @@
-# Automated test results: Friends & Family 10, review corrections (25 October 2026)
+# Automated test results: Friends & Family 10 real-cash patch (25 October 2026)
 
 **Command:** `python -m unittest discover tests` (the complete suite)
-**Code tested:** `atlas-pilot-consolidated` @ `b4fc727`, plus the corrections package (`d8e121b`), plus the
-Friends & Family 10 package (`35e966d`), plus these review corrections.
-**Environment:** Python 3.13, Streamlit 1.65, and a local PostgreSQL 16 for the database-rule tests. These are
-throwaway local databases; your Supabase project was not used and no migration was run on it.
+**Code tested:** `atlas-pilot-consolidated` with the corrections, Friends & Family 10 and review-correction packages
+(`48b176b`), plus this real-cash patch.
+**Environment:** Python 3.13, Streamlit 1.65, and a local PostgreSQL 16 with every migration loaded, including the
+proposed `friends_family10_payments_migration.sql`. These are throwaway local databases; your Supabase project was not
+used and no SQL was run on it.
 
 | Run | Tests | Passed | Failed | Errors | Skipped |
 |---|---|---|---|---|---|
-| A. With `supabase/pilot_invitations_migration.sql` (installed in your Supabase) in the checkout, so every database rule runs on real PostgreSQL | 744 | 744 | 0 | 0 | 0 |
-| B. Your GitHub branch as it is (that file missing) | 744 | 664 | 0 | 0 | 80 |
+| A. With `supabase/pilot_invitations_migration.sql` in the checkout (every database rule on real PostgreSQL) | 756 | 756 | 0 | 0 | 0 |
+| B. Your GitHub branch as it is (that file missing) | 756 | 671 | 0 | 0 | 85 |
 
 **Raw results:**
-- Run A: `Ran 744 tests in 641.221s — OK`
-- Run B: `Ran 744 tests in 504.441s — OK (skipped=80)`
+- Run A: `Ran 756 tests in 741.468s — OK`
+- Run B: `Ran 756 tests in 571.892s — OK (skipped=85)`
 
-**The 80 skipped tests in run B** are the PostgreSQL rule tests:
-- 46 in `test_founding50.SqlFoundingTests`;
-- 34 in `test_ff10.SqlFF10Tests`.
+The 85 skipped tests in run B are the PostgreSQL rule tests: 46 in `test_founding50.SqlFoundingTests` and 39 in
+`test_ff10.SqlFF10Tests`. The same scenarios run against the in-memory store in both runs.
 
-They need the installed pilot migration file in the checkout. The same scenarios run against the in-memory store in
-both runs and pass. On a machine without PostgreSQL every PostgreSQL test is skipped.
+## New in the real-cash patch
 
-## New in these review corrections (15 tests; each runs on the in-memory store and on PostgreSQL unless noted)
+**`tests/test_ff10.py`** (each on the in-memory store and on PostgreSQL):
+- `test_payments_need_the_owners_authorisation_and_public_stays_off`: payments are refused until the owner authorises
+  them; only the owner can authorise, with a confirmation. Public Rewards, public payouts and withdrawals stay OFF,
+  the public ledger still pays ₦0, and the old `pilot_mark_paid` path is closed. Suspending works, and the change is
+  audited.
+- `test_authorisation_needs_the_recorded_pilot_terms`, and the switch cannot be changed directly.
+- `test_recording_a_manual_bank_transfer`: checks the ledger row (beneficiary, bank, last 4 digits, amount, date,
+  reference, status, recorded by) and that the line is marked paid. A second payment is refused, the ledger cannot be
+  edited or deleted, and a paid line cannot be withheld.
+- `test_payment_safeguards`: refuses payments that are not by the owner, not confirmed, to an unverified
+  beneficiary, for an unapproved or withheld allocation, for a wrong amount (±₦1), without a reference, dated in the
+  future or before the settlement, for a month that is not settled, or with a duplicate reference.
+- `test_beneficiary_verification_keeps_only_the_last_four_digits`: a full account number is refused, and
+  non-participants are refused.
+- `test_full_month_paid_within_the_budget`: 8 participants, ₦56,000 provisional; ₦50,000 is paid in total and never
+  more than the settlement.
+- `test_concurrent_payment_attempts_pay_once`
+
+**`tests/test_ff10_app.py`:**
+- `test_owner_authorises_verifies_and_records_a_bank_transfer`: the full owner flow in the app, through the ledger and
+  the participant's "Paid by bank transfer" status.
+- `test_payments_cannot_be_authorised_without_the_legal_requirements`: the readiness checks fail and the authorise
+  button stays disabled.
+
+**Updated** for the new real-cash wording (no "not payable" or "payments disabled" statements for the pilot):
+`test_ff10_app`, `test_pilot_app`, `test_legal`.
+
+**Unchanged and still passing:** invitation-only access (16-combination matrix), the 10-person limit, settlement
+fingerprints, and all educational features.
+
+## Earlier: review corrections (settlement integrity and invitation-only)
 
 **1. Settlement integrity**
 - `test_fingerprint_is_the_same_in_the_database_and_in_python`

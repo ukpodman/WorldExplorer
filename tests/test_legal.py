@@ -73,7 +73,7 @@ class RealDraftTests(unittest.TestCase):
         text = legal.document("privacy", {})
         for fact in ("Nigeria Data Protection", "we_consent", "we_aid", "we_handoff", "we_ref", "we_school",
                      "Supabase", "Streamlit", "Wikimedia", "Google", "at most 10 individually approved adults",
-                     "Payments are not active", "Global Privacy Control", "NDPC"):
+                     "Public rewards payments are not active", "Global Privacy Control", "NDPC"):
             self.assertIn(fact, text)
         self.assertIn(legal.TO_CONFIRM, text)                          # missing contact is marked, never invented
 
@@ -81,7 +81,11 @@ class RealDraftTests(unittest.TestCase):
         text = legal.document("pilot", {})
         self.assertIn("at most **10** participants", text)
         self.assertIn("**18 or older**", text)
-        self.assertIn("No money is currently payable", text)
+        self.assertIn("Friends & Family 10 pays **real money**", text)
+        self.assertIn("Provisional amounts", text)
+        self.assertIn("Final allocations", text)
+        self.assertIn("bank transfer", text)
+        self.assertNotIn("No money is currently payable", text)
 
     def test_founding_places_capped_at_fifty_and_the_pilot_at_ten(self):
         import dataclasses

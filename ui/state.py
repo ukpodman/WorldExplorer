@@ -81,6 +81,12 @@ def country_formatter(all_label: str | None = None):
 
 # --------------------------------------------------------------------------- navigation & scope
 
+def _ff10_view(country_id) -> None:
+    """Friends & Family 10 learning time: a country was opened (does nothing for everybody else)."""
+    from . import rewards_hooks  # local import: rewards_hooks imports this package
+    rewards_hooks.note_view(country_id)
+
+
 def navigate(page: str) -> None:
     if page != "Quiz":
         engine.pause(st.session_state.get("quiz"))  # an untimed question's clock stops while it is not on screen
@@ -96,6 +102,7 @@ def learn(country_id: str) -> None:
         ss.learn_continent = ss.learn_continent_pick = "All"
     ss.learn_tab = ss.learn_tab_saved = "world"
     navigate("Learn")
+    _ff10_view(country_id)
 
 
 def learn_ids() -> list[str]:
@@ -114,6 +121,7 @@ def learn_step(delta: int) -> None:
     target = learn_step_target(delta)
     if target:
         st.session_state.learn_country = target
+        _ff10_view(target)
 
 
 def learn_step_target(delta: int):
@@ -126,6 +134,7 @@ def learn_surprise() -> None:
     target = surprise(learn_ids(), st.session_state.get("learn_country"))
     if target:
         st.session_state.learn_country = target
+        _ff10_view(target)
 
 
 def remember_size_reference() -> None:
@@ -379,6 +388,8 @@ def _tracked(action) -> None:
         daily.note_answer(st.session_state.mistakes, q, record["correct"], quiz["settings"]["difficulty"])
         st.session_state.recent = (st.session_state.recent + [q["country_id"]])[-RECENT_COUNTRIES:]
         st.session_state.recent_facts = (st.session_state.recent_facts + q["facts"])[-RECENT_FACTS:]
+        from . import rewards_hooks  # local import: rewards_hooks imports this package
+        rewards_hooks.note_answer(quiz, len(quiz["history"]) - 1)   # Friends & Family 10 learning time only
 
 
 def answer(choice, serial: int, index: int) -> None:
@@ -512,6 +523,7 @@ def explore_pick(country_id) -> None:
     if country_id and get_country(country_id):
         st.session_state.explore_country = country_id
         st.session_state.explore_detail_open = True
+        _ff10_view(country_id)
 
 
 def explore_back_to_list() -> None:

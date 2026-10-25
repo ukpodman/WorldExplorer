@@ -1,0 +1,252 @@
+"""Friends & Family 10 in the running app: the participant's progress card, learning-time recording from real
+interactions, and the Owner's management tab with the monthly settlement (in-memory store, published sample legal
+documents)."""
+import sys
+import unittest
+from datetime import datetime, timedelta
+from pathlib import Path
+from unittest import mock
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "tests"))
+import legal_fixtures  # noqa: E402
+
+from core import rewards  # noqa: E402
+from core.rewards import LAGOS  # noqa: E402
+
+try:
+    from streamlit.testing.v1 import AppTest
+except ImportError:  # pragma: no cover
+    AppTest = None
+
+OWNER = {"iss": "https://accounts.google.com", "sub": "o1", "email": "owner@example.com", "email_verified": True,
+         "name": "Owner", "profile_id": "a" * 64}
+FRIEND = {"iss": "https://accounts.google.com", "sub": "f1", "email": "friend@example.com", "email_verified": True,
+          "name": "Ada Friend", "profile_id": "b" * 64}
+STRANGER = {"iss": "https://accounts.google.com", "sub": "s1", "email": "stranger@example.com", "email_verified": True,
+            "name": "Sam Stranger", "profile_id": "c" * 64}
+LAST = rewards.previous_month(rewards.month_key())
+
+
+def lagos(day: str, minute: int) -> str:
+    y, m, d = map(int, day.split("-"))
+    return (datetime(y, m, d, 0, 5, tzinfo=LAGOS) + timedelta(minutes=minute)).isoformat()
+
+
+@unittest.skipIf(AppTest is None, "streamlit is not installed")
+class FF10AppTests(unittest.TestCase):
+    def setUp(self):
+        import importlib
+        self.hooks = sys.modules.get("ui.rewards_hooks") or importlib.import_module("ui.rewards_hooks")
+        self.hooks._memory_store.clear()
+        self.hooks._health_cache.clear()
+        self.s = self.hooks._memory_store()
+        self.s.tables["reward_cashout_settings"][0]["owner_emails"] = [OWNER["email"]]
+        self.s.set_participation_terms("pilot", legal_fixtures.pilot_terms_id(), OWNER["email"])
+        self.s.set_pilot(True, OWNER["email"], confirmed=True)
+
+    def app(self, who, page="Rewards", public=False):
+        at = AppTest.from_file(str(ROOT / "app.py"), default_timeout=60)
+        at.secrets["rewards"] = {"enabled": public}
+        at.secrets["legal"] = legal_fixtures.secrets()
+        at.secrets["analytics"] = {"owner_emails": [OWNER["email"]]}
+        at.session_state["page"] = page
+        if page == "Owner":
+            at.session_state["owner_tab"] = "💰 Rewards & Referral Management"
+        self.s.tables["reward_program_settings"][0]["public_enabled"] = public
+        patches = [mock.patch("core.accounts.identity", return_value=dict(who) if who else None),
+                   mock.patch.object(self.hooks, "_supabase", return_value=self.s),
+                   mock.patch.object(self.hooks, "store_health", return_value="ok")]
+        for patch in patches:
+            patch.start()
+            self.addCleanup(patch.stop)
+        return at
+
+    def join(self, who, approve=True):
+        self.s.ensure_account(who["profile_id"], who["email"], who["name"], True, False)
+        self.s.invite(who["email"], OWNER["email"])
+        app = self.s.apply_founding(who["profile_id"], "Lagos", None, True, True, True,
+                                    terms_version=legal_fixtures.pilot_terms_id())
+        if approve:
+            self.s.decide_founding(app["id"], "approve", OWNER["email"])
+        return who["profile_id"]
+
+    def record(self, pid, kind, subject, at, detail=None):
+        return self.s.rpc("pilot_record_activity_at", {"p_profile": pid, "p_kind": kind, "p_subject": subject,
+                                                       "p_detail": detail, "p_at": at})
+
+    def session(self, pid, day, minutes, quizzes=0, new=0, challenge=False, tag=""):
+        for i in range(minutes + 1):
+            self.record(pid, "view", f"{tag}{day}:{i}", lagos(day, i))
+        for q in range(quizzes):
+            self.record(pid, "quiz", f"{tag}q{day}:{q}", lagos(day, 1), {"questions": 10, "avg_seconds": 7})
+        for c in range(new):
+            self.record(pid, "country", f"{tag}C{day}:{c}", lagos(day, 2))
+        if challenge:
+            self.record(pid, "challenge", f"daily:{day}", lagos(day, 3))
+
+    def text(self, at):
+        return " ".join(str(m.value) for m in list(at.markdown) + list(at.info) + list(at.success) + list(at.caption)
+                        + list(at.warning) + list(at.subheader))
+
+    # ---- participant dashboard
+    def test_participant_sees_todays_progress_and_provisional_rewards(self):
+        pid = self.join(FRIEND)
+        today = rewards.day_key()
+        self.session(pid, today, 45, quizzes=2, new=1)
+        at = self.app(FRIEND).run()
+        self.assertEqual([e.value for e in at.exception], [])
+        text = self.text(at)
+        self.assertIn("Today's learning progress", text)
+        self.assertIn("45 / 60 minutes", text)
+        self.assertIn("₦350 / ₦500", text)
+        self.assertIn("₦350 / ₦7,000", text)
+        self.assertIn("Next milestone: 15 more minutes of active learning; complete today's Daily Challenge.", text)
+        self.assertIn("Provisional rewards are estimates, not earnings", text)
+        self.assertIn("payments are currently disabled", text)
+        self.assertNotIn("guaranteed", text.lower())
+        self.assertNotIn("Test mode", text)
+
+    def test_daily_maximum_message_discourages_more_screen_time(self):
+        pid = self.join(FRIEND)
+        self.session(pid, rewards.day_key(), 75, quizzes=2, new=1, challenge=True)
+        text = self.text(self.app(FRIEND).run())
+        self.assertIn("60 / 60 minutes", text)
+        self.assertIn("₦500 / ₦500", text)
+        self.assertIn("Rewards stop increasing for today", text)
+
+    def test_settled_months_show_provisional_and_final_amounts(self):
+        pid = self.join(FRIEND)
+        for d in range(1, 15):
+            self.session(pid, f"{LAST}-{d:02d}", 60, quizzes=2, new=1, challenge=True, tag=f"d{d}")
+        preview = self.s.ff10_preview(LAST)
+        self.s.ff10_settle(LAST, OWNER["email"], preview["fingerprint"], confirmed=True)
+        text = self.text(self.app(FRIEND).run())
+        self.assertIn(f"{LAST}: ₦7,000 provisional → ₦7,000 final allocation · Waiting for the Owner's review", text)
+
+    def test_progress_texts_in_five_languages(self):
+        import ast
+        import json
+        strings = json.loads((ROOT / "data" / "translations.json").read_text(encoding="utf-8"))["strings"]
+        from ui import ff10_ui
+        texts = set(ff10_ui.TIER_TEXT) | set(ff10_ui.LINE_TEXT.values()) - {"Paid"}
+        for node in ast.walk(ast.parse((ROOT / "ui" / "ff10_ui.py").read_text(encoding="utf-8"))):
+            if isinstance(node, ast.Call) and getattr(node.func, "id", None) == "t" and node.args:
+                arg = node.args[0]
+                for v in ([arg] if isinstance(arg, ast.Constant) else
+                          [arg.body, arg.orelse] if isinstance(arg, ast.IfExp) else []):
+                    if isinstance(v, ast.Constant) and isinstance(v.value, str):
+                        texts.add(v.value)
+        for text in texts:
+            self.assertIn(text, strings, text)
+            self.assertEqual(len(strings[text]), 4, text)
+            self.assertTrue(all(strings[text]), text)
+        pid = self.join(FRIEND)
+        self.session(pid, rewards.day_key(), 20, quizzes=1)
+        for language, words in (("Deutsch", "Heutiger Lernfortschritt"), ("Español", "Progreso de aprendizaje de hoy"),
+                                ("中文（普通话）", "今日学习进度"), ("Русский", "Прогресс обучения за сегодня")):
+            at = self.app(FRIEND)
+            at.session_state["app_language"] = language
+            at.run()
+            self.assertEqual([e.value for e in at.exception], [])
+            self.assertIn(words, self.text(at), language)
+
+    def test_people_who_are_not_approved_see_no_progress(self):
+        self.join(FRIEND, approve=False)
+        at = self.app(FRIEND).run()
+        self.assertNotIn("Today's learning progress", self.text(at))
+
+    # ---- learning time comes from real interactions
+    def test_quiz_answers_and_learn_navigation_are_recorded_for_participants_only(self):
+        pid = self.join(FRIEND)
+        at = self.app(FRIEND, page="Quiz").run()
+        at.button(key="start_quiz").click().run()
+        q = at.session_state["quiz"]
+        qn = q["questions"][0]
+        at.button(key=f"answer_{q['serial']}_0_{qn['choices'].index(qn['answer'])}").click().run()
+        self.assertEqual([e.value for e in at.exception], [])
+        kinds = [r["kind"] for r in self.s.ff10_activity(pid)]
+        self.assertIn("answer", kinds)
+        self.assertTrue(all(not r["test"] for r in self.s.ff10_activity(pid)))
+        self.s.ensure_account(STRANGER["profile_id"], STRANGER["email"], STRANGER["name"], True, False)
+        at = self.app(STRANGER, page="Quiz").run()
+        at.button(key="start_quiz").click().run()
+        q = at.session_state["quiz"]
+        qn = q["questions"][0]
+        at.button(key=f"answer_{q['serial']}_0_{qn['choices'].index(qn['answer'])}").click().run()
+        self.assertEqual(self.s.ff10_activity(STRANGER["profile_id"]), [])
+        self.assertGreater(at.session_state["points"], 0)                        # educational points unchanged
+
+    def test_nothing_is_recorded_while_the_pilot_is_off(self):
+        pid = self.join(FRIEND)
+        self.s.set_pilot(False, OWNER["email"])
+        at = self.app(FRIEND, page="Quiz").run()
+        at.button(key="start_quiz").click().run()
+        q = at.session_state["quiz"]
+        qn = q["questions"][0]
+        at.button(key=f"answer_{q['serial']}_0_{qn['choices'].index(qn['answer'])}").click().run()
+        self.assertEqual([e.value for e in at.exception], [])
+        self.assertEqual(self.s.ff10_activity(pid), [])
+
+    # ---- owner dashboard
+    def owner_tab_text(self, at):
+        return self.text(at)
+
+    def test_owner_tab_figures_and_settlement(self):
+        pid = self.join(FRIEND)
+        for d in range(1, 4):
+            self.session(pid, f"{LAST}-{d:02d}", 30, quizzes=2, tag=f"d{d}")       # 3 × ₦250
+        self.session(pid, rewards.day_key(), 15, quizzes=1)                         # today ₦100
+        at = self.app(OWNER, page="Owner").run()
+        self.assertEqual([e.value for e in at.exception], [])
+        self.assertIn("📊 F&F 10 rewards", [t.label for t in at.tabs])
+        html = " ".join(str(h.proto.body) for h in at.get("html"))
+        for label in ("Approved participants", "1 / 10", "Monthly budget", "₦50,000", "Provisional this month",
+                      "Remaining budget", "₦49,900", "Pending settlement reviews"):
+            self.assertIn(label, html, label)
+        self.assertIn("Ada Friend", html)
+        self.assertTrue(at.button(key="ff10_settle").disabled)                     # needs the confirmation
+        self.assertIn("₦750", html)                                                # last month's preview
+        at.checkbox(key="ff10_settle_confirm").check().run()
+        at.button(key="ff10_settle").click().run()
+        self.assertEqual([e.value for e in at.exception], [])
+        self.assertEqual(self.s.ff10_settlements()[0]["total_final"], 750)
+        self.assertEqual(self.s.ff10_lines(LAST, pid)[0]["status"], "pending_review")
+        paid = next(b for b in at.button if b.label == "Mark as paid")
+        self.assertTrue(paid.disabled)
+        approve = next(b for b in at.button if b.label == "✅ Approve allocation")
+        approve.click().run()
+        self.assertEqual(self.s.ff10_lines(LAST, pid)[0]["status"], "approved")
+        self.assertFalse(self.s.cashout_settings()["real_payouts"])
+
+    def test_owner_excludes_a_suspicious_day(self):
+        pid = self.join(FRIEND)
+        self.session(pid, f"{LAST}-02", 30, quizzes=2)
+        at = self.app(OWNER, page="Owner").run()
+        at.selectbox(key="ff10_pick_month").select(LAST).run()
+        at.text_input(key="ff10_review_reason").input("Answers far too fast")
+        next(b for b in at.button if b.label == "Exclude this day").click().run()
+        self.assertEqual([e.value for e in at.exception], [])
+        self.assertEqual(self.s.ff10_ledger(pid, LAST)[0]["amount"], 0)
+        self.assertTrue(self.s.ff10_reviews()[0]["excluded"])
+
+    def test_no_ff10_tab_once_public_rewards_are_on(self):
+        at = self.app(OWNER, page="Owner", public=True).run()
+        self.assertNotIn("📊 F&F 10 rewards", [t.label for t in at.tabs])
+
+    def test_owner_test_records_are_marked_test(self):
+        self.s.ensure_account(OWNER["profile_id"], OWNER["email"], OWNER["name"], True, True)
+        at = self.app(OWNER, page="Quiz").run()
+        at.button(key="start_quiz").click().run()
+        q = at.session_state["quiz"]
+        qn = q["questions"][0]
+        at.button(key=f"answer_{q['serial']}_0_{qn['choices'].index(qn['answer'])}").click().run()
+        rows = self.s.ff10_activity(OWNER["profile_id"])
+        self.assertTrue(rows)
+        self.assertTrue(all(r["test"] for r in rows))
+        self.assertEqual(self.s.ff10_preview(rewards.month_key())["lines"], [])     # never settled
+
+
+if __name__ == "__main__":
+    unittest.main()

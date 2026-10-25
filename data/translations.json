@@ -4933,23 +4933,23 @@
    "联系方式",
    "Контакт"
   ],
-  "The Friends & Family Pilot is by invitation only. You can keep using all of World Explorer for free.": [
-   "Der Friends-&-Family-Pilot ist nur auf Einladung. Du kannst World Explorer weiterhin kostenlos nutzen.",
-   "El piloto Friends & Family es solo por invitación. Puedes seguir usando World Explorer gratis.",
-   "Friends & Family 试点仅限受邀者参加。你可以继续免费使用 World Explorer 的全部功能。",
-   "Пилот Friends & Family — только по приглашению. Вы можете и дальше бесплатно пользоваться World Explorer."
+  "Friends & Family 10 is by invitation only. You can keep using all of World Explorer for free.": [
+   "Friends & Family 10 ist nur auf Einladung. Du kannst World Explorer weiterhin kostenlos nutzen.",
+   "Friends & Family 10 es solo por invitación. Puedes seguir usando World Explorer gratis.",
+   "Friends & Family 10 仅限受邀者参加。你可以继续免费使用 World Explorer 的全部功能。",
+   "Friends & Family 10 — только по приглашению. Вы можете и дальше бесплатно пользоваться World Explorer."
   ],
-  "World Explorer — Friends & Family Pilot": [
-   "World Explorer — Friends-&-Family-Pilot",
-   "World Explorer — Piloto Friends & Family",
-   "World Explorer — Friends & Family 试点",
-   "World Explorer — пилот Friends & Family"
+  "World Explorer — Friends & Family 10": [
+   "World Explorer — Friends & Family 10",
+   "World Explorer — Friends & Family 10",
+   "World Explorer — Friends & Family 10",
+   "World Explorer — Friends & Family 10"
   ],
-  "Friends & Family Pilot": [
-   "Friends-&-Family-Pilot",
-   "Piloto Friends & Family",
-   "Friends & Family 试点",
-   "Пилот Friends & Family"
+  "Friends & Family 10": [
+   "Friends & Family 10",
+   "Friends & Family 10",
+   "Friends & Family 10",
+   "Friends & Family 10"
   ],
   "Invitation only": [
    "Nur auf Einladung",
@@ -4981,11 +4981,11 @@
    "学习积分和徽章没有货币价值。试点期间不提供任何付款。感谢你帮助我们测试 World Explorer。",
    "Учебные очки и значки не имеют денежной стоимости. Во время пилота выплаты не производятся. Спасибо, что помогаете тестировать World Explorer."
   ],
-  "Friends & Family Pilot terms": [
-   "Bedingungen des Friends-&-Family-Pilots",
-   "Condiciones del piloto Friends & Family",
-   "Friends & Family 试点条款",
-   "Условия пилота Friends & Family"
+  "Friends & Family 10 terms": [
+   "Bedingungen von Friends & Family 10",
+   "Condiciones de Friends & Family 10",
+   "Friends & Family 10 条款",
+   "Условия программы Friends & Family 10"
   ],
   "The pilot terms are available in English.": [
    "Die Pilotbedingungen sind auf Englisch verfügbar.",
@@ -4993,11 +4993,11 @@
    "试点条款提供英文版本。",
    "Условия пилота доступны на английском языке."
   ],
-  "Apply to the Friends & Family Pilot": [
-   "Für den Friends-&-Family-Pilot bewerben",
-   "Solicitar el piloto Friends & Family",
-   "申请参加 Friends & Family 试点",
-   "Подать заявку на пилот Friends & Family"
+  "Apply to Friends & Family 10": [
+   "Für Friends & Family 10 bewerben",
+   "Solicitar plaza en Friends & Family 10",
+   "申请参加 Friends & Family 10",
+   "Подать заявку на участие в Friends & Family 10"
   ],
   "Why would you like to take part? (optional)": [
    "Warum möchtest du teilnehmen? (optional)",
@@ -5005,11 +5005,11 @@
    "你为什么想参加？（可选）",
    "Почему вы хотите принять участие? (необязательно)"
   ],
-  "I have read and accept the Friends & Family Pilot terms.": [
-   "Ich habe die Bedingungen des Friends-&-Family-Pilots gelesen und akzeptiere sie.",
-   "He leído y acepto las condiciones del piloto Friends & Family.",
-   "我已阅读并接受 Friends & Family 试点条款。",
-   "Я прочитал(а) и принимаю условия пилота Friends & Family."
+  "I have read and accept the Friends & Family 10 terms.": [
+   "Ich habe die Bedingungen von Friends & Family 10 gelesen und akzeptiere sie.",
+   "He leído y acepto las condiciones de Friends & Family 10.",
+   "我已阅读并接受 Friends & Family 10 条款。",
+   "Я прочитал(а) и принимаю условия программы Friends & Family 10."
   ],
   "Applying does not guarantee a place. We do not ask for bank details.": [
    "Eine Bewerbung garantiert keinen Platz. Wir fragen nicht nach Bankdaten.",
@@ -5017,35 +5017,245 @@
    "提交申请并不保证获得名额。我们不会索取银行信息。",
    "Заявка не гарантирует место. Мы не запрашиваем банковские реквизиты."
   ],
-  "Thank you! Your application to the Friends & Family Pilot was sent. The World Explorer team will review it.": [
-   "Danke! Deine Bewerbung für den Friends-&-Family-Pilot wurde gesendet. Das World-Explorer-Team prüft sie.",
-   "¡Gracias! Tu solicitud para el piloto Friends & Family se ha enviado. El equipo de World Explorer la revisará.",
-   "谢谢！你的 Friends & Family 试点申请已提交。World Explorer 团队会进行审核。",
-   "Спасибо! Ваша заявка на пилот Friends & Family отправлена. Команда World Explorer её рассмотрит."
+  "Thank you! Your application to Friends & Family 10 was sent. The World Explorer team will review it.": [
+   "Danke! Deine Bewerbung für Friends & Family 10 wurde gesendet. Das World-Explorer-Team prüft sie.",
+   "¡Gracias! Tu solicitud para Friends & Family 10 se ha enviado. El equipo de World Explorer la revisará.",
+   "谢谢！你的 Friends & Family 10 申请已提交。World Explorer 团队会进行审核。",
+   "Спасибо! Ваша заявка на участие в Friends & Family 10 отправлена. Команда World Explorer её рассмотрит."
   ],
-  "Your application to the Friends & Family Pilot was received on {date} and is waiting for review.": [
-   "Deine Bewerbung für den Friends-&-Family-Pilot ist am {date} eingegangen und wartet auf Prüfung.",
-   "Tu solicitud para el piloto Friends & Family se recibió el {date} y está pendiente de revisión.",
-   "你的 Friends & Family 试点申请已于 {date} 收到，正在等待审核。",
-   "Ваша заявка на пилот Friends & Family получена {date} и ожидает рассмотрения."
+  "Your application to Friends & Family 10 was received on {date} and is waiting for review.": [
+   "Deine Bewerbung für Friends & Family 10 ist am {date} eingegangen und wartet auf Prüfung.",
+   "Tu solicitud para Friends & Family 10 se recibió el {date} y está pendiente de revisión.",
+   "你的 Friends & Family 10 申请已于 {date} 收到，正在等待审核。",
+   "Ваша заявка на участие в Friends & Family 10 получена {date} и ожидает рассмотрения."
   ],
-  "You are on the Friends & Family Pilot waiting list. This page will show it when a place is offered to you.": [
-   "Du stehst auf der Warteliste des Friends-&-Family-Pilots. Diese Seite zeigt es an, sobald dir ein Platz angeboten wird.",
-   "Estás en la lista de espera del piloto Friends & Family. Esta página lo mostrará cuando se te ofrezca una plaza.",
-   "你已进入 Friends & Family 试点候补名单。有名额时，此页面会显示。",
-   "Вы в листе ожидания пилота Friends & Family. Эта страница сообщит, когда вам предложат место."
+  "You are on the Friends & Family 10 waiting list. This page will show it when a place is offered to you.": [
+   "Du stehst auf der Warteliste von Friends & Family 10. Diese Seite zeigt es an, sobald dir ein Platz angeboten wird.",
+   "Estás en la lista de espera de Friends & Family 10. Esta página lo mostrará cuando se te ofrezca una plaza.",
+   "你已进入 Friends & Family 10 候补名单。有名额时，此页面会显示。",
+   "Вы в листе ожидания программы Friends & Family 10. Эта страница сообщит, когда вам предложат место."
   ],
-  "Welcome to the Friends & Family Pilot! Your application was approved.": [
-   "Willkommen im Friends-&-Family-Pilot! Deine Bewerbung wurde angenommen.",
-   "¡Bienvenido/a al piloto Friends & Family! Tu solicitud fue aprobada.",
-   "欢迎加入 Friends & Family 试点！你的申请已获批准。",
-   "Добро пожаловать в пилот Friends & Family! Ваша заявка одобрена."
+  "Welcome to Friends & Family 10! Your application was approved.": [
+   "Willkommen bei Friends & Family 10! Deine Bewerbung wurde angenommen.",
+   "¡Bienvenido/a a Friends & Family 10! Tu solicitud fue aprobada.",
+   "欢迎加入 Friends & Family 10！你的申请已获批准。",
+   "Добро пожаловать в Friends & Family 10! Ваша заявка одобрена."
   ],
   "The pilot terms have been updated. Please read the current terms and apply again.": [
    "Die Pilotbedingungen wurden aktualisiert. Bitte lies die aktuellen Bedingungen und bewirb dich erneut.",
    "Las condiciones del piloto se han actualizado. Lee las condiciones actuales y vuelve a solicitarlo.",
    "试点条款已更新。请阅读最新条款后重新申请。",
    "Условия пилота обновлены. Пожалуйста, прочитайте актуальные условия и подайте заявку снова."
+  ],
+  "Test mode for owner and tester accounts only. It is separate from Friends & Family 10. All amounts are simulated and non-payable, and these records are marked as test records.": [
+   "Testmodus nur für Inhaber- und Tester-Konten. Er ist von Friends & Family 10 getrennt. Alle Beträge sind simuliert und werden nicht ausgezahlt; diese Einträge sind als Test markiert.",
+   "Modo de prueba solo para cuentas de propietario y de prueba. Es independiente de Friends & Family 10. Todos los importes son simulados y no se pagan; estos registros están marcados como prueba.",
+   "测试模式仅适用于所有者和测试者账户，与 Friends & Family 10 无关。所有金额均为模拟金额，不予支付；这些记录被标记为测试记录。",
+   "Тестовый режим только для аккаунтов владельца и тестировщиков. Он не связан с Friends & Family 10. Все суммы смоделированы и не выплачиваются; эти записи помечены как тестовые."
+  ],
+  "Owner and tester preview: every ₦ amount below is simulated and non-payable.": [
+   "Vorschau für Inhaber und Tester: Jeder ₦-Betrag unten ist simuliert und wird nicht ausgezahlt.",
+   "Vista previa para propietario y probadores: cada importe en ₦ a continuación es simulado y no se paga.",
+   "所有者和测试者预览：下方所有 ₦ 金额均为模拟金额，不予支付。",
+   "Предпросмотр для владельца и тестировщиков: все суммы в ₦ ниже смоделированы и не выплачиваются."
+  ],
+  "{n} more qualifying quiz": [
+   "Noch {n} qualifizierendes Quiz",
+   "{n} cuestionario válido más",
+   "还需完成 {n} 个合格测验",
+   "Ещё {n} засчитываемая викторина"
+  ],
+  "{n} more qualifying quizzes": [
+   "Noch {n} qualifizierende Quizze",
+   "{n} cuestionarios válidos más",
+   "还需完成 {n} 个合格测验",
+   "Ещё {n} засчитываемые викторины"
+  ],
+  "Verified learning": [
+   "Bestätigte Lernzeit",
+   "Aprendizaje verificado",
+   "已验证的学习时间",
+   "Подтверждённое время обучения"
+  ],
+  "{n} / {max} minutes": [
+   "{n} / {max} Minuten",
+   "{n} / {max} minutos",
+   "{n} / {max} 分钟",
+   "{n} / {max} мин"
+  ],
+  "Daily provisional reward": [
+   "Vorläufige Tagesprämie",
+   "Recompensa provisional del día",
+   "当日暂定奖励",
+   "Предварительная награда за день"
+  ],
+  "Monthly provisional reward": [
+   "Vorläufige Monatsprämie",
+   "Recompensa provisional del mes",
+   "当月暂定奖励",
+   "Предварительная награда за месяц"
+  ],
+  "Each amount is today's total, not an extra reward. Higher milestones need the ones before them.": [
+   "Jeder Betrag ist die Tagessumme, keine zusätzliche Prämie. Höhere Stufen setzen die vorherigen voraus.",
+   "Cada importe es el total del día, no una recompensa adicional. Los hitos superiores requieren los anteriores.",
+   "每个金额都是当天的总额，而不是额外奖励。更高的里程碑需要先完成前面的里程碑。",
+   "Каждая сумма — это итог за день, а не дополнительная награда. Для более высоких этапов нужны предыдущие."
+  ],
+  "Only active learning counts: answering quizzes, exploring countries and reading their details. Leaving the app open does not.": [
+   "Nur aktives Lernen zählt: Quizfragen beantworten, Länder erkunden und ihre Details lesen. Die App nur offen zu lassen zählt nicht.",
+   "Solo cuenta el aprendizaje activo: responder cuestionarios, explorar países y leer sus detalles. Dejar la app abierta no cuenta.",
+   "只有主动学习才计入：回答测验、探索国家并阅读其详情。仅让应用保持打开不计入。",
+   "Засчитывается только активное обучение: ответы в викторинах, изучение стран и чтение подробностей. Просто открытое приложение не считается."
+  ],
+  "{n} more minutes of active learning": [
+   "Noch {n} Minuten aktives Lernen",
+   "{n} minutos más de aprendizaje activo",
+   "还需 {n} 分钟主动学习",
+   "Ещё {n} мин активного обучения"
+  ],
+  "Provisional rewards are estimates, not earnings. After each month, all participants' provisional rewards are added up. If the total is above the shared ₦50,000 monthly budget, every amount is reduced in the same proportion. Final amounts need the Owner's approval, and payments are currently disabled.": [
+   "Vorläufige Prämien sind Schätzungen, kein Verdienst. Nach jedem Monat werden die vorläufigen Prämien aller Teilnehmenden addiert. Liegt die Summe über dem gemeinsamen Monatsbudget von ₦50.000, wird jeder Betrag im gleichen Verhältnis gekürzt. Endgültige Beträge müssen vom Inhaber genehmigt werden, und Auszahlungen sind derzeit deaktiviert.",
+   "Las recompensas provisionales son estimaciones, no ganancias. Al final de cada mes se suman las recompensas provisionales de todos los participantes. Si el total supera el presupuesto mensual compartido de ₦50.000, cada importe se reduce en la misma proporción. Los importes finales requieren la aprobación del propietario y los pagos están desactivados por ahora.",
+   "暂定奖励只是估算，不是收入。每月结束后，所有参与者的暂定奖励会被加总。如果总额超过共享的每月预算 ₦50,000，每个金额将按相同比例减少。最终金额需要所有者批准，目前支付功能已停用。",
+   "Предварительные награды — это оценки, а не заработок. После каждого месяца предварительные награды всех участников суммируются. Если сумма превышает общий месячный бюджет ₦50 000, каждая сумма уменьшается в одинаковой пропорции. Окончательные суммы требуют одобрения владельца, а выплаты сейчас отключены."
+  ],
+  "{month}: {provisional} provisional → {final} final allocation · {status}": [
+   "{month}: {provisional} vorläufig → {final} endgültige Zuteilung · {status}",
+   "{month}: {provisional} provisional → {final} asignación final · {status}",
+   "{month}：暂定 {provisional} → 最终分配 {final} · {status}",
+   "{month}: {provisional} предварительно → {final} окончательное распределение · {status}"
+  ],
+  "Your learning progress could not be loaded just now. Your activity is still recorded.": [
+   "Dein Lernfortschritt konnte gerade nicht geladen werden. Deine Aktivität wird trotzdem erfasst.",
+   "No se pudo cargar tu progreso ahora mismo. Tu actividad se sigue registrando.",
+   "暂时无法加载你的学习进度。你的活动仍会被记录。",
+   "Не удалось загрузить ваш прогресс. Ваша активность всё равно записывается."
+  ],
+  "Today's learning progress": [
+   "Heutiger Lernfortschritt",
+   "Progreso de aprendizaje de hoy",
+   "今日学习进度",
+   "Прогресс обучения за сегодня"
+  ],
+  "You have reached this month's provisional maximum. Keep learning for points and badges.": [
+   "Du hast das vorläufige Monatsmaximum erreicht. Lerne weiter für Punkte und Abzeichen.",
+   "Has alcanzado el máximo provisional de este mes. Sigue aprendiendo para ganar puntos e insignias.",
+   "你已达到本月暂定奖励上限。继续学习可获得积分和徽章。",
+   "Вы достигли предварительного максимума за этот месяц. Продолжайте учиться ради очков и значков."
+  ],
+  "This month ({month}): in progress — {amount} provisional": [
+   "Dieser Monat ({month}): läuft — {amount} vorläufig",
+   "Este mes ({month}): en curso — {amount} provisional",
+   "本月（{month}）：进行中 — 暂定 {amount}",
+   "Этот месяц ({month}): идёт — {amount} предварительно"
+  ],
+  "Test records: these figures are a preview for owner and tester accounts and are never settled.": [
+   "Testeinträge: Diese Zahlen sind eine Vorschau für Inhaber- und Tester-Konten und werden nie abgerechnet.",
+   "Registros de prueba: estas cifras son una vista previa para cuentas de propietario y de prueba y nunca se liquidan.",
+   "测试记录：这些数字只是所有者和测试者账户的预览，永远不会结算。",
+   "Тестовые записи: эти цифры — предпросмотр для аккаунтов владельца и тестировщиков, они никогда не рассчитываются."
+  ],
+  "Today's milestones": [
+   "Heutige Stufen",
+   "Hitos de hoy",
+   "今日里程碑",
+   "Этапы на сегодня"
+  ],
+  "Today's maximum is reached. Rewards stop increasing for today; points and badges still count. See you tomorrow!": [
+   "Das heutige Maximum ist erreicht. Die Prämie steigt heute nicht weiter; Punkte und Abzeichen zählen weiterhin. Bis morgen!",
+   "Has alcanzado el máximo de hoy. La recompensa ya no aumenta hoy; los puntos y las insignias siguen contando. ¡Hasta mañana!",
+   "今日上限已达到。今天的奖励不再增加；积分和徽章仍然有效。明天见！",
+   "Сегодняшний максимум достигнут. Награда за сегодня больше не растёт; очки и значки по-прежнему засчитываются. До завтра!"
+  ],
+  "Next milestone: {steps}.": [
+   "Nächste Stufe: {steps}.",
+   "Próximo hito: {steps}.",
+   "下一个里程碑：{steps}。",
+   "Следующий этап: {steps}."
+  ],
+  "Monthly settlement": [
+   "Monatsabrechnung",
+   "Liquidación mensual",
+   "月度结算",
+   "Ежемесячный расчёт"
+  ],
+  "reduced in proportion to fit the shared budget": [
+   "anteilig gekürzt, um ins gemeinsame Budget zu passen",
+   "reducida proporcionalmente para ajustarse al presupuesto compartido",
+   "已按比例减少以符合共享预算",
+   "уменьшено пропорционально, чтобы уложиться в общий бюджет"
+  ],
+  "Educational points and badges have no monetary value. Provisional rewards are not payable: any payment needs the monthly settlement, the Owner's approval and a separate authorisation, and payments are currently disabled. Thank you for helping us test World Explorer.": [
+   "Lernpunkte und Abzeichen haben keinen Geldwert. Vorläufige Prämien werden nicht ausgezahlt: Jede Zahlung erfordert die Monatsabrechnung, die Genehmigung des Inhabers und eine gesonderte Freigabe, und Auszahlungen sind derzeit deaktiviert. Danke, dass du uns beim Testen von World Explorer hilfst.",
+   "Los puntos educativos y las insignias no tienen valor monetario. Las recompensas provisionales no se pagan: cualquier pago requiere la liquidación mensual, la aprobación del propietario y una autorización aparte, y los pagos están desactivados por ahora. Gracias por ayudarnos a probar World Explorer.",
+   "学习积分和徽章没有货币价值。暂定奖励不予支付：任何支付都需要月度结算、所有者批准以及单独授权，目前支付功能已停用。感谢你帮助我们测试 World Explorer。",
+   "Учебные очки и значки не имеют денежной ценности. Предварительные награды не выплачиваются: для любой выплаты нужны ежемесячный расчёт, одобрение владельца и отдельное разрешение, а выплаты сейчас отключены. Спасибо, что помогаете нам тестировать World Explorer."
+  ],
+  "An invitation-only programme for up to {n} adults in Nigeria. You help us test World Explorer before a wider launch; the World Explorer team reviews every application.": [
+   "Ein Programm nur auf Einladung für bis zu {n} Erwachsene in Nigeria. Du hilfst uns, World Explorer vor einem größeren Start zu testen; das World-Explorer-Team prüft jede Bewerbung.",
+   "Un programa solo por invitación para hasta {n} adultos en Nigeria. Nos ayudas a probar World Explorer antes de un lanzamiento más amplio; el equipo de World Explorer revisa cada solicitud.",
+   "一个仅限受邀者参加的项目，面向尼日利亚最多 {n} 名成年人。你将帮助我们在更大范围发布前测试 World Explorer；World Explorer 团队会审核每一份申请。",
+   "Программа только по приглашению для не более чем {n} взрослых в Нигерии. Вы помогаете нам протестировать World Explorer перед более широким запуском; команда World Explorer рассматривает каждую заявку."
+  ],
+  "Approved participants see provisional rewards for genuine learning: up to ₦500 a day and ₦7,000 a month, from a shared ₦50,000 monthly budget. Provisional rewards are not earnings and are not payable.": [
+   "Angenommene Teilnehmende sehen vorläufige Prämien für echtes Lernen: bis zu ₦500 pro Tag und ₦7.000 pro Monat aus einem gemeinsamen Monatsbudget von ₦50.000. Vorläufige Prämien sind kein Verdienst und werden nicht ausgezahlt.",
+   "Los participantes aprobados ven recompensas provisionales por aprendizaje real: hasta ₦500 al día y ₦7.000 al mes, de un presupuesto mensual compartido de ₦50.000. Las recompensas provisionales no son ganancias y no se pagan.",
+   "获批参与者可以看到因真实学习而获得的暂定奖励：每天最多 ₦500，每月最多 ₦7,000，来自共享的每月预算 ₦50,000。暂定奖励不是收入，也不予支付。",
+   "Одобренные участники видят предварительные награды за настоящее обучение: до ₦500 в день и ₦7 000 в месяц из общего месячного бюджета ₦50 000. Предварительные награды — не заработок и не выплачиваются."
+  ],
+  "15 minutes and 1 qualifying quiz": [
+   "15 Minuten und 1 qualifizierendes Quiz",
+   "15 minutos y 1 cuestionario válido",
+   "15 分钟并完成 1 个合格测验",
+   "15 минут и 1 засчитываемая викторина"
+  ],
+  "30 minutes and 2 qualifying quizzes": [
+   "30 Minuten und 2 qualifizierende Quizze",
+   "30 minutos y 2 cuestionarios válidos",
+   "30 分钟并完成 2 个合格测验",
+   "30 минут и 2 засчитываемые викторины"
+  ],
+  "45 minutes and a country you have not explored before": [
+   "45 Minuten und ein Land, das du noch nicht erkundet hast",
+   "45 minutos y un país que no hayas explorado antes",
+   "45 分钟并探索一个之前未探索过的国家",
+   "45 минут и страна, которую вы ещё не изучали"
+  ],
+  "60 minutes and today's Daily Challenge": [
+   "60 Minuten und die heutige Tages-Challenge",
+   "60 minutos y el reto diario de hoy",
+   "60 分钟并完成今日每日挑战",
+   "60 минут и сегодняшнее испытание дня"
+  ],
+  "Waiting for the Owner's review": [
+   "Wartet auf Prüfung durch den Inhaber",
+   "Pendiente de revisión del propietario",
+   "等待所有者审核",
+   "Ожидает проверки владельцем"
+  ],
+  "Approved — not paid (payments are disabled)": [
+   "Genehmigt — nicht ausgezahlt (Auszahlungen sind deaktiviert)",
+   "Aprobada — no pagada (los pagos están desactivados)",
+   "已批准 — 未支付（支付功能已停用）",
+   "Одобрено — не выплачено (выплаты отключены)"
+  ],
+  "Withheld after review": [
+   "Nach Prüfung zurückgehalten",
+   "Retenida tras la revisión",
+   "审核后暂扣",
+   "Удержано после проверки"
+  ],
+  "explore a country you have not explored before": [
+   "ein Land erkunden, das du noch nicht erkundet hast",
+   "explorar un país que no hayas explorado antes",
+   "探索一个之前未探索过的国家",
+   "изучить страну, которую вы ещё не изучали"
+  ],
+  "complete today's Daily Challenge": [
+   "die heutige Tages-Challenge abschließen",
+   "completar el reto diario de hoy",
+   "完成今日每日挑战",
+   "пройти сегодняшнее испытание дня"
   ]
  }
 }

@@ -14,7 +14,7 @@ import re
 import secrets
 from dataclasses import asdict, dataclass, fields
 from datetime import date, datetime, timedelta, timezone
-from .legal import PILOT_MAX_PLACES
+from .legal import FOUNDING_MAX_PLACES
 
 LAGOS = timezone(timedelta(hours=1), "Africa/Lagos")  # West Africa Time, UTC+1 all year (no daylight saving)
 KINDS = ("active_day", "quiz", "country", "referral")
@@ -88,8 +88,9 @@ class Settings:
         if without_referrals < self.monthly_cap:
             problems.append(f"People could not reach the monthly maximum without referrals "
                             f"(₦{without_referrals:,} from activities < ₦{self.monthly_cap:,}).")
-        if self.max_places > PILOT_MAX_PLACES:
-            problems.append(f"The Friends & Family Pilot is limited to {PILOT_MAX_PLACES} approved participants.")
+        if self.max_places > FOUNDING_MAX_PLACES:
+            problems.append(f"The Founding 50 programme is limited to {FOUNDING_MAX_PLACES} approved participants "
+                            "(Friends & Family 10 has its own fixed limit of 10).")
         try:
             date.fromisoformat(self.start_date)
         except ValueError:

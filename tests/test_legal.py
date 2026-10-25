@@ -32,6 +32,24 @@ class RealDraftTests(unittest.TestCase):
     def setUp(self):
         legal_fixtures.use_real()
 
+    def test_pilot_activation_checklist_names_every_missing_requirement_once(self):
+        issues = legal.pilot_activation_problems({})
+        for shared in ("[legal] operator_verified", "[legal] contact_email", "[legal] registered_address"):
+            self.assertEqual(sum(shared in i for i in issues), 1, shared)
+        for title in ("Privacy Policy", "Terms of Use", "Friends & Family 10 terms"):
+            self.assertIn(f"{title}: The document still carries the DRAFT notice.", issues)
+            self.assertTrue(any(i.startswith(f"{title}: ") and "open item" in i for i in issues), title)
+            self.assertTrue(any(i.startswith(f"{title}: The version is not final") for i in issues), title)
+        for key in ("privacy", "terms", "pilot"):
+            self.assertTrue(any(f"[legal.approved] {key} = " in i for i in issues), key)
+
+    def test_pilot_activation_checklist_ignores_invented_settings_for_draft_documents(self):
+        cfg = {"operator_verified": True, "contact_email": "privacy@example.com",
+               "registered_address": "1 Example Street, Lagos", "approved": {k: legal.checksum(k) for k in legal.DOCUMENTS}}
+        issues = legal.pilot_activation_problems(cfg)
+        self.assertTrue(issues)                                   # the drafts themselves still block activation
+        self.assertFalse(any("[legal] operator_verified" in i or "[legal.approved]" in i for i in issues))
+
     def test_drafts_cannot_be_published_even_with_every_setting(self):
         cfg = {"operator_verified": True, "contact_email": "privacy@example.com",
                "registered_address": "1 Example Street, Lagos", "approved": {k: legal.checksum(k) for k in legal.DOCUMENTS}}
@@ -54,22 +72,23 @@ class RealDraftTests(unittest.TestCase):
     def test_privacy_policy_matches_the_app(self):
         text = legal.document("privacy", {})
         for fact in ("Nigeria Data Protection", "we_consent", "we_aid", "we_handoff", "we_ref", "we_school",
-                     "Supabase", "Streamlit", "Wikimedia", "Google", "at most 50 individually approved adults",
+                     "Supabase", "Streamlit", "Wikimedia", "Google", "at most 10 individually approved adults",
                      "Payments are not active", "Global Privacy Control", "NDPC"):
             self.assertIn(fact, text)
         self.assertIn(legal.TO_CONFIRM, text)                          # missing contact is marked, never invented
 
     def test_pilot_terms_limit_and_no_payments(self):
         text = legal.document("pilot", {})
-        self.assertIn("at most **50** participants", text)
+        self.assertIn("at most **10** participants", text)
         self.assertIn("**18 or older**", text)
         self.assertIn("No money is currently payable", text)
 
-    def test_pilot_places_capped_at_fifty(self):
+    def test_founding_places_capped_at_fifty_and_the_pilot_at_ten(self):
         import dataclasses
         self.assertEqual(rewards.Settings().validate(), [])
         problems = dataclasses.replace(rewards.Settings(), max_places=51).validate()
         self.assertTrue(any("limited to 50" in p for p in problems))
+        self.assertEqual(legal.PILOT_MAX_PLACES, 10)
 
 
 class PublicationRuleTests(unittest.TestCase):
@@ -233,6 +252,25 @@ class SettingsSectionTests(unittest.TestCase):
 def _render_legal():
     from ui import components
     components.legal_information()
+
+
+
+class PilotActivationCompleteTests(unittest.TestCase):
+    def setUp(self):
+        legal_fixtures.use_completed()
+        self.addCleanup(legal_fixtures.use_real)
+
+    def test_complete_legal_side_leaves_nothing_to_do(self):
+        self.assertEqual(legal.pilot_activation_problems(legal_fixtures.secrets()), [])
+
+    def test_missing_pilot_approval_alone_is_reported(self):
+        issues = legal.pilot_activation_problems(legal_fixtures.secrets(docs=("privacy", "terms")))
+        self.assertEqual(len(issues), 1)
+        self.assertTrue(issues[0].startswith("Friends & Family 10 terms: Not approved"))
+
+    def test_unverified_operator_is_reported(self):
+        self.assertEqual(legal.pilot_activation_problems(legal_fixtures.secrets(verified=False)),
+                         ["The company's role as operator and data controller is not confirmed ([legal] operator_verified)."])
 
 
 if __name__ == "__main__":

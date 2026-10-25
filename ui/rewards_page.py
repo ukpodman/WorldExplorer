@@ -11,7 +11,7 @@ from core import accounts, rewards
 from core.rewards_store import StoreError
 
 from . import rewards_hooks as hooks
-from . import founding_ui, withdraw_ui
+from . import ff10_ui, founding_ui, withdraw_ui
 from .components import e, hero, html, sign_in_button
 from .state import t
 
@@ -81,7 +81,10 @@ def _show_flash() -> None:
 
 def _banner(account: dict | None) -> None:
     if (account and account.get("test")) or (hooks.tester() and not hooks.enabled()):
-        st.warning(t("Test mode — rewards are not payable. These records are marked as test records."), icon="🧪")
+        # Test mode belongs to owner/tester accounts; it is not the Friends & Family 10, and nothing here is owed.
+        st.warning(t("Test mode for owner and tester accounts only. It is separate from Friends & Family 10. "
+                     "All amounts are simulated and non-payable, and these records are marked as test records."),
+                   icon="🧪")
     elif not hooks.payouts_active():
         st.info(t("Pilot preview: amounts are shown for information and are not payable until the programme is "
                   "officially launched."), icon="ℹ️")
@@ -286,8 +289,8 @@ def render() -> None:
         return
     if hooks.enabled():
         hero("Rewards pilot", "My Rewards", "Learn, explore and earn rewards every month.", variant="compact")
-    else:   # the Friends & Family Pilot: no money language
-        hero("Invitation only", "Friends & Family Pilot", "Help us test World Explorer before a wider launch.",
+    else:   # the Friends & Family 10: no money language
+        hero("Invitation only", "Friends & Family 10", "Help us test World Explorer before a wider launch.",
              variant="compact")
     who = accounts.identity()
     if not who:
@@ -324,13 +327,19 @@ def render() -> None:
         may_join = True
     else:
         may_join = founding_ui.section(fs, who, account)
+    member = hooks.ff10_member(refresh=True) if not hooks.enabled() else None
+    if member:   # Friends & Family 10: learning progress and provisional rewards (never payable as shown)
+        ff10_ui.progress(member)
     if not hooks.enabled() and not account.get("test"):
-        # Friends & Family Pilot only (the public rewards programme is closed): the application and its status, and
-        # nothing about joining, earning, invitation links or withdrawals. The database pays ₦0 and refuses
-        # enrolment while the public switch is off, so the pilot creates no money liability.
-        st.info(t("Educational points and badges have no monetary value. No payments are available during the pilot. "
-                  "Thank you for helping us test World Explorer."))
+        # Friends & Family 10 only (the public rewards programme is closed): the application, its status and, once
+        # approved, the provisional rewards above — nothing about joining, invitation links or withdrawals. The
+        # existing rewards ledger pays ₦0 while the public switch is off, and pilot payments are disabled.
+        st.info(t("Educational points and badges have no monetary value. Provisional rewards are not payable: any "
+                  "payment needs the monthly settlement, the Owner's approval and a separate authorisation, and "
+                  "payments are currently disabled. Thank you for helping us test World Explorer."))
         return
+    if not hooks.enabled():   # owner/tester accounts only: the public-programme screens with simulated amounts
+        st.caption("🧪 " + t("Owner and tester preview: every ₦ amount below is simulated and non-payable."))
     if account.get("membership") == "member":
         _status_line(ctx.get("enrolment"), ctx["settings"])
         with st.container(border=True, key="rw_progress"):

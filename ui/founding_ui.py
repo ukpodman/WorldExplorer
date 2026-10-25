@@ -1,6 +1,6 @@
 """The participant's application card. Internally the programme is "Funding 50" (tables and code keep the earlier
 "founding" names); participants see:
-  * while the public rewards programme is OFF (now): "World Explorer — Friends & Family Pilot", the published pilot terms
+  * while the public rewards programme is OFF (now): "World Explorer — Friends & Family 10", the published pilot terms
     (legal/PILOT_TERMS.md, the exact approved version is recorded with the application) and no money language;
   * once public rewards are separately authorised and ON (later): the earlier Founding 50 rewards texts.
 World Explorer and its geography features stay free for everyone; applying is optional.
@@ -24,7 +24,7 @@ TEST_LABEL = "🧪 Test application — not payable"
 APPLY_ERRORS = {
     "already_applied": "You have already applied. Each person can apply once.",
     "programme_off": "Applications are closed at the moment. Please try again later.",
-    "not_invited": "The Friends & Family Pilot is by invitation only. You can keep using all of World Explorer for free.",
+    "not_invited": "Friends & Family 10 is by invitation only. You can keep using all of World Explorer for free.",
     "terms_outdated": "The pilot terms have been updated. Please read the current terms and apply again.",
     "terms_required": "Applications are closed at the moment. Please try again later.",
     "declarations_required": "Please confirm all three statements to apply.",
@@ -43,17 +43,17 @@ STATUS_TEXT = {
 
 
 PILOT_STATUS_TEXT = {
-    "pending": ("info", "Your application to the Friends & Family Pilot was received on {date} and is waiting for review."),
-    "waitlist": ("info", "You are on the Friends & Family Pilot waiting list. This page will show it when a place is "
+    "pending": ("info", "Your application to Friends & Family 10 was received on {date} and is waiting for review."),
+    "waitlist": ("info", "You are on the Friends & Family 10 waiting list. This page will show it when a place is "
                          "offered to you."),
     "rejected": ("warning", "Your application was not accepted this time. You can keep using all of World Explorer "
                             "for free."),
-    "approved": ("success", "Welcome to the Friends & Family Pilot! Your application was approved."),
+    "approved": ("success", "Welcome to Friends & Family 10! Your application was approved."),
 }
 
 
 def pilot_mode() -> bool:
-    """Participants see the Friends & Family Pilot (not the rewards programme) while public rewards are not ON."""
+    """Participants see the Friends & Family 10 (not the rewards programme) while public rewards are not ON."""
     return not hooks.enabled()
 
 
@@ -79,36 +79,43 @@ def _intro(s) -> None:
 
 
 def _pilot_intro(s) -> None:
-    left, total = _places(s)
-    st.subheader(t("World Explorer — Friends & Family Pilot"))
-    st.markdown(t("An invitation-only testing phase for up to {n} adults in Nigeria. You help us test World Explorer "
+    total = legal.PILOT_MAX_PLACES
+    try:
+        left = max(total - sum(1 for a in s.founding_applications("approved") if not a.get("test")), 0)
+    except Exception:
+        left = total
+    st.subheader(t("World Explorer — Friends & Family 10"))
+    st.markdown(t("An invitation-only programme for up to {n} adults in Nigeria. You help us test World Explorer "
                   "before a wider launch; the World Explorer team reviews every application.", n=total))
+    st.caption(t("Approved participants see provisional rewards for genuine learning: up to ₦500 a day and ₦7,000 a "
+                 "month, from a shared ₦50,000 monthly budget. Provisional rewards are not earnings and are not "
+                 "payable."))
     st.caption(t("Educational points and badges have no monetary value. No payments are available during the pilot."))
     html(f'<div class="rw-stats"><div class="rw-stat"><div class="rw-stat-value">{left} / {total}</div>'
          f'<div class="rw-stat-label">{t("Places available")}</div></div></div>')
 
 
 def _pilot_apply_form(s, who: dict, account: dict) -> None:
-    """The application with the published Friends & Family Pilot terms; the exact version shown is the version the
+    """The application with the published Friends & Family 10 terms; the exact version shown is the version the
     applicant accepts, and the database checks it against the owner's approved version."""
     terms_id = legal.pilot_terms_id()
-    with st.expander("📜 " + t("Friends & Family Pilot terms") + f" ({legal.version('pilot')})", expanded=False):
+    with st.expander("📜 " + t("Friends & Family 10 terms") + f" ({legal.version('pilot')})", expanded=False):
         st.caption(t("The pilot terms are available in English."))
         st.markdown(legal.document("pilot"))
     with st.form("rw_founding_apply", border=True):
-        st.markdown("**" + t("Apply to the Friends & Family Pilot") + "**")
+        st.markdown("**" + t("Apply to Friends & Family 10") + "**")
         state = st.selectbox(t("State of residence"), founding.STATES, index=None,
                              placeholder=t("Choose your state"), key="rw_f_state")
         note = st.text_area(t("Why would you like to take part? (optional)"), max_chars=founding.NOTE_MAX,
                             key="rw_f_note", height=90)
         adult = st.checkbox(t("I am 18 years or older."), key="rw_f_adult")
         resident = st.checkbox(t("I live in Nigeria."), key="rw_f_resident")
-        terms = st.checkbox(t("I have read and accept the Friends & Family Pilot terms."), key="rw_f_terms")
+        terms = st.checkbox(t("I have read and accept the Friends & Family 10 terms."), key="rw_f_terms")
         st.caption(t("Applying does not guarantee a place. We do not ask for bank details."))
-        submitted = st.form_submit_button(t("Apply to the Friends & Family Pilot"), type="primary", width="stretch")
+        submitted = st.form_submit_button(t("Apply to Friends & Family 10"), type="primary", width="stretch")
     if submitted:
         _submit(s, who, state, note, adult, resident, terms, terms_id,
-                t("Thank you! Your application to the Friends & Family Pilot was sent. The World Explorer team will "
+                t("Thank you! Your application to Friends & Family 10 was sent. The World Explorer team will "
                   "review it."))
 
 

@@ -97,7 +97,7 @@ class RewardsAppTests(unittest.TestCase):
         at = self.app(who=OWNER, rewards={"enabled": False}, owner=True).run()
         self.assertTrue([b for b in at.button if b.key == "rewards_menu"])
         at.button(key="rewards_menu").click().run()
-        self.assertTrue(any("Test mode — rewards are not payable" in w.value for w in at.warning))
+        self.assertTrue(any("Test mode for owner and tester accounts only" in w.value for w in at.warning))
         at.checkbox(key="rw_adult").check()
         at.checkbox(key="rw_resident").check()
         at.checkbox(key="rw_terms").check()
@@ -271,7 +271,7 @@ class RewardsAppTests(unittest.TestCase):
         at.button(key="settings_menu").click().run()                      # Profile and settings opens Settings
         self.assertTrue([b for b in at.button if b.key == "profile_logout"])
         at = self.app(who=who, rewards={"tester_emails": ["player@example.com"]}).run()
-        self.assertEqual(at.button(key="rewards_menu").label, "🤝 Friends & Family Pilot")   # public rewards off
+        self.assertEqual(at.button(key="rewards_menu").label, "🤝 Friends & Family 10")   # public rewards off
         at.button(key="menu_rewards").click().run()
         self.assertEqual(at.session_state["page"], "Rewards")
         self.assertEqual([e.value for e in at.exception], [])
@@ -431,7 +431,7 @@ class RewardsAppTests(unittest.TestCase):
         self.assertFalse(self.store().settings().paused)
         at.number_input[[n.label for n in at.number_input].index("Places")].set_value(60)
         at.button[[b.label for b in at.button].index("Save settings")].click().run()
-        self.assertTrue(any("limited to 50" in e.value for e in at.error))   # Friends & Family Pilot: 50 places at most
+        self.assertTrue(any("limited to 50" in e.value for e in at.error))   # Friends & Family 10: 50 places at most
         self.assertEqual(self.store().settings().max_places, 50)
         at.number_input[[n.label for n in at.number_input].index("Places")].set_value(40)
         at.button[[b.label for b in at.button].index("Save settings")].click().run()

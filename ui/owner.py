@@ -95,7 +95,7 @@ def _legal_and_switches() -> None:
     cfgr = hooks.config()
     public, pilot_sw = hooks.public_state(), hooks.pilot_switch()
     rows += [
-        {"Requirement": "Friends & Family Pilot (effective)", "State": "OPEN" if hooks.pilot_open() else "closed",
+        {"Requirement": "Friends & Family 10 (effective)", "State": "OPEN" if hooks.pilot_open() else "closed",
          "Details": f"Pilot switch {'ON' if pilot_sw.get('enabled') else 'off'} · pilot documents "
                     f"{'published' if pilot else 'not published'} · invited people only · at most "
                     f"{legal.PILOT_MAX_PLACES} approved (Founding 50 tab)."},

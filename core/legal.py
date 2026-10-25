@@ -22,7 +22,7 @@ A document is published ("live") only when ALL of these hold:
     approves the new checksum. The version line is the human-readable label.
 
 The Privacy Policy and Terms of Use can be published on their own (for every user, independently of the pilot or
-any rewards programme). The Friends & Family Pilot additionally needs its pilot terms; public rewards and every money
+any rewards programme). The Friends & Family 10 additionally needs its pilot terms; public rewards and every money
 switch need the Privacy Policy and Terms of Use (see ui/rewards_hooks.py).
 """
 from __future__ import annotations
@@ -43,11 +43,12 @@ OPERATOR = {
 DOCUMENTS = {   # key: (title, file)
     "privacy": ("Privacy Policy", "PRIVACY_POLICY.md"),
     "terms": ("Terms of Use", "TERMS_OF_USE.md"),
-    "pilot": ("Friends & Family Pilot terms", "PILOT_TERMS.md"),
+    "pilot": ("Friends & Family 10 terms", "PILOT_TERMS.md"),
 }
 GENERAL = ("privacy", "terms")            # for every user; also required before public rewards or any money switch
-PILOT = ("privacy", "terms", "pilot")     # required before the Friends & Family Pilot opens
-PILOT_MAX_PLACES = 50                     # the Friends & Family Pilot: at most 50 individually approved adults
+PILOT = ("privacy", "terms", "pilot")     # required before the Friends & Family 10 opens
+PILOT_MAX_PLACES = 10                     # Friends & Family 10: at most 10 individually approved adults
+FOUNDING_MAX_PLACES = 50                  # the future public Founding 50 programme (reward_program_settings.max_places)
 TO_CONFIRM = "[to be confirmed]"
 DRAFT_MARK = "DRAFT for legal review"
 EMAIL = re.compile(r"[^@\s]+@[^@\s]+\.[^@\s]{2,}")
@@ -133,7 +134,8 @@ def problems(key: str, cfg: dict | None = None) -> list[str]:
         out.append("The document still carries the DRAFT notice.")
     open_items = OPEN_BRACKET.findall(text)
     if open_items:
-        out.append(f"{len(open_items)} open item(s) in [brackets], e.g. {open_items[0][:60]}")
+        example = next((x for x in open_items if x != "[brackets]"), open_items[0])   # not the DRAFT notice's own word
+        out.append(f"{len(open_items)} open item(s) in [brackets], e.g. {example[:60]}")
     if re.search(r"\{\{(?!CONTACT_EMAIL\}\}|REGISTERED_ADDRESS\}\})", text):
         out.append("Unfilled {{fields}} in the document.")
     if not v or v.lower().startswith("draft"):
@@ -160,6 +162,22 @@ def pilot_ready(cfg: dict | None = None) -> bool:
     """Privacy Policy, Terms of Use and pilot terms are all published. Required before the pilot opens."""
     cfg = cfg if cfg is not None else config()
     return all(doc_live(k, cfg) for k in PILOT)
+
+
+def pilot_activation_problems(cfg: dict | None = None) -> list[str]:
+    """Every legal requirement still missing before the Friends & Family 10 may be switched on, in order, each named
+    once: the shared [legal] settings first, then each document (Privacy Policy, Terms of Use, pilot terms) with its
+    own open points. Empty list = the legal side is complete. Nothing here is filled in automatically."""
+    cfg = cfg if cfg is not None else config()
+    out: list[str] = []
+    for key in PILOT:
+        title = DOCUMENTS[key][0]
+        for issue in problems(key, cfg):
+            shared = issue.startswith(("The company's role", "No valid contact", "No registered address"))
+            line = issue if shared else f"{title}: {issue}"
+            if line not in out:
+                out.append(line)
+    return out
 
 
 def live_documents(cfg: dict | None = None) -> list[str]:

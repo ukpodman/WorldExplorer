@@ -61,7 +61,7 @@ def apply_error(account: dict | None, existing: dict | None, state: str | None, 
     """Why an application is refused (the database checks the same, supabase/pilot_invitations_migration.sql), or None.
 
     Two independent ways in, each with its own owner-approved participation terms:
-      * the Friends & Family Pilot: pilot ON + invited                             + exactly the approved pilot terms;
+      * the Friends & Family 10: pilot ON + invited                             + exactly the approved pilot terms;
       * public rewards enrolment:   public ON + (invited, or invitation_only OFF)  + exactly the approved public terms.
     Owner/tester (test) accounts may always try; their records are test records."""
     if not account:

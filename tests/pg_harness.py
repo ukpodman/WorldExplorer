@@ -24,7 +24,8 @@ SCHEMA = ROOT / "supabase" / "rewards_schema.sql"
 MIGRATION = ROOT / "supabase" / "withdrawals_migration.sql"   # V21 cash withdrawals (loaded after the schema)
 PUBLIC = ROOT / "supabase" / "public_programme_migration.sql"   # owner ON/OFF switch
 FOUNDING = ROOT / "supabase" / "founding50_migration.sql"       # Founding 50 approvals
-PILOT = ROOT / "supabase" / "pilot_invitations_migration.sql"   # invitation-only pilot entry (loaded last)
+PILOT = ROOT / "supabase" / "pilot_invitations_migration.sql"   # invitation-only pilot entry
+FF10 = ROOT / "supabase" / "friends_family10_migration.sql"      # Friends & Family 10 provisional rewards (loaded last)
 
 
 def _bin(name: str) -> str | None:
@@ -57,6 +58,8 @@ class Cluster:
             self.psql_file("rt_template", FOUNDING)
         if PILOT.exists():
             self.psql_file("rt_template", PILOT)
+            if FF10.exists():
+                self.psql_file("rt_template", FF10)
         self.count = 0
 
     def _as_owner(self, command: str) -> None:

@@ -1,6 +1,9 @@
-"""🌟 Founding 50 Applications — part of 💰 Rewards & Referral Management in the Owner dashboard (English only).
+"""Applications tab of 💰 Rewards & Referral Management in the Owner dashboard (English only).
 
-Option B: anyone can apply, only the Owner approves. Access: rendered only after analytics.is_owner() on the server;
+While Public Rewards is OFF it is the private 🤝 Friends & Family 10: invitation only, so only people the Owner has
+invited can apply, and only participants the Owner approves take part (at most 50). When Public Rewards is ON it is the
+🌟 Founding 50 programme (still invitation only unless the Owner separately allows public applications). The database
+tables and functions keep their founding50 names. Access: rendered only after analytics.is_owner() on the server;
 every decision is checked again by the database (reward_founding_decide: owner list, place limit, reason rules, audit
 log). Approving never enrols anybody and never moves money; the participant takes their place themselves, and the
 30-day withdrawal wait starts then.
@@ -24,7 +27,7 @@ FILTERS = ("pending", "approved", "waitlist", "rejected", "all")
 ERRORS = {
     "not_owner": "Your email is not listed in reward_cashout_settings.owner_emails in the database. Add it with the "
                  "SQL in WITHDRAWALS_SETUP.md (step 3).",
-    "places_full": "All Founding 50 places are taken. Place the application on the waiting list, or first move an "
+    "places_full": "All places are taken. Place the application on the waiting list, or first move an "
                    "approved participant off.",
     "reason_required": "Please give a reason. A reason is needed to reject, and to take a place away from an approved "
                        "participant.",
@@ -39,6 +42,37 @@ ERRORS = {
                       "programme rules before allowing public applications.",
 }
 ACTION_LABEL = {"approve": "✅ Approve", "waitlist": "⏳ Waiting list", "reject": "✖ Reject"}
+
+
+def pilot_mode() -> bool:
+    """Public Rewards is OFF: the private Friends & Family 10 is the only programme people can join."""
+    return not hooks.enabled()
+
+
+def places(settings) -> int:
+    """Approved places: 10 in the private Friends & Family 10, the max_places setting for the public programme."""
+    from core import legal
+    return legal.PILOT_MAX_PLACES if pilot_mode() else int(settings.max_places)
+
+
+def programme_name() -> str:
+    return "Friends & Family 10" if pilot_mode() else "Founding 50"
+
+
+def activation_blockers(status: dict) -> list[str]:
+    """Exactly why the pilot cannot be switched on yet (empty list = it may be switched on). The legal requirements
+    come from core/legal.py and are never filled in or skipped here; the recorded terms come from the database."""
+    from core import legal
+    out = legal.pilot_activation_problems()
+    current, recorded = legal.pilot_terms_id(), status.get("terms_version")
+    if recorded != current:
+        if not recorded:
+            out.append("The pilot terms applicants must accept are not recorded yet (press \"Record the published pilot "
+                       "terms\" once they are published).")
+        else:
+            out.append(f"The recorded pilot terms ({recorded}) are not the published pilot terms ({current}); record "
+                       "them again once the published version is approved.")
+    return out
 
 
 def _error(error: Exception) -> str:
@@ -89,19 +123,29 @@ def alert() -> None:
     new = unseen_count()
     seen = st.session_state.get("rw_f_alert_seen")
     if seen is not None and new > seen:
-        st.toast(f"🌟 {new - seen} new Founding 50 application(s)", icon="🌟")
+        st.toast(f"{new - seen} new {programme_name()} application(s)", icon="🔔")
         _invalidate()
     st.session_state.rw_f_alert_seen = new
     if new:
-        st.info(f"{new} new Founding 50 application{'s' if new != 1 else ''} — open 💰 Rewards & Referral "
-                "Management → 🌟 Founding 50 to review.", icon="🌟")
+        st.info(f"{new} new {programme_name()} application{'s' if new != 1 else ''} — open 💰 Rewards & Referral "
+                f"Management → {programme_name()} to review.", icon="🔔")
 
 
 def _dashboard(d: dict, include_test: bool, month: str) -> list[dict]:
     rows = [a for a in d["applications"] if include_test or not a.get("test")]
     pick = (lambda xs: xs) if include_test else (lambda xs: [x for x in xs if not x.get("test")])
-    f = founding.dashboard(rows, pick(d["enrolments"]), pick(d["events"]), d["settings"].max_places, month,
+    f = founding.dashboard(rows, pick(d["enrolments"]), pick(d["events"]), places(d["settings"]), month,
                            _verified(d, rows, month))
+    if pilot_mode():   # Friends & Family 10: the old rewards ledger is not used (provisional rewards: own tab)
+        _tiles([("Places available", f"{f['available']} / {f['places']}", "approved participants at a time"),
+                ("Approved participants", str(f["approved"])), ("Pending", str(f["pending"]), f"{f['unseen']} new"),
+                ("Waiting list", str(f["waitlist"])), ("Rejected", str(f["rejected"])),
+                ("Applications", str(f["total"]))])
+        st.caption("Learning time, provisional rewards, the ₦50,000 budget and the monthly settlement are in the "
+                   "📊 F&F 10 rewards tab.")
+        if include_test:
+            st.caption("Test applications are included — they are simulations and never payable.")
+        return rows
     _tiles([("Places available", f"{f['available']} / {f['places']}", "approved participants at a time"),
             ("Approved participants", str(f["approved"])), ("Pending", str(f["pending"]), f"{f['unseen']} new"),
             ("Waiting list", str(f["waitlist"])), ("Rejected", str(f["rejected"])),
@@ -128,7 +172,7 @@ def _new_list(s, rows: list[dict], names: dict) -> None:
         with st.container(border=True, key=f"rw_f_new_{a['id']}"):
             if a.get("test"):
                 st.html(f'<div class="rw-test-label">🧪 TEST APPLICATION — NOT PAYABLE</div>')
-            st.markdown(f"**🌟 NEW FOUNDING 50 APPLICATION** · {escape(_who(names.get(a['profile_id']), a['profile_id']))}"
+            st.markdown(f"**🔔 NEW {programme_name().upper()} APPLICATION** · {escape(_who(names.get(a['profile_id']), a['profile_id']))}"
                         f" · {escape(a.get('state') or '')} · {str(a.get('applied_at') or '')[:10]}")
             if st.button("Review application", key=f"rw_f_open_{a['id']}", type="primary"):
                 st.session_state.rw_f_pick = a["id"]
@@ -219,7 +263,7 @@ def _review(s, d: dict, rows: list[dict], names: dict, month: str) -> None:
             st.html('<div class="rw-test-label">🧪 TEST APPLICATION — NOT PAYABLE</div>')
         _details(a, d, names, month)
         taken = sum(1 for x in d["applications"] if x["status"] == "approved" and not x.get("test"))
-        full = taken >= d["settings"].max_places and not a.get("test")
+        full = taken >= places(d["settings"]) and not a.get("test")
         if a["status"] == "approved":
             st.warning("Taking a place away ends this participant's enrolment for this month (the place and budget are "
                        "freed). Waiting list: rewards already earned stay payable. Reject: they are no longer "
@@ -233,10 +277,15 @@ def _review(s, d: dict, rows: list[dict], names: dict, month: str) -> None:
                              type="primary" if action == "approve" else "secondary", width="stretch"):
                 _decide(s, a, action, note)
         if full and a["status"] != "approved":
-            st.caption(f"All {d['settings'].max_places} places are taken — approve is unavailable. Use the waiting "
+            st.caption(f"All {places(d['settings'])} places are taken — approve is unavailable. Use the waiting "
                        "list.")
-        st.caption("Approving does not enrol anybody and moves no money: the participant takes their place on "
-                   "💰 My Rewards, and their 30-day withdrawal waiting period starts then.")
+        if pilot_mode():
+            st.caption("Approving lets the participant collect provisional Friends & Family 10 rewards for genuine "
+                       "learning. They are settled monthly within the ₦50,000 budget, need your approval, and are not "
+                       "payable: payments are disabled. No money moves.")
+        else:
+            st.caption("Approving does not enrol anybody and moves no money: the participant takes their place on "
+                       "💰 My Rewards, and their 30-day withdrawal waiting period starts then.")
 
 
 def _decide(s, a: dict, action: str, note: str | None) -> None:
@@ -281,9 +330,20 @@ def render(include_test: bool) -> None:
         st.error("The Founding 50 applications could not be read just now. Players are not affected.")
         return
     month = rewards.month_key()
-    st.markdown("### 🌟 Founding 50 Applications")
-    st.caption("Anyone can apply; only you approve. Only approved participants can earn money — the database refuses "
-               "enrolment and pays ₦0 for everyone else.")
+    status = s.pilot_status()
+    if pilot_mode():
+        st.markdown("### 🤝 Friends & Family 10 — Applications")
+        st.caption("Private programme, by invitation only. Only people you have invited can apply, and only "
+                   f"participants you approve take part (at most {places(d['settings'])}). Everyone else keeps full, "
+                   "free educational access. No payments are available during the pilot.")
+    else:
+        st.markdown("### 🌟 Founding 50 Applications")
+        if not status.get("installed") or not status.get("invitation_only", True):
+            st.caption("Anyone signed in can apply; only you approve. Only approved participants can earn money — the "
+                       "database refuses enrolment and pays ₦0 for everyone else.")
+        else:
+            st.caption("Invitation only: only people you have invited can apply, and only you approve. Only approved "
+                       "participants can earn money — the database refuses enrolment and pays ₦0 for everyone else.")
     _pilot_controls(s, d)
     st.divider()
     names = _names(d)
@@ -294,7 +354,7 @@ def render(include_test: bool) -> None:
     _review(s, d, shown, names, month)
 
 
-# --------------------------------------------------------------------------- Friends & Family Pilot (invitations)
+# --------------------------------------------------------------------------- Friends & Family 10 (invitations)
 
 def _pilot_action(fn, message: str) -> None:
     try:
@@ -313,11 +373,11 @@ def _pilot_action(fn, message: str) -> None:
 
 
 def _pilot_controls(s, d: dict) -> None:
-    """Three independent modes: public educational access (always), the invitation-only Friends & Family Pilot (this
+    """Three independent modes: public educational access (always), the invitation-only Friends & Family 10 (this
     switch and list), and public rewards enrolment (the Public Rewards Programme switch AND invitation-only OFF).
     Every change is made by a database function that checks the owner list and writes the audit log."""
     from core import legal
-    st.markdown("### 🤝 Friends & Family Pilot (invitation only)")
+    st.markdown("#### Pilot switch and invitations")
     status = s.pilot_status()
     if not status.get("installed"):
         st.warning("The invitation-only pilot is not installed in the database yet. After your approval, run "
@@ -333,6 +393,7 @@ def _pilot_controls(s, d: dict) -> None:
             ("Pilot open to invited people", "YES" if hooks.pilot_open() else "no"),
             ("Invitations", str(len(active))),
             ("Approved participants", f"{approved} / {legal.PILOT_MAX_PLACES}")])
+    blockers = activation_blockers(status)
     if status["enabled"] and not docs:
         st.info("The pilot switch is ON, but the pilot stays closed until the Privacy Policy, Terms of Use and pilot "
                 "terms are published (⚖️ Legal & switches).")
@@ -352,11 +413,16 @@ def _pilot_controls(s, d: dict) -> None:
             st.caption("The pilot terms are not published yet (⚖️ Legal & switches), so they cannot be recorded.")
     if status["enabled"]:
         if st.button("Switch the pilot OFF", key="pilot_off"):
-            _pilot_action(lambda: s.set_pilot(False, actor), "The Friends & Family Pilot was switched off.")
+            _pilot_action(lambda: s.set_pilot(False, actor), "The Friends & Family 10 was switched off.")
     else:
-        sure = st.checkbox("I confirm the pilot may accept applications from invited people.", key="pilot_on_confirm")
-        if st.button("Switch the pilot ON", key="pilot_on", type="primary", disabled=not sure):
-            _pilot_action(lambda: s.set_pilot(True, actor, confirmed=True), "The Friends & Family Pilot was switched on.")
+        if blockers:
+            st.warning("**The pilot cannot be switched on yet.** Still required:\n\n"
+                     + "\n".join(f"- {b}" for b in blockers), icon="⛔")
+        sure = st.checkbox("I confirm the pilot may accept applications from invited people.", key="pilot_on_confirm",
+                           disabled=bool(blockers))
+        if st.button("Switch the pilot ON", key="pilot_on", type="primary", disabled=bool(blockers) or not sure,
+                     help="Available once every legal requirement above is complete." if blockers else None):
+            _pilot_action(lambda: s.set_pilot(True, actor, confirmed=True), "The Friends & Family 10 was switched on.")
 
     with st.form("pilot_invite", border=True, clear_on_submit=True):
         st.markdown("**Invite a person** (the Google address they sign in with)")

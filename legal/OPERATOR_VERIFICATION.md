@@ -59,13 +59,18 @@ until both secrets are set: `[legal] operator_verified = true` and `[legal] publ
    needed and what the policies must add.
 2. **Governing law.** Confirm Nigerian governing law and the dispute forum for users outside Nigeria.
 
-## D. Friends & Family Pilot and any future rewards
+## D. Friends & Family 10 and any future rewards
 
 1. **Rewards rules.** Confirm whether cash rewards for learning activity need approval or registration, for example
    under Federal Competition and Consumer Protection Commission (FCCPC) rules on sales promotions. Confirm that no
    lottery or gaming rules apply: there is no chance element and no paid entry.
 2. **Identity checks** before any payment (beneficiary name match), plus record-keeping.
 3. **Friends and family.** Fairness and conflict-of-interest wording for participants related to the operator.
+3a. **Friends & Family 10 provisional rewards.** Review the earning rules, the shared ₦50,000 monthly budget with
+   proportional settlement, the owner's right to exclude days or withhold allocations, and the wording that provisional
+   amounts are not earnings (pilot terms section 4). Confirm the tax treatment and record-keeping before any payment,
+   and whether payments to friends and family need extra safeguards. Payments stay disabled in the database until a
+   further reviewed migration changes `pilot_reward_settings.payments_enabled`.
 4. **Rules wording.** Review the existing in-app rewards rules (`ui/rewards_page.py`, `TERMS`, version
    `2026-10-founding50-1`) so they name the company as operator. Bump `rewards.TERMS_VERSION` when the wording
    changes.
@@ -92,16 +97,19 @@ Owner dashboard → ⚖️ Legal & switches:
    Any later change to a document (even one character, even with the same version line) unpublishes it until you
    approve its new checksum. Approving `privacy` and `terms` publishes the general notice for **every** user,
    independently of any programme.
-5. **Open the Friends & Family Pilot:**
-   - run `supabase/pilot_invitations_migration.sql` (after approval);
-   - in the Founding 50 tab, press "Record the published pilot terms": applicants must accept exactly that version,
+5. **Open the Friends & Family 10:**
+   - the database part (`supabase/pilot_invitations_migration.sql`) is already installed and verified; do not run
+     it again;
+   - after its review and your approval, run `supabase/friends_family10_migration.sql` (provisional rewards, the
+     10-place limit and the monthly settlement; payments stay disabled);
+   - in the 🤝 Friends & Family 10 tab, press "Record the published pilot terms": applicants must accept exactly that version,
      which is kept with each application;
    - invite people;
    - switch the pilot ON.
    Only invited people can apply; you approve each application, at most 50. If the pilot terms change later,
    applications pause until you record the new version.
 6. **Later, and only when separately authorised:**
-   - public rewards enrolment: the rewards switches, then in the Founding 50 tab, "Record the current public
+   - public rewards enrolment: the rewards switches, then in the applications tab (🌟 Founding 50 once public rewards are on), "Record the current public
      programme rules" (after their review), then "Allow public applications";
    - then `withdrawals_active` and `payouts_active`.
    All money switches stay closed while the Privacy Policy and Terms of Use are not published.

@@ -22,7 +22,7 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 
-from core import founding, rewards, withdrawals
+from core import founding, pilot_rewards, rewards, withdrawals
 from core.rewards import Settings
 
 TABLES = ("reward_program_settings", "reward_accounts", "reward_enrolments", "reward_activity_events",
@@ -31,6 +31,7 @@ CASHOUT_TABLES = ("reward_cashout_settings", "reward_cashout_requests", "reward_
                   "reward_cashout_payments", "reward_owner_notifications")   # supabase/withdrawals_migration.sql
 FOUNDING_TABLES = (founding.TABLE,)                                            # supabase/founding50_migration.sql
 PILOT_TABLES = (founding.INVITES,)                                             # supabase/pilot_invitations_migration.sql
+FF10_TABLES = pilot_rewards.TABLES                                             # supabase/friends_family10_migration.sql
 PAGE = 1000
 PILOT_COLUMNS = ("pilot_enabled", "pilot_changed_at", "pilot_changed_by", "invitation_only", "invitation_changed_at",
                  "invitation_changed_by", "pilot_terms_version", "public_terms_version", "terms_changed_at",
@@ -257,6 +258,8 @@ class RewardsStore:
 
     def clear_test_data(self, actor: str) -> None:
         """Remove owner/tester preview records (never real ones; the database refuses those)."""
+        if self.ff10_health() == "ok":
+            self.delete("pilot_activity", {"test": True})
         if self.founding_health() == "ok":
             self.delete(founding.TABLE, {"test": True})
         if self.cashout_health() == "ok":   # withdrawal test records first (they refer to accounts)
@@ -305,7 +308,7 @@ class RewardsStore:
         return int(self._one(self.rpc("reward_founding_mark_seen", {
             "p_actor": actor, "p_id": int(application_id) if application_id is not None else None})) or 0)
 
-    # ---- Friends & Family Pilot: invitation-only entry (supabase/pilot_invitations_migration.sql)
+    # ---- Friends & Family 10: invitation-only entry (supabase/pilot_invitations_migration.sql)
     def pilot_status(self) -> dict:
         """{'installed', 'enabled', 'invitation_only', ...}. Until the migration has run: not installed, pilot OFF and
         invitation-only (the safe reading: nobody can be let in by it)."""
@@ -356,6 +359,68 @@ class RewardsStore:
         except StoreError:
             return False
         return bool(rows) and not rows[0].get("revoked_at")
+
+    # ---- Friends & Family 10: provisional rewards (supabase/friends_family10_migration.sql; the database decides)
+    def ff10_health(self) -> str:
+        """'ok', 'missing_tables' (the Friends & Family 10 migration has not been run) or 'error'."""
+        try:
+            self.select("pilot_reward_settings", {"id": 1}, limit=1)
+            return "ok"
+        except StoreError as error:
+            return "missing_tables" if "missing" in str(error) or "does not exist" in str(error) else "error"
+        except Exception:
+            return "error"
+
+    def ff10_record(self, profile_id: str, kind: str, subject: str, detail: dict | None = None) -> dict | None:
+        """One meaningful learning interaction, time-stamped by the database clock. None when it was a repeat (ignored).
+        The database refuses people who are not approved participants (test accounts are recorded as test)."""
+        row = self._one(self.rpc("pilot_record_activity", {"p_profile": profile_id, "p_kind": kind,
+                                                           "p_subject": subject, "p_detail": detail}))
+        return row if row and row.get("id") is not None else None
+
+    def ff10_activity(self, profile_id: str | None = None, month: str | None = None) -> list[dict]:
+        where = {"profile_id": profile_id} if profile_id else {}
+        if month:
+            where["day"] = ("gte", f"{month}-01")
+        rows = self.select("pilot_activity", where or None, order="at,id")
+        return [r for r in rows if not month or str(r["day"])[:7] == month]
+
+    def ff10_ledger(self, profile_id: str, month: str) -> list[dict]:
+        """The database's own day-by-day calculation for one participant (real records only)."""
+        return list(self.rpc("pilot_month_days", {"p_profile": profile_id, "p_month": month}) or [])
+
+    def ff10_reviews(self) -> list[dict]:
+        return self.select("pilot_day_reviews", None, order="day")
+
+    def ff10_review_day(self, profile_id: str, day: str, excluded: bool, actor: str, reason: str | None = None) -> dict:
+        return self._one(self.rpc("pilot_review_day", {"p_profile": profile_id, "p_day": str(day)[:10],
+                                                       "p_excluded": bool(excluded), "p_actor": actor,
+                                                       "p_reason": reason}))
+
+    def ff10_preview(self, month: str) -> dict:
+        return self._one(self.rpc("pilot_settlement_preview", {"p_month": month}))
+
+    def ff10_settle(self, month: str, actor: str, expected_fingerprint: str, confirmed: bool = False) -> dict:
+        """Finalise a month exactly as previewed: expected_fingerprint is the preview's 'fingerprint' (the complete
+        allocation); the database recomputes it under a month lock and refuses any difference ('preview_changed')."""
+        return self._one(self.rpc("pilot_settle_month", {"p_month": month, "p_actor": actor,
+                                                         "p_confirmed": bool(confirmed),
+                                                         "p_expected_fingerprint": expected_fingerprint}))
+
+    def ff10_settlements(self) -> list[dict]:
+        return self.select("pilot_settlements", None, order="month")
+
+    def ff10_lines(self, month: str | None = None, profile_id: str | None = None) -> list[dict]:
+        where = {k: v for k, v in (("month", month), ("profile_id", profile_id)) if v}
+        return self.select("pilot_settlement_lines", where or None, order="month")
+
+    def ff10_decide(self, month: str, profile_id: str, action: str, actor: str, note: str | None = None) -> dict:
+        return self._one(self.rpc("pilot_settlement_decide", {"p_month": month, "p_profile": profile_id,
+                                                              "p_action": action, "p_actor": actor, "p_note": note}))
+
+    def ff10_mark_paid(self, month: str, profile_id: str, actor: str, reference: str | None = None) -> dict:
+        return self._one(self.rpc("pilot_mark_paid", {"p_month": month, "p_profile": profile_id, "p_actor": actor,
+                                                      "p_reference": reference}))
 
     # ---- cash withdrawals (supabase/withdrawals_migration.sql; the database functions decide)
     @staticmethod
@@ -521,12 +586,22 @@ class MemoryStore(RewardsStore):
             "reward_payments": ("profile_id", "month"), "reward_audit_log": ("id",),
             "reward_cashout_settings": ("id",), "reward_cashout_requests": ("id",),
             "reward_cashout_months": ("request_id", "month"), "reward_cashout_payments": ("id",),
-            "reward_owner_notifications": ("id",), founding.TABLE: ("id",), founding.INVITES: ("email",)}
+            "reward_owner_notifications": ("id",), founding.TABLE: ("id",), founding.INVITES: ("email",),
+            "pilot_reward_settings": ("id",), "pilot_activity": ("id",), "pilot_day_reviews": ("profile_id", "day"),
+            "pilot_settlements": ("month",), "pilot_settlement_lines": ("month", "profile_id")}
 
     def __init__(self, settings: Settings | None = None, owner_emails: list[str] | None = None,
                  public_enabled: bool = False):
         self.lock = threading.RLock()
-        self.tables: dict[str, list[dict]] = {t: [] for t in TABLES + CASHOUT_TABLES + FOUNDING_TABLES + PILOT_TABLES}
+        self.tables: dict[str, list[dict]] = {t: [] for t in TABLES + CASHOUT_TABLES + FOUNDING_TABLES + PILOT_TABLES
+                                              + FF10_TABLES}
+        self.tables["pilot_reward_settings"].append({
+            "id": 1, "max_participants": pilot_rewards.MAX_PARTICIPANTS, "monthly_budget": pilot_rewards.MONTHLY_BUDGET,
+            "daily_max": pilot_rewards.DAILY_MAX, "monthly_max": pilot_rewards.MONTHLY_MAX,
+            "min_minutes": pilot_rewards.MIN_MINUTES, "max_minutes": pilot_rewards.MAX_MINUTES,
+            "inactivity_seconds": pilot_rewards.INACTIVITY_SECONDS, "repeat_seconds": pilot_rewards.REPEAT_SECONDS,
+            "payments_enabled": False, "created_at": _now()})
+        self._ff10_fn = False      # like we.ff10: set only inside the settlement functions
         row = (settings or Settings()).as_row()
         row.update(id=1, updated_at=_now(), updated_by=None, public_enabled=bool(public_enabled),
                    public_changed_at=None, public_changed_by=None, pilot_enabled=False, pilot_changed_at=None,
@@ -585,7 +660,13 @@ class MemoryStore(RewardsStore):
                 if row.get("id") is None:
                     self._ids[table] = self._ids.get(table, 0) + 1
                     row["id"] = self._ids[table]
-            if any(self._key(table, r) == self._key(table, row) for r in self.tables[table]):
+            if table in FF10_TABLES and not self._ff10_fn:
+                raise StoreError("Friends & Family 10 records change only through the database functions")
+            if table == "pilot_activity" and row.get("id") is None:
+                self._ids[table] = self._ids.get(table, 0) + 1
+                row["id"] = self._ids[table]
+            if table != "pilot_activity" and any(self._key(table, r) == self._key(table, row)
+                                                 for r in self.tables[table]):
                 if ignore_duplicates:
                     return []
                 raise StoreError("duplicate key")
@@ -607,8 +688,13 @@ class MemoryStore(RewardsStore):
             for i, old in enumerate(self.tables[table]):
                 if not _match(old, where):
                     continue
-                if table in ("reward_activity_events", "reward_audit_log", "reward_cashout_payments"):
+                if table in ("reward_activity_events", "reward_audit_log", "reward_cashout_payments",
+                             "pilot_activity", "pilot_settlements", "pilot_reward_settings"):
                     raise StoreError("records cannot be changed")
+                if table == "pilot_settlement_lines":
+                    self._guard_line(old, dict(old, **changes))
+                if table == "pilot_day_reviews" and not self._ff10_fn:
+                    raise StoreError("Friends & Family 10 records change only through the database functions")
                 if table in ("reward_cashout_requests", "reward_cashout_months") and not self._cashout_fn:
                     raise StoreError("withdrawal records change only through the withdrawal functions")
                 if table == founding.TABLE and not self._founding_fn:
@@ -904,7 +990,7 @@ class MemoryStore(RewardsStore):
                  {"public_enabled": bool(p_enabled), "confirmed": bool(p_confirmed)})
         return row
 
-    # ---- Friends & Family Pilot (supabase/pilot_invitations_migration.sql)
+    # ---- Friends & Family 10 (supabase/pilot_invitations_migration.sql)
     def _settings_row(self) -> dict:
         return self.tables["reward_program_settings"][0]
 
@@ -1243,6 +1329,9 @@ class MemoryStore(RewardsStore):
         error = founding.decide_error(app, p_action, p_note, taken, self.settings().max_places)
         if error:
             raise StoreError(error)
+        if p_action == "approve" and not app.get("test") and app["status"] != "approved" \
+                and self._ff10_places_full(app["profile_id"]):
+            raise StoreError("places_full")
         new, note, now, before = founding.ACTIONS[p_action], (p_note or "").strip() or None, _now(), app["status"]
         changes = {"status": new, "decided_at": now, "decided_by": p_actor,
                    "decision_note": note or app.get("decision_note"), "seen_at": app.get("seen_at") or now,
@@ -1269,6 +1358,194 @@ class MemoryStore(RewardsStore):
                 self._founding_update(a["id"], {"seen_at": _now(), "seen_by": p_actor})
                 n += 1
         return n
+
+    # ---- Friends & Family 10 (= supabase/friends_family10_migration.sql)
+    def _ff10_settings(self) -> dict:
+        return self.tables["pilot_reward_settings"][0]
+
+    def _ff10_settled(self, month: str) -> bool:
+        return any(r["month"] == month for r in self.tables["pilot_settlements"])
+
+    def _ff10_insert(self, table, row):
+        self._ff10_fn = True
+        try:
+            return self.insert(table, row)[0]
+        finally:
+            self._ff10_fn = False
+
+    def _guard_line(self, old, new):
+        """= trigger pilot_settlement_lines_guard."""
+        if any(new.get(k) != old.get(k) for k in ("month", "profile_id", "provisional", "final")):
+            raise StoreError("settled amounts cannot be changed")
+        if not self._ff10_fn:
+            raise StoreError("settlement lines change only through the owner functions")
+        if old["status"] == "paid":
+            raise StoreError("already_paid")
+
+    def _rpc_pilot_record_activity(self, p_profile, p_kind, p_subject, p_detail=None):
+        return self._rpc_pilot_record_activity_at(p_profile, p_kind, p_subject, p_detail, _now())
+
+    def _rpc_pilot_record_activity_at(self, p_profile, p_kind, p_subject, p_detail, p_at):
+        subject = pilot_rewards.clean_subject(p_subject)
+        if p_kind not in pilot_rewards.KINDS or not subject:
+            raise StoreError("invalid_activity")
+        account = self.account(p_profile)
+        if account is None:
+            raise StoreError("unknown_account")
+        day = pilot_rewards.lagos_day(p_at)
+        if not account.get("test"):
+            if not self._pilot_on():
+                raise StoreError("pilot_closed")
+            if not self._ff10_participant(p_profile):
+                raise StoreError("not_participant")
+            if self._ff10_settled(day[:7]):
+                raise StoreError("month_settled")
+        history = [r for r in self.tables["pilot_activity"]
+                   if r["profile_id"] == p_profile and r["kind"] == p_kind and r["subject"] == subject]
+        if not pilot_rewards.accept(history, p_kind, subject, p_at):
+            return None
+        detail = None
+        if p_kind in ("quiz", "challenge") and isinstance(p_detail, dict):
+            detail = {k: p_detail[k] for k in ("questions", "avg_seconds")
+                      if isinstance(p_detail.get(k), (int, float)) and not isinstance(p_detail.get(k), bool)} or None
+        return self._ff10_insert("pilot_activity", {
+            "profile_id": p_profile, "day": day, "kind": p_kind, "subject": subject, "detail": detail,
+            "test": bool(account.get("test")), "at": p_at if isinstance(p_at, str) else p_at.isoformat()})
+
+    def _ff10_excluded(self, profile_id) -> set[str]:
+        return {str(r["day"])[:10] for r in self.tables["pilot_day_reviews"]
+                if r["profile_id"] == profile_id and r["excluded"]}
+
+    def _rpc_pilot_month_days(self, p_profile, p_month):
+        rows = [r for r in self.tables["pilot_activity"] if r["profile_id"] == p_profile and not r.get("test")]
+        days = pilot_rewards.month_ledger(pilot_rewards.day_summaries(rows, self._ff10_excluded(p_profile)), p_month)
+        return [{"day": d.day, "seconds": d.seconds, "minutes": d.minutes, "quizzes": d.quizzes,
+                 "challenge": d.challenge, "new_countries": d.new_countries, "interactions": d.interactions,
+                 "tier": d.tier, "tier_amount": d.tier_amount, "excluded": d.excluded, "amount": d.amount}
+                for d in days]
+
+    def _rpc_pilot_settlement_preview(self, p_month):
+        if not re.fullmatch(r"\d{4}-(0[1-9]|1[0-2])", str(p_month or "")):
+            raise StoreError("invalid_month")
+        people = {r["profile_id"] for r in self.tables["pilot_activity"]
+                  if not r.get("test") and str(r["day"])[:7] == p_month}
+        rows = {pid: [r for r in self.tables["pilot_activity"] if r["profile_id"] == pid and not r.get("test")]
+                for pid in people}
+        return pilot_rewards.settlement_preview(rows, p_month, {pid: self._ff10_excluded(pid) for pid in people},
+                                                self._ff10_settings()["monthly_budget"])
+
+    def _rpc_pilot_review_day(self, p_profile, p_day, p_excluded, p_actor, p_reason=None):
+        if not self._owner(p_actor):
+            raise StoreError("not_owner")
+        reason = (p_reason or "").strip() or None
+        if p_excluded and not reason:
+            raise StoreError("reason_required")
+        if reason and len(reason) > 500:
+            raise StoreError("note_too_long")
+        if self._ff10_settled(str(p_day)[:7]):
+            raise StoreError("month_settled")
+        row = {"profile_id": p_profile, "day": str(p_day)[:10], "excluded": bool(p_excluded), "reason": reason,
+               "reviewed_by": p_actor, "reviewed_at": _now()}
+        self.tables["pilot_day_reviews"] = [r for r in self.tables["pilot_day_reviews"]
+                                            if (r["profile_id"], r["day"]) != (row["profile_id"], row["day"])]
+        self._ff10_insert("pilot_day_reviews", row)
+        self.log(p_actor, "pilot_day_excluded" if p_excluded else "pilot_day_restored", f"{p_profile} {row['day']}", row)
+        return row
+
+    def _rpc_pilot_settle_month(self, p_month, p_actor, p_confirmed, p_expected_fingerprint):
+        if not self._owner(p_actor):
+            raise StoreError("not_owner")
+        if not p_confirmed:
+            raise StoreError("confirmation_required")
+        if not re.fullmatch(r"\d{4}-(0[1-9]|1[0-2])", str(p_month or "")):
+            raise StoreError("invalid_month")
+        if not pilot_rewards.month_ended(p_month):
+            raise StoreError("month_not_ended")
+        if self._ff10_settled(p_month):
+            raise StoreError("already_settled")
+        preview = self._rpc_pilot_settlement_preview(p_month)
+        if not p_expected_fingerprint or preview["fingerprint"] != p_expected_fingerprint:
+            raise StoreError("preview_changed")
+        row = self._ff10_insert("pilot_settlements", {
+            "month": p_month, "budget": preview["budget"], "total_provisional": preview["total_provisional"],
+            "total_final": preview["total_final"], "participants": len(preview["lines"]), "scaled": preview["scaled"],
+            "fingerprint": preview["fingerprint"],
+            "finalised_by": p_actor, "finalised_at": _now()})
+        for line in preview["lines"]:
+            self._ff10_insert("pilot_settlement_lines", {
+                "month": p_month, "profile_id": line["profile_id"], "provisional": line["provisional"],
+                "final": line["final"], "status": "pending_review", "decided_by": None, "decided_at": None,
+                "note": None, "paid_at": None, "payment_reference": None})
+        self.log(p_actor, "pilot_settled", p_month, preview)
+        return row
+
+    def _ff10_line(self, month, profile_id):
+        return next((r for r in self.tables["pilot_settlement_lines"]
+                     if r["month"] == month and r["profile_id"] == profile_id), None)
+
+    def _ff10_update_line(self, month, profile_id, changes):
+        self._ff10_fn = True
+        try:
+            return self.update("pilot_settlement_lines", {"month": month, "profile_id": profile_id}, changes)[0]
+        finally:
+            self._ff10_fn = False
+
+    def _rpc_pilot_settlement_decide(self, p_month, p_profile, p_action, p_actor, p_note=None):
+        if not self._owner(p_actor):
+            raise StoreError("not_owner")
+        new = {"approve": "approved", "withhold": "withheld"}.get(p_action)
+        if not new:
+            raise StoreError("invalid_action")
+        line = self._ff10_line(p_month, p_profile)
+        if line is None:
+            raise StoreError("unknown_line")
+        if line["status"] == "paid":
+            raise StoreError("already_paid")
+        if line["status"] == new:
+            raise StoreError("no_change")
+        note = (p_note or "").strip() or None
+        if note and len(note) > 500:
+            raise StoreError("note_too_long")
+        if (new == "withheld" or line["status"] != "pending_review") and not note:
+            raise StoreError("reason_required")
+        before = dict(line)
+        row = self._ff10_update_line(p_month, p_profile, {"status": new, "decided_by": p_actor,
+                                                          "decided_at": _now(), "note": note or line.get("note")})
+        self.log(p_actor, "pilot_line_" + new, f"{p_profile} {p_month}", row)
+        self.tables["reward_audit_log"][-1]["old_value"] = before
+        return row
+
+    def _rpc_pilot_mark_paid(self, p_month, p_profile, p_actor, p_reference=None):
+        if not self._owner(p_actor):
+            raise StoreError("not_owner")
+        if not self._ff10_settings()["payments_enabled"] or not self._real_payouts():
+            raise StoreError("payments_disabled")
+        line = self._ff10_line(p_month, p_profile)          # unreachable while payments_enabled is fixed to False
+        if line is None:
+            raise StoreError("unknown_line")
+        if line["status"] != "approved":
+            raise StoreError("not_approved")
+        return self._ff10_update_line(p_month, p_profile, {"status": "paid", "paid_at": _now(),
+                                                           "payment_reference": p_reference})
+
+    def _email(self, profile_id) -> str | None:
+        return (self.account(profile_id) or {}).get("email")
+
+    def _ff10_participant(self, profile_id) -> bool:
+        """= pilot_is_participant: approved real application AND an active invitation (whatever Public Rewards says)."""
+        account = self.account(profile_id)
+        return bool(account) and not account.get("test") \
+            and founding.approved(self._founding_row(profile_id), account) and self._invited(account.get("email"))
+
+    def _ff10_places_full(self, profile_id) -> bool:
+        """= trigger pilot_places_guard. Public Rewards OFF: at most 10 approved. Public Rewards ON: approving an
+        invited person (a pilot member) needs one of the 10 pilot places; public applicants are not counted here."""
+        public = self._public_on()
+        if public and not self._invited(self._email(profile_id)):
+            return False
+        taken = sum(1 for a in self.tables[founding.TABLE] if a["status"] == "approved" and not a.get("test")
+                    and a["profile_id"] != profile_id and (not public or self._invited(self._email(a["profile_id"]))))
+        return taken >= self._ff10_settings()["max_participants"]
 
 
 def payable_rows(rows: list[dict]) -> list[dict]:

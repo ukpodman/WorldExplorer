@@ -22,7 +22,7 @@ to keep the service available but do not guarantee that it will always be availa
 ## 3. Who can use World Explorer
 
 Anyone may use World Explorer as a guest. [Age approach to confirm, see Privacy Policy section 9: signing in is for
-users aged 18 or over, or younger users with a parent's or guardian's consent.] The Friends & Family Pilot and any
+users aged 18 or over, or younger users with a parent's or guardian's consent.] Friends & Family 10 and any
 rewards programme are open only to approved adults under their own terms.
 
 ## 4. Your account

@@ -140,7 +140,7 @@ def tester() -> bool:
 
 
 def pilot_switch(refresh: bool = False) -> dict:
-    """The owner's Friends & Family Pilot switches in Supabase (reward_program_settings.pilot_enabled and
+    """The owner's Friends & Family 10 switches in Supabase (reward_program_settings.pilot_enabled and
     invitation_only), cached briefly. Not installed (supabase/pilot_invitations_migration.sql not run): pilot OFF."""
     cache = _health_cache()
     hit = cache.get("pilot_switch")
@@ -156,7 +156,7 @@ def pilot_switch(refresh: bool = False) -> dict:
 
 
 def pilot_open() -> bool:
-    """The Friends & Family Pilot accepts invited people: the owner's pilot switch is ON and the documents they agree
+    """The Friends & Family 10 accepts invited people: the owner's pilot switch is ON and the documents they agree
     to (Privacy Policy, Terms of Use, pilot terms) are published (core/legal.py). Independent of the public switch."""
     return bool(pilot_switch().get("enabled")) and legal.pilot_ready()
 
@@ -187,9 +187,9 @@ def pilot_terms_current() -> bool:
 
 
 def entry_label(menu: bool = False) -> str:
-    """The label of the participant page in menus: the Friends & Family Pilot while public rewards are not ON."""
+    """The label of the participant page in menus: the Friends & Family 10 while public rewards are not ON."""
     if not enabled():
-        return "🤝 " + t_label("Friends & Family Pilot")
+        return "🤝 " + t_label("Friends & Family 10")
     return "💰 " + t_label("My Rewards" if menu else "Rewards")
 
 
@@ -210,7 +210,7 @@ def may_apply() -> bool:
 
 def visible() -> bool:
     """Show the 💰 Rewards entry points (top bar and Settings): the public programme, owners/testers, or an invited
-    person while the Friends & Family Pilot is open. An ordinary visitor sees nothing while only the pilot is open."""
+    person while the Friends & Family 10 is open. An ordinary visitor sees nothing while only the pilot is open."""
     return enabled() or tester() or (pilot_open() and invited())
 
 
@@ -537,21 +537,40 @@ def _check_referral(s: RewardsStore, ctx: dict) -> None:
 def note_quiz(quiz: dict) -> None:
     """A round just finished (called once per round). Only genuine rounds of five or more questions count."""
     try:
-        if not rewards.qualifying_quiz(quiz) or not tracking():
+        if not rewards.qualifying_quiz(quiz):
             return
         times = [float(h.get("elapsed") or 0) for h in quiz.get("history", [])]
         detail = {"questions": len(quiz.get("questions", [])), "mode": quiz.get("mode"),
                   "avg_seconds": round(sum(times) / len(times), 2) if times else None}
         uid = str(quiz.get("uid") or hashlib.sha256(repr(quiz.get("questions")).encode()).hexdigest()[:16])
-        _record("quiz", uid, detail)
+        # Friends & Family 10: the first completed Daily Challenge of a day is its own milestone
+        if quiz.get("mode") == "daily":
+            ping("challenge", f"daily:{quiz.get('day') or uid}", detail)
+        else:
+            ping("quiz", uid, detail)
+        if tracking():
+            _record("quiz", uid, detail)
     except Exception:
         pass
+
+
+def note_answer(quiz: dict, index: int) -> None:
+    """A quiz question was answered (Friends & Family 10 learning time only)."""
+    if quiz and quiz.get("mode") != "daily_replay":
+        ping("answer", f"{quiz.get('uid') or quiz.get('serial')}:{index}")
+
+
+def note_view(country_id) -> None:
+    """A country was opened in Learn or Explore (Friends & Family 10 learning time only)."""
+    ping("view", country_id)
 
 
 def note_country(country_id: str) -> None:
     """A meaningful interaction with a country page (opening its neighbours, landmarks, size comparison or details,
     or starting its quiz). Simply viewing a country, or time spent, never counts."""
     try:
+        if country_id:
+            ping("country", str(country_id))
         if country_id and tracking():
             _record("country", str(country_id))
     except Exception:
@@ -573,9 +592,93 @@ def expander_changed(key: str, country_id: str) -> None:
 def expander_hook(key: str, country_id: str) -> dict:
     """Keyword arguments for st.expander: a change callback only while this person's activity is recorded, so the
     expander behaves exactly as before for everybody else."""
-    if not tracking():
+    if not tracking() and not ff10_member():
         return {}
     return {"on_change": expander_changed, "args": (key, country_id)}
+
+
+# --------------------------------------------------------------------------- Friends & Family 10 (provisional rewards)
+
+FF10_TTL = 300
+_FF10_POOL = None
+
+
+def ff10_store(for_tester: bool | None = None) -> RewardsStore | None:
+    """The rewards store when supabase/friends_family10_migration.sql is installed (the in-memory preview always has
+    it); None otherwise, and then nothing is recorded and no progress is shown."""
+    s = store(for_tester)
+    if s is None or isinstance(s, MemoryStore):
+        return s
+    cache = _health_cache()
+    key = getattr(s, "url", "store") + "#ff10"
+    hit = cache.get(key)
+    if not hit or time.time() - hit[1] >= HEALTH_TTL:
+        hit = cache[key] = (s.ff10_health(), time.time())
+    return s if hit[0] == "ok" else None
+
+
+def ff10_health() -> str:
+    s = store(for_tester=True)
+    if s is None:
+        return "no_storage"
+    return "ok" if ff10_store(for_tester=True) else s.ff10_health()
+
+
+def ff10_member(refresh: bool = False) -> dict | None:
+    """{'profile_id', 'test'} when the signed-in person's learning is recorded for Friends & Family 10: an approved
+    participant while the pilot switch is ON (real records), or an owner/tester account (test records, never
+    settled). Cached for a few minutes; the database checks the same rules on every record."""
+    who = accounts.identity()
+    if not who:
+        return None
+    cached = st.session_state.get("ff10_member")
+    if (not refresh and cached and cached["profile_id"] == who["profile_id"]
+            and time.time() - cached["at"] < FF10_TTL):
+        return cached["value"]
+    value = None
+    try:
+        s = ff10_store()
+        account = s.account(who["profile_id"]) if s else None
+        if account and account.get("test"):
+            value = {"profile_id": who["profile_id"], "test": True} if tester() else None
+        elif account and pilot_switch().get("enabled") and s.pilot_invited(account.get("email")):
+            app = s.founding_application(who["profile_id"])   # approved AND invited (the database checks both)
+            if app and app.get("status") == "approved" and not app.get("test"):
+                value = {"profile_id": who["profile_id"], "test": False}
+    except Exception:
+        value = None
+    st.session_state.ff10_member = {"profile_id": who["profile_id"], "at": time.time(), "value": value}
+    return value
+
+
+def _ff10_send(s: RewardsStore, profile_id: str, kind: str, subject: str, detail: dict | None) -> None:
+    try:
+        s.ff10_record(profile_id, kind, subject, detail)
+    except Exception:
+        pass                       # refused (e.g. pilot switched off) or unreachable: learning is never interrupted
+
+
+def ping(kind: str, subject, detail: dict | None = None) -> None:
+    """One meaningful learning interaction for Friends & Family 10 (does nothing for everybody else). The database
+    time-stamps it and ignores repeats; Supabase calls run in the background so play never waits for them."""
+    global _FF10_POOL
+    try:
+        member = ff10_member()
+        if not member or not str(subject or "").strip():
+            return
+        s = ff10_store()
+        if s is None:
+            return
+        st.session_state.pop("ff10_progress", None)
+        if isinstance(s, MemoryStore):
+            _ff10_send(s, member["profile_id"], kind, str(subject), detail)
+            return
+        if _FF10_POOL is None:
+            from concurrent.futures import ThreadPoolExecutor
+            _FF10_POOL = ThreadPoolExecutor(max_workers=2, thread_name_prefix="ff10")
+        _FF10_POOL.submit(_ff10_send, s, member["profile_id"], kind, str(subject), detail)
+    except Exception:
+        pass
 
 
 # --------------------------------------------------------------------------- owner helpers

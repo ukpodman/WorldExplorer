@@ -484,7 +484,7 @@ class Scenarios:
                          (after["live_requests"], after["real_payouts"]))
         self.assertTrue(s.public_status()["enabled"])                 # decisions never change the public switch
 
-    # ------------------------------------------------------------------ Friends & Family Pilot: invitation only
+    # ------------------------------------------------------------------ Friends & Family 10: invitation only
     # (supabase/pilot_invitations_migration.sql; the same rules in MemoryStore and in the real SQL)
 
     def pilot_store(self, terms=True):
@@ -699,7 +699,8 @@ class Scenarios:
         self.assertFalse(s.cashout_settings()["live_requests"])
         self.assertEqual(self.quiz(s, pid(1), "q1")["amount"], 0)   # ₦0 while the public programme is OFF
 
-    def test_at_most_fifty_approved_pilot_participants(self):
+    def test_founding_places_setting_is_capped_at_fifty(self):
+        """The public Founding 50 setting; the private pilot's own limit of 10 is tested in test_ff10."""
         s = self.pilot_store()
         s.set_pilot(True, OWNER, confirmed=True)
         self.assertEqual(s.settings().max_places, 50)
@@ -723,6 +724,8 @@ class MemoryFoundingTests(Scenarios, unittest.TestCase):
 
 
 @unittest.skipUnless(pg_harness.available(), "PostgreSQL is not installed")
+@unittest.skipUnless(pg_harness.PILOT.exists(), "supabase/pilot_invitations_migration.sql is not in this checkout, so the "
+                     "database rules cannot be loaded into the local test PostgreSQL")
 class SqlFoundingTests(Scenarios, unittest.TestCase):
     def make_store(self):
         if not CLUSTER:
@@ -934,7 +937,7 @@ class FoundingAppTests(unittest.TestCase):
         self.s.ensure_account(PLAYER["profile_id"], PLAYER["email"], PLAYER["name"], True, False)
         self.s.apply_founding(PLAYER["profile_id"], "Lagos", None, True, True, True, terms_version=rewards_module.TERMS_VERSION)
         at = self.app(PLAYER, page="Owner").run()
-        self.assertEqual([t for t in at.tabs if t.label.startswith("🌟 Founding 50")], [])
+        self.assertEqual([t for t in at.tabs if t.label.startswith(("🌟 Founding 50", "🤝 Friends & Family 10"))], [])
         self.assertEqual([b for b in at.button if (b.key or "").startswith("rw_f_approve")], [])
 
     def test_dashboard_figures(self):

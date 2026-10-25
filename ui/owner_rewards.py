@@ -112,6 +112,17 @@ FOUNDING_TILE = {"ok": None, "missing_tables": "Run supabase/founding50_migratio
                  "error": "Not reachable"}
 
 
+FF10_TAB = "📊 F&F 10 rewards"
+
+
+def programme_tab_label(new_apps: int) -> str:
+    """The applications tab: the private Friends & Family 10 while Public Rewards is OFF, the public Founding 50
+    programme once it is ON. Display wording only — the founding50 tables, functions and records keep their names."""
+    if hooks.enabled():
+        return f"🌟 Founding 50 ({new_apps})"
+    return f"🤝 Friends & Family 10 ({new_apps})"
+
+
 def _status_panel(s) -> None:
     public = hooks.public_state()
     founding_state = hooks.founding_health()
@@ -124,7 +135,8 @@ def _status_panel(s) -> None:
             founding_text = "Not reachable"
     else:
         founding_text = FOUNDING_TILE.get(founding_state, founding_state)
-    flags = [("Public participation", STATE_LABEL[public["state"]]), ("Founding 50", founding_text),
+    programme = "Founding 50" if hooks.enabled() else "Friends & Family 10"
+    flags = [("Public participation", STATE_LABEL[public["state"]]), (programme, founding_text),
              ("Payouts (payouts_active)", "ON" if hooks.payouts_active() else "OFF"),
              ("Storage", {"ok": "Supabase tables ready", "missing_tables": "Run supabase/rewards_schema.sql",
                           "no_storage": "No Supabase storage", "error": "Not reachable"}[hooks.store_health()])]
@@ -654,15 +666,20 @@ def render() -> None:
     from . import owner_withdrawals   # 💳 Withdrawal Management (V21)
     cash = hooks.cashout_store(for_tester=True)
     waiting = owner_withdrawals.unread_count() if cash else 0     # the same unread number as the 🔔 alert
-    from . import owner_founding      # 🌟 Founding 50 applications (Option B: only the Owner approves)
+    from . import owner_founding      # applications: Friends & Family 10 / Founding 50 (only the Owner approves)
     new_apps = owner_founding.unseen_count()
-    tabs = st.tabs([f"💳 Withdrawals ({waiting})", f"🌟 Founding 50 ({new_apps})", "Overview", "Budget",
-                    "Participants", "Payments", "Referrals", "Fraud", "Settings", "Audit log"])
-    sections = (lambda: owner_withdrawals.render(include_test), lambda: owner_founding.render(include_test),
+    labels = [f"💳 Withdrawals ({waiting})", programme_tab_label(new_apps), "Overview", "Budget",
+              "Participants", "Payments", "Referrals", "Fraud", "Settings", "Audit log"]
+    sections = [lambda: owner_withdrawals.render(include_test), lambda: owner_founding.render(include_test),
                 lambda: _overview(d, month, include_test), lambda: _budget(s, d, month),
                 lambda: _participants(s, d, include_test), lambda: _payments(s, d, include_test),
                 lambda: _referrals_tab(s, d, include_test), lambda: _fraud(d, include_test),
-                lambda: _settings_tab(s, d), lambda: _audit_tab(d))
+                lambda: _settings_tab(s, d), lambda: _audit_tab(d)]
+    if not hooks.enabled():          # the private Friends & Family 10: learning time, provisional rewards, settlement
+        from . import owner_ff10
+        labels.insert(2, FF10_TAB)
+        sections.insert(2, owner_ff10.render)
+    tabs = st.tabs(labels)
     for tab, section in zip(tabs, sections):
         with tab:
             section()

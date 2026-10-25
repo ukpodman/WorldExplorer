@@ -1,72 +1,77 @@
-# World Explorer: Friends & Family Pilot handover (24 October 2026)
+# World Explorer: Friends & Family 10 handover (updated 25 October 2026)
 
-**Base:** your published `atlas-explore-dev` @ `582cbe9` (Premium Badges).
-**Package:** one consolidated ZIP containing the legal-operator, pilot-safeguard and correction work, rebuilt on top of
-`582cbe9`. The proposed SQL migration is delivered separately and is **not** run.
-Nothing is pushed, merged or deployed.
+**Branch:** `atlas-pilot-consolidated` @ `b4fc727`, plus the interface corrections (`d3a7a01`, `d8e121b`, already
+installed on your side), plus the Friends & Family 10 package.
+**Package:** only the changed files; unzip it over that branch. The proposed SQL migration is also delivered as a
+separate file for review.
 
-## What it adds
+**Deployment status:** **not deployed**. Nothing has been pushed, merged or deployed, no SQL has been run, and
+production `main` is unchanged.
 
-1. **Legal operator (proposed):**
-   - World Explorer — Operated by OKETORIAH KÖNIGREICH LTD (CAC RC 7160552).
-   - Drafts in `legal/`: Privacy Policy, Terms of Use and Friends & Family Pilot terms, plus the checklist
-     `OPERATOR_VERIFICATION.md`.
-   - A document is shown in Settings → Legal information only when it is complete (no DRAFT notice, no [open
-     items]), the operator is verified, a contact email and registered address are set, and the owner has approved
-     its exact **content checksum**. Any edit unpublishes it until it is approved again.
-2. **Three independent modes:**
-   - **Public educational access:** unchanged and never restricted.
-   - **Friends & Family Pilot:**
-     - invitation-only, with the owner's invitation list and pilot switch;
-     - owner approval, at most 50 participants;
-     - participants accept the approved pilot terms;
-     - no money language, and ₦0 is recorded for activity.
-   - **Public rewards enrolment (future):** needs the public switches, approved public programme rules, and "Allow
-     public applications" (invitation-only OFF), each a separate owner decision. It stays disabled.
-3. **Two separately approved terms versions:** pilot terms (`<version>#<checksum>`) and public programme rules
-   (`rewards.TERMS_VERSION`). Each way in accepts only its own approved version, and the accepted version is kept with
-   the application and in the audit log.
-4. **Money stays off:**
-   - payouts and withdrawals also require the published legal documents, on top of their existing switches, which
-     are all off;
-   - the database records ₦0 while the public programme is off.
+**Database:**
+- `pilot_invitations_migration.sql` is **already installed and verified** in Supabase. Do not run it again.
+- `friends_family10_migration.sql` is **new, proposed and not run**. Run it only after its review and your approval.
+
+## What Friends & Family 10 is
+
+The private pilot, renamed and resized: **World Explorer — Friends & Family 10**.
+- At most 10 invited adults, each approved by you.
+- Provisional rewards for verified learning: daily tiers of ₦100, ₦250, ₦350 and ₦500, at most ₦7,000 a month per
+  person.
+- A shared ₦50,000 monthly budget with proportional settlement.
+- Your approval of every final allocation.
+- Payments disabled at database level.
+
+**Full description, decisions and limitations: `FRIENDS_FAMILY10.md`.**
+
+## Unchanged
+
+- Public educational access (Explore, Learn, Quiz, Badges, School Learning, points and profiles).
+- Google sign-in and Supabase access.
+- Invitation-only entry and the legal publication rules (operator verification, checksum approval).
+- The existing rewards ledger (₦0 while Public Rewards is OFF), withdrawals and the future public Founding 50
+  programme.
 
 ## Install (development branch only)
 
-1. Copy the ZIP contents over the project (on top of `582cbe9`).
-2. Save `PROPOSED_pilot_invitations_migration_NOT_RUN.sql` as `supabase/pilot_invitations_migration.sql`. Storing
-   it there does not run it; the tests read it.
-3. Run `python -m unittest discover tests`. Expect 0 failures (on your machine the PostgreSQL tests are skipped if
-   PostgreSQL is not installed).
+1. Unzip the package over the branch, after the corrections package.
+2. Save the separate SQL file as `supabase/friends_family10_migration.sql` (it is also in the ZIP). Storing it does
+   not run it.
+3. Run `python -m unittest discover tests`. Expect 0 failures.
+   - The PostgreSQL rule tests are skipped where PostgreSQL is not installed, or where
+     `supabase/pilot_invitations_migration.sql` is missing from the checkout.
 
-Nothing changes for players until you act: the documents are drafts, the pilot switch does not exist until the
-migration runs, and all money switches are off.
+## To start Friends & Family 10 (in order)
 
-## To start the pilot (in order)
-
-1. Lawyer review: finalise the three documents and complete `legal/OPERATOR_VERIFICATION.md`.
-2. Streamlit secrets `[legal]`:
-   - `operator_verified = true`;
+1. **Lawyer review:** finalise the Privacy Policy, Terms of Use and the rewritten Friends & Family 10 terms, and
+   complete `legal/OPERATOR_VERIFICATION.md`, including the new item D.3a.
+2. **Streamlit secrets `[legal]`:**
+   - `operator_verified`;
    - `contact_email`;
    - `registered_address`;
-   - `[legal.approved]` privacy / terms / pilot = the checksums shown in Owner dashboard → ⚖️ Legal & switches.
-3. After your approval, run the migration in Supabase.
-4. In Owner dashboard → Founding 50:
+   - `[legal.approved]` checksums (see `legal/PILOT_ACTIVATION_READINESS.md`).
+3. **After review and your approval:** run `supabase/friends_family10_migration.sql` in Supabase.
+4. **Owner dashboard → 🤝 Friends & Family 10:**
    1. "Record the published pilot terms";
    2. invite people;
-   3. tick the confirmation and switch the pilot ON.
+   3. approve up to 10;
+   4. tick the confirmation and switch the pilot ON.
+5. **Each month, in 📊 F&F 10 rewards:**
+   1. review flagged days;
+   2. finalise the settlement after the month ends;
+   3. approve or withhold each allocation.
+
+   Payments stay disabled.
 
 ## Tests
 
-The full suite passes; the count is in the chat summary. New since the last package:
-- regression tests 1–6 (pilot terms, uninvited refused, public terms only after authorisation, outdated terms
-  refused, educational access unrestricted, payouts disabled);
-- a NULL-safety test that caught a real SQL bug, now fixed.
+The results are in `TEST_RESULTS.md`.
 
-Database rules run on both the in-memory store and a real local PostgreSQL. Live Supabase and Google sign-in were
+Database rules are tested on the in-memory store and on a real local PostgreSQL. Live Supabase and Google sign-in were
 not tested.
 
 ## Continue in a new session
 
-> Continue World Explorer from branch `atlas-pilot-consolidated` (handover: PILOT_HANDOVER.md). Do not change
+> Continue World Explorer from branch `atlas-pilot-consolidated` (handover: PILOT_HANDOVER.md, FRIENDS_FAMILY10.md).
+> The pilot invitations migration is installed; friends_family10_migration.sql is proposed and not run. Do not change
 > Explore, Learn, Quiz or Badges. Do not run migrations, deploy or merge.

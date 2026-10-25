@@ -35,22 +35,26 @@ location.
 | **School Learning progress**: lesson positions, completion and practice scores | When signed in, or on your device only if you switch on "Keep my progress on this device" | To let you continue lessons and practice | Contract / consent for on-device storage |
 | **Usage statistics (optional)**: visits, started and finished rounds and the days you play, with a random id in your browser (or a one-way code of your account when signed in), device type (phone, tablet or computer) and app language | Only if you switch on "Share anonymous usage statistics" in Settings → Privacy | To understand how the app is used and improve it | Consent (you can switch it off at any time) |
 | **Feedback**: the page, device type, your message, optional contact details, app language and time | Only if you send feedback | To fix problems and reply if you asked us to | Consent |
-| **Friends & Family Pilot**: see section 4 | Only if you apply and are approved | To run the pilot | Contract; legitimate interests (preventing abuse) |
+| **Friends & Family 10**: see section 4 | Only if you apply and are approved | To run the programme | Contract; legitimate interests (preventing abuse) |
 
 We **never** collect: precise location, IP addresses in our own database, your answers' text in usage statistics,
 government ID numbers, or bank account numbers through the app. We do not sell personal data and do not use it for
 advertising.
 
-## 4. The Friends & Family Pilot
+## 4. World Explorer — Friends & Family 10
 
-The pilot is limited to **at most 50 individually approved adults**. If you apply, we process:
+The programme is limited to **at most 10 individually approved adults**. If you apply, we process:
 
 - your Google-verified email address and display name (to identify participants and contact you);
 - your declarations that you are 18 or older and live in Nigeria, your Nigerian state of residence, the version of the
   terms you accepted and an optional note you write;
 - our decision on your application and any notes we make about it;
-- if a rewards programme is later approved and you take part: your learning activity counted for rewards, invitation
-  (referral) records, monthly reward amounts and their review, and an audit log of changes.
+- if you are approved: records of your learning interactions (the type of interaction, the country, quiz or question
+  concerned, and the time our server recorded it), the provisional rewards calculated from them, the monthly
+  settlement and our review decisions, and an audit log of changes. We use them only to run the programme, calculate
+  provisional rewards and prevent abuse. We do not use device fingerprinting, location tracking or screen recording;
+- if a public rewards programme is later approved and you take part: invitation (referral) records and monthly reward
+  amounts under that programme's rules.
 
 **Payments are not active.** If payments are approved in future, a withdrawal request records your full legal name
 and your declarations. Bank details are **not** entered in the app; [describe the separate secure channel]. We keep
@@ -96,6 +100,7 @@ Act 2023 and the GAID 2025, for example adequacy, contractual safeguards or cons
 - Usage statistics: deleted [4 weeks] after the pilot ends, or earlier.
 - Feedback: up to [12] months.
 - Pilot applications and decisions: until [6] months after the pilot ends.
+- Friends & Family 10 learning interaction records and settlements: [period to confirm, e.g. until the end of the programme plus any period required for accounting].
 - Reward and payment records: as long as required by tax and accounting law [period to confirm].
 
 ## 8. Your rights
@@ -121,7 +126,7 @@ processing a child's personal data requires the consent of a parent or legal gua
 - guest use (no account, nothing saved) is open to everyone;
 - signing in and saving progress is for users aged 18 or over, or younger users with a parent's or guardian's
   consent [mechanism to be decided];
-- the Friends & Family Pilot and any rewards are for adults only;
+- Friends & Family 10 and any rewards are for adults only;
 - School Learning never earns money, points or rewards.]
 
 ## 10. Security

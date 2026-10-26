@@ -1,3 +1,45 @@
+# Automated test results: School Learning expansion, Nigerian History and Citizenship and Heritage Studies (26 October 2026)
+
+**Command:** `python -m unittest discover tests` (the complete suite), branch `school-learning` (base `fa4fa08`). Local only:
+no Supabase project, GitHub or Streamlit deployment was used, and no SQL migration was run.
+
+| Run | Tests | Passed | Failed | Errors | Skipped |
+|---|---|---|---|---|---|
+| A. With `supabase/pilot_invitations_migration.sql` in the checkout | 803 | 803 | 0 | 0 | 0 |
+| B. The GitHub branch as it is (that file missing) | 803 | 716 | 0 | 0 | 87 |
+
+**Raw results:**
+- Run A: `Ran 803 tests in 627.498s — OK`
+- Run B: `Ran 803 tests in 478.762s — OK (skipped=87)`
+
+The 87 skipped tests in run B are the PostgreSQL rule tests for Founding 50 and Friends & Family 10, as before.
+
+**Two problems found and fixed during testing:**
+- One new assertion depended on an exception class that another test module reloads. It now checks for `ValueError`, the
+  parent class.
+- One existing quiz test (`test_app.RefinementTests.test_practise_mistakes_round_clears_correct_answers`) failed once in an
+  earlier full run of B. It passed 10 times out of 10 on its own, both with and without this patch, and passed in both final full
+  runs. It is a random-order quiz test that School Learning does not touch.
+
+## New: `tests/test_school_interactive.py` (38 tests)
+
+| Area | What is checked |
+|---|---|
+| Curriculum metadata | Both subjects are available and interactive. Primary 1–6, JSS 1–3 and SSS 1–3 are listed with valid term ids. Every topic is labelled `scheme`, never `official`. SSS 2 and SSS 3 have no invented topics and keep an honest note. No WASSCE, WAEC or examination-preparation wording appears for Citizenship and Heritage Studies. No "approved/endorsed by NERDC" claims appear anywhere. |
+| Content validation | The three lessons validate; they have parts A–K, at least two activities and varied assessments; together they use all 9 question types and all 6 activity types. Stories contain no dialogue or quotation marks. Approximate dates are worded as estimates. The map says it shows modern Nigeria only. Nine kinds of broken lesson are rejected. Unknown lessons and empty classes are handled safely. |
+| Assessment scoring | Right and wrong explanations for every type. Fill-in answers are normalised. Matching and ordering give per-item feedback. Scenario verdicts are checked. Written answers are never auto-marked. An answer cannot be recorded twice. Tallies count marked questions only, and scores are scaled to 10. |
+| Progress | Knowledge-check results use the existing record fields only (no new database columns). Progress is reported by class and term, with a suggested next lesson. Read-aloud text contains no markup. |
+| Device storage | One cookie now holds several subjects (v2), and old v1 cookies are still read. When space runs short, the newest progress is kept. |
+| Geography compatibility | Geography's 7 lessons, page structure, 34 topics and WAEC label are unchanged, and the Geography lesson and practice flow still works. |
+| Separation from rewards | No school module imports or calls rewards, Friends & Family 10, quiz, badge or points code. In the running app, the reward hooks are replaced with stand-ins and never called during study. Points, badges, quiz and streak state are unchanged. |
+| Accessibility and mobile | Read-aloud never autoplays: it starts only from a button, has Listen, Pause, Resume, Restart and Stop, and announces its state. Nothing uses drag and drop; ordering uses Move up and Move down buttons. Phone layout rules are present. |
+| App (Streamlit AppTest) | The home page shows three cards with Continue and Explore buttons and no "Coming soon". Class and term navigation works, including empty classes, "Term not confirmed" and incomplete topics. A full Primary 4 lesson and knowledge check runs end to end and is recorded. The JSS timeline, matching, story and investigation activities work. Ordering works with buttons only. The SSS scenarios and institution explorer work, and "Knowledge check" opens that page. Continue learning and device storage work for guests. |
+
+Updated: `tests/test_school.py`. Its two assertions that the new subjects were "planned" now expect them to be available, and
+the subject search now finds Citizenship and Heritage Studies.
+
+---
+
 # Automated test results: Friends & Family 10 private documents, approval record and acceptance (25 October 2026)
 
 **Command:** `python -m unittest discover tests` (the complete suite)

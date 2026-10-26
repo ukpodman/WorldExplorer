@@ -1,0 +1,963 @@
+{
+ "format": "interactive",
+ "id": "jss1-sources-of-history",
+ "subject": "nigerian-history",
+ "class": "JSS 1",
+ "term": "first",
+ "topic": "jss1-sources-of-history",
+ "stage": "secondary",
+ "number": 1,
+ "title": "History and its sources: how we know about Nigeria’s past",
+ "short": "Sources of history",
+ "minutes": 45,
+ "version": 1,
+ "review_status": "draft",
+ "curriculum": {
+  "verification": "scheme",
+  "note": "JSS 1, First Term: “Meaning of history”, “Sources of history (primary, secondary, tertiary; how to access them)” and “Importance of history” appear in a published scheme of work that says it follows the new NERDC curriculum. They have not been checked against the official NERDC document.",
+  "sources": [
+   "sow-jss"
+  ]
+ },
+ "introduction": [
+  "How do we know what happened in Nigeria hundreds, or even thousands, of years ago, long before there were cameras or newspapers? Historians are a bit like detectives: they collect **evidence**, ask questions about it and build the most likely account of the past.",
+  "In this lesson you will learn what history is, the different kinds of sources historians use, how to judge whether a source is reliable, and why studying history matters."
+ ],
+ "why": "Knowing how historians use evidence helps you to tell the difference between what is known, what is believed and what is only guessed, in history lessons and in everyday news.",
+ "objectives": [
+  "explain the meaning of history",
+  "identify oral, archaeological, written and artistic sources, with Nigerian examples",
+  "distinguish primary, secondary and tertiary sources",
+  "examine a source by asking who made it, when, why, and what it can and cannot tell us",
+  "explain why historians compare several sources and treat some dates as approximate",
+  "explain the importance of history to individuals and to Nigeria"
+ ],
+ "background": [
+  {
+   "type": "p",
+   "text": "**History** is the study of what people did and experienced in the past, based on **evidence**. The past itself is gone; what remains are traces of it, such as objects, buildings, documents and memories passed down. A historian studies these traces to explain what happened, when, and why."
+  },
+  {
+   "type": "p",
+   "text": "Historians arrange events in **chronological order** (the order in which they happened). Dates are written as BC or AD (also written BCE and CE). A **century** is 100 years: the 9th century AD is the 800s."
+  },
+  {
+   "type": "p",
+   "text": "Some dates are **exact**, because someone recorded them at the time (for example, Nigeria’s independence on 1 October 1960). Others are **approximate**, because they are worked out from evidence, such as scientific dating of materials found by archaeologists. Good history always makes clear which is which.",
+   "basis": "fact"
+  }
+ ],
+ "sections": [
+  {
+   "id": "kinds-of-sources",
+   "title": "Kinds of historical sources",
+   "blocks": [
+    {
+     "type": "p",
+     "text": "Historians of Nigeria use several kinds of sources. Each has strengths and weaknesses."
+    },
+    {
+     "type": "cards",
+     "items": [
+      {
+       "title": "Oral tradition",
+       "tone": "gold",
+       "text": "History passed by word of mouth from generation to generation: origin stories, praise songs, lists of rulers and family histories, often kept by elders and court historians. **Strength:** it preserves the views of the people themselves. **Weakness:** details can change as stories are retold, and dates are often hard to fix."
+      },
+      {
+       "title": "Archaeology",
+       "tone": "teal",
+       "src": [
+        "met-nok",
+        "igbo-ukwu"
+       ],
+       "text": "Objects and remains dug from the ground and studied scientifically, such as Nok terracottas or the Igbo-Ukwu bronzes. **Strength:** physical evidence that can be dated. **Weakness:** objects do not explain themselves; much depends on interpretation."
+      },
+      {
+       "title": "Written documents",
+       "tone": "teal",
+       "src": [
+        "kano-chronicle"
+       ],
+       "text": "Chronicles, letters, travellers’ accounts, government records and newspapers, for example the Kano Chronicle, written in Arabic. **Strength:** names, events and sometimes exact dates. **Weakness:** every writer has a point of view, and copies can differ."
+      },
+      {
+       "title": "Art and artefacts",
+       "tone": "gold",
+       "src": [
+        "digital-benin"
+       ],
+       "text": "Sculptures, carvings, textiles and other made objects, such as the brass plaques of the Benin royal palace, which show the court, soldiers and Portuguese visitors. **Strength:** they show how people saw themselves. **Weakness:** we must understand their purpose."
+      }
+     ]
+    },
+    {
+     "type": "note",
+     "text": "Historians also learn from languages (how words spread between peoples), place names and the study of present-day customs."
+    }
+   ]
+  },
+  {
+   "id": "primary-secondary",
+   "title": "Primary, secondary and tertiary sources",
+   "blocks": [
+    {
+     "type": "table",
+     "head": [
+      "Type",
+      "What it is",
+      "Nigerian examples"
+     ],
+     "rows": [
+      [
+       "**Primary**",
+       "Created at the time being studied, or by people who took part",
+       "An Igbo-Ukwu bronze; a Benin palace plaque; an eyewitness account; a 1960 newspaper reporting independence"
+      ],
+      [
+       "**Secondary**",
+       "A later explanation that uses primary sources",
+       "A historian’s book or article about the Benin Kingdom; your history textbook"
+      ],
+      [
+       "**Tertiary**",
+       "A summary or guide that collects information from secondary sources",
+       "An encyclopaedia entry, an index or a timeline poster"
+      ]
+     ]
+    },
+    {
+     "type": "p",
+     "text": "Whether a source is primary depends on the **question**. A 19th-century chronicle is a primary source for how people in the 1800s told their history, but it is not an eyewitness source for events of the 900s that it describes."
+    }
+   ]
+  },
+  {
+   "id": "examining-sources",
+   "title": "Examining a source like a historian",
+   "blocks": [
+    {
+     "type": "list",
+     "items": [
+      "**Who** made it, and what was their position or point of view?",
+      "**When** and **where** was it made, and how long after the events?",
+      "**Why** was it made: to record, to praise, to persuade, to worship?",
+      "**What** does it tell us, and what does it leave out?",
+      "Does other evidence **support** it (corroboration), or contradict it?"
+     ]
+    },
+    {
+     "type": "quote_source",
+     "kind": "written",
+     "src": [
+      "kano-chronicle",
+      "kano-whodunit"
+     ],
+     "text": "The Kano Chronicle lists the rulers of Kano back to a founder called Bagauda, placed around the late 900s AD, and includes an origin legend.",
+     "provenance": "Arabic manuscript, probably written in the 1880s; best-known English translation by H. R. Palmer, 1908. Historians compare it with other king lists and read its early sections critically."
+    },
+    {
+     "type": "p",
+     "text": "Because the Kano Chronicle was written down about 900 years after the time of its first rulers, historians treat its early sections as a record of **tradition**, valuable but needing support from other evidence.",
+     "basis": "interpretation",
+     "src": [
+      "kano-whodunit"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "accessing-sources",
+   "title": "Where to find historical sources",
+   "blocks": [
+    {
+     "type": "list",
+     "items": [
+      "**Museums**, such as the National Museum in Lagos, which keeps objects from Nigerian historical sites.",
+      "**Archives**, which keep government records, letters and old newspapers.",
+      "**Libraries**, for books and journals written by historians.",
+      "**People**: elders, traditional historians and community leaders can share oral traditions, ideally recorded with their permission.",
+      "**Historical sites**, such as Igbo-Ukwu, Ile-Ife, Benin City and Sukur."
+     ]
+    },
+    {
+     "type": "note",
+     "text": "When you collect an oral tradition, write down who told it, when and where. That information is part of the evidence."
+    }
+   ]
+  },
+  {
+   "id": "importance",
+   "title": "Why history is important",
+   "blocks": [
+    {
+     "type": "list",
+     "items": [
+      "It helps us to understand how Nigeria and its peoples came to be as they are today.",
+      "It builds pride in the achievements of our ancestors and respect for other communities.",
+      "It teaches us to weigh evidence and not to believe everything we hear or read.",
+      "It helps leaders and citizens to learn from past successes and mistakes.",
+      "It preserves our heritage for future generations."
+     ]
+    }
+   ]
+  }
+ ],
+ "key_figures": [
+  {
+   "name": "Kano Chronicle",
+   "kind": "object",
+   "text": "Arabic history of Kano’s rulers, probably written in the 1880s; translated into English by H. R. Palmer in 1908.",
+   "when": "1880s (probably)",
+   "approx": true,
+   "basis": "approximate",
+   "src": [
+    "kano-chronicle"
+   ]
+  },
+  {
+   "name": "Igbo-Ukwu bronzes",
+   "kind": "object",
+   "text": "Bronze objects from Anambra State, dated by radiocarbon to around AD 850.",
+   "when": "c. AD 850",
+   "approx": true,
+   "basis": "approximate",
+   "src": [
+    "igbo-ukwu"
+   ]
+  },
+  {
+   "name": "Isaiah Anozie",
+   "kind": "person",
+   "text": "Found the first Igbo-Ukwu bronzes in 1938 while digging near his home.",
+   "when": "1938",
+   "approx": false,
+   "basis": "fact",
+   "src": [
+    "igbo-ukwu"
+   ]
+  },
+  {
+   "name": "Thurstan Shaw",
+   "kind": "person",
+   "text": "Archaeologist who excavated at Igbo-Ukwu in 1959 at the request of the Nigerian government.",
+   "when": "1959",
+   "approx": false,
+   "basis": "fact",
+   "src": [
+    "igbo-ukwu"
+   ]
+  },
+  {
+   "name": "Benin palace plaques",
+   "kind": "object",
+   "text": "Brass relief plaques, widely dated to the 16th–17th centuries, taken by British forces in 1897.",
+   "when": "16th–17th centuries",
+   "approx": true,
+   "basis": "approximate",
+   "src": [
+    "digital-benin"
+   ]
+  },
+  {
+   "name": "Nok",
+   "kind": "place",
+   "text": "Site in Kaduna State that gave its name to the Nok culture, known from terracottas first found in 1943.",
+   "when": "c. 500 BC–AD 200",
+   "approx": true,
+   "basis": "approximate",
+   "src": [
+    "met-nok"
+   ]
+  }
+ ],
+ "cause_effect": [
+  {
+   "cause": "Oral traditions are passed on by memory over many generations.",
+   "effect": "Details and dates can change, even when the main story is preserved.",
+   "significance": "Historians compare oral traditions with archaeology and written records before treating details as facts."
+  },
+  {
+   "cause": "Radiocarbon dating was used on material from the Igbo-Ukwu excavations.",
+   "effect": "The site was dated to around AD 850.",
+   "significance": "It showed that skilled bronze casting existed in this region centuries before other known bronzes from the area."
+  },
+  {
+   "cause": "British forces took thousands of objects from Benin City in 1897.",
+   "effect": "Many Benin plaques are now in museums outside Nigeria.",
+   "significance": "Historians use museum records to study them, and their removal is part of ongoing discussions about returning cultural objects."
+  }
+ ],
+ "activities": [
+  {
+   "id": "investigation",
+   "type": "investigation",
+   "title": "Historical investigation: what can each source tell us?",
+   "instructions": "Read each source card. Then answer the questions below. Think about who made each source, when, and what it cannot tell us.",
+   "sources": [
+    {
+     "id": "s-oral",
+     "kind": "oral",
+     "title": "An origin tradition",
+     "text": "Many Yoruba traditions describe Ile-Ife as the place where the Yoruba people and their kingdoms began.",
+     "provenance": "Passed down by word of mouth over many generations; told in different versions in different towns.",
+     "basis": "tradition"
+    },
+    {
+     "id": "s-arch",
+     "kind": "archaeological",
+     "title": "Igbo-Ukwu bronzes",
+     "text": "Finely cast bronze objects and many beads found in excavations at Igbo-Ukwu.",
+     "provenance": "Excavated by Thurstan Shaw in 1959–60; dated by radiocarbon to around AD 850.",
+     "basis": "approximate",
+     "src": [
+      "igbo-ukwu"
+     ]
+    },
+    {
+     "id": "s-written",
+     "kind": "written",
+     "title": "The Kano Chronicle",
+     "text": "A list of Kano’s rulers going back to the founder Bagauda, with a legend about how he came to power.",
+     "provenance": "Arabic manuscript, probably written in the 1880s; translated by H. R. Palmer in 1908.",
+     "basis": "interpretation",
+     "src": [
+      "kano-chronicle"
+     ]
+    },
+    {
+     "id": "s-art",
+     "kind": "art",
+     "title": "A Benin palace plaque",
+     "text": "A brass plaque showing a Portuguese man holding a gun, cast for the Oba’s palace.",
+     "provenance": "Made in Benin City, widely dated to the 16th–17th century; taken by British forces in 1897; now in the British Museum.",
+     "basis": "fact",
+     "src": [
+      "digital-benin"
+     ]
+    },
+    {
+     "id": "s-text",
+     "kind": "interpretation",
+     "title": "A modern textbook paragraph",
+     "text": "A school textbook explains that Benin traded with Portuguese merchants from the late 1400s.",
+     "provenance": "Written recently by a historian using older sources.",
+     "basis": "interpretation"
+    }
+   ],
+   "questions": [
+    {
+     "id": "jss1-inv-1",
+     "type": "mcq",
+     "q": "Which source is a PRIMARY source for life at the Benin royal court?",
+     "options": [
+      {
+       "text": "The Benin palace plaque",
+       "why": "Yes: it was made in Benin at the time, for the palace itself."
+      },
+      {
+       "text": "The modern textbook paragraph",
+       "why": "A textbook is a secondary source written long afterwards."
+      },
+      {
+       "text": "The origin tradition about Ile-Ife",
+       "why": "This tradition is about Yoruba origins, not the Benin court."
+      }
+     ],
+     "answer": 0
+    },
+    {
+     "id": "jss1-inv-2",
+     "type": "mcq",
+     "q": "What important information is MISSING from the Igbo-Ukwu bronzes themselves?",
+     "options": [
+      {
+       "text": "Written names of the people who made and used them",
+       "why": "Yes: the objects do not tell us in words who made them or what they called them; historians must interpret them."
+      },
+      {
+       "text": "Evidence of skilled metalwork",
+       "why": "The bronzes themselves show great skill, so this is not missing."
+      },
+      {
+       "text": "Any way of dating them",
+       "why": "They have been dated by radiocarbon to around AD 850."
+      }
+     ],
+     "answer": 0
+    },
+    {
+     "id": "jss1-inv-3",
+     "type": "scenario",
+     "situation": "Two towns tell different versions of the same origin tradition. What should a historian do?",
+     "options": [
+      {
+       "text": "Record both versions, note who told them, and compare them with other evidence",
+       "verdict": "best",
+       "why": "Differences are themselves evidence; comparing with archaeology or written records helps to judge them."
+      },
+      {
+       "text": "Choose the version from the larger town",
+       "verdict": "poor",
+       "why": "Size does not make a tradition more accurate."
+      },
+      {
+       "text": "Ignore both because they disagree",
+       "verdict": "acceptable",
+       "why": "Caution is good, but traditions still contain valuable evidence about how people understand their past."
+      }
+     ],
+     "explain": "Historians treat oral traditions as evidence to be compared, not as fact or fiction by default."
+    },
+    {
+     "id": "jss1-inv-4",
+     "type": "short",
+     "prompt": "Could the Kano Chronicle’s account of its first ruler be interpreted in another way? Explain in two or three sentences.",
+     "model": "Yes. Because it was written down in the 1880s, centuries after the first rulers, its early sections may record how people of the 1800s remembered and explained their past rather than exact events. The legend about Bagauda could reflect real changes in power, told in symbolic form, so historians compare it with other king lists and evidence.",
+     "points": [
+      "Notes the long gap between the events and the writing",
+      "Suggests the early part may be tradition or legend",
+      "Mentions comparing with other sources"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "timeline",
+   "type": "timeline",
+   "title": "Timeline explorer: when the evidence was made, and when it was found",
+   "instructions": "Select an event to read about it. Look at the label: an exact date was recorded at the time; an approximate date is an estimate from evidence.",
+   "events": [
+    {
+     "id": "nok",
+     "title": "Nok terracottas are being made",
+     "when": "c. 500 BC–AD 200",
+     "sort": -500,
+     "approx": true,
+     "basis": "approximate",
+     "background": "Museum experts date Nok sculpture to roughly 500 BC–AD 200 from scientific dating of material found with it.",
+     "src": [
+      "met-nok"
+     ]
+    },
+    {
+     "id": "igbo",
+     "title": "Igbo-Ukwu bronzes are made",
+     "when": "c. AD 850",
+     "sort": 850,
+     "approx": true,
+     "basis": "approximate",
+     "background": "Radiocarbon dating places the site around the 9th century AD.",
+     "src": [
+      "igbo-ukwu"
+     ]
+    },
+    {
+     "id": "ife",
+     "title": "The Ife head in the British Museum is probably made",
+     "when": "probably 1300s–1400s",
+     "sort": 1400,
+     "approx": true,
+     "basis": "approximate",
+     "background": "Specialists date this cast head to about the 14th–15th centuries, from its style and from other dated finds at Ife.",
+     "src": [
+      "bm-ife"
+     ]
+    },
+    {
+     "id": "benin",
+     "title": "Benin palace plaques are cast",
+     "when": "16th–17th centuries",
+     "sort": 1550,
+     "approx": true,
+     "basis": "approximate",
+     "background": "The plaques are widely dated to this period; some show Portuguese visitors, who reached Benin from the late 1400s.",
+     "src": [
+      "digital-benin"
+     ]
+    },
+    {
+     "id": "kano",
+     "title": "The Kano Chronicle is probably written",
+     "when": "1880s (probably)",
+     "sort": 1885,
+     "approx": true,
+     "basis": "interpretation",
+     "background": "Historians think the surviving chronicle was written in the late 19th century, drawing on earlier traditions and king lists.",
+     "src": [
+      "kano-chronicle",
+      "kano-whodunit"
+     ]
+    },
+    {
+     "id": "palmer",
+     "title": "Palmer publishes an English translation of the Kano Chronicle",
+     "when": "1908",
+     "sort": 1908,
+     "approx": false,
+     "basis": "fact",
+     "background": "H. R. Palmer’s translation made the chronicle widely known to readers of English.",
+     "src": [
+      "kano-chronicle"
+     ]
+    },
+    {
+     "id": "anozie",
+     "title": "Isaiah Anozie finds bronzes at Igbo-Ukwu",
+     "when": "1938",
+     "sort": 1938,
+     "approx": false,
+     "basis": "fact",
+     "background": "The first Igbo-Ukwu objects came to light by accident, while he was digging near his home.",
+     "src": [
+      "igbo-ukwu"
+     ]
+    },
+    {
+     "id": "nokfind",
+     "title": "The first Nok terracotta is found",
+     "when": "1943",
+     "sort": 1943,
+     "approx": false,
+     "basis": "fact",
+     "background": "A terracotta head was found during tin mining near the village of Nok.",
+     "src": [
+      "met-nok"
+     ]
+    },
+    {
+     "id": "shaw",
+     "title": "Thurstan Shaw excavates at Igbo-Ukwu",
+     "when": "1959",
+     "sort": 1959,
+     "approx": false,
+     "basis": "fact",
+     "background": "The scientific excavation recorded where every object lay, which an accidental find cannot do.",
+     "src": [
+      "igbo-ukwu"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "classify",
+   "type": "practice",
+   "title": "Sort the sources",
+   "instructions": "Match each source to its kind. Then press Check.",
+   "questions": [
+    {
+     "id": "jss1-match-1",
+     "type": "match",
+     "q": "Match each source to the kind of source it is.",
+     "pairs": [
+      [
+       "A praise song about a past ruler, sung by a court historian",
+       "Oral tradition"
+      ],
+      [
+       "Nok terracotta heads found during tin mining",
+       "Archaeological evidence"
+      ],
+      [
+       "The Kano Chronicle",
+       "Written document"
+      ],
+      [
+       "A Benin palace plaque",
+       "Art and artefacts"
+      ]
+     ],
+     "explain": "Oral traditions are spoken; archaeological evidence is dug up and studied; written documents are texts; art and artefacts are made objects with a purpose."
+    }
+   ]
+  },
+  {
+   "id": "story-igbo-ukwu",
+   "type": "story",
+   "title": "Story: the discovery of Igbo-Ukwu",
+   "instructions": "Read the story chapter by chapter. Inspect the evidence, then answer each question to unlock the next chapter.",
+   "note": "Everything in this story is documented in the sources listed. No conversations or quotations have been made up; where historians are unsure, the story says so.",
+   "chapters": [
+    {
+     "id": "ch1",
+     "title": "1938: a find near a house",
+     "text": [
+      "In 1938, Isaiah Anozie was digging beside his home in Igbo-Ukwu, in today’s Anambra State, when he found bronze objects in the ground."
+     ],
+     "inspect": [
+      {
+       "label": "What kind of source is this?",
+       "text": "An accidental find of archaeological objects: the objects are evidence, but they were not dug up scientifically, so where exactly each lay was not recorded."
+      }
+     ],
+     "question": {
+      "id": "jss1-story-1",
+      "type": "mcq",
+      "q": "Why is an accidental find less informative than a careful excavation?",
+      "options": [
+       {
+        "text": "The exact position and surroundings of each object may not be recorded",
+        "why": "Yes: archaeologists learn a lot from exactly where and with what an object was found."
+       },
+       {
+        "text": "Accidentally found objects are always fake",
+        "why": "No: Anozie’s finds were genuine."
+       },
+       {
+        "text": "Accidental finds cannot be photographed",
+        "why": "They can; the problem is the missing record of where they lay."
+       }
+      ],
+      "answer": 0
+     }
+    },
+    {
+     "id": "ch2",
+     "title": "1959: the archaeologists arrive",
+     "text": [
+      "In 1959, at the request of the Nigerian government, the archaeologist Thurstan Shaw excavated at Igbo-Ukwu. His team carefully recorded what they found and discovered two more sites nearby."
+     ],
+     "inspect": [
+      {
+       "label": "What did the excavations find?",
+       "text": "Many bronze objects and beads. Some beads came from far away, which is evidence of long-distance trade."
+      }
+     ],
+     "question": {
+      "id": "jss1-story-2",
+      "type": "truefalse",
+      "statement": "Thurstan Shaw’s 1959 excavation was carried out at the request of the Nigerian government.",
+      "answer": true,
+      "explain": "The summary of the site records that the government asked Shaw to excavate."
+     }
+    },
+    {
+     "id": "ch3",
+     "title": "Dating the evidence",
+     "text": [
+      "Scientists used radiocarbon dating on material from the site. The results placed it around AD 850, in the 9th century."
+     ],
+     "inspect": [
+      {
+       "label": "Exact or approximate?",
+       "text": "Approximate. Radiocarbon dating gives a likely range of dates, not a single exact year."
+      }
+     ],
+     "question": {
+      "id": "jss1-story-3",
+      "type": "mcq",
+      "q": "How should we write the date of the Igbo-Ukwu bronzes?",
+      "options": [
+       {
+        "text": "About AD 850 (9th century)",
+        "why": "Yes: “about” shows that the date comes from scientific estimation."
+       },
+       {
+        "text": "Exactly 1 January 850",
+        "why": "Radiocarbon dating cannot give an exact day or year."
+       },
+       {
+        "text": "1938",
+        "why": "1938 is when they were found, not when they were made."
+       }
+      ],
+      "answer": 0
+     }
+    },
+    {
+     "id": "ch4",
+     "title": "What the discovery taught historians",
+     "text": [
+      "Igbo-Ukwu is considered the earliest known example of bronze casting in the region, centuries older than other known bronzes from the area. Historians use it as evidence of skilled craftworkers, a complex society and trade links in southern Nigeria over 1,000 years ago."
+     ],
+     "inspect": [
+      {
+       "label": "Fact or interpretation?",
+       "text": "The age and the skill of the objects are evidence. What they tell us about society and religion is historians’ interpretation, based on that evidence."
+      }
+     ],
+     "question": {
+      "id": "jss1-story-4",
+      "type": "mcq",
+      "q": "Which statement is an INTERPRETATION rather than a direct observation?",
+      "options": [
+       {
+        "text": "Igbo-Ukwu was part of a complex society with long-distance trade",
+        "why": "Yes: this is a conclusion historians draw from the objects and beads."
+       },
+       {
+        "text": "Bronze objects were found at Igbo-Ukwu",
+        "why": "This is a direct observation of the evidence."
+       },
+       {
+        "text": "The first objects were found in 1938",
+        "why": "This is a recorded fact about the discovery."
+       }
+      ],
+      "answer": 0
+     }
+    }
+   ]
+  }
+ ],
+ "key_terms": [
+  [
+   "History",
+   "The study of what people did and experienced in the past, based on evidence."
+  ],
+  [
+   "Evidence",
+   "Information from sources that helps to show what happened."
+  ],
+  [
+   "Oral tradition",
+   "History passed on by word of mouth from one generation to the next."
+  ],
+  [
+   "Archaeology",
+   "The study of the past through objects and remains dug from the ground."
+  ],
+  [
+   "Primary source",
+   "A source created at the time being studied, or by someone who took part."
+  ],
+  [
+   "Secondary source",
+   "A later account or explanation that uses primary sources."
+  ],
+  [
+   "Tertiary source",
+   "A summary or guide based on secondary sources, such as an encyclopaedia."
+  ],
+  [
+   "Chronology",
+   "Arranging events in the order in which they happened."
+  ],
+  [
+   "Corroboration",
+   "Support for one piece of evidence from another, independent piece."
+  ],
+  [
+   "Radiocarbon dating",
+   "A scientific method that estimates the age of once-living material."
+  ]
+ ],
+ "summary": [
+  "History is the study of the past based on evidence.",
+  "Historians of Nigeria use oral traditions, archaeology, written documents and art, each with strengths and weaknesses.",
+  "Primary sources come from the time studied; secondary sources explain it later; tertiary sources summarise.",
+  "Ask who made a source, when, why, what it shows and what it leaves out, and look for corroboration.",
+  "Some dates are exact; others, such as about AD 850 for Igbo-Ukwu, are approximate estimates from evidence.",
+  "History helps us understand the present, respect others, think critically and preserve our heritage."
+ ],
+ "assessment": [
+  {
+   "id": "jss1-q1",
+   "type": "mcq",
+   "q": "Which is the best definition of history?",
+   "options": [
+    {
+     "text": "The study of past human activities based on evidence",
+     "why": "Yes: evidence is what makes history different from guessing."
+    },
+    {
+     "text": "Any story about the past",
+     "why": "A story is not history unless it is based on evidence."
+    },
+    {
+     "text": "The list of dates in a textbook",
+     "why": "Dates are part of history, but history explains what happened and why."
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "jss1-q2",
+   "type": "truefalse",
+   "statement": "A history textbook written this year is a primary source for the Benin Kingdom in the 1500s.",
+   "answer": false,
+   "explain": "It is a secondary source: it explains the past later, using earlier evidence."
+  },
+  {
+   "id": "jss1-q3",
+   "type": "fill",
+   "text": "Support for one piece of evidence from another, independent source is called ___.",
+   "answers": [
+    "corroboration"
+   ],
+   "explain": "Historians look for corroboration before treating a claim as reliable."
+  },
+  {
+   "id": "jss1-q4",
+   "type": "image",
+   "q": "Look at the drawings A to D. Which drawing shows ARCHAEOLOGICAL evidence?",
+   "figure": "evidence_types",
+   "alt": "A: an elder speaking; B: a broken pot in an excavation trench; C: a handwritten page; D: a relief plaque on a wall.",
+   "options": [
+    {
+     "text": "B",
+     "why": "Yes: B shows a pot being excavated from the ground."
+    },
+    {
+     "text": "A",
+     "why": "A shows an elder telling a story: oral tradition."
+    },
+    {
+     "text": "C",
+     "why": "C shows a handwritten page: a written document."
+    },
+    {
+     "text": "D",
+     "why": "D shows a cast plaque: art and artefacts."
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "jss1-q5",
+   "type": "order",
+   "q": "Put these in chronological order, earliest first.",
+   "items": [
+    "Igbo-Ukwu bronzes are made (about AD 850)",
+    "The Ife head in the British Museum is probably made (1300s–1400s)",
+    "The Kano Chronicle is probably written (1880s)",
+    "Palmer’s English translation of the Kano Chronicle is published (1908)",
+    "Isaiah Anozie finds the first Igbo-Ukwu bronzes (1938)"
+   ],
+   "explain": "The first three dates are approximate or probable; 1908 and 1938 are exact. Approximate dates can still be placed in order."
+  },
+  {
+   "id": "jss1-q6",
+   "type": "mcq",
+   "q": "Why do historians treat the early sections of the Kano Chronicle with caution?",
+   "options": [
+    {
+     "text": "They were written down centuries after the events they describe",
+     "why": "Yes: the long gap means they record tradition rather than eyewitness accounts."
+    },
+    {
+     "text": "They are written in Arabic",
+     "why": "The language does not make a source unreliable."
+    },
+    {
+     "text": "Kano did not have rulers",
+     "why": "Kano did have rulers; the question is how accurately the early ones are remembered."
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "jss1-q7",
+   "type": "match",
+   "q": "Match each type of source with a Nigerian example.",
+   "pairs": [
+    [
+     "Primary source",
+     "A Benin palace plaque"
+    ],
+    [
+     "Secondary source",
+     "A historian’s book about Benin"
+    ],
+    [
+     "Tertiary source",
+     "An encyclopaedia entry on Benin"
+    ]
+   ],
+   "explain": "Primary: made at the time; secondary: a later explanation; tertiary: a summary of secondary work."
+  },
+  {
+   "id": "jss1-q8",
+   "type": "scenario",
+   "situation": "A message on social media says a famous historical object was found last week in your town, but gives no source.",
+   "options": [
+    {
+     "text": "Check whether a museum, university or reliable news source has reported it",
+     "verdict": "best",
+     "why": "Looking for corroboration from reliable sources is what historians do."
+    },
+    {
+     "text": "Share it immediately with everyone",
+     "verdict": "poor",
+     "why": "Sharing unchecked claims spreads misinformation."
+    },
+    {
+     "text": "Assume it must be false",
+     "verdict": "acceptable",
+     "why": "Doubt is reasonable, but it could be true; checking is better than guessing."
+    }
+   ],
+   "explain": "Asking “What is the evidence?” is as useful for today’s news as for the distant past."
+  },
+  {
+   "id": "jss1-q9",
+   "type": "truefalse",
+   "statement": "Oral traditions are useless to historians because they can change over time.",
+   "answer": false,
+   "explain": "They are valuable evidence of how people understand their past; historians compare them with other sources."
+  },
+  {
+   "id": "jss1-q10",
+   "type": "short",
+   "prompt": "Give two reasons why studying history is important for Nigerians today.",
+   "model": "History helps Nigerians to understand how the country and its peoples came to be as they are, and it teaches us to weigh evidence rather than believe rumours. It also builds respect for the achievements of different communities.",
+   "points": [
+    "Gives a first clear reason",
+    "Gives a second, different reason",
+    "Links at least one reason to Nigeria today"
+   ]
+  }
+ ],
+ "further": [
+  {
+   "title": "Historical sites in Nigeria: Nok, Ile-Ife, Benin and Igbo-Ukwu (JSS 1, Second and Third Terms)",
+   "why": "Apply what you learned about sources to Nigeria’s great archaeological sites."
+  },
+  {
+   "title": "Digital Benin (digitalbenin.org)",
+   "why": "An online catalogue of Benin objects in museums around the world, with notes on each."
+  },
+  {
+   "title": "The Metropolitan Museum of Art: Nok terracottas",
+   "why": "A short museum essay with photographs of Nok sculpture."
+  }
+ ],
+ "sources": [
+  {
+   "id": "igbo-ukwu",
+   "title": "Igbo-Ukwu (archaeological site), summary article",
+   "url": "https://en.wikipedia.org/wiki/Igbo-Ukwu",
+   "kind": "reference"
+  },
+  {
+   "id": "kano-chronicle",
+   "title": "Kano Chronicle, summary article (with references to Palmer 1908, Last 1980, Hunwick 1993, Lovejoy 2018)",
+   "url": "https://en.wikipedia.org/wiki/Kano_Chronicle",
+   "kind": "reference"
+  },
+  {
+   "id": "kano-whodunit",
+   "title": "“A historical whodunit: the so-called Kano Chronicle and its place in the historiography of Kano”, History in Africa (Cambridge University Press)",
+   "url": "https://www.cambridge.org/core/journals/history-in-africa/article/historical-whodunit-the-socalled-kano-chronicle-and-its-place-in-the-historiography-of-kano/8DC5438DE86A0CF05C1E6FCE707FE67E",
+   "kind": "academic"
+  },
+  {
+   "id": "digital-benin",
+   "title": "Digital Benin: Benin relief plaque, British Museum Af1898,0115.11",
+   "url": "https://digitalbenin.org/catalogue/5_Af1898011511",
+   "kind": "museum"
+  },
+  {
+   "id": "met-nok",
+   "title": "The Metropolitan Museum of Art: Nok Terracottas (500 B.C.–200 A.D.)",
+   "url": "https://www.metmuseum.org/toah/hd/nok/hd_nok.htm",
+   "kind": "museum"
+  },
+  {
+   "id": "bm-ife",
+   "title": "Bronze Head from Ife (British Museum Af1939,34.1), summary article",
+   "url": "https://en.wikipedia.org/wiki/Bronze_Head_from_Ife",
+   "kind": "reference"
+  }
+ ]
+}

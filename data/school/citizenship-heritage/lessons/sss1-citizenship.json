@@ -1,0 +1,819 @@
+{
+ "format": "interactive",
+ "id": "sss1-citizenship",
+ "subject": "citizenship-heritage",
+ "class": "SSS 1",
+ "term": "first",
+ "topic": "sss1-meaning-citizenship",
+ "stage": "secondary",
+ "number": 1,
+ "title": "Citizenship in Nigeria: meaning, acquisition, rights and duties",
+ "short": "Citizenship",
+ "minutes": 50,
+ "version": 1,
+ "review_status": "draft",
+ "curriculum": {
+  "verification": "scheme",
+  "note": "SSS 1, First Term: “Meaning and importance of citizenship” and “Duties and responsibilities of citizens” appear in published schemes of work for the new Citizenship and Heritage Studies, which disagree about other topics. They have not been checked against the official NERDC curriculum document. The legal content is taken from the 1999 Constitution.",
+  "sources": [
+   "sow-chs-a",
+   "sow-chs-b"
+  ]
+ },
+ "introduction": [
+  "Every Nigerian belongs to a family, a community and a nation. **Citizenship** is the legal relationship between a person and the state: it gives the person rights and protection, and it expects duties in return.",
+  "In this lesson you will learn what citizenship means, the three ways of becoming a Nigerian citizen set out in the 1999 Constitution, the fundamental rights it protects, the duties it expects, and where citizens can seek help lawfully when rights are threatened."
+ ],
+ "why": "Knowing your rights and duties helps you to protect yourself and others, take part in community life and hold institutions to the law.",
+ "objectives": [
+  "explain the meaning and importance of citizenship",
+  "describe citizenship by birth, by registration and by naturalisation under sections 25–27 of the 1999 Constitution",
+  "identify fundamental rights in Chapter IV of the Constitution",
+  "state the duties of a citizen in section 24",
+  "explain how rights and duties go together",
+  "identify lawful ways to seek help when rights are threatened"
+ ],
+ "background": [
+  {
+   "type": "p",
+   "text": "A **state** is a political community with a territory, a population, a government and sovereignty. A **citizen** is a full, legal member of a state. People who live in a country without being its citizens are called **non-citizens** or aliens; they must obey its laws and many rights protect them too, but some rights (such as voting) are reserved for citizens."
+  },
+  {
+   "type": "p",
+   "text": "Nigeria’s rules on citizenship are in **Chapter III of the 1999 Constitution** (as amended). Fundamental rights are in **Chapter IV**, and the duties of citizens are in **section 24**. Because the Constitution is the highest law, any other law that conflicts with it is void to the extent of the conflict.",
+   "basis": "fact",
+   "src": [
+    "constitution"
+   ]
+  },
+  {
+   "type": "note",
+   "text": "This lesson explains the law in simple words for learning. It is not legal advice: for a real case, consult a lawyer or the relevant government office."
+  }
+ ],
+ "sections": [
+  {
+   "id": "meaning",
+   "title": "Meaning and importance of citizenship",
+   "blocks": [
+    {
+     "type": "p",
+     "text": "Citizenship means **full membership of a state**, with legal rights and duties. It is also about **participation**: a good citizen cares about the community, obeys the law and contributes to the common good."
+    },
+    {
+     "type": "list",
+     "items": [
+      "It gives a person legal **identity** and the protection of the state at home and abroad (for example, a Nigerian passport).",
+      "It guarantees **rights**, such as voting and standing for election (at the ages set by law), which non-citizens do not have.",
+      "It creates **duties** that help society to work: obeying the law, paying tax and helping to keep order.",
+      "It builds a sense of **belonging** and national unity among people of different backgrounds."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "acquisition",
+   "title": "How Nigerian citizenship is acquired",
+   "blocks": [
+    {
+     "type": "p",
+     "text": "The Constitution sets out three ways of becoming a Nigerian citizen.",
+     "src": [
+      "constitution"
+     ]
+    },
+    {
+     "type": "table",
+     "head": [
+      "Way",
+      "Section",
+      "Main conditions (simplified)"
+     ],
+     "rows": [
+      [
+       "**By birth**",
+       "s. 25",
+       "(a) born in Nigeria before 1 October 1960 to a parent or grandparent who belongs to a community indigenous to Nigeria; (b) born in Nigeria after 1 October 1960 where a parent or grandparent is a Nigerian citizen; (c) born outside Nigeria where a parent is a Nigerian citizen."
+      ],
+      [
+       "**By registration**",
+       "s. 26",
+       "For a woman married to a Nigerian citizen, or a person of full age born outside Nigeria with a grandparent who is a citizen. The President must be satisfied about good character and the intention to live in Nigeria, and the person takes the Oath of Allegiance."
+      ],
+      [
+       "**By naturalisation**",
+       "s. 27",
+       "For other foreigners: full age and capacity; good character; intention to live in Nigeria; acceptable to the local community and assimilated into its way of life; able to contribute usefully; Oath of Allegiance; and long residence (15 continuous years, or the last 12 months plus 15 years in total during the previous 20 years)."
+      ]
+     ]
+    },
+    {
+     "type": "p",
+     "text": "Applications for registration and naturalisation are handled through the Federal Ministry of Interior.",
+     "src": [
+      "interior"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "dual",
+   "title": "Dual citizenship and renunciation (s. 28)",
+   "blocks": [
+    {
+     "type": "p",
+     "text": "A person who is a Nigerian citizen **by birth** does not lose Nigerian citizenship by acquiring another nationality. A person who became a citizen by **registration or naturalisation**, however, loses it if they acquire another country’s citizenship (unless they were born a citizen of that country), and must renounce any other citizenship within five months of becoming Nigerian.",
+     "basis": "fact",
+     "src": [
+      "constitution"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "rights",
+   "title": "Fundamental rights (Chapter IV)",
+   "blocks": [
+    {
+     "type": "cards",
+     "items": [
+      {
+       "title": "Life (s. 33)",
+       "text": "No one may be deprived of life intentionally, except as the law allows.",
+       "src": [
+        "constitution"
+       ]
+      },
+      {
+       "title": "Dignity (s. 34)",
+       "text": "No torture, inhuman or degrading treatment, slavery or forced labour.",
+       "src": [
+        "constitution"
+       ]
+      },
+      {
+       "title": "Personal liberty (s. 35)",
+       "text": "No unlawful detention. An arrested person must be told the reasons within 24 hours and has the right to remain silent.",
+       "src": [
+        "constitution"
+       ]
+      },
+      {
+       "title": "Fair hearing (s. 36)",
+       "text": "A fair hearing within a reasonable time by an independent and impartial court; presumed innocent until proven guilty.",
+       "src": [
+        "constitution"
+       ]
+      },
+      {
+       "title": "Private and family life (s. 37)",
+       "text": "Privacy of homes, letters, telephone conversations and other communications.",
+       "src": [
+        "constitution"
+       ]
+      },
+      {
+       "title": "Thought, conscience and religion (s. 38)",
+       "text": "Freedom to hold and change beliefs and to practise them.",
+       "src": [
+        "constitution"
+       ]
+      },
+      {
+       "title": "Expression and the press (s. 39)",
+       "text": "Freedom to hold opinions and to receive and share ideas and information.",
+       "src": [
+        "constitution"
+       ]
+      },
+      {
+       "title": "Assembly and association (s. 40)",
+       "text": "Freedom to meet peacefully and to form or join associations, including trade unions and political parties.",
+       "src": [
+        "constitution"
+       ]
+      },
+      {
+       "title": "Movement (s. 41)",
+       "text": "Freedom to move and live anywhere in Nigeria and to leave and enter the country.",
+       "src": [
+        "constitution"
+       ]
+      },
+      {
+       "title": "Freedom from discrimination (s. 42)",
+       "text": "No discrimination because of community, ethnic group, place of origin, sex, religion, political opinion or circumstances of birth.",
+       "src": [
+        "constitution"
+       ]
+      },
+      {
+       "title": "Property (ss. 43–44)",
+       "text": "Right to own immovable property anywhere in Nigeria; no compulsory acquisition without prompt compensation and access to court.",
+       "src": [
+        "constitution"
+       ]
+      }
+     ]
+    },
+    {
+     "type": "note",
+     "text": "Most rights have limits written into the Constitution, for example laws that are reasonably justifiable in a democratic society for defence, public safety, public order, public morality, public health or protecting the rights of others (s. 45)."
+    }
+   ]
+  },
+  {
+   "id": "duties",
+   "title": "Duties of citizens (s. 24)",
+   "blocks": [
+    {
+     "type": "p",
+     "text": "Section 24 says it is the duty of every citizen to:",
+     "src": [
+      "constitution"
+     ]
+    },
+    {
+     "type": "list",
+     "items": [
+      "abide by the Constitution and respect its ideals and institutions, the National Flag, the National Anthem, the National Pledge and legitimate authorities;",
+      "help to enhance the power, prestige and good name of Nigeria, defend Nigeria and render national service as required;",
+      "respect the dignity of other citizens and their rights and legitimate interests, and live in unity and harmony;",
+      "make positive and useful contributions to the advancement, progress and well-being of the community where they live;",
+      "render assistance to appropriate and lawful agencies in the maintenance of law and order;",
+      "declare their income honestly to appropriate and lawful agencies and pay their tax promptly."
+     ]
+    },
+    {
+     "type": "p",
+     "text": "Rights and duties go together: my right to dignity is protected when others respect it as their duty, and I have the same duty towards them.",
+     "basis": "interpretation"
+    }
+   ]
+  },
+  {
+   "id": "protection",
+   "title": "Protecting rights lawfully",
+   "blocks": [
+    {
+     "type": "list",
+     "items": [
+      "**The courts.** Anyone who believes a fundamental right has been, is being or is likely to be breached may apply to a **High Court** (s. 46), using the Fundamental Rights (Enforcement Procedure) Rules 2009.",
+      "**The National Human Rights Commission** (established in 1995) receives complaints about human rights violations and promotes awareness.",
+      "**The Legal Aid Council of Nigeria** provides legal help to people who cannot afford a lawyer, under the Legal Aid Act 2011.",
+      "**Peaceful participation**: speaking with community leaders and elected representatives, writing petitions, and peaceful, lawful assembly."
+     ]
+    },
+    {
+     "type": "note",
+     "text": "In an emergency, contact the police or emergency services. Seeking help lawfully protects you and keeps the law on your side."
+    }
+   ]
+  }
+ ],
+ "key_figures": [
+  {
+   "name": "1999 Constitution",
+   "kind": "object",
+   "text": "Nigeria’s supreme law; Chapter III covers citizenship and Chapter IV fundamental rights.",
+   "when": "1999",
+   "approx": false,
+   "basis": "fact",
+   "src": [
+    "constitution"
+   ]
+  },
+  {
+   "name": "1 October 1960",
+   "kind": "event",
+   "text": "Nigeria’s independence; the date used in s. 25 to divide the rules on citizenship by birth.",
+   "when": "1 October 1960",
+   "approx": false,
+   "basis": "fact",
+   "src": [
+    "constitution"
+   ]
+  },
+  {
+   "name": "High Court",
+   "kind": "institution",
+   "text": "Under s. 46, a State or Federal High Court hears applications to enforce fundamental rights.",
+   "basis": "fact",
+   "src": [
+    "constitution"
+   ]
+  },
+  {
+   "name": "National Human Rights Commission",
+   "kind": "institution",
+   "text": "Established in 1995 to promote and protect human rights and receive complaints.",
+   "when": "1995",
+   "approx": false,
+   "basis": "fact",
+   "src": [
+    "nhrc"
+   ]
+  },
+  {
+   "name": "Legal Aid Council of Nigeria",
+   "kind": "institution",
+   "text": "Provides legal assistance to people who cannot afford a lawyer.",
+   "basis": "fact",
+   "src": [
+    "legal-aid-act"
+   ]
+  },
+  {
+   "name": "Federal Ministry of Interior",
+   "kind": "institution",
+   "text": "Handles applications for citizenship by registration and naturalisation.",
+   "basis": "fact",
+   "src": [
+    "interior"
+   ]
+  }
+ ],
+ "cause_effect": [
+  {
+   "cause": "The Constitution guarantees fundamental rights and lets anyone apply to a High Court when they are breached (s. 46).",
+   "effect": "Citizens have a lawful way to challenge abuses, even by government officials.",
+   "significance": "Rights are only meaningful if they can be enforced; this supports the rule of law."
+  },
+  {
+   "cause": "Citizens declare income honestly and pay tax (s. 24(f)).",
+   "effect": "Governments have revenue for schools, health care, roads and security.",
+   "significance": "Duties performed by citizens make many public services and rights possible."
+  },
+  {
+   "cause": "Section 42 forbids discrimination on grounds such as ethnic group, place of origin, sex or religion.",
+   "effect": "People from all parts of Nigeria have equal legal standing.",
+   "significance": "Equal treatment supports national unity in a country of many peoples."
+  }
+ ],
+ "activities": [
+  {
+   "id": "civic-scenarios",
+   "type": "practice",
+   "title": "Civic scenarios: what should a good citizen do?",
+   "instructions": "Read each situation and choose the response that best fits the law and good citizenship. Every option has feedback.",
+   "questions": [
+    {
+     "id": "sss1-sc-1",
+     "type": "scenario",
+     "situation": "Your neighbour is arrested and held at a police station for three days without being told why.",
+     "options": [
+      {
+       "text": "Help the family contact a lawyer or the Legal Aid Council, who can apply to a High Court to enforce his rights",
+       "verdict": "best",
+       "why": "Section 35 requires an arrested person to be told the reasons within 24 hours; s. 46 lets anyone apply to a High Court."
+      },
+      {
+       "text": "Gather people to force the station to release him",
+       "verdict": "poor",
+       "why": "Force is unlawful and could endanger people and harm the case."
+      },
+      {
+       "text": "Wait and hope he is released soon",
+       "verdict": "acceptable",
+       "why": "Patience is understandable, but the law offers a remedy that can be used now."
+      }
+     ],
+     "explain": "Lawful remedies (lawyers, Legal Aid, the courts, the NHRC) protect rights without new harm."
+    },
+    {
+     "id": "sss1-sc-2",
+     "type": "scenario",
+     "situation": "A club at your school refuses to admit a student because of the state she comes from.",
+     "options": [
+      {
+       "text": "Explain that this is discrimination, and report it to the school authorities",
+       "verdict": "best",
+       "why": "Section 42 forbids discrimination on grounds of place of origin; schools have procedures to deal with it."
+      },
+      {
+       "text": "Say nothing because it does not affect you",
+       "verdict": "poor",
+       "why": "Section 24 asks citizens to respect others’ rights and live in unity."
+      },
+      {
+       "text": "Start a rival club that excludes members of the first club",
+       "verdict": "poor",
+       "why": "Answering exclusion with exclusion deepens division."
+      }
+     ],
+     "explain": "Respecting and defending the rights of others is a citizen’s duty, not only a matter of kindness."
+    },
+    {
+     "id": "sss1-sc-3",
+     "type": "scenario",
+     "situation": "A community wants a broken bridge repaired, and residents disagree about how to raise the issue.",
+     "options": [
+      {
+       "text": "Write a joint petition to the local government council and meet elected representatives",
+       "verdict": "best",
+       "why": "Petitions and meetings are lawful, peaceful forms of participation."
+      },
+      {
+       "text": "Block the main road until repairs begin",
+       "verdict": "poor",
+       "why": "Blocking roads can endanger people and break the law."
+      },
+      {
+       "text": "Organise a peaceful, lawful meeting to agree the community’s request first",
+       "verdict": "acceptable",
+       "why": "A good first step (s. 40 protects peaceful assembly), but the request still needs to reach the authorities."
+      }
+     ],
+     "explain": "Civic participation works best when it is peaceful, lawful and directed to the right institution."
+    }
+   ]
+  },
+  {
+   "id": "rights-duties",
+   "type": "practice",
+   "title": "Rights and responsibilities challenge",
+   "instructions": "Match each right with the responsibility that goes with it. Then decide whether the two statements are true or false.",
+   "questions": [
+    {
+     "id": "sss1-rd-1",
+     "type": "match",
+     "q": "Match each right with a responsibility that goes with it.",
+     "pairs": [
+      [
+       "Freedom of expression (s. 39)",
+       "Do not spread false or hateful information about others"
+      ],
+      [
+       "Peaceful assembly (s. 40)",
+       "Keep gatherings peaceful and within the law"
+      ],
+      [
+       "Freedom of movement (s. 41)",
+       "Respect the communities and property of the places you visit"
+      ],
+      [
+       "Benefiting from public services",
+       "Declare income honestly and pay tax (s. 24)"
+      ]
+     ],
+     "explain": "Each right is safest when everyone exercises it responsibly and respects the same right in others."
+    },
+    {
+     "id": "sss1-rd-2",
+     "type": "truefalse",
+     "statement": "Fundamental rights in the Constitution have no limits at all.",
+     "answer": false,
+     "explain": "Section 45 allows laws that are reasonably justifiable in a democratic society, for example for public safety or to protect the rights of others."
+    },
+    {
+     "id": "sss1-rd-3",
+     "type": "truefalse",
+     "statement": "Helping lawful agencies to maintain law and order is one of the duties listed in section 24.",
+     "answer": true,
+     "explain": "Section 24(e) lists rendering assistance to appropriate and lawful agencies in maintaining law and order."
+    }
+   ]
+  },
+  {
+   "id": "institutions",
+   "type": "diagram",
+   "title": "Government institution explorer: where can a citizen go?",
+   "instructions": "Select each institution to see what it does and how it connects to the citizen.",
+   "nodes": [
+    {
+     "id": "citizen",
+     "title": "The citizen",
+     "text": "Has rights under Chapter IV and duties under section 24.",
+     "links": [
+      "court",
+      "nhrc",
+      "legal-aid",
+      "interior",
+      "police"
+     ]
+    },
+    {
+     "id": "court",
+     "title": "High Court (State or Federal)",
+     "text": "Hears applications to enforce fundamental rights under s. 46; its orders are binding.",
+     "links": [
+      "citizen"
+     ],
+     "src": [
+      "constitution"
+     ]
+    },
+    {
+     "id": "nhrc",
+     "title": "National Human Rights Commission",
+     "text": "Receives complaints about human rights violations, investigates and promotes awareness. Established 1995.",
+     "links": [
+      "citizen"
+     ],
+     "src": [
+      "nhrc"
+     ]
+    },
+    {
+     "id": "legal-aid",
+     "title": "Legal Aid Council of Nigeria",
+     "text": "Provides legal advice and representation to people who cannot afford a lawyer.",
+     "links": [
+      "citizen",
+      "court"
+     ],
+     "src": [
+      "legal-aid-act"
+     ]
+    },
+    {
+     "id": "interior",
+     "title": "Federal Ministry of Interior",
+     "text": "Processes applications for citizenship by registration and naturalisation.",
+     "links": [
+      "citizen"
+     ],
+     "src": [
+      "interior"
+     ]
+    },
+    {
+     "id": "police",
+     "title": "Nigeria Police Force",
+     "text": "Maintains law and order; citizens have a duty to assist lawful agencies (s. 24(e)) and the right to be treated lawfully when arrested (s. 35).",
+     "links": [
+      "citizen",
+      "court"
+     ],
+     "src": [
+      "constitution"
+     ]
+    }
+   ],
+   "questions": [
+    {
+     "id": "sss1-inst-1",
+     "type": "mcq",
+     "q": "A citizen wants a court order to stop a breach of their fundamental rights. Where do they apply?",
+     "options": [
+      {
+       "text": "A High Court",
+       "why": "Yes: section 46 gives High Courts power to enforce fundamental rights."
+      },
+      {
+       "text": "The Federal Ministry of Interior",
+       "why": "The Ministry handles citizenship applications, not rights enforcement."
+      },
+      {
+       "text": "The National Assembly",
+       "why": "The National Assembly makes laws; it does not decide individual cases."
+      }
+     ],
+     "answer": 0
+    }
+   ]
+  }
+ ],
+ "key_terms": [
+  [
+   "Citizen",
+   "A full legal member of a state, with rights and duties."
+  ],
+  [
+   "Citizenship",
+   "The legal relationship between a person and a state."
+  ],
+  [
+   "Registration",
+   "Becoming a citizen through a legal application in special cases, such as marriage to a citizen (s. 26)."
+  ],
+  [
+   "Naturalisation",
+   "Becoming a citizen after long residence and meeting the conditions in s. 27."
+  ],
+  [
+   "Dual citizenship",
+   "Being a citizen of two countries at the same time."
+  ],
+  [
+   "Renunciation",
+   "Formally giving up a citizenship."
+  ],
+  [
+   "Fundamental rights",
+   "Basic rights protected by Chapter IV of the Constitution."
+  ],
+  [
+   "Duty",
+   "Something a citizen is expected to do, such as obeying the law and paying tax."
+  ],
+  [
+   "Rule of law",
+   "The principle that everyone, including the government, is subject to the law."
+  ],
+  [
+   "Discrimination",
+   "Treating people unfairly because of who they are, such as their ethnic group, religion or sex."
+  ]
+ ],
+ "summary": [
+  "Citizenship is full legal membership of a state, with rights and duties.",
+  "The 1999 Constitution provides citizenship by birth (s. 25), registration (s. 26) and naturalisation (s. 27).",
+  "Citizens by birth keep Nigerian citizenship if they acquire another; registered or naturalised citizens do not (s. 28).",
+  "Chapter IV protects rights such as life, dignity, liberty, fair hearing, expression and freedom from discrimination, within limits.",
+  "Section 24 lists duties including respecting national symbols, respecting others’ rights, helping to keep order and paying tax.",
+  "Rights can be protected lawfully through the High Court, the NHRC, the Legal Aid Council and peaceful participation."
+ ],
+ "assessment": [
+  {
+   "id": "sss1-q1",
+   "type": "mcq",
+   "q": "Which section of the 1999 Constitution deals with citizenship by birth?",
+   "options": [
+    {
+     "text": "Section 25",
+     "why": "Yes: section 25 sets out citizenship by birth."
+    },
+    {
+     "text": "Section 24",
+     "why": "Section 24 lists the duties of citizens."
+    },
+    {
+     "text": "Section 33",
+     "why": "Section 33 protects the right to life."
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "sss1-q2",
+   "type": "fill",
+   "text": "For naturalisation, one residence route is 15 ___ of continuous residence in Nigeria.",
+   "answers": [
+    "years"
+   ],
+   "explain": "Section 27 requires 15 continuous years, or the last 12 months plus 15 years in total within the previous 20 years."
+  },
+  {
+   "id": "sss1-q3",
+   "type": "truefalse",
+   "statement": "A person born outside Nigeria to a Nigerian parent is a Nigerian citizen by birth.",
+   "answer": true,
+   "explain": "Section 25(1)(c) covers people born outside Nigeria where either parent is a Nigerian citizen."
+  },
+  {
+   "id": "sss1-q4",
+   "type": "match",
+   "q": "Match each way of acquiring citizenship with an example.",
+   "pairs": [
+    [
+     "By birth",
+     "A child born in Kano in 2010 to Nigerian parents"
+    ],
+    [
+     "By registration",
+     "A foreign woman married to a Nigerian citizen"
+    ],
+    [
+     "By naturalisation",
+     "A foreigner who has lived in Nigeria for over 15 years and meets the other conditions"
+    ]
+   ],
+   "explain": "Birth (s. 25), registration (s. 26) and naturalisation (s. 27)."
+  },
+  {
+   "id": "sss1-q5",
+   "type": "mcq",
+   "q": "Within how many hours must an arrested person be told the reasons for the arrest?",
+   "options": [
+    {
+     "text": "24 hours",
+     "why": "Yes: section 35 requires the reasons within 24 hours, in a language the person understands."
+    },
+    {
+     "text": "One week",
+     "why": "That is far longer than the Constitution allows."
+    },
+    {
+     "text": "Only at the trial",
+     "why": "The person must be told much sooner, within 24 hours."
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "sss1-q6",
+   "type": "order",
+   "q": "Order these from earliest to most recent.",
+   "items": [
+    "Nigeria becomes independent (1960)",
+    "The National Human Rights Commission is established (1995)",
+    "The current Constitution comes into force (1999)",
+    "The Fundamental Rights Enforcement Procedure Rules are made (2009)",
+    "The Legal Aid Act is passed (2011)"
+   ],
+   "explain": "All five dates are exact, recorded dates."
+  },
+  {
+   "id": "sss1-q7",
+   "type": "scenario",
+   "situation": "A classmate posts a false rumour online about a family from another community.",
+   "options": [
+    {
+     "text": "Ask them to remove it and explain why it is harmful; report it if it continues",
+     "verdict": "best",
+     "why": "Freedom of expression comes with responsibility, and s. 24 asks citizens to respect others’ dignity."
+    },
+    {
+     "text": "Share it to see what others think",
+     "verdict": "poor",
+     "why": "Sharing spreads harm and misinformation."
+    },
+    {
+     "text": "Ignore it",
+     "verdict": "acceptable",
+     "why": "Not sharing is good, but a respectful word can stop the harm."
+    }
+   ],
+   "explain": "Responsible citizens use their freedom of expression without harming the rights of others."
+  },
+  {
+   "id": "sss1-q8",
+   "type": "truefalse",
+   "statement": "A naturalised Nigerian citizen may keep a newly acquired foreign citizenship without losing Nigerian citizenship.",
+   "answer": false,
+   "explain": "Under section 28, a person who is not a citizen by birth loses Nigerian citizenship on acquiring another country’s citizenship."
+  },
+  {
+   "id": "sss1-q9",
+   "type": "mcq",
+   "q": "Which is a duty of citizens under section 24?",
+   "options": [
+    {
+     "text": "Declaring income honestly and paying tax promptly",
+     "why": "Yes: this is section 24(f)."
+    },
+    {
+     "text": "Joining a particular political party",
+     "why": "No: section 40 protects the freedom to choose whether to join any association."
+    },
+    {
+     "text": "Practising a particular religion",
+     "why": "No: section 38 protects freedom of religion."
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "sss1-q10",
+   "type": "short",
+   "prompt": "Explain, with one example, why rights and duties go together.",
+   "model": "Rights depend on others respecting them, which is their duty. For example, my freedom of expression is protected when others respect it, and I have the duty not to use it to spread false or hateful claims about other people.",
+   "points": [
+    "States that rights need others to respect them",
+    "Gives a clear example of a right",
+    "Names a matching duty or responsibility"
+   ]
+  }
+ ],
+ "further": [
+  {
+   "title": "Read Chapter III, section 24 and Chapter IV of the 1999 Constitution",
+   "why": "The original text is the authoritative source for this lesson."
+  },
+  {
+   "title": "Next topics: qualities of a good citizen, national symbols, human rights and the rule of law",
+   "why": "They build on what you learned here."
+  },
+  {
+   "title": "National Human Rights Commission",
+   "why": "Find out how it receives complaints and what it does to promote human rights."
+  }
+ ],
+ "sources": [
+  {
+   "id": "constitution",
+   "title": "Constitution of the Federal Republic of Nigeria 1999 (as amended): Chapter III (ss. 25–28), s. 24 and Chapter IV (ss. 33–46)",
+   "url": "https://nigerian-constitution.com/",
+   "kind": "law"
+  },
+  {
+   "id": "nhrc",
+   "title": "National Human Rights Commission (Nigeria), established 1995, summary article",
+   "url": "https://en.wikipedia.org/wiki/National_Human_Rights_Commission_(Nigeria)",
+   "kind": "reference"
+  },
+  {
+   "id": "legal-aid-act",
+   "title": "Legal Aid Act 2011 (Laws of Nigeria, PLAC)",
+   "url": "https://placng.org/lawsofnigeria/view2.php?sn=232",
+   "kind": "law"
+  },
+  {
+   "id": "interior",
+   "title": "Federal Ministry of Interior (citizenship applications)",
+   "url": "https://interior.gov.ng/",
+   "kind": "official"
+  }
+ ]
+}

@@ -1,0 +1,674 @@
+{
+ "format": "interactive",
+ "id": "p4-historical-sites",
+ "subject": "nigerian-history",
+ "class": "Primary 4",
+ "term": "third",
+ "topic": "p4-historical-sites",
+ "stage": "primary",
+ "number": 1,
+ "title": "Important historical sites in Nigeria",
+ "short": "Historical sites",
+ "minutes": 25,
+ "version": 1,
+ "review_status": "draft",
+ "curriculum": {
+  "verification": "scheme",
+  "note": "Primary 4, Third Term: “Important historical features and sites in Nigeria” appears in a published scheme of work that says it follows the new NERDC curriculum. It has not been checked against the official NERDC document.",
+  "sources": [
+   "sow-primary"
+  ]
+ },
+ "introduction": [
+  "Long ago, people in the land we now call Nigeria made beautiful things from clay and metal, built towns and farmed on hills. Some of the places where they lived and worked are still here today. We call them **historical sites**.",
+  "In this lesson you will visit six of these places on a map and find out what was found there."
+ ],
+ "why": "Historical sites help us to know how people lived before us. They are part of the heritage that all Nigerians share and must protect.",
+ "objectives": [
+  "say what a historical site is",
+  "name and find six important historical sites in Nigeria on a map",
+  "say one thing that each site is known for",
+  "explain why we should protect historical sites"
+ ],
+ "sections": [
+  {
+   "id": "what-is-a-site",
+   "title": "What is a historical site?",
+   "blocks": [
+    {
+     "type": "p",
+     "text": "A **historical site** is a place where people lived, worked, worshipped or made things a long time ago. Old walls, palaces, sacred groves and places where old objects were dug up can all be historical sites."
+    },
+    {
+     "type": "p",
+     "text": "People called **archaeologists** study these places. They dig carefully and study what they find, such as pots, tools and sculptures, to learn about the past."
+    },
+    {
+     "type": "note",
+     "text": "Some old objects are very fragile. If you ever find something very old in the ground, tell an adult so that experts can look after it."
+    }
+   ]
+  },
+  {
+   "id": "art-sites",
+   "title": "Places where wonderful art was made",
+   "blocks": [
+    {
+     "type": "figure",
+     "figure": "ng_historic_sites",
+     "caption": "Six historical sites in Nigeria",
+     "credit": "World Explorer map. Nigeria outline: Natural Earth (public domain). The map shows modern Nigeria; site positions are approximate."
+    },
+    {
+     "type": "cards",
+     "items": [
+      {
+       "title": "Nok (Kaduna State)",
+       "tone": "gold",
+       "basis": "approximate",
+       "src": [
+        "met-nok"
+       ],
+       "text": "Clay (terracotta) heads and figures. The first was found in 1943 during tin mining near the village of Nok. The Metropolitan Museum of Art dates Nok terracottas to about 500 BC–AD 200, more than 2,000 years ago. The Nok people also worked iron."
+      },
+      {
+       "title": "Igbo-Ukwu (Anambra State)",
+       "tone": "teal",
+       "basis": "approximate",
+       "src": [
+        "igbo-ukwu"
+       ],
+       "text": "Bronze objects with very fine patterns. A farmer, Isaiah Anozie, found the first ones in 1938 while digging near his home. They were made about 1,100 years ago, in the 800s AD."
+      },
+      {
+       "title": "Ile-Ife (Osun State)",
+       "tone": "teal",
+       "basis": "approximate",
+       "src": [
+        "bm-ife"
+       ],
+       "text": "Life-like heads made of copper alloy and terracotta. A famous head found in 1938 is thought to have been made about 600 to 700 years ago."
+      },
+      {
+       "title": "Benin City (Edo State)",
+       "tone": "gold",
+       "basis": "fact",
+       "src": [
+        "digital-benin"
+       ],
+       "text": "Brass plaques that once decorated the Oba’s palace, showing people and events at the royal court. Many were made in the 1500s and 1600s. In 1897 British soldiers took many of them away."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "world-heritage",
+   "title": "Two World Heritage Sites",
+   "blocks": [
+    {
+     "type": "p",
+     "text": "Some places are so important that UNESCO lists them as **World Heritage Sites**, to be protected for everyone. Nigeria has two:",
+     "src": [
+      "museum-ng"
+     ]
+    },
+    {
+     "type": "cards",
+     "items": [
+      {
+       "title": "Sukur Cultural Landscape (Adamawa State), listed in 1999",
+       "tone": "ok",
+       "basis": "fact",
+       "src": [
+        "sukur",
+        "museum-ng"
+       ],
+       "text": "On a hill in the Mandara Mountains: the stone palace of the Hidi (the chief), farm terraces cut into the hillside, and the remains of old iron-smelting furnaces. It was the first cultural landscape in Africa to be listed."
+      },
+      {
+       "title": "Osun-Osogbo Sacred Grove (Osun State), listed in 2005",
+       "tone": "ok",
+       "basis": "fact",
+       "src": [
+        "unesco-osun"
+       ],
+       "text": "A forest at Osogbo that is a shrine to Osun, the Yoruba goddess of fertility. From the 1950s, the artist Susanne Wenger and local artists made large sculptures there. It is one of the last areas of original high forest in southern Nigeria."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "protecting-sites",
+   "title": "Why we protect historical sites",
+   "blocks": [
+    {
+     "type": "list",
+     "items": [
+      "They show us how people lived, worked and believed long ago.",
+      "They are part of our heritage: they belong to all of us and to the children who come after us.",
+      "Visitors come to see them, which helps the local community.",
+      "Once a site or object is damaged or taken away, it can never be the same again."
+     ]
+    },
+    {
+     "type": "p",
+     "text": "Museums such as the National Museum in Lagos look after objects from historical sites so that everyone can learn from them."
+    }
+   ]
+  }
+ ],
+ "key_figures": [
+  {
+   "name": "Nok",
+   "kind": "place",
+   "text": "Village in Kaduna State where terracotta sculptures were first found in 1943.",
+   "when": "c. 500 BC–AD 200",
+   "approx": true,
+   "basis": "approximate",
+   "src": [
+    "met-nok"
+   ]
+  },
+  {
+   "name": "Igbo-Ukwu",
+   "kind": "place",
+   "text": "Town in Anambra State where bronze objects about 1,100 years old were found.",
+   "when": "800s AD",
+   "approx": true,
+   "basis": "approximate",
+   "src": [
+    "igbo-ukwu"
+   ]
+  },
+  {
+   "name": "Isaiah Anozie",
+   "kind": "person",
+   "text": "The Igbo-Ukwu villager who found the first bronzes in 1938 while digging near his home.",
+   "when": "1938",
+   "approx": false,
+   "basis": "fact",
+   "src": [
+    "igbo-ukwu"
+   ]
+  },
+  {
+   "name": "Thurstan Shaw",
+   "kind": "person",
+   "text": "The archaeologist who excavated at Igbo-Ukwu in 1959 at the request of the Nigerian government.",
+   "when": "1959",
+   "approx": false,
+   "basis": "fact",
+   "src": [
+    "igbo-ukwu"
+   ]
+  },
+  {
+   "name": "Ile-Ife",
+   "kind": "place",
+   "text": "Ancient city in Osun State famous for life-like heads in metal and terracotta.",
+   "basis": "fact",
+   "src": [
+    "bm-ife"
+   ]
+  },
+  {
+   "name": "Benin City",
+   "kind": "place",
+   "text": "Capital of the Benin Kingdom; its palace was decorated with brass plaques.",
+   "basis": "fact",
+   "src": [
+    "digital-benin"
+   ]
+  },
+  {
+   "name": "Sukur",
+   "kind": "place",
+   "text": "Hill settlement in Adamawa State, a World Heritage Site since 1999.",
+   "when": "1999",
+   "approx": false,
+   "basis": "fact",
+   "src": [
+    "sukur"
+   ]
+  },
+  {
+   "name": "Osun-Osogbo Sacred Grove",
+   "kind": "place",
+   "text": "Sacred forest at Osogbo, a World Heritage Site since 2005.",
+   "when": "2005",
+   "approx": false,
+   "basis": "fact",
+   "src": [
+    "unesco-osun"
+   ]
+  }
+ ],
+ "activities": [
+  {
+   "id": "site-explorer",
+   "type": "explorer",
+   "title": "Explore the sites on the map",
+   "instructions": "Choose a site to see where it is today, when it is from and what was found there.",
+   "figure": "ng_historic_sites",
+   "items": [
+    {
+     "id": "nok",
+     "title": "Nok",
+     "subtitle": "Kaduna State",
+     "basis": "approximate",
+     "src": [
+      "met-nok"
+     ],
+     "facts": [
+      [
+       "When",
+       "About 500 BC–AD 200 (more than 2,000 years ago; experts still study the exact dates)"
+      ],
+      [
+       "Found",
+       "Terracotta (clay) sculptures, signs of iron working"
+      ],
+      [
+       "First found",
+       "1943, during tin mining"
+      ]
+     ],
+     "text": "Nok sculptures often have large heads and carefully made eyes, ears and hair."
+    },
+    {
+     "id": "igbo-ukwu",
+     "title": "Igbo-Ukwu",
+     "subtitle": "Anambra State",
+     "basis": "approximate",
+     "src": [
+      "igbo-ukwu"
+     ],
+     "facts": [
+      [
+       "When",
+       "About 1,100 years ago (800s AD)"
+      ],
+      [
+       "Found",
+       "Bronze objects with fine patterns, and beads"
+      ],
+      [
+       "First found",
+       "1938, by Isaiah Anozie"
+      ]
+     ],
+     "text": "Archaeologist Thurstan Shaw dug there carefully in 1959 and found more objects."
+    },
+    {
+     "id": "ife",
+     "title": "Ile-Ife",
+     "subtitle": "Osun State",
+     "basis": "approximate",
+     "src": [
+      "bm-ife"
+     ],
+     "facts": [
+      [
+       "When",
+       "Probably 600–700 years ago (1300s–1400s)"
+      ],
+      [
+       "Found",
+       "Life-like heads of copper alloy and terracotta"
+      ]
+     ],
+     "text": "One famous head, found in 1938, is now in the British Museum in London."
+    },
+    {
+     "id": "benin",
+     "title": "Benin City",
+     "subtitle": "Edo State",
+     "basis": "fact",
+     "src": [
+      "digital-benin"
+     ],
+     "facts": [
+      [
+       "When",
+       "Many plaques were made in the 1500s and 1600s"
+      ],
+      [
+       "Found",
+       "Brass plaques from the Oba’s palace"
+      ],
+      [
+       "What happened",
+       "Taken by British soldiers in 1897"
+      ]
+     ],
+     "text": "The plaques show the Oba, chiefs, soldiers and visitors, including Portuguese traders."
+    },
+    {
+     "id": "sukur",
+     "title": "Sukur",
+     "subtitle": "Adamawa State",
+     "basis": "fact",
+     "src": [
+      "sukur"
+     ],
+     "facts": [
+      [
+       "World Heritage Site",
+       "Since 1999"
+      ],
+      [
+       "See",
+       "The Hidi’s stone palace, farm terraces, old iron furnaces"
+      ]
+     ],
+     "text": "Sukur was the first cultural landscape in Africa on the World Heritage List."
+    },
+    {
+     "id": "osogbo",
+     "title": "Osun-Osogbo Sacred Grove",
+     "subtitle": "Osun State",
+     "basis": "fact",
+     "src": [
+      "unesco-osun"
+     ],
+     "facts": [
+      [
+       "World Heritage Site",
+       "Since 2005"
+      ],
+      [
+       "See",
+       "Sacred forest, shrines and large sculptures"
+      ]
+     ],
+     "text": "The grove is the largest surviving shrine to Osun, the Yoruba goddess of fertility."
+    }
+   ]
+  },
+  {
+   "id": "match-sites",
+   "type": "practice",
+   "title": "Match each site to what it is known for",
+   "instructions": "For each site, choose what it is known for. Then press Check.",
+   "questions": [
+    {
+     "id": "p4-match-1",
+     "type": "match",
+     "q": "Match each site to what it is known for.",
+     "pairs": [
+      [
+       "Nok",
+       "Terracotta (clay) sculptures"
+      ],
+      [
+       "Igbo-Ukwu",
+       "Finely patterned bronze objects"
+      ],
+      [
+       "Benin City",
+       "Brass plaques from the Oba’s palace"
+      ],
+      [
+       "Sukur",
+       "Hill palace, farm terraces and iron furnaces"
+      ]
+     ],
+     "explain": "Nok is known for terracotta, Igbo-Ukwu for bronzes, Benin for its palace plaques and Sukur for its hill landscape."
+    }
+   ]
+  },
+  {
+   "id": "order-sites",
+   "type": "practice",
+   "title": "Put these in order, oldest first",
+   "instructions": "Move the items up or down until the oldest is at the top. Then press Check.",
+   "questions": [
+    {
+     "id": "p4-order-1",
+     "type": "order",
+     "q": "Put these in time order, oldest first.",
+     "items": [
+      "Nok terracottas are made (about 2,000 years ago)",
+      "Igbo-Ukwu bronzes are made (about 1,100 years ago)",
+      "The famous Ife head is made (about 600–700 years ago)",
+      "Sukur becomes a World Heritage Site (1999)",
+      "Osun-Osogbo Grove becomes a World Heritage Site (2005)"
+     ],
+     "explain": "Nok is the oldest. The first three dates are approximate (“about”), because experts work them out from evidence. 1999 and 2005 are exact dates, because they were written down when they happened."
+    }
+   ]
+  }
+ ],
+ "key_terms": [
+  [
+   "Historical site",
+   "A place where people lived, worked, worshipped or made things long ago."
+  ],
+  [
+   "Archaeologist",
+   "A person who studies the past by carefully digging up and examining old objects and places."
+  ],
+  [
+   "Terracotta",
+   "Clay that has been shaped and baked hard."
+  ],
+  [
+   "Bronze",
+   "A metal made by mixing copper with another metal such as tin."
+  ],
+  [
+   "Heritage",
+   "Things from the past that we value and pass on: places, objects, customs and stories."
+  ],
+  [
+   "World Heritage Site",
+   "A place that UNESCO lists as so important that it should be protected for all people."
+  ]
+ ],
+ "summary": [
+  "A historical site is a place where people lived, worked, worshipped or made things long ago.",
+  "Nok is famous for terracotta sculptures, Igbo-Ukwu for bronzes, Ile-Ife for life-like heads and Benin for palace plaques.",
+  "Nigeria’s two World Heritage Sites are Sukur (1999) and the Osun-Osogbo Sacred Grove (2005).",
+  "Some dates are exact; others are “about”, worked out from evidence.",
+  "Historical sites are our shared heritage, so we must protect them."
+ ],
+ "assessment": [
+  {
+   "id": "p4-q1",
+   "type": "mcq",
+   "q": "What is a historical site?",
+   "options": [
+    {
+     "text": "A place where people lived or made things long ago",
+     "why": "Yes: historical sites tell us about the past."
+    },
+    {
+     "text": "A new shopping centre",
+     "why": "A new building is not from long ago."
+    },
+    {
+     "text": "Any river in Nigeria",
+     "why": "Rivers are natural features; a historical site is linked to people in the past."
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "p4-q2",
+   "type": "map",
+   "q": "Look at the map. Which site is marker 1?",
+   "figure": "ng_historic_sites_numbered",
+   "marker": 1,
+   "options": [
+    {
+     "text": "Nok",
+     "why": "Yes: marker 1 is Nok, in the middle of the country (Kaduna State)."
+    },
+    {
+     "text": "Benin City",
+     "why": "Benin City is marker 5, in the south."
+    },
+    {
+     "text": "Sukur",
+     "why": "Sukur is marker 6, far to the east near Cameroon."
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "p4-q3",
+   "type": "map",
+   "q": "Look at the map again. Which marker shows Sukur?",
+   "figure": "ng_historic_sites_numbered",
+   "marker": 6,
+   "options": [
+    {
+     "text": "Marker 6",
+     "why": "Yes: Sukur is in Adamawa State in the north-east, near Cameroon."
+    },
+    {
+     "text": "Marker 2",
+     "why": "Marker 2 is Igbo-Ukwu in Anambra State."
+    },
+    {
+     "text": "Marker 3",
+     "why": "Marker 3 is Ile-Ife in Osun State."
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "p4-q4",
+   "type": "truefalse",
+   "statement": "The Igbo-Ukwu bronzes were first found by a farmer digging near his home.",
+   "answer": true,
+   "explain": "Isaiah Anozie found the first bronzes in 1938 while digging near his home."
+  },
+  {
+   "id": "p4-q5",
+   "type": "truefalse",
+   "statement": "Nigeria has five World Heritage Sites.",
+   "answer": false,
+   "explain": "Nigeria has two: Sukur Cultural Landscape (1999) and the Osun-Osogbo Sacred Grove (2005)."
+  },
+  {
+   "id": "p4-q6",
+   "type": "fill",
+   "text": "Clay that is shaped and baked hard is called ___.",
+   "answers": [
+    "terracotta"
+   ],
+   "explain": "Nok sculptures are made of terracotta."
+  },
+  {
+   "id": "p4-q7",
+   "type": "mcq",
+   "q": "Why do we say the Nok sculptures are “about” 2,000 years old?",
+   "options": [
+    {
+     "text": "Because experts work out the age from evidence, so it is not an exact date",
+     "why": "Yes: nobody wrote down the date, so experts estimate it."
+    },
+    {
+     "text": "Because nobody knows anything about Nok",
+     "why": "We know quite a lot from the sculptures and the places they were found."
+    },
+    {
+     "text": "Because the sculptures were made last year",
+     "why": "They are very old, not new."
+    }
+   ],
+   "answer": 0
+  },
+  {
+   "id": "p4-q8",
+   "type": "scenario",
+   "situation": "On a school trip to a historical site, a classmate wants to scratch their name on an old wall.",
+   "options": [
+    {
+     "text": "Ask them kindly not to, and tell the teacher if they continue",
+     "verdict": "best",
+     "why": "This protects the site and keeps everyone safe."
+    },
+    {
+     "text": "Laugh and take a photo",
+     "verdict": "poor",
+     "why": "This encourages damage to something that cannot be replaced."
+    },
+    {
+     "text": "Say nothing",
+     "verdict": "acceptable",
+     "why": "Staying out of trouble is understandable, but the wall may still be damaged."
+    }
+   ],
+   "explain": "Historical sites belong to everyone. Once damaged, they cannot be the same again."
+  },
+  {
+   "id": "p4-q9",
+   "type": "short",
+   "prompt": "In one or two sentences, say why we should protect historical sites.",
+   "model": "We should protect historical sites because they show us how people lived long ago and they are part of the heritage we share and pass on.",
+   "points": [
+    "Mentions learning about the past",
+    "Mentions heritage or sharing with others",
+    "Gives a clear reason in a full sentence"
+   ]
+  }
+ ],
+ "further": [
+  {
+   "title": "Historical sites in Nigeria in more detail (JSS 1)",
+   "why": "In JSS 1 you study Nok, Ile-Ife, Benin and Igbo-Ukwu more closely."
+  },
+  {
+   "title": "Visit a museum near you",
+   "why": "Many states have a museum where you can see objects from historical sites."
+  }
+ ],
+ "sources": [
+  {
+   "id": "met-nok",
+   "title": "The Metropolitan Museum of Art: Nok Terracottas (500 B.C.–200 A.D.)",
+   "url": "https://www.metmuseum.org/toah/hd/nok/hd_nok.htm",
+   "kind": "museum"
+  },
+  {
+   "id": "bm-ife",
+   "title": "Bronze Head from Ife (British Museum Af1939,34.1), summary article",
+   "url": "https://en.wikipedia.org/wiki/Bronze_Head_from_Ife",
+   "kind": "reference"
+  },
+  {
+   "id": "igbo-ukwu",
+   "title": "Igbo-Ukwu (archaeological site), summary article",
+   "url": "https://en.wikipedia.org/wiki/Igbo-Ukwu",
+   "kind": "reference"
+  },
+  {
+   "id": "digital-benin",
+   "title": "Digital Benin: Benin relief plaque, British Museum Af1898,0115.11",
+   "url": "https://digitalbenin.org/catalogue/5_Af1898011511",
+   "kind": "museum"
+  },
+  {
+   "id": "unesco-osun",
+   "title": "UNESCO World Heritage Centre: Osun-Osogbo Sacred Grove (inscribed 2005)",
+   "url": "https://whc.unesco.org/en/list/1118/documents",
+   "kind": "official"
+  },
+  {
+   "id": "sukur",
+   "title": "Sukur Cultural Landscape (UNESCO World Heritage Site, 1999), summary article",
+   "url": "https://en.wikipedia.org/wiki/Sukur",
+   "kind": "reference"
+  },
+  {
+   "id": "museum-ng",
+   "title": "National Commission for Museums and Monuments: UNESCO World Heritage Sites in Nigeria",
+   "url": "https://museum.ng/?p=314",
+   "kind": "official"
+  }
+ ]
+}

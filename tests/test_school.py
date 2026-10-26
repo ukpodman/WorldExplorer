@@ -125,10 +125,10 @@ class ContentTests(unittest.TestCase):
         text = text.replace("no question is guaranteed to appear", "")
         for claim in ("approved by waec", "endorsed by nerdc", "certified by", "guaranteed to appear", "will appear in waec"):
             self.assertNotIn(claim, text)
-        planned = [s for s in school.subjects() if s["status"] == "planned"]
-        self.assertEqual({s["id"] for s in planned}, {"nigerian-history", "citizenship-heritage"})
+        # Nigerian History and Citizenship and Heritage Studies are interactive subjects (tests/test_school_interactive.py)
+        self.assertEqual([s["id"] for s in school.subjects() if s["status"] == "planned"], [])
         with self.assertRaises(school.ContentError):
-            school.curriculum("nigerian-history")
+            school.curriculum("no-such-subject")
 
 
 # =========================================================================== progress, search, practice
@@ -400,8 +400,10 @@ class SchoolAppTests(unittest.TestCase):
         before = {k: (at.session_state[k] if k in at.session_state else None)
                   for k in ("points", "earned_badges", "quiz", "rounds_finished", "stats", "streak")}
         self.assertTrue(any("You are learning as a guest" in m.value for m in at.markdown))
-        self.assertEqual(self.keys(at, "sl_open_"), ["sl_open_geography"])          # planned subjects have no button
+        self.assertEqual(self.keys(at, "sl_open_"), ["sl_open_geography", "sl_open_nigerian-history", "sl_open_citizenship-heritage"])
         at.text_input(key="sl_subject_search").input("citizenship").run()
+        self.assertEqual(self.keys(at, "sl_open_"), ["sl_open_citizenship-heritage"])
+        at.text_input(key="sl_subject_search").input("no such subject").run()
         self.assertEqual(self.keys(at, "sl_open_"), [])
         at.text_input(key="sl_subject_search").input("").run()
         at.button(key="sl_open_geography").click().run()

@@ -1,0 +1,157 @@
+{
+ "subject": "citizenship-heritage",
+ "version": 1,
+ "note": "Citizenship and Heritage Studies is a new core senior secondary subject from the 2025/26 session. It brings together Nigerian History, Civic Education and Social Studies (Federal Ministry of Education, 3 September 2025). The official NERDC curriculum document was not available to us, and published schemes of work disagree about the SSS 1 topics, so only SSS 1 First Term topics that appear in published schemes are listed. SSS 2 and SSS 3 topics will be added once they can be checked. World Explorer does not prepare for any examination in this subject.",
+ "sources": [
+  {
+   "id": "fme-2025",
+   "title": "Federal Ministry of Education press release, 3 September 2025: “FG overhauls curriculum”",
+   "url": "https://education.gov.ng/wp-content/uploads/2025/09/FG-OVERHAULS-CURRICULUM-1.pdf",
+   "kind": "official",
+   "note": "Confirms that Nigerian History is compulsory from Primary 1 to JSS 3 and that Citizenship and Heritage Studies is a new core senior secondary subject, from the 2025/26 session. It lists subjects only, not topics."
+  },
+  {
+   "id": "nerdc-offerings",
+   "title": "NERDC: Basic and Senior Secondary Education Curriculum Offerings",
+   "url": "https://nerdc.gov.ng/content_manager/Basic%20and%20Senior%20Secondary%20Education%20Curriculum%20Offerings.pdf",
+   "kind": "official",
+   "note": "Official subject lists by level. NERDC asked the public to disregard unofficial versions of the new curriculum; the revised curricula start with each new cycle (Primary 1, Primary 4, JSS 1, SS 1)."
+  },
+  {
+   "id": "sow-chs-a",
+   "title": "It’s My School Library: Citizenship and Heritage Studies SS1 First Term scheme of work (new NERDC curriculum)",
+   "url": "https://itsmyschoollibrary.wordpress.com/2025/09/22/new-scheme-of-work-digital-technology-citizenship-heritage-studies-ss1-first-term/",
+   "kind": "scheme",
+   "note": "Third-party scheme of work; it does not name the NERDC document it follows."
+  },
+  {
+   "id": "sow-chs-b",
+   "title": "CareerConnects: Citizenship and Heritage Studies SS1–3 scheme of work",
+   "url": "https://careerconnects.com.ng/wp-content/uploads/2025/09/Citizenship-and-Heritage-Studies-ss1-3.pdf",
+   "kind": "scheme",
+   "note": "Third-party scheme of work without source attribution; its SS1 topic order differs from the scheme above."
+  }
+ ],
+ "classes": [
+  {
+   "id": "sss-1",
+   "title": "SSS 1",
+   "stage": "SSS",
+   "terms": [
+    {
+     "id": "first",
+     "title": "First Term",
+     "topics": [
+      {
+       "id": "sss1-meaning-citizenship",
+       "title": "Meaning and importance of citizenship (including how citizenship is acquired)",
+       "verification": "scheme",
+       "sources": [
+        "sow-chs-a",
+        "sow-chs-b"
+       ],
+       "lessons": [
+        "sss1-citizenship"
+       ]
+      },
+      {
+       "id": "sss1-good-citizen",
+       "title": "Qualities of a good citizen",
+       "verification": "scheme",
+       "sources": [
+        "sow-chs-a",
+        "sow-chs-b"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "sss1-duties",
+       "title": "Duties and responsibilities of citizens",
+       "verification": "scheme",
+       "sources": [
+        "sow-chs-a",
+        "sow-chs-b"
+       ],
+       "lessons": [
+        "sss1-citizenship"
+       ]
+      },
+      {
+       "id": "sss1-national-symbols",
+       "title": "National symbols and their importance",
+       "verification": "scheme",
+       "sources": [
+        "sow-chs-a",
+        "sow-chs-b"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "sss1-democracy-rule-of-law",
+       "title": "Democracy and the rule of law",
+       "verification": "scheme",
+       "sources": [
+        "sow-chs-a",
+        "sow-chs-b"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "sss1-peace-conflict",
+       "title": "Peace and conflict resolution",
+       "verification": "scheme",
+       "sources": [
+        "sow-chs-a",
+        "sow-chs-b"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "sss1-human-rights",
+       "title": "Human rights and dignity",
+       "verification": "scheme",
+       "sources": [
+        "sow-chs-a",
+        "sow-chs-b"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "sss1-corruption",
+       "title": "Corruption and its consequences",
+       "verification": "scheme",
+       "sources": [
+        "sow-chs-a"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "sss1-patriotism-unity",
+       "title": "Patriotism and national unity",
+       "verification": "scheme",
+       "sources": [
+        "sow-chs-a",
+        "sow-chs-b"
+       ],
+       "lessons": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sss-2",
+   "title": "SSS 2",
+   "stage": "SSS",
+   "note": "Topics will be added once they can be checked against the official curriculum.",
+   "terms": []
+  },
+  {
+   "id": "sss-3",
+   "title": "SSS 3",
+   "stage": "SSS",
+   "note": "Topics will be added once they can be checked against the official curriculum.",
+   "terms": []
+  }
+ ]
+}

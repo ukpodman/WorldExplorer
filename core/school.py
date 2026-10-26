@@ -63,25 +63,42 @@ def subject(subject_id: str) -> dict | None:
     return next((s for s in subjects() if s["id"] == subject_id), None)
 
 
+def interactive(subject_id: str) -> bool:
+    """Nigerian History and Citizenship and Heritage Studies use the interactive lesson engine (core/lessons.py)."""
+    return (subject(subject_id) or {}).get("engine") == "interactive"
+
+
 @lru_cache(maxsize=8)
 def curriculum(subject_id: str) -> dict:
     s = subject(subject_id)
     if not s or s.get("status") != "available":
         raise ContentError(f"subject {subject_id!r} is not available")
+    if interactive(subject_id):
+        from . import lessons
+        return lessons.curriculum(subject_id)
     return _read(ROOT / s["curriculum"])
 
 
 def lesson_ids(subject_id: str) -> list[str]:
     """Lessons in curriculum order (only topics that have a full lesson)."""
+    if interactive(subject_id):
+        from . import lessons
+        return lessons.lesson_ids(subject_id)
     return [t["id"] for sec in curriculum(subject_id)["sections"] for t in sec["topics"] if t.get("lesson")]
 
 
 def topic_count(subject_id: str) -> int:
+    if interactive(subject_id):
+        from . import lessons
+        return lessons.topic_count(subject_id)
     return sum(len(sec["topics"]) for sec in curriculum(subject_id)["sections"])
 
 
 @lru_cache(maxsize=64)
 def lesson(subject_id: str, lesson_id: str) -> dict:
+    if interactive(subject_id):
+        from . import lessons
+        return lessons.lesson(subject_id, lesson_id)
     if lesson_id not in lesson_ids(subject_id):
         raise ContentError(f"unknown lesson {lesson_id!r}")
     data = _read(ROOT / subject_id / "lessons" / f"{lesson_id}.json")
@@ -134,6 +151,9 @@ def validate_lesson(d: dict) -> None:
 
 def pages(d: dict) -> list[dict]:
     """The lesson as pages, read one at a time: the student's reading position is a page index."""
+    if d.get("format") == "interactive":
+        from . import lessons
+        return lessons.pages(d)
     out = [{"kind": "intro", "id": "intro", "title": "Introduction and objectives"}]
     out += [{"kind": "section", "id": s["id"], "title": s["title"], "section": s} for s in d["sections"]]
     out.append({"kind": "definitions", "id": "definitions", "title": "Key definitions"})
@@ -336,7 +356,8 @@ def find_lessons(subject_id: str, progress: dict, query: str = "", section: str 
         if level != "All" and level not in d.get("level", []):
             continue
         text = " ".join([d["title"], d.get("short", "")] + d["objectives"] + [x["title"] for x in d["sections"]]
-                        + [t for t, _ in d["definitions"]] + d.get("level", []))
+                        + [t for t, _ in d.get("definitions", d.get("key_terms", []))] + d.get("level", [])
+                        + ([d["class"]] if d.get("class") else []))
         if _matches(text, needle):
             out.append(lesson_id)
     return out

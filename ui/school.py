@@ -1,7 +1,9 @@
 """School Learning (Learn → 📚 School Learning): Nigerian SSS study notes, reading progress and topic practice.
 
 Reusable for any subject in data/school/subjects.json: the screens below only read the subject, curriculum and lesson
-files through core/school.py, so Nigerian History or Citizenship and Heritage Studies are added as data.
+files through core/school.py. Geography uses the screens in this module; subjects with "engine": "interactive"
+(Nigerian History; Citizenship and Heritage Studies) use the class → term → topic screens and interactive lessons in
+ui/school_interactive.py, with the same progress records, account saving and device cookie.
 
 Screens (st.session_state.school_view): "home" → "topics" (one subject) → "lesson" (one page at a time) → "practice";
 "progress" is the student's dashboard. English only (School Learning is written for Nigerian SSS English-medium
@@ -181,33 +183,93 @@ def device_unpack(value: str | None) -> tuple[str, dict]:
         return "", {}
 
 
+DEVICE_MAX = 3500          # the cookie's size limit (core/cookies.py checks the same pattern)
+
+
+def _row(rec: dict) -> list:
+    row = [int(rec.get(k, 0)) if not isinstance(rec.get(k), bool) else int(rec[k]) for k in DEVICE_FIELDS]
+    return row + [rec.get("page_id", ""), rec.get("updated_at", "")]
+
+
+def device_pack_all(all_progress: dict) -> str:
+    """Version 2 of the cookie: every available subject's progress, {"v": 2, "p": {subject: {lesson: row}}}. If it would
+    be too large, the least recently updated lessons are left out (the newest progress is always kept)."""
+    import base64
+    import json
+    rows = []
+    for subject_id, prog in (all_progress or {}).items():
+        if not (school.subject(subject_id) or {}).get("status") == "available":
+            continue
+        ids = set(school.lesson_ids(subject_id))
+        rows += [(str(rec.get("updated_at", "")), subject_id, lesson_id, _row(rec))
+                 for lesson_id, rec in (prog or {}).items() if lesson_id in ids and isinstance(rec, dict)]
+    rows.sort(reverse=True)
+    while True:
+        data: dict = {}
+        for _, subject_id, lesson_id, row in rows:
+            data.setdefault(subject_id, {})[lesson_id] = row
+        raw = json.dumps({"v": 2, "p": data}, separators=(",", ":"))
+        value = base64.urlsafe_b64encode(raw.encode()).decode().rstrip("=")
+        if len(value) <= DEVICE_MAX or not rows:
+            return value
+        rows.pop()
+
+
+def device_unpack_all(value: str | None) -> dict:
+    """{subject: {lesson_id: record}} from a version 2 cookie, or from a version 1 cookie (one subject)."""
+    import base64
+    import json
+    if not value:
+        return {}
+    try:
+        data = json.loads(base64.urlsafe_b64decode(value + "=" * (-len(value) % 4)).decode())
+    except Exception:
+        return {}
+    if not isinstance(data, dict):
+        return {}
+    if data.get("v") != 2:
+        subject_id, saved = device_unpack(value)
+        return {subject_id: saved} if saved else {}
+    out = {}
+    for subject_id, rows in dict(data.get("p") or {}).items():
+        if not isinstance(rows, dict) or (school.subject(str(subject_id)) or {}).get("status") != "available":
+            continue
+        one = base64.urlsafe_b64encode(json.dumps({"v": 1, "s": subject_id, "p": rows}).encode()).decode().rstrip("=")
+        _, saved = device_unpack(one)
+        if saved:
+            out[subject_id] = saved
+    return out
+
+
 def _device_restore() -> None:
     """Once per session: a guest gets back the progress kept on this device; a signed-in student is only offered it."""
     if SS.get("school_device_checked"):
         return
     SS.school_device_checked = True
-    subject_id, saved = device_unpack(cookies.read(DEVICE_COOKIE))
-    if not saved:
+    found = device_unpack_all(cookies.read(DEVICE_COOKIE))
+    if not found:
         return
     if _owner() != "guest":
         offer = SS.setdefault("school_guest_offer", {})
-        mine = offer.setdefault(subject_id, {})
-        for lesson_id, rec in saved.items():
-            if lesson_id not in mine or str(rec.get("updated_at", "")) >= str(mine[lesson_id].get("updated_at", "")):
-                mine[lesson_id] = rec
+        for subject_id, saved in found.items():
+            mine = offer.setdefault(subject_id, {})
+            for lesson_id, rec in saved.items():
+                if lesson_id not in mine or str(rec.get("updated_at", "")) >= str(mine[lesson_id].get("updated_at", "")):
+                    mine[lesson_id] = rec
         SS.school_offer_on_device = True
         return
     SS.school_device_on = True
-    mine = SS.school_progress.setdefault(subject_id, {})
-    for lesson_id, rec in saved.items():
-        here = mine.get(lesson_id)
-        if not here or str(rec.get("updated_at", "")) >= str(here.get("updated_at", "")):
-            mine[lesson_id] = rec
+    for subject_id, saved in found.items():
+        mine = SS.school_progress.setdefault(subject_id, {})
+        for lesson_id, rec in saved.items():
+            here = mine.get(lesson_id)
+            if not here or str(rec.get("updated_at", "")) >= str(here.get("updated_at", "")):
+                mine[lesson_id] = rec
 
 
 def _device_write() -> None:
     if SS.get("school_device_on") and _owner() == "guest":
-        cookies.write(DEVICE_COOKIE, device_pack(progress(SS.school_subject)), DEVICE_DAYS * 86400)
+        cookies.write(DEVICE_COOKIE, device_pack_all(SS.get("school_progress", {})), DEVICE_DAYS * 86400)
 
 
 def _offer() -> dict:
@@ -370,6 +432,9 @@ def go(view: str, lesson_id: str | None = None, page: int | None = None) -> None
     subject_id = SS.school_subject
     if lesson_id:
         SS.school_lesson = lesson_id
+    if view == "practice" and school.interactive(subject_id) and SS.school_lesson:
+        pages_ = school.pages(school.lesson(subject_id, SS.school_lesson))   # interactive lessons: the knowledge check page
+        view, page = "lesson", school.page_index(pages_, "knowledge-check", len(pages_) - 1)
     if view == "lesson" and SS.school_lesson:
         d = school.lesson(subject_id, SS.school_lesson)
         pages_ = school.pages(d)
@@ -389,6 +454,17 @@ def go(view: str, lesson_id: str | None = None, page: int | None = None) -> None
 def open_subject(subject_id: str) -> None:
     SS.school_subject = subject_id
     SS.school_view = "topics"
+
+
+def continue_subject(subject_id: str) -> None:
+    """Continue Learning on a subject card: the lesson to continue (where the student stopped), or the first lesson."""
+    SS.school_subject = subject_id
+    ids = school.lesson_ids(subject_id)
+    if not ids:
+        open_subject(subject_id)
+        return
+    prog = progress(subject_id)
+    go("lesson", school.continue_target(subject_id, prog) if prog else ids[0])
 
 
 def _turn(delta: int) -> None:
@@ -537,10 +613,12 @@ def _home() -> None:
     subject_id = SS.school_subject
     prog = progress(subject_id)
     html('<div class="sl-intro"><h2>School Learning</h2>'
-         '<p>Study notes, maps and practice for Nigerian secondary-school students. Geography (SSS 1–3) follows the WAEC syllabus.</p>'
+         '<p>Study notes, maps, interactive lessons and practice for Nigerian students. Geography (SSS 1–3) follows the WAEC syllabus; '
+         'Nigerian History (Primary and JSS) and Citizenship and Heritage Studies (SSS) follow the subjects introduced from the '
+         '2025/26 session, starting with a few lessons.</p>'
          f'<div class="sl-intro-meta">{_review_badge()}{_chip("English")}{_chip("No account needed")}</div></div>')
     _guest_offer_box()
-    if prog:
+    if prog and school.lesson_ids(subject_id):
         _continue_card(subject_id, prog, "sl_continue_btn")
     _restore_widget("sl_subject_search", "")
     with st.container(key="sl_subject_bar", horizontal=True, vertical_alignment="center"):
@@ -556,14 +634,23 @@ def _home() -> None:
         for s in shown:
             with st.container(key=f"sl_subject_{s['id']}"):
                 icon = ICONS.get(s.get("icon"), "📘")
-                if s.get("status") == "available":
-                    meta = f'{len(school.lesson_ids(s["id"]))} full lessons · {school.topic_count(s["id"])} syllabus topics mapped'
+                if s.get("status") == "available" and school.interactive(s["id"]):
+                    from . import school_interactive
+                    school_interactive.subject_card(s, progress(s["id"]))
+                    _card_buttons(s)
+                elif s.get("status") == "available":
+                    o = school.overview(s["id"], progress(s["id"]))
                     html(f'<div class="sl-subject" style="--subject:{escape(s.get("colour", "#1F5F7A"))}">'
                          f'<div class="sl-subject-top"><span class="sl-subject-icon" aria-hidden="true">{icon}</span>'
                          f'<div><div class="sl-subject-name">{escape(s["title"])}</div><div class="sl-muted">{escape(s.get("level", ""))}</div></div></div>'
-                         f'<p>{escape(s.get("summary", ""))}</p><div class="sl-muted">{escape(meta)}</div></div>')
-                    st.button(f"Open {s['title']}", key=f"sl_open_{s['id']}", type="primary", width="stretch",
-                              on_click=open_subject, args=(s["id"],))
+                         f'<p>{escape(s.get("summary", ""))}</p>'
+                         f'<div class="sx-card-facts"><div><b>{o["lessons"]} full lessons</b><span>educational review pending</span></div>'
+                         f'<div><b>{school.topic_count(s["id"])} topics</b><span>syllabus topics mapped</span></div></div>'
+                         f'<div class="sl-card-meta">{_levels(s.get("levels", []))}</div>'
+                         f'{_bar(round(100 * o["completed"] / o["lessons"]) if o["lessons"] else 0, s["title"] + " progress")}'
+                         f'<div class="sl-card-foot"><span>{o["completed"]} of {o["lessons"]} completed</span>'
+                         f'<span>{o["completed"] + o["in_progress"]} started</span></div></div>')
+                    _card_buttons(s)
                 else:   # no button: nothing pretends to be ready
                     html(f'<div class="sl-subject sl-subject-soon"><div class="sl-subject-top"><span class="sl-subject-icon" aria-hidden="true">{icon}</span>'
                          f'<div><div class="sl-subject-name">{escape(s["title"])}</div><div class="sl-muted">{escape(s.get("level", ""))}</div></div></div>'
@@ -574,6 +661,14 @@ def _home() -> None:
     html(f'<p class="sl-disclaimer">🎓 {escape(NOT_REWARDS)}</p>')
 
 
+def _card_buttons(s: dict) -> None:
+    started = any(progress(s["id"]).get(i) for i in school.lesson_ids(s["id"]))
+    with st.container(key=f"sl_card_btns_{s['id']}", horizontal=True):
+        st.button("Continue learning" if started else "Start learning", key=f"sl_cont_{s['id']}", type="primary",
+                  icon=":material/menu_book:", on_click=continue_subject, args=(s["id"],), disabled=not school.lesson_ids(s["id"]))
+        st.button("Explore subject", key=f"sl_open_{s['id']}", icon=":material/explore:", on_click=open_subject, args=(s["id"],))
+
+
 def _continue_card(subject_id: str, prog: dict, key: str) -> None:
     """Continue learning: the most recent unfinished lesson, at the page (section) where the student stopped."""
     target = school.continue_target(subject_id, prog)
@@ -582,8 +677,9 @@ def _continue_card(subject_id: str, prog: dict, key: str) -> None:
     pages_ = school.pages(d)
     here = school.page_index(pages_, rec.get("page_id"), rec.get("page", 0))
     with st.container(key="sl_continue"):
-        html(f'<div class="sl-continue"><div class="sl-kicker">Continue learning</div>'
-             f'<div class="sl-continue-title">Lesson {d["number"]}: {escape(d["title"])}</div>'
+        html(f'<div class="sl-continue"><div class="sl-kicker">Continue learning · {escape(school.subject(subject_id)["title"])}</div>'
+             f'<div class="sl-continue-title">' + (escape(d["class"]) + " · " if d.get("class") else f'Lesson {d["number"]}: ')
+             + f'{escape(d["title"])}</div>'
              f'<div class="sl-muted">{escape(pages_[here]["title"])} · page {here + 1} of {len(pages_)} · '
              f'{school.reading_percent(rec, len(pages_))}% read</div>{_bar(school.reading_percent(rec, len(pages_)), "Reading progress")}</div>')
         st.button("Continue learning", key=key, type="primary", icon=":material/menu_book:", on_click=go, args=("lesson", target))
@@ -603,6 +699,10 @@ def _overview_tiles(o: dict, compact: bool = False) -> None:
 # --------------------------------------------------------------------------- topics: subject → level → topic → lesson
 
 def _topics() -> None:
+    if school.interactive(SS.school_subject):
+        from . import school_interactive
+        school_interactive.topics_view()
+        return
     subject_id = SS.school_subject
     s, cur, prog = school.subject(subject_id), school.curriculum(subject_id), progress(subject_id)
     with st.container(key="sl_topbar", horizontal=True, vertical_alignment="center"):
@@ -763,6 +863,10 @@ def _page_body(subject_id: str, d: dict, page: dict) -> None:
 
 
 def _lesson() -> None:
+    if school.interactive(SS.school_subject):
+        from . import school_interactive
+        school_interactive.lesson_view()
+        return
     subject_id, lesson_id = SS.school_subject, SS.school_lesson
     if lesson_id not in school.lesson_ids(subject_id):
         SS.school_view = "topics"
@@ -841,6 +945,10 @@ def _lesson() -> None:
 
 def _practice() -> None:
     subject_id = SS.school_subject
+    if school.interactive(subject_id):          # interactive lessons have their knowledge check inside the lesson
+        SS.school_view = "lesson"
+        _lesson()
+        return
     session = SS.get("school_practice")
     if not session or session["lesson"] not in school.lesson_ids(subject_id):
         SS.school_view = "topics"
@@ -937,6 +1045,10 @@ def _practice_result(subject_id: str, d: dict, session: dict) -> None:
 # --------------------------------------------------------------------------- progress dashboard
 
 def _progress() -> None:
+    if school.interactive(SS.school_subject):
+        from . import school_interactive
+        school_interactive.progress_view()
+        return
     subject_id = SS.school_subject
     prog = progress(subject_id)
     o = school.overview(subject_id, prog)
@@ -995,6 +1107,10 @@ def _school() -> None:
     _ensure_owner()
     _device_restore()
     _restore(SS.school_subject)
+    if SS.school_view == "home":                # the home cards show every subject's progress
+        for s in school.subjects():
+            if s.get("status") == "available" and s["id"] != SS.school_subject:
+                _restore(s["id"])
     with st.container(key=f"school_{SS.school_view if SS.school_view in VIEWS else 'home'}"):
         VIEWS.get(SS.school_view, _home)()
         if SS.school_view in ("home", "topics", "lesson"):

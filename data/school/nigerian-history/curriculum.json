@@ -1,0 +1,725 @@
+{
+ "subject": "nigerian-history",
+ "version": 1,
+ "note": "Nigerian History is compulsory from Primary 1 to JSS 3 under the revised curriculum announced by the Federal Ministry of Education on 3 September 2025. The official NERDC subject curriculum document (topics and performance objectives) was not available to us. The class and term topics below are taken from published schemes of work that say they follow the NERDC curriculum; they have not been checked against the official document and may differ from your school's scheme. Always follow your teacher.",
+ "sources": [
+  {
+   "id": "fme-2025",
+   "title": "Federal Ministry of Education press release, 3 September 2025: “FG overhauls curriculum”",
+   "url": "https://education.gov.ng/wp-content/uploads/2025/09/FG-OVERHAULS-CURRICULUM-1.pdf",
+   "kind": "official",
+   "note": "Confirms that Nigerian History is compulsory from Primary 1 to JSS 3 and that Citizenship and Heritage Studies is a new core senior secondary subject, from the 2025/26 session. It lists subjects only, not topics."
+  },
+  {
+   "id": "nerdc-offerings",
+   "title": "NERDC: Basic and Senior Secondary Education Curriculum Offerings",
+   "url": "https://nerdc.gov.ng/content_manager/Basic%20and%20Senior%20Secondary%20Education%20Curriculum%20Offerings.pdf",
+   "kind": "official",
+   "note": "Official subject lists by level. NERDC asked the public to disregard unofficial versions of the new curriculum; the revised curricula start with each new cycle (Primary 1, Primary 4, JSS 1, SS 1)."
+  },
+  {
+   "id": "sow-primary",
+   "title": "SchemeofWork.com: Nigerian History curriculum scheme of work for primary school",
+   "url": "https://schemeofwork.com/nigerian-history-curriculum-scheme-of-work-for-primary-school/",
+   "kind": "scheme",
+   "note": "Third-party scheme of work (says it complies with the new NERDC curriculum). Primary 5 and 6 are given as topic lists without terms."
+  },
+  {
+   "id": "sow-jss",
+   "title": "SchemeofWork.com: Nigerian History curriculum scheme of work for junior secondary school",
+   "url": "https://schemeofwork.com/nigerian-history-curriculum-scheme-of-work-for-junior-secondary-school/",
+   "kind": "scheme",
+   "note": "Third-party scheme of work (says it complies with the new NERDC curriculum); no edition or year is given."
+  }
+ ],
+ "classes": [
+  {
+   "id": "primary-1",
+   "title": "Primary 1",
+   "stage": "Primary",
+   "terms": [
+    {
+     "id": "first",
+     "title": "First Term",
+     "topics": [
+      {
+       "id": "p1-meaning-of-history",
+       "title": "Meaning of history",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p1-family-history",
+       "title": "Meaning of family history",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p1-community",
+       "title": "Peoples and places in the community",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      }
+     ]
+    },
+    {
+     "id": "second",
+     "title": "Second Term",
+     "topics": [
+      {
+       "id": "p1-heroes-community",
+       "title": "Heroes and heroines in the community",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p1-traditional-rulers",
+       "title": "Meaning of traditional rulers",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      }
+     ]
+    },
+    {
+     "id": "third",
+     "title": "Third Term",
+     "topics": [
+      {
+       "id": "p1-title-holders",
+       "title": "Title holders",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p1-lg-chairperson",
+       "title": "The local government chairperson",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "primary-2",
+   "title": "Primary 2",
+   "stage": "Primary",
+   "terms": [
+    {
+     "id": "first",
+     "title": "First Term",
+     "topics": [
+      {
+       "id": "p2-indigenous-people",
+       "title": "Indigenous people of the state",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p2-nigerian-peoples",
+       "title": "Nigerian peoples",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      }
+     ]
+    },
+    {
+     "id": "second",
+     "title": "Second Term",
+     "topics": [
+      {
+       "id": "p2-major-towns",
+       "title": "Major towns in the state",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p2-heroes-state",
+       "title": "Heroes and heroines in the state",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      }
+     ]
+    },
+    {
+     "id": "third",
+     "title": "Third Term",
+     "topics": [
+      {
+       "id": "p2-history-of-state",
+       "title": "History of the state",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p2-traditional-rulers-state",
+       "title": "Major traditional rulers in the state",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "primary-3",
+   "title": "Primary 3",
+   "stage": "Primary",
+   "terms": [
+    {
+     "id": "first",
+     "title": "First Term",
+     "topics": [
+      {
+       "id": "p3-nigerian-peoples",
+       "title": "Nigerian peoples",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      }
+     ]
+    },
+    {
+     "id": "second",
+     "title": "Second Term",
+     "topics": [
+      {
+       "id": "p3-early-heroes",
+       "title": "Some early heroes and heroines in Nigeria",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      }
+     ]
+    },
+    {
+     "id": "third",
+     "title": "Third Term",
+     "topics": [
+      {
+       "id": "p3-towns",
+       "title": "Towns in Nigeria",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "primary-4",
+   "title": "Primary 4",
+   "stage": "Primary",
+   "terms": [
+    {
+     "id": "first",
+     "title": "First Term",
+     "topics": [
+      {
+       "id": "p4-four-regions",
+       "title": "The four early regions in Nigeria",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p4-state-creation",
+       "title": "States creation in Nigeria",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p4-colonial-headquarters",
+       "title": "Colonial administrative headquarters of the British protectorates",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p4-federal-capitals",
+       "title": "Federal capitals",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      }
+     ]
+    },
+    {
+     "id": "second",
+     "title": "Second Term",
+     "topics": [
+      {
+       "id": "p4-heroes-nigeria",
+       "title": "Heroes and heroines in Nigeria",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p4-nigerian-peoples",
+       "title": "Some Nigerian peoples",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      }
+     ]
+    },
+    {
+     "id": "third",
+     "title": "Third Term",
+     "topics": [
+      {
+       "id": "p4-historical-sites",
+       "title": "Important historical features and sites in Nigeria",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": [
+        "p4-historical-sites"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "primary-5",
+   "title": "Primary 5",
+   "stage": "Primary",
+   "note": "The published scheme lists Primary 5 topics without assigning them to terms.",
+   "terms": [
+    {
+     "id": "unassigned",
+     "title": "Term not confirmed",
+     "topics": [
+      {
+       "id": "p5-british-rule",
+       "title": "British rule in Nigeria",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p5-nationalism",
+       "title": "Nationalists and nationalism in Nigeria",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p5-independence",
+       "title": "Nigerian independence",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p5-traditional-religions",
+       "title": "Traditional religions in Nigeria",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p5-islam",
+       "title": "Islam in Nigeria",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p5-christianity",
+       "title": "Christianity in Nigeria",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p5-economy",
+       "title": "Economy, trade and commerce (occupations)",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "primary-6",
+   "title": "Primary 6",
+   "stage": "Primary",
+   "note": "The published scheme lists Primary 6 topics without assigning them to terms.",
+   "terms": [
+    {
+     "id": "unassigned",
+     "title": "Term not confirmed",
+     "topics": [
+      {
+       "id": "p6-civil-rule",
+       "title": "Civil rule in Nigeria",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p6-military-rule",
+       "title": "Military rule in Nigeria",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p6-oil-economy",
+       "title": "Oil economy",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "p6-industries",
+       "title": "The growth of industries in Nigeria",
+       "verification": "scheme",
+       "sources": [
+        "sow-primary"
+       ],
+       "lessons": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "jss-1",
+   "title": "JSS 1",
+   "stage": "JSS",
+   "terms": [
+    {
+     "id": "first",
+     "title": "First Term",
+     "topics": [
+      {
+       "id": "jss1-meaning-of-history",
+       "title": "Meaning of history",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": [
+        "jss1-sources-of-history"
+       ]
+      },
+      {
+       "id": "jss1-sources-of-history",
+       "title": "Sources of history: primary, secondary and tertiary, and how to access them",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": [
+        "jss1-sources-of-history"
+       ]
+      },
+      {
+       "id": "jss1-importance-of-history",
+       "title": "Importance of history",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": [
+        "jss1-sources-of-history"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "second",
+     "title": "Second Term",
+     "topics": [
+      {
+       "id": "jss1-site-nok",
+       "title": "Historical sites in Nigeria: Nok",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "jss1-site-ife",
+       "title": "Historical sites in Nigeria: Ile-Ife",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "jss1-site-benin",
+       "title": "Historical sites in Nigeria: Benin",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": []
+      }
+     ]
+    },
+    {
+     "id": "third",
+     "title": "Third Term",
+     "topics": [
+      {
+       "id": "jss1-site-igbo-ukwu",
+       "title": "Historical sites in Nigeria: Igbo-Ukwu",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "jss1-centralised-states",
+       "title": "Major centralised states in pre-colonial Nigeria: meaning, characteristics and examples",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "jss-2",
+   "title": "JSS 2",
+   "stage": "JSS",
+   "terms": [
+    {
+     "id": "first",
+     "title": "First Term",
+     "topics": [
+      {
+       "id": "jss2-non-centralised",
+       "title": "Non-centralised states: meaning, characteristics and examples",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "jss2-inter-relationships",
+       "title": "Inter-relationships of some centres of civilisation in pre-colonial Nigeria",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": []
+      }
+     ]
+    },
+    {
+     "id": "second",
+     "title": "Second Term",
+     "topics": [
+      {
+       "id": "jss2-ghana",
+       "title": "Ghana Empire",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "jss2-mali",
+       "title": "Mali Empire",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": []
+      }
+     ]
+    },
+    {
+     "id": "third",
+     "title": "Third Term",
+     "topics": [
+      {
+       "id": "jss2-songhai",
+       "title": "Songhai Empire",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "jss-3",
+   "title": "JSS 3",
+   "stage": "JSS",
+   "terms": [
+    {
+     "id": "first",
+     "title": "First Term",
+     "topics": [
+      {
+       "id": "jss3-trans-saharan",
+       "title": "Origin and organisation of the trans-Saharan trade",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "jss3-european-contacts",
+       "title": "Early European contacts with Nigeria (including the trans-Atlantic slave trade and “legitimate” trade)",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": []
+      }
+     ]
+    },
+    {
+     "id": "second",
+     "title": "Second Term",
+     "topics": [
+      {
+       "id": "jss3-british-colonisation",
+       "title": "British colonisation of Nigerian territories",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "jss3-evolution-state",
+       "title": "The evolution of the Nigerian state",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": []
+      }
+     ]
+    },
+    {
+     "id": "third",
+     "title": "Third Term",
+     "topics": [
+      {
+       "id": "jss3-amalgamation",
+       "title": "The amalgamation of Nigeria",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": []
+      },
+      {
+       "id": "jss3-independence-movement",
+       "title": "The independence movement",
+       "verification": "scheme",
+       "sources": [
+        "sow-jss"
+       ],
+       "lessons": []
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

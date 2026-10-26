@@ -11,8 +11,10 @@ import time
 
 import streamlit as st
 
+from core import legal
 from core import pilot_rewards as pr
 from core import rewards
+from core.rewards_store import StoreError
 
 from . import rewards_hooks as hooks
 from .state import t
@@ -135,3 +137,52 @@ def _settlement(d: dict) -> None:
             if settlement.get("scaled"):
                 text += " · " + t("reduced in proportion to fit the shared budget")
             st.markdown("- " + text)
+
+
+# --------------------------------------------------------------------------- the private terms and their acceptance
+
+def approval_caption() -> str:
+    """The private-pilot approval record, as configured by the owner (shown with the documents)."""
+    record = legal.pilot_approval()
+    return t("Approved by {who} on {date}.", who=str(record.get("approved_by") or "—"),
+             date=str(record.get("approved_on") or "—")[:10])
+
+
+def documents() -> None:
+    """The approved participation agreement and privacy notice, each with its version (English only)."""
+    for key in legal.PILOT:
+        title = legal.DOCUMENTS[key][0]
+        with st.expander("📜 " + t(title) + f" ({legal.version(key)})", expanded=False):
+            st.caption(t("Available in English.") + " " + approval_caption() + f" SHA-256 {legal.checksum(key)[:16]}…")
+            st.markdown(legal.document(key))
+
+
+def acceptance(member: dict) -> None:
+    """An approved participant accepts the current approved private terms before earning cash rewards."""
+    s = hooks.ff10_store()
+    if s is None:
+        return
+    with st.container(border=True, key="ff10_accept_card"):
+        st.subheader("📜 " + t("Please accept the current Friends & Family 10 terms"))
+        st.markdown(t("The participation terms have been updated. Cash rewards for your learning are recorded again "
+                      "once you have read and accepted them."))
+        if not legal.pilot_ready():
+            st.info(t("The current terms are not published yet. Please check back soon."))
+            return
+        documents()
+        sure = st.checkbox(t("I have read and accept the Friends & Family 10 terms, and I have read the privacy notice."),
+                           key="ff10_accept_confirm")
+        if st.button(t("Accept and continue"), key="ff10_accept", type="primary", disabled=not sure):
+            try:
+                s.ff10_accept_terms(member["profile_id"], legal.pilot_terms_id())
+            except StoreError as error:
+                st.error(t("Earning is paused until the World Explorer team records the current terms. Please check "
+                           "back soon.") if "terms_outdated" in str(error) or "terms_required" in str(error)
+                         else t("Your acceptance could not be saved. Please try again."))
+                return
+            except Exception:
+                st.error(t("Your acceptance could not be saved. Please try again."))
+                return
+            st.session_state.pop("ff10_member", None)
+            st.session_state.pop("ff10_progress", None)
+            st.rerun()

@@ -26,7 +26,8 @@ PUBLIC = ROOT / "supabase" / "public_programme_migration.sql"   # owner ON/OFF s
 FOUNDING = ROOT / "supabase" / "founding50_migration.sql"       # Founding 50 approvals
 PILOT = ROOT / "supabase" / "pilot_invitations_migration.sql"   # invitation-only pilot entry
 FF10 = ROOT / "supabase" / "friends_family10_migration.sql"      # Friends & Family 10 provisional rewards
-FF10_PAY = ROOT / "supabase" / "friends_family10_payments_migration.sql"   # real cash payments (loaded last)
+FF10_PAY = ROOT / "supabase" / "friends_family10_payments_migration.sql"   # real cash payments
+FF10_ACCEPT = ROOT / "supabase" / "friends_family10_acceptance_migration.sql"   # current-terms acceptance (last)
 
 
 def _bin(name: str) -> str | None:
@@ -63,6 +64,8 @@ class Cluster:
                 self.psql_file("rt_template", FF10)
                 if FF10_PAY.exists():
                     self.psql_file("rt_template", FF10_PAY)
+                    if FF10_ACCEPT.exists():
+                        self.psql_file("rt_template", FF10_ACCEPT)
         self.count = 0
 
     def _as_owner(self, command: str) -> None:

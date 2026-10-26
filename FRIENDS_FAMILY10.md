@@ -133,6 +133,34 @@ Provisional amounts are never called earnings. Participants see them as estimate
    date, reference, status, who recorded it and when. It is append-only and audited, and can be downloaded as CSV.
    Participants see "Paid by bank transfer" against the month.
 
+## 4b. Own documents, approval record and acceptance (this update)
+
+- **Own documents.** Friends & Family 10 now has its own two documents, independent of the general Privacy Policy
+  and Terms of Use, which remain for the public programme:
+  - the participation agreement, `legal/PILOT_TERMS.md`;
+  - the privacy notice, `legal/PILOT_PRIVACY_NOTICE.md`.
+- **Approval record.** A document is published when it is complete, the operator details are set, and the approval
+  record in Streamlit secrets matches the exact files. The record is `[legal.pilot_approval]`:
+
+  ```toml
+  [legal.pilot_approval]
+  approved_by = "<name and role of the authorised decision-maker>"
+  approved_on = "YYYY-MM-DD"
+  pilot_version = "<the *Version:* line of PILOT_TERMS.md>"
+  pilot_sha256 = "<checksum shown in 📊 F&F 10 rewards → Cash payments>"
+  pilot_privacy_version = "<the *Version:* line of PILOT_PRIVACY_NOTICE.md>"
+  pilot_privacy_sha256 = "<checksum shown there>"
+  ```
+
+  The owner tab shows the record next to the current files' versions and checksums. Applicants and participants see
+  "Approved by … on …" with each document.
+- **Acceptance.** Applicants accept the agreement when they apply, as before. When the owner records new terms,
+  every participant must accept them on their participant page before any learning is recorded for cash rewards
+  again. The database enforces this through the proposed `supabase/friends_family10_acceptance_migration.sql`,
+  which is **not run**.
+- **Private-pilot screens no longer show the public programme's figures.** The status counter shows "x / 10
+  approved". The public programme's tabs are marked "Public (OFF) · …" and explained as such.
+
 ## 5. Screens
 
 - **Participant** (Rewards page, approved participants only):

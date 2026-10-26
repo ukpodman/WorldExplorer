@@ -1,129 +1,59 @@
-> **DRAFT for legal review — not published.** Version draft-2026-10-25-cash. These participation terms sit alongside the
-> World Explorer Terms of Use and Privacy Policy. Items in [brackets] are to be confirmed by the operator (and its
-> adviser) before publication, including whether cash rewards for learning activity need any approval, registration
-> or tax treatment (see OPERATOR_VERIFICATION.md, section D).
+# WORLD EXPLORER — FRIENDS & FAMILY 10
+## Private Cash-Pilot Participation Agreement
 
-# World Explorer — Friends & Family 10: Participation Terms
+**Version:** FF10-private-cash-2026-10-25-v1
+**Scope:** Only the ten (10) individually invited and approved adult participants residing in Nigeria.
+**Status:** Prepared for adoption by the authorised programme organiser. Effective for a participant only after the organiser adopts this version, the participant accepts it and the pilot opens.
+**Public Rewards:** Not part of this agreement; remain closed.
 
-World Explorer — Friends & Family 10 ("the programme") is run by **OKETORIAH KÖNIGREICH LTD** (CAC **RC 7160552**),
-Nigeria, the operator of World Explorer ("we", "us"). Contact: {{CONTACT_EMAIL}}.
+### 1. Organiser and contact
+World Explorer is conducting an invitation-only educational product trial proposed to be operated by **OKETORIAH KÖNIGREICH LTD (RC 7160552), Nigeria**, subject to confirmation that the company is authorised to operate this particular trial. Correspondence about participation, data and payments goes to **{{CONTACT_EMAIL}}**. The organiser's official contact address is **{{REGISTERED_ADDRESS}}**. The organiser must confirm its role and these contact details before this agreement is offered for acceptance.
 
-## 1. Purpose
+### 2. Eligibility, invitation and consent
+Only ten adults (18 years and older) ordinarily resident in Nigeria, invited using their own Google-sign-in email address and individually approved by the organiser, can participate. An invitation is not approval. Participation is free, optional and unrelated to purchases, deposits or referrals. No element of chance determines a reward. Each person must accept this specific version before paid-pilot activity begins. Activity before acceptance and activation is **not** retrospectively rewarded. A participant may leave at any time by contacting the organiser.
 
-The programme is a small, invitation-only trial of World Explorer before any wider launch. It helps us learn how
-people use the app, fix problems and test a fair way of recognising genuine learning.
+### 3. What the trial is for
+Participants use World Explorer's geography, country exploration, quizzes and daily learning challenges while helping assess interest, learning usefulness, reliability and usability. There is no obligation to spend a minimum number of days in the app. No cash is earned simply by logging in or leaving the app open. Taking breaks is encouraged.
 
-## 2. Who can take part
+### 4. Verified activity and cash calculation
+The app records eligible learning interactions and measures time between genuine interactions; inactive gaps do not count in full, and repeated or duplicate actions may be excluded. Ordinary educational points and badges are not money and cannot be exchanged for cash.
 
-- **Places:** at most **10** participants, each invited by us and individually approved. An invitation or an
-  application does not guarantee a place. We may approve an application, place it on a waiting list or decline it,
-  without giving reasons.
-- **Eligibility:** you must:
-  - be **18 or older**;
-  - live in Nigeria;
-  - have a Google account to sign in;
-  - accept these terms.
-- **Verification:** age and residence are self-declared. Before your first payment we verify your identity and
-  that the receiving bank account is in your name (section 5).
-- **Friends and family:** if you are related to, or work with, the operator's directors or staff, [disclose this when
-  applying — lawyer to confirm the conflict-of-interest and fairness wording].
+Daily amounts below are **cumulative totals**, not amounts to be added together. Higher tiers require the earlier milestones as well.
 
-## 3. Taking part
+| Completed verified learning that Nigerian calendar day | Provisional amount for that day |
+|---|---:|
+| Fewer than 15 active minutes | ₦0 |
+| At least 15 minutes and one completed qualifying quiz of at least five questions | ₦100 |
+| At least 30 minutes and two completed qualifying quizzes | ₦250 |
+| At least 45 minutes, earlier milestones and one newly explored country | ₦350 |
+| At least 60 minutes, earlier milestones and the daily learning challenge | ₦500 |
 
-- Use World Explorer normally: explore countries, learn, play quizzes and, if you wish, send feedback in the app.
-- There is no obligation to use the app a certain amount, and you can stop at any time. Please take breaks: rewards
-  stop increasing after the daily limit.
-- Taking part is free. There is no paid entry and no element of chance.
+A participant's **daily provisional maximum is ₦500** and **monthly provisional maximum is ₦7,000**. Nigerian time (Africa/Lagos) governs daily and monthly periods. No further cash accrues after reaching the relevant maximum, although education features remain available.
 
-## 4. Cash rewards: provisional amounts and final allocations
+### 5. Shared monthly cash limit and fair allocation
+The **whole programme's monthly budget is ₦50,000**, not ₦50,000 per participant. At month-end, provisional rewards for all qualifying participants are added together. When their combined amount is at or below ₦50,000, each person's preliminary allocation equals their provisional amount. When the combined amount exceeds ₦50,000, the budget is allocated **proportionately** to those provisional amounts; deterministic whole-naira rounding ensures the total never exceeds ₦50,000. For example, ten people provisionally qualifying for ₦7,000 each would receive final allocations of ₦5,000 each. Unused budget is not automatically paid out.
 
-Friends & Family 10 pays **real money**. Approved participants can receive cash rewards, in naira, for verified
-learning. The app shows two kinds of amount:
+The app's daily figure and monthly **provisional** figure are estimates, not immediately withdrawable amounts. The organiser reviews the period and **finalises** one monthly settlement. No final allocation exceeds the participant's provisional amount.
 
-- **Provisional amounts** are calculated each day from your verified learning. They are estimates until the month
-  is settled, and they may be reduced by the shared monthly budget (below).
-- **Final allocations** are fixed at the monthly settlement. Once we approve your final allocation, it is intended
-  to be paid to you by bank transfer (section 5).
+### 6. Review, disputes and withheld amounts
+Before settlement, the organiser may exclude a day only for documented reasons such as automated activity, impersonation, duplicate accounts, ineligible age or residence, manipulation or otherwise non-genuine interactions. Where an allocation is withheld after settlement, the organiser will record the reason and notify the affected participant. Family or personal relationships are not themselves grounds for increasing, reducing or withholding rewards. Participants may request a review using the contact in section 1 within **14 days** of notification; the organiser will acknowledge the request and aim to give a reasoned decision within **7 days** after receiving sufficient information. A disputed allocation should not be represented as paid.
 
-- **Verified learning time.** Only active learning counts: answering quiz questions, completing quizzes and the
-  Daily Challenge, exploring countries and opening their details. Our server records the time of each of these
-  interactions. Opening the app, leaving it open, refreshing pages or repeating the same action does not add time.
-  At most 3 minutes of any pause between two interactions counts, and time spent in several tabs or devices at once
-  counts only once.
-- **Daily milestones.** The daily provisional reward is the total for the day (not an extra amount per milestone).
-  Each milestone needs the ones before it:
+### 7. Real payments
+Approved **final** allocations are payable **in Nigerian naira by manual Nigerian bank transfer**; World Explorer does not move money itself. The organiser aims to complete transfer **within 14 calendar days after approval of the monthly final allocation** once payment authorisation and identity checks are complete. If a lawful or operational impediment prevents that date, the organiser must promptly explain the delay to the participant; it may not silently convert an approved cash award into noncash points.
 
-  | Verified learning that day | Daily provisional reward |
-  |---|---|
-  | Under 15 minutes | ₦0 |
-  | 15 minutes and 1 qualifying quiz (a finished quiz of at least 5 questions) | ₦100 |
-  | 30 minutes and 2 qualifying quizzes | ₦250 |
-  | 45 minutes, the above, and a country you have not explored before | ₦350 |
-  | 60 minutes, the above, and that day's Daily Challenge | ₦500 |
+Before transfer, the participant supplies valid personal identification and a Nigerian bank account in the **participant's own legal name** through a separate secure channel. The app keeps a verified legal name, bank name and **last four digits** of the account number, plus payment amount, date and transfer reference; it does not store the full bank account number in its pilot ledger. The organiser records each transfer only after it actually occurs. No participant must pay a fee to collect an allocation. The organiser will explain any deduction required by applicable law before paying; no tax exemption is promised. Participants are responsible for any personal tax obligations imposed by applicable law.
 
-- **Limits.** At most ₦500 per day and ₦7,000 per calendar month per participant. Days follow Nigerian time (West
-  Africa Time). Learning beyond the limits still earns educational points and badges, but no further provisional
-  reward.
-- **Shared monthly budget.** The programme has a total monthly budget of ₦50,000 for all participants together.
-  After each month ends, we add up all participants' provisional rewards:
-  - if the total is ₦50,000 or less, each participant's final allocation equals their provisional reward;
-  - if the total is more than ₦50,000, the ₦50,000 is shared in proportion to each participant's provisional
-    reward, in whole naira (for example, if 10 participants each have ₦7,000, each final allocation is ₦5,000).
-  No final allocation is ever higher than the participant's provisional reward.
-- **Review.** We may review activity before or after a monthly settlement. We may exclude days or withhold an
-  allocation where we reasonably believe the activity was not genuine (for example automated play, shared or
-  duplicate accounts, or deliberately meaningless actions), and we will tell you if we do.
-- **Final allocations** are fixed when we finalise the monthly settlement and cannot be changed afterwards. Each one
-  still needs our approval; we may withhold an allocation for the reasons in "Review" above.
+### 8. Privacy
+The attached **Friends & Family 10 Private Pilot Privacy Notice** describes the personal information and activity evidence used, hosting and transfers, storage, participant rights, and how to contact the organiser. Accepting these terms acknowledges the notice but does **not** amount to consent to optional analytics. Optional statistics remain separately controlled in the app.
 
-## 5. Payments
+### 9. Duration, suspension and exit
+This arrangement applies only to the small initial private trial. The organiser may close further invitations or pause future earning where there is a genuine technical, legal, fraud or safety concern, with notice when practicable. Already approved and payable final allocations must be dealt with under these terms and applicable law. The organiser may not change the earning formula retrospectively for days already completed. Any revised rules require a new version and acceptance before future earning.
 
-- **How you are paid.** Approved final allocations are paid in naira by bank transfer from the operator's company
-  bank account to a Nigerian bank account in your own name. We do not take card details, and you never pay anything
-  to take part.
-- **When.** We aim to pay approved allocations within [14] days after the monthly settlement. We start paying once
-  we have authorised pilot payments in the app; if we have not yet done so, approved allocations are paid when we
-  do.
-- **Before your first payment** we check your identity and that the bank account is in your name. You give us your
-  account details outside the app (for example in person or by phone). The app keeps only your name, your bank and
-  the last four digits of the account number.
-- **Record.** Each payment is recorded with the amount, the date, the bank transfer reference and the account it
-  was sent to. You can see its status in the app.
-- **Mistakes.** If an amount is paid in error (for example twice, or to the wrong account), we may ask for it to be
-  returned or set it against a later payment.
-- **Tax.** [Operator to confirm the tax treatment of the rewards and whether anything is deducted or reported.]
-- **Budget and limits.** We never pay more than your final allocation, at most ₦7,000 per month per participant,
-  and at most ₦50,000 per month for all participants together.
-- Points and badges have no monetary value. Provisional amounts are not payable until they become an approved final
-  allocation.
+### 10. Other terms
+The agreement is governed by Nigerian law, subject to any mandatory rights that cannot lawfully be excluded. Participation is not employment, a loan, investment, savings product, lottery or public offer. The organiser must disclose any additional consumer-law or regulatory requirements applicable to this trial before activation; the limited participant count does **not** by itself provide a legal exemption.
 
-## 6. Data
+**Participant acceptance:** “I am 18 or older, live in Nigeria, have read the Friends & Family 10 Private Cash-Pilot Agreement and its Private Pilot Privacy Notice, and voluntarily accept this version.” Record the participant, date/time and document version in World Explorer before including paid activity.
 
-We process the personal data described in section 4 of the Privacy Policy: your Google email address and display
-name, your declarations and Nigerian state, an optional note, our decisions, and records of your learning
-interactions (the type of interaction, the country, quiz or question concerned, and the time), and for payments: the
-account holder's name, the bank, the last four digits of the account number, and each payment's amount, date and
-bank transfer reference. We use these records only to run the programme, calculate rewards, make and record payments
-and review activity. Accounting and tax law may require us to keep payment records for a set period. We do not use device fingerprinting,
-location tracking or recordings of your screen. Usage statistics remain optional and are controlled by you in
-Settings → Privacy.
+*End of version FF10-private-cash-2026-10-25-v1.*
 
-## 7. Ending your participation
-
-You can leave the programme at any time by contacting us at {{CONTACT_EMAIL}} [or with an in-app option, if added].
-We may end the programme, or your participation, for example:
-- if these terms or the Terms of Use are broken (such as automated play, duplicate accounts or misleading
-  declarations);
-- for operational reasons.
-
-## 8. Changes
-
-We may change these terms during the programme and will tell participants in the app or by email before changes take
-effect.
-
-## 9. General
-
-These terms are governed by the laws of the Federal Republic of Nigeria. The World Explorer Terms of Use and Privacy
-Policy also apply. If these terms and the Terms of Use conflict, these terms apply to the programme.
-
-*Version: draft-2026-10-25-cash*
+*Version: FF10-private-cash-2026-10-25-v1*

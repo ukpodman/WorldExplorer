@@ -31,7 +31,7 @@ CASHOUT_TABLES = ("reward_cashout_settings", "reward_cashout_requests", "reward_
                   "reward_cashout_payments", "reward_owner_notifications")   # supabase/withdrawals_migration.sql
 FOUNDING_TABLES = (founding.TABLE,)                                            # supabase/founding50_migration.sql
 PILOT_TABLES = (founding.INVITES,)                                             # supabase/pilot_invitations_migration.sql
-FF10_TABLES = pilot_rewards.TABLES + pilot_rewards.PAYMENT_TABLES             # friends_family10(_payments)_migration.sql
+FF10_TABLES = pilot_rewards.TABLES + pilot_rewards.PAYMENT_TABLES + pilot_rewards.ACCEPTANCE_TABLES
 PAGE = 1000
 PILOT_COLUMNS = ("pilot_enabled", "pilot_changed_at", "pilot_changed_by", "invitation_only", "invitation_changed_at",
                  "invitation_changed_by", "pilot_terms_version", "public_terms_version", "terms_changed_at",
@@ -455,6 +455,33 @@ class RewardsStore:
             "p_month": month, "p_profile": profile_id, "p_amount": int(amount), "p_paid_on": str(paid_on)[:10],
             "p_reference": reference, "p_actor": actor, "p_confirmed": bool(confirmed)}))
 
+    # ---- Friends & Family 10: acceptance of the current private terms (friends_family10_acceptance_migration.sql)
+    def ff10_acceptance_health(self) -> str:
+        try:
+            self.select("pilot_terms_acceptances", {"profile_id": "-"}, limit=1)
+            return "ok"
+        except StoreError as error:
+            return "missing_tables" if "missing" in str(error) or "does not exist" in str(error) else "error"
+        except Exception:
+            return "error"
+
+    def ff10_terms_accepted(self, profile_id: str) -> bool:
+        """The participant applied with, or has since accepted, the currently recorded private terms."""
+        current = str(self.pilot_status().get("terms_version") or "").strip()
+        if not current:
+            return False
+        app = self.founding_application(profile_id)
+        if app and app.get("terms_version") == current:
+            return True
+        try:
+            return bool(self.select("pilot_terms_acceptances", {"profile_id": profile_id, "terms_version": current},
+                                    limit=1))
+        except StoreError:
+            return False
+
+    def ff10_accept_terms(self, profile_id: str, terms_version: str) -> dict:
+        return self._one(self.rpc("pilot_accept_terms", {"p_profile": profile_id, "p_terms_version": terms_version}))
+
     def ff10_payments(self, month: str | None = None) -> list[dict]:
         return self.select("pilot_payments", {"month": month} if month else None, order="id")
 
@@ -625,7 +652,8 @@ class MemoryStore(RewardsStore):
             "reward_owner_notifications": ("id",), founding.TABLE: ("id",), founding.INVITES: ("email",),
             "pilot_reward_settings": ("id",), "pilot_activity": ("id",), "pilot_day_reviews": ("profile_id", "day"),
             "pilot_settlements": ("month",), "pilot_settlement_lines": ("month", "profile_id"),
-            "pilot_beneficiaries": ("profile_id",), "pilot_payments": ("id",)}
+            "pilot_beneficiaries": ("profile_id",), "pilot_payments": ("id",),
+            "pilot_terms_acceptances": ("profile_id", "terms_version")}
 
     def __init__(self, settings: Settings | None = None, owner_emails: list[str] | None = None,
                  public_enabled: bool = False):
@@ -726,7 +754,8 @@ class MemoryStore(RewardsStore):
                 if not _match(old, where):
                     continue
                 if table in ("reward_activity_events", "reward_audit_log", "reward_cashout_payments",
-                             "pilot_activity", "pilot_settlements", "pilot_reward_settings", "pilot_payments"):
+                             "pilot_activity", "pilot_settlements", "pilot_reward_settings", "pilot_payments",
+                             "pilot_terms_acceptances"):
                     raise StoreError("records cannot be changed")
                 if table == "pilot_settlement_lines":
                     self._guard_line(old, dict(old, **changes))
@@ -1644,10 +1673,41 @@ class MemoryStore(RewardsStore):
         return (self.account(profile_id) or {}).get("email")
 
     def _ff10_participant(self, profile_id) -> bool:
-        """= pilot_is_participant: approved real application AND an active invitation (whatever Public Rewards says)."""
+        """= pilot_is_participant: approved real application AND an active invitation (whatever Public Rewards says)
+        AND the current private terms accepted."""
+        return self._ff10_member(profile_id) and self._ff10_accepted(profile_id)
+
+    def _ff10_member(self, profile_id) -> bool:
+        """Approved real application AND an active invitation."""
         account = self.account(profile_id)
         return bool(account) and not account.get("test") \
             and founding.approved(self._founding_row(profile_id), account) and self._invited(account.get("email"))
+
+    def _ff10_accepted(self, profile_id) -> bool:
+        """= pilot_terms_accepted: applied with, or since accepted, the currently recorded pilot terms."""
+        current = str(self._settings_row().get("pilot_terms_version") or "").strip()
+        if not current:
+            return False
+        app = self._founding_row(profile_id)
+        return bool(app and app.get("terms_version") == current) or any(
+            r["profile_id"] == profile_id and r["terms_version"] == current
+            for r in self.tables["pilot_terms_acceptances"])
+
+    def _rpc_pilot_accept_terms(self, p_profile, p_terms_version):
+        if not self._ff10_member(p_profile):
+            raise StoreError("not_participant")
+        current = str(self._settings_row().get("pilot_terms_version") or "").strip()
+        if not current:
+            raise StoreError("terms_required")
+        if str(p_terms_version or "").strip() != current:
+            raise StoreError("terms_outdated")
+        row = next((r for r in self.tables["pilot_terms_acceptances"]
+                    if r["profile_id"] == p_profile and r["terms_version"] == current), None)
+        if row is None:
+            row = self._ff10_insert("pilot_terms_acceptances", {"profile_id": p_profile, "terms_version": current,
+                                                                "accepted_at": _now()})
+        self.log(p_profile, "pilot_terms_accepted", p_profile, dict(row))
+        return dict(row)
 
     def _ff10_places_full(self, profile_id) -> bool:
         """= trigger pilot_places_guard. Public Rewards OFF: at most 10 approved. Public Rewards ON: approving an

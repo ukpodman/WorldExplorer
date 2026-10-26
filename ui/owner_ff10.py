@@ -77,6 +77,7 @@ def _load(s) -> dict:
     data["payments"] = s.ff10_payments() if data["cash"] else []
     data["beneficiaries"] = {b["profile_id"]: b for b in s.ff10_beneficiaries()} if data["cash"] else {}
     data["payments_enabled"] = s.ff10_payments_enabled() if data["cash"] else False
+    data["accepted"] = {a["profile_id"]: s.ff10_terms_accepted(a["profile_id"]) for a in approved}
     st.session_state.ff10_owner = data
     return data
 
@@ -323,26 +324,53 @@ def _record_payment(s, d: dict, month: str, lines: list[dict]) -> None:
 
 
 def readiness(d: dict) -> list[tuple[str, bool, str]]:
-    """The private cash pilot's readiness checks: (requirement, met, detail). Nothing is filled in or assumed."""
+    """The private cash pilot's readiness checks: (requirement, met, detail). Nothing is filled in or assumed; each
+    check reads the owner's own settings, the documents in legal/ and the database."""
     from core import legal
-    problems = legal.pilot_activation_problems()
+    cfg = legal.config()
     status = hooks.pilot_switch()
     terms_ok = status.get("terms_version") == legal.pilot_terms_id()
-    return [
-        ("Operator verified ([legal] operator_verified)", legal.operator_verified(legal.config()),
-         "Confirm the company is the operator (legal/OPERATOR_VERIFICATION.md section A)."),
-        ("Contact email and registered address", bool(legal.contact_email(legal.config()))
-         and bool(legal.registered_address(legal.config())), "[legal] contact_email and registered_address."),
-        ("Privacy Policy, Terms of Use and cash-pilot terms published", not problems,
-         "; ".join(problems[:3]) + (" …" if len(problems) > 3 else "") if problems else "All three are published."),
-        ("Approved pilot terms recorded", terms_ok, "🤝 Friends & Family 10 tab → Record the published pilot terms."),
-        ("Applicable legal requirements reviewed", not problems,
-         "Your lawyer's review of cash rewards (e.g. FCCPC sales-promotion rules), tax and identity checks "
-         "(OPERATOR_VERIFICATION.md section D); confirmed by finalising and approving the documents."),
+    record_issues = legal.approval_record_problems(cfg)
+    record = legal.pilot_approval(cfg)
+    rows = [
+        ("Operator verified ([legal] operator_verified)", legal.operator_verified(cfg),
+         "Your own confirmation that the company is the operator (legal/OPERATOR_VERIFICATION.md section A)."),
+        ("Contact email and registered address", bool(legal.contact_email(cfg)) and bool(legal.registered_address(cfg)),
+         "[legal] contact_email and registered_address."),
+        ("Private-pilot approval record", not record_issues, "; ".join(record_issues) if record_issues else
+         f"Approved by {record.get('approved_by')} on {str(record.get('approved_on'))[:10]}."),
+    ]
+    for key in legal.PILOT:
+        issues = [i for i in legal.problems(key, cfg) if not i.startswith(legal.SHARED_PREFIXES)]
+        rows.append((f"{legal.DOCUMENTS[key][0]} published", not issues,
+                     "; ".join(issues[:3]) + (" …" if len(issues) > 3 else "") if issues else
+                     f"Version {legal.version(key)} · SHA-256 {legal.checksum(key)}"))
+    rows += [
+        ("Approved private terms recorded", terms_ok, "🤝 Friends & Family 10 tab → Record the published pilot terms."),
         ("Invitation-only, at most 10 participants", len(d["approved"]) <= pr.MAX_PARTICIPANTS,
          f"{len(d['approved'])} approved."),
         ("Public Rewards OFF", not hooks.enabled(), "Must stay OFF for the private pilot."),
     ]
+    return rows
+
+
+def _approval_record() -> None:
+    """The private-pilot approval record exactly as configured ([legal.pilot_approval]) next to the live files."""
+    from core import legal
+    record = legal.pilot_approval()
+    st.markdown("**Private-pilot approval record**")
+    rows = [{"Item": "Authorised decision-maker", "Recorded": str(record.get("approved_by") or "—"), "Current file": ""},
+            {"Item": "Approval date", "Recorded": str(record.get("approved_on") or "—")[:10], "Current file": ""}]
+    for key in legal.PILOT:
+        title = legal.DOCUMENTS[key][0]
+        rows.append({"Item": f"{title}: version", "Recorded": str(record.get(f"{key}_version") or "—"),
+                     "Current file": legal.version(key)})
+        rows.append({"Item": f"{title}: SHA-256", "Recorded": str(record.get(f"{key}_sha256") or "—"),
+                     "Current file": legal.checksum(key)})
+    _table(rows)
+    st.caption("Set these in Streamlit secrets under [legal.pilot_approval] (approved_by, approved_on, pilot_version, "
+               "pilot_sha256, pilot_privacy_version, pilot_privacy_sha256) after approving the exact files. Any later "
+               "change to a document unpublishes it until the record matches again.")
 
 
 def _cash(s, d: dict) -> None:
@@ -353,6 +381,10 @@ def _cash(s, d: dict) -> None:
         return
     checks = readiness(d)
     _table([{"Requirement": name, "Status": "✅" if ok else "❌", "Detail": detail} for name, ok, detail in checks])
+    _approval_record()
+    accepted = sum(1 for a in d["approved"] if d["accepted"].get(a["profile_id"]))
+    st.caption(f"Participants who accepted the current private terms: {accepted} / {len(d['approved'])}. Others "
+               "earn nothing until they accept them on their participant page.")
     missing = [name for name, ok, _ in checks if not ok]
     if d["payments_enabled"]:
         st.success("Pilot payments are authorised. Pay approved allocations by bank transfer, then record them.")

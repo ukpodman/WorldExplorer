@@ -1,0 +1,20 @@
+WORLD EXPLORER — FRIENDS & FAMILY 10 PRIVATE DOCUMENTS — REVIEWED INSTALL PACKAGE
+
+This combines Claude's uploaded new code with the private pilot participation agreement and privacy notice from the earlier Friends & Family 10 legal pack which the user said they approved. The previous Claude ZIP had a DRAFT privacy notice and did NOT contain legal/PILOT_TERMS.md. Those two canonical app filenames have now been supplied from the previous private legal pack, with a machine-readable *Version:* line added. Body terms are otherwise unchanged from that pack. Consequently checksums must be recorded for THESE final files; earlier hashes are not interchangeable.
+
+Scope: Real-cash private pilot; up to 10 invited adults, up to NGN 500/day and NGN 7,000/month each, NGN 50,000 shared pool. Public Rewards OFF. Transfers are owner-initiated outside the app.
+
+Review results: ZIP structure checked; Python source compiled; data/translations.json parsed; standalone SQL matches uploaded migration byte-for-byte; simulated example of Streamlit [legal] pilot readiness passes. The actual full 765-test suite and live Supabase behaviour have NOT been run here. These tests are still needed on the development computer. No SQL executed, no application deployed, no payments enabled.
+
+Current versions and exact normalized SHA-256 checksums:
+  pilot_version = "FF10-private-cash-2026-10-25-v1"
+  pilot_sha256 = "f34467b9ac55866444a4a0aff777c70196f035082e103b443430cb297f4f4b39"
+  pilot_privacy_version = "FF10-private-privacy-2026-10-25-v1"
+  pilot_privacy_sha256 = "8fcba00004baa16629ed412bb4a74d7f94f1305df78a2d1fafed77077c936426"
+
+Owner must personally verify authorisation, actual organiser identification, registered contact details, any required compliance, and the final document texts before marking operator_verified true or filling [legal.pilot_approval] (approved_by and approved_on). The included legal/FF10_OWNER_ADOPTION_AND_APPROVAL.md is an unsigned template, not evidence of signing. No real-money switch automatically enabled.
+
+Database migrations already installed: pilot invitations, ff10 base, ff10 payments. Do not rerun them.
+New additive migration here: supabase/friends_family10_acceptance_migration.sql — DO NOT RUN until after local tests and owner review. This will require the current recorded terms to be accepted by each approved player before reward activity is credited.
+
+Preview branch: atlas-pilot-consolidated pushed to atlas-explore-dev; production main remains untouched. Avoid deleting/restoring unrelated untracked files or modifying existing photo data. Back up any overwritten local changes and run full tests before committing or pushing.

@@ -328,7 +328,9 @@ def render() -> None:
     else:
         may_join = founding_ui.section(fs, who, account)
     member = hooks.ff10_member(refresh=True) if not hooks.enabled() else None
-    if member:   # Friends & Family 10: learning progress, provisional amounts and paid final allocations
+    if member and member.get("needs_acceptance"):   # the current approved private terms must be accepted first
+        ff10_ui.acceptance(member)
+    elif member:   # Friends & Family 10: learning progress, provisional amounts and paid final allocations
         ff10_ui.progress(member)
     if not hooks.enabled() and not account.get("test"):
         # Friends & Family 10 only (the public rewards programme is closed): the application, its status and, once

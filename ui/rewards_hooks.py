@@ -644,7 +644,9 @@ def ff10_member(refresh: bool = False) -> dict | None:
         elif account and pilot_switch().get("enabled") and s.pilot_invited(account.get("email")):
             app = s.founding_application(who["profile_id"])   # approved AND invited (the database checks both)
             if app and app.get("status") == "approved" and not app.get("test"):
-                value = {"profile_id": who["profile_id"], "test": False}
+                # cash rewards need the CURRENT approved private terms accepted (the database checks it too)
+                value = {"profile_id": who["profile_id"], "test": False,
+                         "needs_acceptance": not s.ff10_terms_accepted(who["profile_id"])}
     except Exception:
         value = None
     st.session_state.ff10_member = {"profile_id": who["profile_id"], "at": time.time(), "value": value}
@@ -664,7 +666,7 @@ def ping(kind: str, subject, detail: dict | None = None) -> None:
     global _FF10_POOL
     try:
         member = ff10_member()
-        if not member or not str(subject or "").strip():
+        if not member or member.get("needs_acceptance") or not str(subject or "").strip():
             return
         s = ff10_store()
         if s is None:

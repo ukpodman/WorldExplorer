@@ -5292,6 +5292,66 @@
    "Pagada por transferencia bancaria",
    "已通过银行转账支付",
    "Выплачено банковским переводом"
+  ],
+  "Approved by {who} on {date}.": [
+   "Genehmigt von {who} am {date}.",
+   "Aprobado por {who} el {date}.",
+   "由 {who} 于 {date} 批准。",
+   "Утверждено: {who}, {date}."
+  ],
+  "The participation terms have been updated. Cash rewards for your learning are recorded again once you have read and accepted them.": [
+   "Die Teilnahmebedingungen wurden aktualisiert. Geldprämien für dein Lernen werden wieder erfasst, sobald du sie gelesen und akzeptiert hast.",
+   "Las condiciones de participación se han actualizado. Las recompensas en efectivo por tu aprendizaje se vuelven a registrar cuando las hayas leído y aceptado.",
+   "参与条款已更新。你阅读并接受后，你的学习现金奖励将重新开始记录。",
+   "Условия участия обновлены. Денежные награды за ваше обучение снова начнут учитываться, когда вы прочитаете и примете их."
+  ],
+  "I have read and accept the Friends & Family 10 terms, and I have read the privacy notice.": [
+   "Ich habe die Bedingungen von Friends & Family 10 gelesen und akzeptiere sie, und ich habe den Datenschutzhinweis gelesen.",
+   "He leído y acepto las condiciones de Friends & Family 10, y he leído el aviso de privacidad.",
+   "我已阅读并接受 Friends & Family 10 条款，并已阅读隐私声明。",
+   "Я прочитал(а) и принимаю условия программы Friends & Family 10 и прочитал(а) уведомление о конфиденциальности."
+  ],
+  "Accept and continue": [
+   "Akzeptieren und fortfahren",
+   "Aceptar y continuar",
+   "接受并继续",
+   "Принять и продолжить"
+  ],
+  "Please accept the current Friends & Family 10 terms": [
+   "Bitte akzeptiere die aktuellen Bedingungen von Friends & Family 10",
+   "Acepta las condiciones actuales de Friends & Family 10",
+   "请接受当前的 Friends & Family 10 条款",
+   "Пожалуйста, примите текущие условия программы Friends & Family 10"
+  ],
+  "The current terms are not published yet. Please check back soon.": [
+   "Die aktuellen Bedingungen sind noch nicht veröffentlicht. Bitte schau bald wieder vorbei.",
+   "Las condiciones actuales aún no se han publicado. Vuelve pronto.",
+   "当前条款尚未发布。请稍后再来查看。",
+   "Текущие условия ещё не опубликованы. Загляните позже."
+  ],
+  "Your acceptance could not be saved. Please try again.": [
+   "Deine Zustimmung konnte nicht gespeichert werden. Bitte versuche es erneut.",
+   "No se pudo guardar tu aceptación. Inténtalo de nuevo.",
+   "无法保存你的接受。请重试。",
+   "Не удалось сохранить ваше согласие. Попробуйте ещё раз."
+  ],
+  "Available in English.": [
+   "Auf Englisch verfügbar.",
+   "Disponible en inglés.",
+   "提供英文版本。",
+   "Доступно на английском языке."
+  ],
+  "Earning is paused until the World Explorer team records the current terms. Please check back soon.": [
+   "Das Erfassen von Prämien ist pausiert, bis das World-Explorer-Team die aktuellen Bedingungen hinterlegt. Bitte schau bald wieder vorbei.",
+   "Las recompensas están en pausa hasta que el equipo de World Explorer registre las condiciones actuales. Vuelve pronto.",
+   "在 World Explorer 团队登记当前条款之前，奖励暂停记录。请稍后再来查看。",
+   "Начисление приостановлено, пока команда World Explorer не зарегистрирует текущие условия. Загляните позже."
+  ],
+  "Friends & Family 10 privacy notice": [
+   "Datenschutzhinweis von Friends & Family 10",
+   "Aviso de privacidad de Friends & Family 10",
+   "Friends & Family 10 隐私声明",
+   "Уведомление о конфиденциальности программы Friends & Family 10"
   ]
  }
 }

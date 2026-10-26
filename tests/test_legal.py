@@ -27,28 +27,36 @@ def _current(name: str):
 
 
 class RealDraftTests(unittest.TestCase):
-    """The documents in legal/ are drafts: they can never be published, whatever the settings say."""
+    """Explicitly incomplete TEST documents cannot be published, regardless of owner settings."""
 
     def setUp(self):
-        legal_fixtures.use_real()
+        legal_fixtures.use_draft()
+        self.addCleanup(legal_fixtures.use_real)
 
     def test_pilot_activation_checklist_names_every_missing_requirement_once(self):
         issues = legal.pilot_activation_problems({})
         for shared in ("[legal] operator_verified", "[legal] contact_email", "[legal] registered_address"):
             self.assertEqual(sum(shared in i for i in issues), 1, shared)
-        for title in ("Privacy Policy", "Terms of Use", "Friends & Family 10 terms"):
+        for title in ("Friends & Family 10 terms", "Friends & Family 10 privacy notice"):   # the pilot's own documents
             self.assertIn(f"{title}: The document still carries the DRAFT notice.", issues)
             self.assertTrue(any(i.startswith(f"{title}: ") and "open item" in i for i in issues), title)
             self.assertTrue(any(i.startswith(f"{title}: The version is not final") for i in issues), title)
-        for key in ("privacy", "terms", "pilot"):
-            self.assertTrue(any(f"[legal.approved] {key} = " in i for i in issues), key)
+        for key in ("pilot", "pilot_privacy"):
+            self.assertTrue(any(f"[legal.pilot_approval] {key}_version = " in i for i in issues), key)
+        self.assertEqual(sum("approved_by" in i for i in issues), 1)             # the approval record, named once
+        self.assertEqual(sum("approved_on" in i for i in issues), 1)
+        self.assertFalse(any(i.startswith(("Privacy Policy:", "Terms of Use:")) for i in issues))   # independent
 
     def test_pilot_activation_checklist_ignores_invented_settings_for_draft_documents(self):
         cfg = {"operator_verified": True, "contact_email": "privacy@example.com",
-               "registered_address": "1 Example Street, Lagos", "approved": {k: legal.checksum(k) for k in legal.DOCUMENTS}}
+               "registered_address": "1 Example Street, Lagos",
+               "pilot_approval": dict({"approved_by": "Legal Officer", "approved_on": "2026-10-20"},
+                                      **{f"{k}_{f}": (legal.version(k) if f == "version" else legal.checksum(k))
+                                         for k in legal.PILOT for f in ("version", "sha256")})}
         issues = legal.pilot_activation_problems(cfg)
         self.assertTrue(issues)                                   # the drafts themselves still block activation
-        self.assertFalse(any("[legal] operator_verified" in i or "[legal.approved]" in i for i in issues))
+        self.assertTrue(any("DRAFT notice" in i for i in issues))
+        self.assertFalse(any("[legal] operator_verified" in i or "[legal.pilot_approval]" in i for i in issues))
 
     def test_drafts_cannot_be_published_even_with_every_setting(self):
         cfg = {"operator_verified": True, "contact_email": "privacy@example.com",
@@ -78,13 +86,18 @@ class RealDraftTests(unittest.TestCase):
         self.assertIn(legal.TO_CONFIRM, text)                          # missing contact is marked, never invented
 
     def test_pilot_terms_limit_and_no_payments(self):
+        # The REAL private agreement has been adopted; test its substantive provisions, not obsolete draft phrases.
+        legal_fixtures.use_real()
         text = legal.document("pilot", {})
-        self.assertIn("at most **10** participants", text)
-        self.assertIn("**18 or older**", text)
-        self.assertIn("Friends & Family 10 pays **real money**", text)
-        self.assertIn("Provisional amounts", text)
-        self.assertIn("Final allocations", text)
-        self.assertIn("bank transfer", text)
+        self.assertIn("ten (10) individually invited", text)
+        self.assertIn("18 years and older", text)
+        self.assertIn("cash", text.lower())
+        self.assertIn("provisional", text.lower())
+        self.assertIn("final", text.lower())
+        self.assertIn("bank transfer", text.lower())
+        self.assertIn("₦500", text)
+        self.assertIn("₦7,000", text)
+        self.assertIn("₦50,000", text)
         self.assertNotIn("No money is currently payable", text)
 
     def test_founding_places_capped_at_fifty_and_the_pilot_at_ten(self):
@@ -104,7 +117,7 @@ class PublicationRuleTests(unittest.TestCase):
         self.cfg = legal_fixtures.secrets()
 
     def test_complete_and_approved_documents_are_live(self):
-        self.assertEqual(legal.live_documents(self.cfg), ["privacy", "terms", "pilot"])
+        self.assertEqual(legal.live_documents(self.cfg), ["privacy", "terms", "pilot", "pilot_privacy"])
         self.assertTrue(legal.live(self.cfg) and legal.pilot_ready(self.cfg))
         text = legal.document("privacy", self.cfg)
         self.assertIn("privacy@example.com", text)
@@ -267,10 +280,34 @@ class PilotActivationCompleteTests(unittest.TestCase):
     def test_complete_legal_side_leaves_nothing_to_do(self):
         self.assertEqual(legal.pilot_activation_problems(legal_fixtures.secrets()), [])
 
-    def test_missing_pilot_approval_alone_is_reported(self):
+    def test_missing_pilot_approval_record_is_reported(self):
         issues = legal.pilot_activation_problems(legal_fixtures.secrets(docs=("privacy", "terms")))
-        self.assertEqual(len(issues), 1)
-        self.assertTrue(issues[0].startswith("Friends & Family 10 terms: Not approved"))
+        self.assertEqual(issues[:2], ["Approval record: no authorised decision-maker ([legal.pilot_approval] approved_by).",
+                                      "Approval record: no valid approval date ([legal.pilot_approval] approved_on, "
+                                      "YYYY-MM-DD)."])
+        self.assertTrue(issues[2].startswith("Friends & Family 10 terms: Not in the approval record"))
+        self.assertTrue(issues[3].startswith("Friends & Family 10 privacy notice: Not in the approval record"))
+
+    def test_pilot_track_is_independent_of_the_general_documents(self):
+        cfg = legal_fixtures.secrets()
+        cfg["approved"] = {}                                        # general Privacy Policy and Terms NOT approved
+        self.assertTrue(legal.pilot_ready(cfg))
+        self.assertFalse(legal.live(cfg))                           # the public programme still needs them
+
+    def test_approval_record_must_match_every_document_exactly(self):
+        for change in ({"approved_by": ""}, {"approved_by": "[name]"}, {"approved_on": ""},
+                       {"approved_on": "2999-01-01"}, {"pilot_sha256": "0" * 64}, {"pilot_privacy_sha256": ""},
+                       {"pilot_version": "2026-01-01"}, {"pilot_privacy_version": "draft"}):
+            cfg = legal_fixtures.secrets()
+            cfg["pilot_approval"] = legal_fixtures.pilot_approval(**change)
+            self.assertFalse(legal.pilot_ready(cfg), change)
+            self.assertTrue(legal.pilot_activation_problems(cfg), change)
+
+    def test_approval_record_is_shown_in_the_status(self):
+        rows = {r["switch"]: r for r in legal.status(legal_fixtures.secrets())}
+        record = rows["[legal.pilot_approval] (Friends & Family 10 approval record)"]
+        self.assertTrue(record["on"])
+        self.assertIn(f"Approved by {legal_fixtures.APPROVED_BY} on {legal_fixtures.APPROVED_ON}", record["controls"])
 
     def test_unverified_operator_is_reported(self):
         self.assertEqual(legal.pilot_activation_problems(legal_fixtures.secrets(verified=False)),

@@ -134,7 +134,7 @@ class FF10AppTests(unittest.TestCase):
         strings = json.loads((ROOT / "data" / "translations.json").read_text(encoding="utf-8"))["strings"]
         from ui import ff10_ui
         texts = set(ff10_ui.TIER_TEXT) | set(ff10_ui.LINE_TEXT.values()) - {"Paid"}
-        for node in ast.walk(ast.parse((ROOT / "ui" / "ff10_ui.py").read_text(encoding="utf-8"))):
+        for node in ast.walk(ast.parse((ROOT / "ui" / "ff10_ui.py").read_text())):
             if isinstance(node, ast.Call) and getattr(node.func, "id", None) == "t" and node.args:
                 arg = node.args[0]
                 for v in ([arg] if isinstance(arg, ast.Constant) else
@@ -154,6 +154,55 @@ class FF10AppTests(unittest.TestCase):
             at.run()
             self.assertEqual([e.value for e in at.exception], [])
             self.assertIn(words, self.text(at), language)
+
+    # ---- the private terms: own approval record, acceptance before earning
+    def test_participants_accept_updated_terms_before_earning(self):
+        old = "2026-10-01#old0000000000000"
+        self.s.set_participation_terms("pilot", old, OWNER["email"])
+        self.s.ensure_account(FRIEND["profile_id"], FRIEND["email"], FRIEND["name"], True, False)
+        self.s.invite(FRIEND["email"], OWNER["email"])
+        app = self.s.apply_founding(FRIEND["profile_id"], "Lagos", None, True, True, True, terms_version=old)
+        self.s.decide_founding(app["id"], "approve", OWNER["email"])
+        self.s.set_participation_terms("pilot", legal_fixtures.pilot_terms_id(), OWNER["email"])   # new approved terms
+        at = self.app(FRIEND).run()
+        self.assertEqual([e.value for e in at.exception], [])
+        text = self.text(at)
+        self.assertIn("Please accept the current Friends & Family 10 terms", text)
+        self.assertNotIn("Today's learning progress", text)
+        labels = [x.label for x in at.expander]
+        self.assertTrue(any("Friends & Family 10 terms" in x for x in labels), labels)
+        self.assertTrue(any("Friends & Family 10 privacy notice" in x for x in labels), labels)
+        self.assertIn(f"Approved by {legal_fixtures.APPROVED_BY} on {legal_fixtures.APPROVED_ON}.", text)
+        quiz = self.app(FRIEND, page="Quiz").run()                                   # learning is not recorded yet
+        quiz.button(key="start_quiz").click().run()
+        q = quiz.session_state["quiz"]
+        qn = q["questions"][0]
+        quiz.button(key=f"answer_{q['serial']}_0_{qn['choices'].index(qn['answer'])}").click().run()
+        self.assertEqual(self.s.ff10_activity(FRIEND["profile_id"]), [])
+        at = self.app(FRIEND).run()
+        self.assertTrue(at.button(key="ff10_accept").disabled)
+        at.checkbox(key="ff10_accept_confirm").check().run()
+        at.button(key="ff10_accept").click().run()
+        self.assertEqual([e.value for e in at.exception], [])
+        self.assertTrue(self.s.ff10_terms_accepted(FRIEND["profile_id"]))
+        self.assertIn("Today's learning progress", self.text(at))
+        self.assertIsNotNone(self.record(FRIEND["profile_id"], "view", "NGA", lagos(rewards.day_key(), 1)))
+
+    def test_owner_sees_the_approval_record_and_the_10_place_counter(self):
+        self.join(FRIEND)
+        at = self.app(OWNER, page="Owner").run()
+        self.assertEqual([e.value for e in at.exception], [])
+        html = " ".join(str(h.proto.body) for h in at.get("html"))
+        self.assertIn("Private-pilot approval record", html)
+        self.assertIn(legal_fixtures.APPROVED_BY, html)
+        self.assertIn(legal_fixtures.APPROVED_ON, html)
+        self.assertIn(legal_fixtures.checksum("pilot"), html)
+        self.assertIn(legal_fixtures.checksum("pilot_privacy"), html)
+        self.assertIn("1 / 10 approved", html)
+        self.assertNotIn("/ 50", html)
+        labels = [x.label for x in at.tabs]
+        self.assertIn("Public (OFF) · Overview", labels)
+        self.assertNotIn("Overview", labels)
 
     def test_people_who_are_not_approved_see_no_progress(self):
         self.join(FRIEND, approve=False)

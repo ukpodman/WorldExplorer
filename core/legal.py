@@ -22,8 +22,13 @@ A document is published ("live") only when ALL of these hold:
     approves the new checksum. The version line is the human-readable label.
 
 The Privacy Policy and Terms of Use can be published on their own (for every user, independently of the pilot or
-any rewards programme). The Friends & Family 10 additionally needs its pilot terms; public rewards and every money
-switch need the Privacy Policy and Terms of Use (see ui/rewards_hooks.py).
+any rewards programme); public rewards and every public money switch need them (see ui/rewards_hooks.py).
+
+Friends & Family 10 (the private cash pilot) has its OWN documents and approval, independent of the general ones:
+the participation agreement (PILOT_TERMS.md) and its privacy notice (PILOT_PRIVACY_NOTICE.md). They are published
+when they are complete, the operator details are set, and the private-pilot approval record ([legal.pilot_approval]:
+the authorised decision-maker, the approval date, and each document's version and SHA-256 checksum) matches the
+exact files.
 """
 from __future__ import annotations
 
@@ -44,9 +49,11 @@ DOCUMENTS = {   # key: (title, file)
     "privacy": ("Privacy Policy", "PRIVACY_POLICY.md"),
     "terms": ("Terms of Use", "TERMS_OF_USE.md"),
     "pilot": ("Friends & Family 10 terms", "PILOT_TERMS.md"),
+    "pilot_privacy": ("Friends & Family 10 privacy notice", "PILOT_PRIVACY_NOTICE.md"),
 }
 GENERAL = ("privacy", "terms")            # for every user; also required before public rewards or any money switch
-PILOT = ("privacy", "terms", "pilot")     # required before the Friends & Family 10 opens
+PILOT = ("pilot", "pilot_privacy")        # Friends & Family 10's own documents (own approval record, see above)
+SHARED_PREFIXES = ("The company's role", "No valid contact", "No registered address", "Approval record:")
 PILOT_MAX_PLACES = 10                     # Friends & Family 10: at most 10 individually approved adults
 FOUNDING_MAX_PLACES = 50                  # the future public Founding 50 programme (reward_program_settings.max_places)
 TO_CONFIRM = "[to be confirmed]"
@@ -113,6 +120,32 @@ def approved_version(key: str, cfg: dict) -> str:
         return ""
 
 
+def pilot_approval(cfg: dict | None = None) -> dict:
+    """The private-pilot approval record ([legal.pilot_approval]) exactly as configured by the owner."""
+    cfg = cfg if cfg is not None else config()
+    try:
+        return dict(cfg.get("pilot_approval") or {})
+    except Exception:
+        return {}
+
+
+def approval_record_problems(cfg: dict | None = None) -> list[str]:
+    """What is missing from the approval record itself (decision-maker and date). Nothing is ever filled in here."""
+    from datetime import date
+    record = pilot_approval(cfg)
+    out = []
+    who = str(record.get("approved_by") or "").strip()
+    if len(who) < 3 or "[" in who or "{" in who:
+        out.append("Approval record: no authorised decision-maker ([legal.pilot_approval] approved_by).")
+    try:
+        when = date.fromisoformat(str(record.get("approved_on") or "")[:10])
+        if when > date.today():
+            out.append("Approval record: the approval date is in the future ([legal.pilot_approval] approved_on).")
+    except ValueError:
+        out.append("Approval record: no valid approval date ([legal.pilot_approval] approved_on, YYYY-MM-DD).")
+    return out
+
+
 def _fill(text: str, cfg: dict) -> str:
     return (text.replace("{{CONTACT_EMAIL}}", contact_email(cfg) or TO_CONFIRM)
                 .replace("{{REGISTERED_ADDRESS}}", registered_address(cfg) or TO_CONFIRM))
@@ -140,6 +173,15 @@ def problems(key: str, cfg: dict | None = None) -> list[str]:
         out.append("Unfilled {{fields}} in the document.")
     if not v or v.lower().startswith("draft"):
         out.append(f"The version is not final ({v or 'missing'}).")
+    if key in PILOT:
+        out.extend(approval_record_problems(cfg))
+        record = pilot_approval(cfg)
+        recorded = str(record.get(f"{key}_sha256") or "").strip().lower()
+        if recorded != checksum(key) or str(record.get(f"{key}_version") or "").strip() != v:
+            out.append(("Changed since it was approved" if recorded else "Not in the approval record") + ": after the "
+                       f"legal review, set [legal.pilot_approval] {key}_version = \"{v}\" and {key}_sha256 = "
+                       f"\"{checksum(key)}\" (this exact text).")
+        return out
     approved = approved_version(key, cfg).lower()
     if approved != checksum(key):
         out.append(("Changed since it was approved" if approved else "Not approved") + ": after the legal review, set "
@@ -159,21 +201,22 @@ def live(cfg: dict | None = None) -> bool:
 
 
 def pilot_ready(cfg: dict | None = None) -> bool:
-    """Privacy Policy, Terms of Use and pilot terms are all published. Required before the pilot opens."""
+    """The private pilot's own agreement and privacy notice are published (with its approval record). Required before
+    the pilot opens; independent of the general Privacy Policy and Terms of Use (public programme)."""
     cfg = cfg if cfg is not None else config()
     return all(doc_live(k, cfg) for k in PILOT)
 
 
 def pilot_activation_problems(cfg: dict | None = None) -> list[str]:
     """Every legal requirement still missing before the Friends & Family 10 may be switched on, in order, each named
-    once: the shared [legal] settings first, then each document (Privacy Policy, Terms of Use, pilot terms) with its
-    own open points. Empty list = the legal side is complete. Nothing here is filled in automatically."""
+    once: the shared settings first (operator details, approval record), then each of the pilot's own documents
+    (participation agreement, privacy notice) with its own open points. Empty list = the legal side is complete. Nothing here is filled in automatically."""
     cfg = cfg if cfg is not None else config()
     out: list[str] = []
     for key in PILOT:
         title = DOCUMENTS[key][0]
         for issue in problems(key, cfg):
-            shared = issue.startswith(("The company's role", "No valid contact", "No registered address"))
+            shared = issue.startswith(SHARED_PREFIXES)
             line = issue if shared else f"{title}: {issue}"
             if line not in out:
                 out.append(line)
@@ -214,6 +257,10 @@ def status(cfg: dict | None = None) -> list[dict]:
         {"switch": "[legal] registered_address", "on": bool(registered_address(cfg)),
          "controls": "The company's registered address."},
     ]
+    record, record_issues = pilot_approval(cfg), approval_record_problems(cfg)
+    rows.append({"switch": "[legal.pilot_approval] (Friends & Family 10 approval record)", "on": not record_issues,
+                 "controls": " · ".join(record_issues) if record_issues else
+                 f"Approved by {record.get('approved_by')} on {str(record.get('approved_on'))[:10]}"})
     for key, (title, _) in DOCUMENTS.items():
         issues = problems(key, cfg)
         rows.append({"switch": f"{title} ({version(key) or 'no version'})", "on": not issues,

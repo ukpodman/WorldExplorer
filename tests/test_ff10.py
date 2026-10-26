@@ -529,6 +529,34 @@ class Scenarios:
         self.raises("places_full", s.decide_founding, eleventh["id"], "approve", OWNER)
         self.assertIsNotNone(self.record_at(s, pid(1), "view", "NGA", when(LAST + "-05")))
 
+    # ---- acceptance of the current approved private terms
+    def test_new_terms_must_be_accepted_before_earning_again(self):
+        s = self.store()
+        p = self.participant(s, 1)                                   # applied with the recorded terms: accepted
+        self.assertTrue(s.ff10_terms_accepted(p))
+        self.assertIsNotNone(self.record_at(s, p, "view", "NGA", when(LAST + "-05")))
+        s.set_participation_terms("pilot", "2026-12-01#new0000000000000", OWNER)    # the owner records new terms
+        self.assertFalse(s.ff10_terms_accepted(p))
+        self.raises("not_participant", self.record_at, s, p, "view", "GHA", when(LAST + "-05", 10))
+        self.raises("not_participant", s.ff10_verify_beneficiary, p, "Player One", "Bank", "1234", OWNER, True)
+        self.raises("terms_outdated", s.ff10_accept_terms, p, TERMS)                  # the old version
+        row = s.ff10_accept_terms(p, "2026-12-01#new0000000000000")
+        self.assertEqual(row["terms_version"], "2026-12-01#new0000000000000")
+        self.assertTrue(s.ff10_terms_accepted(p))
+        self.assertIsNotNone(self.record_at(s, p, "view", "GHA", when(LAST + "-05", 11)))
+        s.ff10_accept_terms(p, "2026-12-01#new0000000000000")                        # accepting again is harmless
+        self.assertIn("pilot_terms_accepted", [a["action"] for a in s.audit()])
+        with self.assertRaises(StoreError):
+            s.delete("pilot_terms_acceptances", {"profile_id": p})
+
+    def test_only_approved_invited_participants_can_accept(self):
+        s = self.store()
+        pending = self.participant(s, 1, approve=False)
+        self.raises("not_participant", s.ff10_accept_terms, pending, TERMS)
+        p = self.participant(s, 2)
+        s.revoke_invitation("p2@example.com", OWNER)
+        self.raises("not_participant", s.ff10_accept_terms, p, TERMS)
+
     def test_revoking_an_invitation_stops_recording_at_once(self):
         s = self.store()
         p = self.participant(s, 1)

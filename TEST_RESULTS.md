@@ -1,25 +1,42 @@
-# Automated test results: Friends & Family 10 real-cash patch (25 October 2026)
+# Automated test results: Friends & Family 10 private documents, approval record and acceptance (25 October 2026)
 
 **Command:** `python -m unittest discover tests` (the complete suite)
-**Code tested:** `atlas-pilot-consolidated` with the corrections, Friends & Family 10 and review-correction packages
-(`48b176b`), plus this real-cash patch.
-**Environment:** Python 3.13, Streamlit 1.65, and a local PostgreSQL 16 with every migration loaded, including the
-proposed `friends_family10_payments_migration.sql`. These are throwaway local databases; your Supabase project was not
-used and no SQL was run on it.
+**Code tested:** the real-cash patch (`932e362`) plus this update. These are local databases with every migration
+loaded, including the proposed acceptance migration; your Supabase project was not used.
 
 | Run | Tests | Passed | Failed | Errors | Skipped |
 |---|---|---|---|---|---|
-| A. With `supabase/pilot_invitations_migration.sql` in the checkout (every database rule on real PostgreSQL) | 756 | 756 | 0 | 0 | 0 |
-| B. Your GitHub branch as it is (that file missing) | 756 | 671 | 0 | 0 | 85 |
+| A. With `supabase/pilot_invitations_migration.sql` in the checkout (every database rule on real PostgreSQL) | 765 | 765 | 0 | 0 | 0 |
+| B. Your GitHub branch as it is (that file missing) | 765 | 678 | 0 | 0 | 87 |
 
 **Raw results:**
-- Run A: `Ran 756 tests in 741.468s — OK`
-- Run B: `Ran 756 tests in 571.892s — OK (skipped=85)`
+- Run A: `Ran 765 tests in 823.812s — OK`
+- Run B: `Ran 765 tests in 623.808s — OK (skipped=87)`
 
-The 85 skipped tests in run B are the PostgreSQL rule tests: 46 in `test_founding50.SqlFoundingTests` and 39 in
-`test_ff10.SqlFF10Tests`. The same scenarios run against the in-memory store in both runs.
+The 87 skipped tests in run B are the PostgreSQL rule tests: 46 in Founding 50 and 41 in Friends & Family 10.
 
-## New in the real-cash patch
+## New in this update
+
+- **`test_legal`** (the pilot's own documents and approval record):
+  - `test_pilot_track_is_independent_of_the_general_documents`;
+  - `test_approval_record_must_match_every_document_exactly`: covers a missing or placeholder decision-maker, a
+    missing or future date, and a wrong version or checksum for either document;
+  - `test_approval_record_is_shown_in_the_status`;
+  - `test_missing_pilot_approval_record_is_reported`.
+
+  Updated: the outstanding-requirements checklist now names the pilot's own documents and the approval record.
+- **`test_ff10`** (memory and PostgreSQL):
+  - `test_new_terms_must_be_accepted_before_earning_again`: after the owner records new terms, learning is refused
+    (and beneficiary checks too) until the participant accepts exactly the current version. Old versions are refused,
+    and acceptances are audited and kept.
+  - `test_only_approved_invited_participants_can_accept`.
+- **`test_ff10_app`:**
+  - `test_participants_accept_updated_terms_before_earning`: the participant sees both approved documents with
+    "Approved by … on …". Quiz answers are not recorded until they accept; after accepting, the progress card returns.
+  - `test_owner_sees_the_approval_record_and_the_10_place_counter`: shows the decision-maker, date and both
+    checksums, "1 / 10 approved", no "/ 50", and the public tabs marked "Public (OFF)".
+
+## Earlier: the real-cash patch
 
 **`tests/test_ff10.py`** (each on the in-memory store and on PostgreSQL):
 - `test_payments_need_the_owners_authorisation_and_public_stays_off`: payments are refused until the owner authorises

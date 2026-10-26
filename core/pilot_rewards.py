@@ -64,6 +64,7 @@ FAST_ANSWER_SECONDS = 2.0
 TABLES = ("pilot_reward_settings", "pilot_activity", "pilot_day_reviews", "pilot_settlements",
           "pilot_settlement_lines")
 PAYMENT_TABLES = ("pilot_beneficiaries", "pilot_payments")          # supabase/friends_family10_payments_migration.sql
+ACCEPTANCE_TABLES = ("pilot_terms_acceptances",)                     # supabase/friends_family10_acceptance_migration.sql
 REFERENCE_MIN = 4
 
 

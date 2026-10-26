@@ -95,9 +95,10 @@ class PilotAppTests(unittest.TestCase):
         self.s.invite(FRIEND["email"], OWNER["email"])
         at = self.app(FRIEND).run()
         text = self.text(at)
-        self.assertIn("World Explorer — Friends & Family 10", text)
+        # Streamlit renders the title as a subheader, not a markdown/notice/caption element.
+        self.assertIn("World Explorer — Friends & Family 10", [x.value for x in at.subheader])
         self.assertIn("Educational points and badges have no monetary value", text)
-        self.assertIn("Friends & Family 10: Participation Terms", text)            # the actual pilot terms
+        self.assertIn("Private Cash-Pilot Participation Agreement", text)            # current approved agreement
         self.assertIn(f"Friends & Family 10 terms ({legal_fixtures.VERSION})", [x.label.split(" ", 1)[1] for x in at.expander])
         self.assertNotIn("pilot programme rules", text)                              # not the old rewards rules
         for money in ("earn rewards", "Founding 50", "guaranteed"):
@@ -184,7 +185,8 @@ class PilotAppTests(unittest.TestCase):
 
     def test_activation_is_disabled_with_exact_reasons_while_legal_requirements_are_incomplete(self):
         """The real draft documents and no [legal] settings: the pilot cannot be switched on, even after ticking."""
-        legal_fixtures.use_real()
+        # Use explicit draft fixtures to verify the activation gate continues to reject incomplete documents.
+        legal_fixtures.use_draft()
         self.addCleanup(legal_fixtures.use_real)
         at = self.app(OWNER, page="Owner", legal=False).run()
         self.owner_tab(at)
@@ -195,10 +197,10 @@ class PilotAppTests(unittest.TestCase):
         reasons = " ".join(w.value for w in at.warning)
         self.assertIn("The pilot cannot be switched on yet", reasons)
         for exact in ("[legal] operator_verified", "[legal] contact_email", "[legal] registered_address",
-                      "Privacy Policy: The document still carries the DRAFT notice.",
-                      "Terms of Use: The document still carries the DRAFT notice.",
                       "Friends & Family 10 terms: The document still carries the DRAFT notice.",
-                      "[legal.approved] pilot", "are not recorded yet"):
+                      "Friends & Family 10 privacy notice: The document still carries the DRAFT notice.",
+                      "[legal.pilot_approval] approved_by", "[legal.pilot_approval] pilot_version",
+                      "are not recorded yet"):
             self.assertIn(exact, reasons, exact)
         self.assertEqual(reasons.count("[legal] operator_verified"), 1)          # shared requirements named once
         with self.assertRaises(Exception):                                        # the database refuses as well

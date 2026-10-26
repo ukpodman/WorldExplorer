@@ -99,9 +99,8 @@ def _pilot_apply_form(s, who: dict, account: dict) -> None:
     """The application with the published Friends & Family 10 terms; the exact version shown is the version the
     applicant accepts, and the database checks it against the owner's approved version."""
     terms_id = legal.pilot_terms_id()
-    with st.expander("📜 " + t("Friends & Family 10 terms") + f" ({legal.version('pilot')})", expanded=False):
-        st.caption(t("The pilot terms are available in English."))
-        st.markdown(legal.document("pilot"))
+    from . import ff10_ui
+    ff10_ui.documents()          # the approved agreement and privacy notice, with the approval record
     with st.form("rw_founding_apply", border=True):
         st.markdown("**" + t("Apply to Friends & Family 10") + "**")
         state = st.selectbox(t("State of residence"), founding.STATES, index=None,

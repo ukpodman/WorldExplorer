@@ -12,6 +12,23 @@ in, approved or bypassed. Claude is not a lawyer; the legal content needs your l
 `supabase/friends_family10_migration.sql` (provisional rewards and settlement) is proposed and **not run**; run it only
 after its review and your approval. Without it the pilot can still open, but nothing is recorded for rewards.
 
+## Update: the private pilot now has its own documents (supersedes rows 4, 5 and 7 below for the pilot)
+
+Friends & Family 10 no longer depends on the general Privacy Policy and Terms of Use, which remain for the public
+programme. What is still genuinely outstanding in the repository:
+
+| # | Requirement | Status in the repository |
+|---|---|---|
+| 1 | `[legal] operator_verified`, `contact_email`, `registered_address` (your own confirmation of the operator details) | Not set in this repository; the owner tab shows the live state |
+| 2 | `legal/PILOT_TERMS.md` finalised | Still marked DRAFT, version `draft-2026-10-25-cash`. Open items: payment timing `[14]` days; tax treatment; the in-app leaving option; the conflict-of-interest wording in section 2 |
+| 3 | `legal/PILOT_PRIVACY_NOTICE.md` finalised | New, still marked DRAFT, version `draft-2026-10-25-cash`. Open items: Supabase region; retention periods (activity, payments); transfer mechanism |
+| 4 | `[legal.pilot_approval]`: authorised decision-maker, approval date, and each document's version and SHA-256 | Not set. Enter it after approving the **final** files; the owner tab shows the exact values to copy |
+| 5 | The approved private terms recorded in the database | 🤝 Friends & Family 10 tab, once items 1–4 are done |
+| 6 | `supabase/friends_family10_acceptance_migration.sql` reviewed and run | Proposed, not run |
+
+The approval you described cannot be recorded by the app while the documents are still marked DRAFT and contain
+open items. Finalise the text first; the checksum then identifies exactly what was approved.
+
 ## What the app requires before the pilot can be switched on
 
 All of these must hold. The database separately refuses the switch until the pilot terms are recorded.

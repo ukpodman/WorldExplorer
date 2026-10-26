@@ -14,7 +14,7 @@ from html import escape
 
 import streamlit as st
 
-from core import accounts, analytics, metrics, rewards
+from core import accounts, analytics, legal, metrics, rewards
 from core.rewards import Settings
 from core.rewards_store import StoreError
 
@@ -113,6 +113,7 @@ FOUNDING_TILE = {"ok": None, "missing_tables": "Run supabase/founding50_migratio
 
 
 FF10_TAB = "📊 F&F 10 rewards"
+PUBLIC_PREFIX = "Public (OFF) · "
 
 
 def programme_tab_label(new_apps: int) -> str:
@@ -130,14 +131,16 @@ def _status_panel(s) -> None:
         try:
             fs = hooks.founding_store(for_tester=True)
             approved = sum(1 for a in fs.founding_applications("approved") if not a.get("test"))
-            founding_text = f"{approved} / {fs.settings().max_places} approved"
+            places = fs.settings().max_places if hooks.enabled() else legal.PILOT_MAX_PLACES   # 10 in the private pilot
+            founding_text = f"{approved} / {places} approved"
         except Exception:
             founding_text = "Not reachable"
     else:
         founding_text = FOUNDING_TILE.get(founding_state, founding_state)
     programme = "Founding 50" if hooks.enabled() else "Friends & Family 10"
-    flags = [("Public participation", STATE_LABEL[public["state"]]), (programme, founding_text),
-             ("Payouts (payouts_active)", "ON" if hooks.payouts_active() else "OFF"),
+    payouts = ("Payouts (payouts_active)", "ON" if hooks.payouts_active() else "OFF") if hooks.enabled() else \
+        ("Public Rewards payouts", "OFF")
+    flags = [("Public participation", STATE_LABEL[public["state"]]), (programme, founding_text), payouts,
              ("Storage", {"ok": "Supabase tables ready", "missing_tables": "Run supabase/rewards_schema.sql",
                           "no_storage": "No Supabase storage", "error": "Not reachable"}[hooks.store_health()])]
     _tiles([(k, v) for k, v in flags])
@@ -147,7 +150,11 @@ def _status_panel(s) -> None:
     if public["state"] != "enabled":
         st.info(f"Public participation is {public['state']}: {public['reason']} Owners and listed testers can still "
                 "try 💰 Rewards; their records are test records and are never payable. Change it in Settings.")
-    if not hooks.payouts_active():
+    if not hooks.enabled():
+        st.caption("Tabs marked “Public (OFF)” belong to the future public programme (its own ₦1,000 monthly maximum "
+                   "and 50 places). Friends & Family 10 has its own fixed limits — 10 places, ₦500 a day, ₦7,000 a "
+                   "month, ₦50,000 shared monthly budget — and its own cash payments: see 📊 F&F 10 rewards.")
+    elif not hooks.payouts_active():
         st.caption("Payouts are switched off: payments cannot be approved or marked as paid until you set "
                    "[rewards] payouts_active = true after legal and compliance review.")
 
@@ -670,6 +677,8 @@ def render() -> None:
     new_apps = owner_founding.unseen_count()
     labels = [f"💳 Withdrawals ({waiting})", programme_tab_label(new_apps), "Overview", "Budget",
               "Participants", "Payments", "Referrals", "Fraud", "Settings", "Audit log"]
+    if not hooks.enabled():   # the public programme's own figures (₦1,000 cap, 50 places) are not the private pilot's
+        labels[2:9] = [PUBLIC_PREFIX + x for x in labels[2:9]]
     sections = [lambda: owner_withdrawals.render(include_test), lambda: owner_founding.render(include_test),
                 lambda: _overview(d, month, include_test), lambda: _budget(s, d, month),
                 lambda: _participants(s, d, include_test), lambda: _payments(s, d, include_test),

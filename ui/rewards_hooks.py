@@ -16,7 +16,7 @@ import time
 
 import streamlit as st
 
-from core import accounts, analytics, cookies, legal, rewards
+from core import accounts, analytics, cookies, legal, pilot_rewards, rewards
 from core.rewards_store import MemoryStore, RewardsStore, StoreError, SupabaseStore
 
 REF_COOKIE = "we_ref"
@@ -679,6 +679,54 @@ def ping(kind: str, subject, detail: dict | None = None) -> None:
             from concurrent.futures import ThreadPoolExecutor
             _FF10_POOL = ThreadPoolExecutor(max_workers=2, thread_name_prefix="ff10")
         _FF10_POOL.submit(_ff10_send, s, member["profile_id"], kind, str(subject), detail)
+    except Exception:
+        pass
+
+
+def ff10_checks_on(s: RewardsStore | None = None) -> bool:
+    """True when activity checks can be recorded (supabase/friends_family10_active_time_migration.sql installed; the
+    in-memory preview always has it). Until then nothing is sent and every day is calculated exactly as before."""
+    s = s or ff10_store()
+    if s is None:
+        return False
+    if isinstance(s, MemoryStore):
+        return True
+    cache = _health_cache()
+    key = getattr(s, "url", "store") + "#ff10hb"
+    hit = cache.get(key)
+    if not hit or time.time() - hit[1] >= HEALTH_TTL:
+        hit = cache[key] = (s.ff10_heartbeat_health(), time.time())
+    return hit[0] == "ok"
+
+
+def _ff10_beat_send(s: RewardsStore, profile_id: str, area: str) -> None:
+    try:
+        s.ff10_heartbeat(profile_id, area)
+    except Exception:
+        pass                       # refused or unreachable: a lost check is simply not counted (never replayed later)
+
+
+def beat(area: str | None) -> None:
+    """One activity check from an engaged page (ui/ff10_heartbeat.py). The database time-stamps and validates it;
+    does nothing for anybody who is not a Friends & Family 10 participant (or owner/tester) and never for School
+    Learning."""
+    global _FF10_POOL
+    try:
+        if area not in pilot_rewards.AREAS:
+            return
+        member = ff10_member()
+        if not member or member.get("needs_acceptance"):
+            return
+        s = ff10_store()
+        if s is None or not ff10_checks_on(s):
+            return
+        if isinstance(s, MemoryStore):
+            _ff10_beat_send(s, member["profile_id"], area)
+            return
+        if _FF10_POOL is None:
+            from concurrent.futures import ThreadPoolExecutor
+            _FF10_POOL = ThreadPoolExecutor(max_workers=2, thread_name_prefix="ff10")
+        _FF10_POOL.submit(_ff10_beat_send, s, member["profile_id"], area)
     except Exception:
         pass
 

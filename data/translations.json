@@ -5352,6 +5352,30 @@
    "Aviso de privacidad de Friends & Family 10",
    "Friends & Family 10 隐私声明",
    "Уведомление о конфиденциальности программы Friends & Family 10"
+  ],
+  "Qualifying quizzes today: {n} / {need}": [
+   "Zählende Quizze heute: {n} / {need}",
+   "Cuestionarios válidos hoy: {n} / {need}",
+   "今日有效测验：{n} / {need}",
+   "Засчитанные викторины сегодня: {n} / {need}"
+  ],
+  "Includes {n} minutes of reading and exploring, verified by activity checks.": [
+   "Enthält {n} Minuten Lesen und Entdecken, bestätigt durch Aktivitätsprüfungen.",
+   "Incluye {n} minutos de lectura y exploración, verificados por comprobaciones de actividad.",
+   "其中包含 {n} 分钟的阅读和探索时间，已通过活动检查验证。",
+   "Включает {n} мин чтения и изучения, подтверждённых проверками активности."
+  ],
+  "Not counted today: {minutes} minutes in {count} pause(s) longer than 3 minutes without any recorded activity.": [
+   "Heute nicht gezählt: {minutes} Minuten in {count} Pause(n) von mehr als 3 Minuten ohne erfasste Aktivität.",
+   "No contado hoy: {minutes} minutos en {count} pausa(s) de más de 3 minutos sin actividad registrada.",
+   "今日未计入：{minutes} 分钟，来自 {count} 次超过 3 分钟且没有任何记录活动的停顿。",
+   "Сегодня не засчитано: {minutes} мин в {count} паузе(ах) дольше 3 минут без зафиксированной активности."
+  ],
+  "Active learning counts: answering quizzes, exploring countries, and reading while you scroll or tap on Explore, Learn or a quiz. Time with the app hidden, in the background or left untouched does not count. School Learning is never part of the rewards.": [
+   "Aktives Lernen zählt: Quizfragen beantworten, Länder entdecken und Lesen, während du auf Entdecken, Lernen oder in einem Quiz scrollst oder tippst. Zeit, in der die App verborgen, im Hintergrund oder unberührt ist, zählt nicht. Schulisches Lernen ist nie Teil der Belohnungen.",
+   "Cuenta el aprendizaje activo: responder cuestionarios, explorar países y leer mientras te desplazas o tocas en Explorar, Aprender o un cuestionario. El tiempo con la aplicación oculta, en segundo plano o sin tocar no cuenta. El Aprendizaje Escolar nunca forma parte de las recompensas.",
+   "计入的是主动学习：回答测验、探索国家，以及在“探索”“学习”或测验中滚动或点击时的阅读。应用被隐藏、在后台运行或无人操作的时间不计入。学校学习从不计入奖励。",
+   "Засчитывается активное обучение: ответы в викторинах, изучение стран и чтение, когда вы прокручиваете или нажимаете в разделах «Обзор», «Изучать» или в викторине. Время, когда приложение скрыто, работает в фоне или не используется, не засчитывается. Школьное обучение никогда не входит в вознаграждения."
   ]
  }
 }

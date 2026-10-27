@@ -40,7 +40,7 @@ _load_fresh_code()
 
 from core import accounts, analytics, cookies  # noqa: E402  (set_page_config must run first)
 from core.data import COUNTRIES  # noqa: E402
-from ui import rewards_hooks, state  # noqa: E402
+from ui import ff10_heartbeat, rewards_hooks, state  # noqa: E402
 from ui.components import feedback_button, header, inject_styles  # noqa: E402
 from ui.pages import ROUTES  # noqa: E402
 
@@ -82,6 +82,7 @@ def main() -> None:
     slots = (st.empty(), st.empty())
     with slots[ss.view_slot].container(key=f"view_{page.lower()}"):
         ROUTES[page]()
+        ff10_heartbeat.render(page)  # Friends & Family 10 reading/exploring checks; nothing for anybody else
     st.divider()
     accounts.save_profile()
     accounts.refresh_handoff()

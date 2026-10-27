@@ -199,6 +199,7 @@ def _participant_detail(s, d: dict, month: str) -> None:
              "Review flags": "; ".join(flags.get(x.day, ()))} for x in reversed(ledger)], "No activity in this month.")
     _download("Download activity (CSV)", [{"at": r["at"], "day": r["day"], "kind": r["kind"], "subject": r["subject"]}
                                           for r in rows], f"ff10-activity-{_short(pid)}-{chosen}", "ff10_csv")
+    _time_audit(s, d, pid, rows, chosen)
     if chosen in d["settlements"] or not ledger:
         if chosen in d["settlements"]:
             st.caption("This month is settled: its days can no longer change.")
@@ -213,6 +214,56 @@ def _participant_detail(s, d: dict, month: str) -> None:
     if exclude or restore:
         _act(lambda: s.ff10_review_day(pid, day, bool(exclude), _actor(), reason or None),
              f"{day} was {'excluded' if exclude else 'restored'} for {_who(d, pid)}.")
+
+
+AUDIT_DAYS = ("2026-10-26", "2026-10-27")     # the reported days (owner may choose any other days of the month)
+
+
+def _lagos_time(value) -> str:
+    return rewards.lagos_now(value).strftime("%H:%M:%S") if value else "—"
+
+
+def _time_audit(s, d: dict, pid: str, rows: list[dict], month: str) -> None:
+    """READ-ONLY learning-time audit: why verified minutes differ from the time between first and last activity.
+    Nothing here changes a record, a day review or an amount."""
+    with st.expander("🔎 Learning-time audit (read-only)", key="ff10_audit"):
+        st.caption("Shows each day's recorded interactions and activity checks, the time between the first and last of "
+                   "them, the verified minutes, and every pause longer than 3 minutes (only 3 minutes of a longer pause "
+                   "count). Elapsed time alone does not prove learning — a pause can be reading or an app left open. "
+                   "This audit never changes records or amounts; any adjustment needs separate evidence and your own "
+                   "decision, outside this tool.")
+        days_with_activity = sorted({str(r["day"])[:10] for r in rows})
+        options = sorted(set(days_with_activity) | {x for x in AUDIT_DAYS if x[:7] == month})
+        if not options:
+            st.caption("No activity in this month.")
+            return
+        default = [x for x in AUDIT_DAYS if x in options] or options[-2:]
+        chosen = st.multiselect("Days", options, default=default, key="ff10_audit_days")
+        try:
+            beats = [b for b in s.ff10_heartbeats(pid, month) if not b.get("test")]
+        except Exception:
+            beats = []
+        report = pr.audit_days(rows, beats, sorted(chosen))
+        _table([{"Day": x["day"], "Interactions": x["interactions"], "Activity checks": x["heartbeats"],
+                 "Qualifying quizzes": x["quizzes"], "Daily Challenge": "✓" if x["challenge"] else "",
+                 "First": _lagos_time(x["first"]), "Last": _lagos_time(x["last"]),
+                 "Elapsed min": round(x["elapsed"] / 60, 1), "Verified min": round(x["credited"] / 60, 1),
+                 "Not counted min": round(x["uncredited"] / 60, 1), "Pauses > 3 min": len(x["gaps"])}
+                for x in report], "No activity on the chosen days.")
+        gaps = [{"Day": x["day"], "From": _lagos_time(g["start"]), "To": _lagos_time(g["end"]),
+                 "Pause min": round(g["seconds"] / 60, 1), "Not counted min": round(g["uncredited"] / 60, 1),
+                 "Before": f"{g['before'][0]}: {g['before'][1]}", "After": f"{g['after'][0]}: {g['after'][1]}"}
+                for x in report for g in x["gaps"]]
+        if gaps:
+            st.markdown("**Pauses longer than 3 minutes** (Lagos time)")
+            _table(gaps, "")
+        if not beats:
+            st.caption("No activity checks are recorded for these days: reading and exploring without clicking was not "
+                       "measured before the active-time update, so a long pause cannot show whether the participant "
+                       "was reading.")
+        _download("Download audit (CSV)", gaps or [{"Day": x["day"], "Elapsed min": round(x["elapsed"] / 60, 1),
+                                                     "Verified min": round(x["credited"] / 60, 1)} for x in report],
+                  f"ff10-time-audit-{_short(pid)}-{month}", "ff10_audit_csv")
 
 
 def _act(fn, message: str) -> None:

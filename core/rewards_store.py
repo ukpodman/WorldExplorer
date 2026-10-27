@@ -31,7 +31,8 @@ CASHOUT_TABLES = ("reward_cashout_settings", "reward_cashout_requests", "reward_
                   "reward_cashout_payments", "reward_owner_notifications")   # supabase/withdrawals_migration.sql
 FOUNDING_TABLES = (founding.TABLE,)                                            # supabase/founding50_migration.sql
 PILOT_TABLES = (founding.INVITES,)                                             # supabase/pilot_invitations_migration.sql
-FF10_TABLES = pilot_rewards.TABLES + pilot_rewards.PAYMENT_TABLES + pilot_rewards.ACCEPTANCE_TABLES
+FF10_TABLES = (pilot_rewards.TABLES + pilot_rewards.PAYMENT_TABLES + pilot_rewards.ACCEPTANCE_TABLES
+               + pilot_rewards.HEARTBEAT_TABLES)
 PAGE = 1000
 PILOT_COLUMNS = ("pilot_enabled", "pilot_changed_at", "pilot_changed_by", "invitation_only", "invitation_changed_at",
                  "invitation_changed_by", "pilot_terms_version", "public_terms_version", "terms_changed_at",
@@ -259,6 +260,8 @@ class RewardsStore:
     def clear_test_data(self, actor: str) -> None:
         """Remove owner/tester preview records (never real ones; the database refuses those)."""
         if self.ff10_health() == "ok":
+            if self.ff10_heartbeat_health() == "ok":
+                self.delete("pilot_heartbeats", {"test": True})
             self.delete("pilot_activity", {"test": True})
         if self.founding_health() == "ok":
             self.delete(founding.TABLE, {"test": True})
@@ -383,6 +386,35 @@ class RewardsStore:
         if month:
             where["day"] = ("gte", f"{month}-01")
         rows = self.select("pilot_activity", where or None, order="at,id")
+        return [r for r in rows if not month or str(r["day"])[:7] == month]
+
+    # ---- activity checks: reading and exploring (supabase/friends_family10_active_time_migration.sql)
+    def ff10_heartbeat_health(self) -> str:
+        """'ok', 'missing_tables' (the active-time migration has not been run: no checks are recorded and every day is
+        calculated as before) or 'error'."""
+        try:
+            self.select("pilot_heartbeats", None, limit=1)
+            return "ok"
+        except StoreError as error:
+            return "missing_tables" if "missing" in str(error) or "does not exist" in str(error) else "error"
+        except Exception:
+            return "error"
+
+    def ff10_heartbeat(self, profile_id: str, area: str) -> dict | None:
+        """One activity check, time-stamped and validated by the database. None when it was not accepted (too soon,
+        no meaningful interaction in the last 15 minutes, or the day's limit)."""
+        row = self._one(self.rpc("pilot_record_heartbeat", {"p_profile": profile_id, "p_area": area}))
+        return row if row and row.get("id") is not None else None
+
+    def ff10_heartbeats(self, profile_id: str | None = None, month: str | None = None) -> list[dict]:
+        """Accepted activity checks (read-only). [] when the migration has not been run."""
+        where = {"profile_id": profile_id} if profile_id else {}
+        if month:
+            where["day"] = ("gte", f"{month}-01")
+        try:
+            rows = self.select("pilot_heartbeats", where or None, order="at,id")
+        except StoreError:
+            return []
         return [r for r in rows if not month or str(r["day"])[:7] == month]
 
     def ff10_ledger(self, profile_id: str, month: str) -> list[dict]:
@@ -653,7 +685,7 @@ class MemoryStore(RewardsStore):
             "pilot_reward_settings": ("id",), "pilot_activity": ("id",), "pilot_day_reviews": ("profile_id", "day"),
             "pilot_settlements": ("month",), "pilot_settlement_lines": ("month", "profile_id"),
             "pilot_beneficiaries": ("profile_id",), "pilot_payments": ("id",),
-            "pilot_terms_acceptances": ("profile_id", "terms_version")}
+            "pilot_terms_acceptances": ("profile_id", "terms_version"), "pilot_heartbeats": ("id",)}
 
     def __init__(self, settings: Settings | None = None, owner_emails: list[str] | None = None,
                  public_enabled: bool = False):
@@ -727,10 +759,10 @@ class MemoryStore(RewardsStore):
                     row["id"] = self._ids[table]
             if table in FF10_TABLES and not self._ff10_fn:
                 raise StoreError("Friends & Family 10 records change only through the database functions")
-            if table in ("pilot_activity", "pilot_payments") and row.get("id") is None:
+            if table in ("pilot_activity", "pilot_payments", "pilot_heartbeats") and row.get("id") is None:
                 self._ids[table] = self._ids.get(table, 0) + 1
                 row["id"] = self._ids[table]
-            if table not in ("pilot_activity", "pilot_payments") and any(self._key(table, r) == self._key(table, row)
+            if table not in ("pilot_activity", "pilot_payments", "pilot_heartbeats") and any(self._key(table, r) == self._key(table, row)
                                                  for r in self.tables[table]):
                 if ignore_duplicates:
                     return []
@@ -755,7 +787,7 @@ class MemoryStore(RewardsStore):
                     continue
                 if table in ("reward_activity_events", "reward_audit_log", "reward_cashout_payments",
                              "pilot_activity", "pilot_settlements", "pilot_reward_settings", "pilot_payments",
-                             "pilot_terms_acceptances"):
+                             "pilot_terms_acceptances", "pilot_heartbeats"):
                     raise StoreError("records cannot be changed")
                 if table == "pilot_settlement_lines":
                     self._guard_line(old, dict(old, **changes))
@@ -1478,13 +1510,45 @@ class MemoryStore(RewardsStore):
             "profile_id": p_profile, "day": day, "kind": p_kind, "subject": subject, "detail": detail,
             "test": bool(account.get("test")), "at": p_at if isinstance(p_at, str) else p_at.isoformat()})
 
+    def _rpc_pilot_record_heartbeat(self, p_profile, p_area):
+        return self._rpc_pilot_record_heartbeat_at(p_profile, p_area, _now())
+
+    def _rpc_pilot_record_heartbeat_at(self, p_profile, p_area, p_at):
+        """= pilot_record_heartbeat_at."""
+        if p_area not in pilot_rewards.AREAS:
+            raise StoreError("invalid_activity")
+        account = self.account(p_profile)
+        if account is None:
+            raise StoreError("unknown_account")
+        day = pilot_rewards.lagos_day(p_at)
+        test = bool(account.get("test"))
+        if not test:
+            if not self._pilot_on():
+                raise StoreError("pilot_closed")
+            if not self._ff10_participant(p_profile):
+                raise StoreError("not_participant")
+            if self._ff10_settled(day[:7]):
+                raise StoreError("month_settled")
+        beats = [b for b in self.tables["pilot_heartbeats"] if b["profile_id"] == p_profile]
+        activity = [r for r in self.tables["pilot_activity"]
+                    if r["profile_id"] == p_profile and bool(r.get("test")) == test]
+        if not pilot_rewards.accept_heartbeat(beats, activity, p_area, p_at):
+            return None
+        return self._ff10_insert("pilot_heartbeats", {
+            "profile_id": p_profile, "day": day, "area": p_area, "test": test,
+            "at": p_at if isinstance(p_at, str) else p_at.isoformat()})
+
+    def _ff10_beats(self, profile_id) -> list[dict]:
+        return [b for b in self.tables["pilot_heartbeats"] if b["profile_id"] == profile_id and not b.get("test")]
+
     def _ff10_excluded(self, profile_id) -> set[str]:
         return {str(r["day"])[:10] for r in self.tables["pilot_day_reviews"]
                 if r["profile_id"] == profile_id and r["excluded"]}
 
     def _rpc_pilot_month_days(self, p_profile, p_month):
         rows = [r for r in self.tables["pilot_activity"] if r["profile_id"] == p_profile and not r.get("test")]
-        days = pilot_rewards.month_ledger(pilot_rewards.day_summaries(rows, self._ff10_excluded(p_profile)), p_month)
+        days = pilot_rewards.month_ledger(pilot_rewards.day_summaries(rows, self._ff10_excluded(p_profile),
+                                                                      self._ff10_beats(p_profile)), p_month)
         return [{"day": d.day, "seconds": d.seconds, "minutes": d.minutes, "quizzes": d.quizzes,
                  "challenge": d.challenge, "new_countries": d.new_countries, "interactions": d.interactions,
                  "tier": d.tier, "tier_amount": d.tier_amount, "excluded": d.excluded, "amount": d.amount}
@@ -1498,7 +1562,8 @@ class MemoryStore(RewardsStore):
         rows = {pid: [r for r in self.tables["pilot_activity"] if r["profile_id"] == pid and not r.get("test")]
                 for pid in people}
         return pilot_rewards.settlement_preview(rows, p_month, {pid: self._ff10_excluded(pid) for pid in people},
-                                                self._ff10_settings()["monthly_budget"])
+                                                self._ff10_settings()["monthly_budget"],
+                                                {pid: self._ff10_beats(pid) for pid in people})
 
     def _rpc_pilot_review_day(self, p_profile, p_day, p_excluded, p_actor, p_reason=None):
         if not self._owner(p_actor):

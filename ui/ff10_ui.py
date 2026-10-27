@@ -47,7 +47,20 @@ def month_days(s, member: dict, month: str) -> list[pr.DaySummary]:
     if not member["test"]:
         return [_summary(r) for r in s.ff10_ledger(member["profile_id"], month)]
     rows = [r for r in s.ff10_activity(member["profile_id"]) if r.get("test")]
-    return pr.month_ledger(pr.day_summaries(rows), month)
+    beats = [b for b in s.ff10_heartbeats(member["profile_id"]) if b.get("test")]
+    return pr.month_ledger(pr.day_summaries(rows, beats=beats), month)
+
+
+def today_timeline(s, member: dict, month: str, today: str) -> dict:
+    """Why today's verified time is what it is: the same records the calculation uses (read-only)."""
+    test = bool(member["test"])
+    rows = [r for r in s.ff10_activity(member["profile_id"], month)
+            if bool(r.get("test")) == test and str(r["day"])[:10] == today]
+    beats = [b for b in s.ff10_heartbeats(member["profile_id"], month)
+             if bool(b.get("test")) == test and str(b["day"])[:10] == today]
+    tl = pr.timeline(rows, beats)
+    tl["check_minutes"] = max(0, (tl["credited"] - pr.active_seconds(rows)) // 60) if beats else 0
+    return tl
 
 
 def _data(s, member: dict) -> dict:
@@ -59,6 +72,7 @@ def _data(s, member: dict) -> dict:
     lines = [] if member["test"] else s.ff10_lines(profile_id=member["profile_id"])
     data = {"profile_id": member["profile_id"], "at": time.time(), "month": month,
             "today": next((d for d in days if d.day == today), None), "month_total": sum(d.amount for d in days),
+            "timeline": today_timeline(s, member, month, today),
             "lines": lines, "settlements": {r["month"]: r for r in s.ff10_settlements()} if lines else {}}
     st.session_state.ff10_progress = data
     return data
@@ -92,6 +106,9 @@ def progress(member: dict) -> None:
              f"{_naira(daily)} / {_naira(pr.DAILY_MAX)}")
         _bar(t("Monthly provisional reward"), d["month_total"], pr.MONTHLY_MAX,
              f"{_naira(d['month_total'])} / {_naira(pr.MONTHLY_MAX)}")
+        quizzes = day.quizzes if day else 0
+        st.markdown(t("Qualifying quizzes today: {n} / {need}", n=quizzes, need=pr.TIERS[1][2]))
+        _time_explained(d.get("timeline"))
         reached = day.tier if day else 0
         st.markdown("**" + t("Today's milestones") + "**")
         st.markdown("\n".join(f"- {'✅' if i < reached else '⬜'} {t(text)} — {_naira(pr.TIERS[i][0])}"
@@ -105,9 +122,22 @@ def progress(member: dict) -> None:
                          "count. See you tomorrow!"))
         else:
             st.info(t("Next milestone: {steps}.", steps="; ".join(_milestone(m) for m in remaining)))
-        st.caption(t("Only active learning counts: answering quizzes, exploring countries and reading their details. "
-                     "Leaving the app open does not."))
+        st.caption(t("Active learning counts: answering quizzes, exploring countries, and reading while you scroll or "
+                     "tap on Explore, Learn or a quiz. Time with the app hidden, in the background or left untouched "
+                     "does not count. School Learning is never part of the rewards."))
     _settlement(d)
+
+
+def _time_explained(tl: dict | None) -> None:
+    """Verified minutes from reading, and any time between today's first and last activity that was not counted."""
+    if not tl:
+        return
+    if tl.get("check_minutes"):
+        st.caption("📖 " + t("Includes {n} minutes of reading and exploring, verified by activity checks.",
+                             n=tl["check_minutes"]))
+    if tl["gaps"] and tl["uncredited"] >= 60:
+        st.caption("⏸️ " + t("Not counted today: {minutes} minutes in {count} pause(s) longer than 3 minutes without "
+                             "any recorded activity.", minutes=tl["uncredited"] // 60, count=len(tl["gaps"])))
 
 
 def _milestone(text: str) -> str:

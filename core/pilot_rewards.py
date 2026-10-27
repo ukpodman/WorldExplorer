@@ -12,6 +12,16 @@ Verified active learning time
 * All interactions of one day form one timeline, whatever the number of tabs or devices: the time between two
   consecutive interactions counts up to INACTIVITY_SECONDS. Overlapping sessions can never count twice, and the total
   can never exceed real time.
+* Reading and exploring without clicking (supabase/friends_family10_active_time_migration.sql): while a participant
+  is genuinely engaged on Explore, World Geography Learn or a World Geography quiz (page visible and focused, and a real
+  scroll, touch, key or click within the last ENGAGED_SECONDS), the page sends an activity check about every
+  HEARTBEAT_SECONDS. The database time-stamps each check with its own clock and accepts it only when (a) at least
+  HEARTBEAT_MIN_GAP seconds have passed since the person's previous accepted check (one stream, whatever the number of
+  tabs, devices or reruns), (b) the person recorded a meaningful interaction the same day within the last ANCHOR_SECONDS
+  (an open app with nothing new opened or answered stops earning), and (c) fewer than HEARTBEAT_DAILY_MAX checks were
+  accepted that day. Accepted checks join the same one-per-day timeline as points in time; the gap rule is unchanged.
+  Days without checks (every day before the migration) are calculated exactly as before. School Learning never sends
+  checks (no monetary link).
 
 Daily tiers (cumulative totals for the day, not added together; each tier needs the milestones of the tiers below)
     15 min + 1 qualifying quiz                                  ₦100
@@ -57,6 +67,13 @@ TIERS = (   # (amount, minutes, quizzes, new countries, daily challenge)
     (350, 45, 2, 1, False),
     (500, 60, 2, 1, True),
 )
+# Activity checks ("heartbeats") — the same values are fixed in supabase/friends_family10_active_time_migration.sql
+HEARTBEAT_SECONDS = 60        # the page sends at most one check per minute while the participant is engaged
+ENGAGED_SECONDS = 75          # engaged = a real scroll, touch, key or click within this many seconds (checked in the page)
+HEARTBEAT_MIN_GAP = 50        # the database ignores a check sooner than this after the previous accepted one
+ANCHOR_SECONDS = 900          # a check counts only within 15 minutes after a meaningful interaction the same day
+HEARTBEAT_DAILY_MAX = 150     # accepted checks per day (2.5 hours; rewards stop at 60 minutes anyway)
+AREAS = ("explore", "learn", "quiz")      # never School Learning
 LINE_STATUSES = ("pending_review", "approved", "withheld", "paid")
 LINE_LABELS = {"pending_review": "Pending review", "approved": "Approved — payment pending", "withheld": "Withheld",
                "paid": "Paid by bank transfer"}
@@ -65,6 +82,7 @@ TABLES = ("pilot_reward_settings", "pilot_activity", "pilot_day_reviews", "pilot
           "pilot_settlement_lines")
 PAYMENT_TABLES = ("pilot_beneficiaries", "pilot_payments")          # supabase/friends_family10_payments_migration.sql
 ACCEPTANCE_TABLES = ("pilot_terms_acceptances",)                     # supabase/friends_family10_acceptance_migration.sql
+HEARTBEAT_TABLES = ("pilot_heartbeats",)                             # supabase/friends_family10_active_time_migration.sql
 REFERENCE_MIN = 4
 
 
@@ -83,6 +101,7 @@ class DaySummary:
     amount: int = 0        # after the monthly maximum (filled in by month_ledger)
     excluded: bool = False
     flags: tuple = ()
+    heartbeats: int = 0    # accepted activity checks that day (reading and exploring)
 
 
 def lagos_day(value) -> str:
@@ -110,10 +129,80 @@ def accept(history: list[dict], kind: str, subject: str, at) -> bool:
     return True
 
 
-def active_seconds(day_rows: list[dict]) -> int:
-    """One timeline per day: the gap between consecutive interactions counts up to INACTIVITY_SECONDS."""
-    times = sorted(_dt(r["at"]) for r in day_rows)
+def accept_heartbeat(beats: list[dict], activity: list[dict], area: str, at) -> bool:
+    """Would the database accept an activity check now? (= pilot_record_heartbeat_at). beats: the person's accepted
+    checks; activity: the person's recorded interactions (same test flag)."""
+    if area not in AREAS:
+        return False
+    when = _dt(at)
+    day = lagos_day(when)
+    today = [b for b in beats if str(b.get("day") or lagos_day(b["at"]))[:10] == day]
+    if any(0 <= (when - _dt(b["at"])).total_seconds() < HEARTBEAT_MIN_GAP for b in today):
+        return False
+    if len(today) >= HEARTBEAT_DAILY_MAX:
+        return False
+    return any(str(r.get("day") or lagos_day(r["at"]))[:10] == day
+               and 0 <= (when - _dt(r["at"])).total_seconds() <= ANCHOR_SECONDS for r in activity)
+
+
+def active_seconds(day_rows: list[dict], beats: list[dict] | tuple = ()) -> int:
+    """One timeline per day (interactions and accepted activity checks): the gap between consecutive points counts up
+    to INACTIVITY_SECONDS."""
+    times = sorted([_dt(r["at"]) for r in day_rows] + [_dt(b["at"]) for b in beats])
     return int(sum(min((b - a).total_seconds(), INACTIVITY_SECONDS) for a, b in zip(times, times[1:])))
+
+
+def timeline(day_rows: list[dict], beats: list[dict] | tuple = ()) -> dict:
+    """Why a day's verified time is what it is (read-only; for the participant display and the Owner's audit).
+    elapsed: first to last point; credited: the verified seconds (= active_seconds); gaps: every pause longer than
+    INACTIVITY_SECONDS with what came just before and after it and the seconds not counted."""
+    points = sorted([(_dt(r["at"]), r["kind"], r.get("subject") or "") for r in day_rows]
+                    + [(_dt(b["at"]), "check", b.get("area") or "") for b in beats], key=lambda p: p[0])
+    gaps, credited = [], 0.0
+    for (a, ka, sa), (b, kb, sb) in zip(points, points[1:]):
+        gap = (b - a).total_seconds()
+        credited += min(gap, INACTIVITY_SECONDS)
+        if gap > INACTIVITY_SECONDS:
+            gaps.append({"start": a, "end": b, "seconds": int(gap), "uncredited": int(gap - INACTIVITY_SECONDS),
+                         "before": (ka, sa), "after": (kb, sb)})
+    elapsed = int((points[-1][0] - points[0][0]).total_seconds()) if len(points) > 1 else 0
+    return {"points": len(points), "interactions": len(day_rows), "heartbeats": len(beats), "elapsed": elapsed,
+            "credited": int(credited), "uncredited": max(0, elapsed - int(credited)), "gaps": gaps,
+            "first": points[0][0] if points else None, "last": points[-1][0] if points else None}
+
+
+def uncredited_reasons(tl: dict) -> list[str]:
+    """Plain reasons for time between the day's first and last activity that was not counted (English; translated by
+    the page)."""
+    if not tl["gaps"]:
+        return []
+    minutes = round(tl["uncredited"] / 60, 1)
+    n = len(tl["gaps"])
+    return [f"{n} pause{'s' if n != 1 else ''} longer than {INACTIVITY_SECONDS // 60} minutes with no recorded "
+            f"activity: {minutes:g} minutes not counted"]
+
+
+def audit_days(rows: list[dict], beats: list[dict], days: list[str]) -> list[dict]:
+    """READ-ONLY historical audit for the Owner: for each requested Lagos day, the recorded interactions and checks,
+    first/last activity, elapsed time, verified time, time not counted, and every long pause with what came just
+    before and after it. It never changes a record or an amount: elapsed time alone does not prove learning, so any
+    adjustment needs separate evidence and the Owner's own decision."""
+    rows_by_day, beats_by_day = _by_day(rows), _by_day(beats)
+    out = []
+    for day in days:
+        tl = timeline(rows_by_day.get(day, []), beats_by_day.get(day, []))
+        out.append({"day": day, **tl,
+                    "quizzes": len({r["subject"] for r in rows_by_day.get(day, []) if r["kind"] == "quiz"}),
+                    "challenge": any(r["kind"] == "challenge" for r in rows_by_day.get(day, [])),
+                    "minutes": tl["credited"] // 60})
+    return out
+
+
+def _by_day(items: list[dict]) -> dict[str, list[dict]]:
+    out: dict[str, list[dict]] = {}
+    for r in items:
+        out.setdefault(str(r.get("day") or lagos_day(r["at"]))[:10], []).append(r)
+    return out
 
 
 def tier_for(minutes: int, quizzes: int, new_countries: int, challenge: bool) -> int:
@@ -142,9 +231,12 @@ def flags_for(day_rows: list[dict], minutes: int) -> tuple:
     return tuple(out)
 
 
-def day_summaries(rows: list[dict], excluded_days: set[str] | None = None) -> list[DaySummary]:
+def day_summaries(rows: list[dict], excluded_days: set[str] | None = None,
+                  beats: list[dict] | None = None) -> list[DaySummary]:
     """Every day with activity for ONE participant (rows of any months; the order of rows does not matter).
+    beats: the participant's accepted activity checks (they add time only on days with interactions).
     The monthly maximum is not applied here (see month_ledger)."""
+    beats_by_day = _by_day(beats or [])
     rows = sorted(rows, key=lambda r: _dt(r["at"]))
     first_country: dict[str, str] = {}
     by_day: dict[str, list[dict]] = {}
@@ -156,7 +248,8 @@ def day_summaries(rows: list[dict], excluded_days: set[str] | None = None) -> li
     out = []
     for day in sorted(by_day):
         day_rows = by_day[day]
-        seconds = active_seconds(day_rows)
+        day_beats = beats_by_day.get(day, [])
+        seconds = active_seconds(day_rows, day_beats)
         minutes = seconds // 60
         quizzes = len({r["subject"] for r in day_rows if r["kind"] == "quiz"})
         challenge = any(r["kind"] == "challenge" for r in day_rows)
@@ -166,7 +259,7 @@ def day_summaries(rows: list[dict], excluded_days: set[str] | None = None) -> li
                               new_countries=new, interactions=len(day_rows),
                               subjects=len({(r["kind"], r["subject"]) for r in day_rows}), tier=tier,
                               tier_amount=tier_amount(tier), excluded=day in (excluded_days or set()),
-                              flags=flags_for(day_rows, minutes)))
+                              flags=flags_for(day_rows, minutes), heartbeats=len(day_beats)))
     return out
 
 
@@ -181,8 +274,9 @@ def month_ledger(summaries: list[DaySummary], month: str) -> list[DaySummary]:
     return out
 
 
-def provisional(rows: list[dict], month: str, excluded_days: set[str] | None = None) -> int:
-    return sum(d.amount for d in month_ledger(day_summaries(rows, excluded_days), month))
+def provisional(rows: list[dict], month: str, excluded_days: set[str] | None = None,
+                beats: list[dict] | None = None) -> int:
+    return sum(d.amount for d in month_ledger(day_summaries(rows, excluded_days, beats), month))
 
 
 def allocate(provisional_by_id: dict[str, int], budget: int = MONTHLY_BUDGET) -> dict[str, int]:
@@ -238,9 +332,10 @@ def fingerprint(month: str, budget: int, total_provisional: int, total_final: in
 
 
 def settlement_preview(rows_by_id: dict[str, list[dict]], month: str, excluded: dict[str, set[str]] | None = None,
-                       budget: int = MONTHLY_BUDGET) -> dict:
+                       budget: int = MONTHLY_BUDGET, beats_by_id: dict[str, list[dict]] | None = None) -> dict:
     """The exact settlement the Owner would finalise for a month (real participants only)."""
-    prov = {pid: provisional(rows, month, (excluded or {}).get(pid)) for pid, rows in rows_by_id.items()}
+    prov = {pid: provisional(rows, month, (excluded or {}).get(pid), (beats_by_id or {}).get(pid))
+            for pid, rows in rows_by_id.items()}
     final = allocate(prov, budget)
     total_p, total_f = sum(prov.values()), sum(final.values())
     lines = [{"profile_id": pid, "provisional": prov[pid], "final": final[pid]} for pid in sorted(prov)]
